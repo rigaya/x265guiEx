@@ -194,9 +194,9 @@ static X26X_OPTIONS x265_options_table[] = {
 	//{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
 	//{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
 	//{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },
-	//{ "preset",           "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
-	//{ "tune",             "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
-	//{ "profile",          "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, profile        ) },
+	{ "preset",           "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
+	{ "tune",             "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
+	{ "profile",          "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, profile        ) },
 	//{ "crf",              "",   OPTION_TYPE_CRF,           NULL,                 NULL                                 },
 	{ "bitrate",           "",  OPTION_TYPE_BITRATE,       NULL,                 NULL                                 },
 	{ "qp",               "q",  OPTION_TYPE_QP,            NULL,                 NULL                                 },
@@ -255,10 +255,10 @@ static X26X_OPTIONS x265_options_table[] = {
 	{ "rect",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, rect_mp        ) },
 	{ "no-amp",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, asymmnteric_mp ) },
 	{ "amp",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, asymmnteric_mp ) },
-	{ "no-early-skip",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, early_skip     ) },
-	{ "early-skip",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, early_skip     ) },
-	{ "no-fast-cbf",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, fast_cbf       ) },
-	{ "fast-cbf",         "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, fast_cbf       ) },
+	//{ "no-early-skip",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, early_skip     ) },
+	//{ "early-skip",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, early_skip     ) },
+	//{ "no-fast-cbf",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, fast_cbf       ) },
+	//{ "fast-cbf",         "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, fast_cbf       ) },
 	//{ "no-chroma-me",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, chroma_me      ) },
 	//{ "chroma-me",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, chroma_me      ) },
 	//{ "direct",           "",   OPTION_TYPE_LIST,          list_direct,          offsetof(CONF_X265, direct_mv      ) },
@@ -270,13 +270,13 @@ static X26X_OPTIONS x265_options_table[] = {
 	//{ "weightb",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, weight_b       ) },
 	{ "weightp",         "w",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, weight_p       ) },
 	{ "no-weightp",      "w",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, weight_p       ) },
-	{ "rdpenalty",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rdpenalty      ) },
-	{ "no-tskip",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip          ) },
-	{ "tskip",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip          ) },
-	{ "no-tskip-fast",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip_fast     ) },
-	{ "tskip-fast",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip_fast     ) },
-	{ "no-strong-intra-smoothing","",OPTION_TYPE_BOOL_REVERSE,NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
-	{ "strong-intra-smoothing",   "",OPTION_TYPE_BOOL,        NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
+	//{ "rdpenalty",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rdpenalty      ) },
+	//{ "no-tskip",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip          ) },
+	//{ "tskip",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip          ) },
+	//{ "no-tskip-fast",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip_fast     ) },
+	//{ "tskip-fast",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip_fast     ) },
+	//{ "no-strong-intra-smoothing","",OPTION_TYPE_BOOL_REVERSE,NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
+	//{ "strong-intra-smoothing",   "",OPTION_TYPE_BOOL,        NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
 	{ "rd",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rd             ) },
 	//{ "nr",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, noise_reduction) },
 	//{ "no-fast-pskip",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, no_fast_pskip  ) },
@@ -1199,15 +1199,18 @@ void get_default_conf(CONF_X26X *conf_set, BOOL use_highbit, int enc_type) {
 }
 
 void set_preset_to_conf(CONF_X26X *conf_set, int preset_index, int enc_type) {
-	set_cmd_to_conf(ex_stg->s_x26x[enc_type].preset.cmd[preset_index], conf_set, enc_type);
+	if (ex_stg->s_x26x[enc_type].preset.name[preset_index].name)
+		set_cmd_to_conf(ex_stg->s_x26x[enc_type].preset.cmd[preset_index], conf_set, enc_type);
 }
 
 void set_tune_to_conf(CONF_X26X *conf_set, int tune_index, int enc_type) {
-	set_cmd_to_conf(ex_stg->s_x26x[enc_type].tune.cmd[tune_index], conf_set, enc_type);
+	if (ex_stg->s_x26x[enc_type].tune.name[tune_index].name)
+		set_cmd_to_conf(ex_stg->s_x26x[enc_type].tune.cmd[tune_index], conf_set, enc_type);
 }
 
 void set_profile_to_conf(CONF_X26X *conf_set, int profile_index, int enc_type) {
-	set_cmd_to_conf(ex_stg->s_x26x[enc_type].profile.cmd[profile_index], conf_set, enc_type);
+	if (ex_stg->s_x26x[enc_type].profile.name[profile_index].name)
+		set_cmd_to_conf(ex_stg->s_x26x[enc_type].profile.cmd[profile_index], conf_set, enc_type);
 }
 
 void apply_presets(CONF_X26X *conf_set, int enc_type) {
@@ -1252,10 +1255,10 @@ void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_X265 *conf, co
 	CONF_X26X x265def = { 0 };
 	CONF_X265 *def = (CONF_X265 *)&x265def;
 	CONF_VIDEO *vid = (CONF_VIDEO *)_vid;
-	get_default_conf((CONF_X26X *)def, conf->use_highbit_depth, ENC_TYPE_X265);
-	//set_preset_to_conf(def, conf->preset);
-	//set_tune_to_conf(def, conf->tune);
-	//set_profile_to_conf(def, conf->profile);
+	get_default_conf(   (CONF_X26X *)def, conf->use_highbit_depth, ENC_TYPE_X265);
+	set_preset_to_conf( (CONF_X26X *)def, conf->preset,            ENC_TYPE_X265);
+	set_tune_to_conf(   (CONF_X26X *)def, conf->tune,              ENC_TYPE_X265);
+	set_profile_to_conf((CONF_X26X *)def, conf->profile,           ENC_TYPE_X265);
 
 	for (X26X_OPTIONS *opt = x265_options_table; opt->long_name; opt++) {
 		write_cmd_x265[opt->type](cmd, nSize, opt, conf, def, vid, write_all);

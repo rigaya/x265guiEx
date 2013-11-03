@@ -1340,6 +1340,9 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fchCXSubME,          list_subme_x265);
 	setComboBox(fchCXBadapt,         list_b_adpat);
 	setComboBox(fchCXRD,             list_rd);
+	setComboBox(fchCXPreset,         sys_dat->exstg->s_x265.preset.name);
+	setComboBox(fchCXProfile,        sys_dat->exstg->s_x265.profile.name);
+	setComboBox(fchCXTune,		     sys_dat->exstg->s_x265.tune.name);
 
 	setComboBox(fcgCXAudioEncTiming, audio_enc_timing_desc);
 
@@ -1702,6 +1705,10 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fchNUAMPLimitFileSize, cnf->vid.amp_x265.limit_file_size);
 	SetNUValue(fchNUAMPLimitBitrate,  cnf->vid.amp_x265.limit_bitrate);
 
+	SetCXIndex(fchCXPreset,           cx265->preset);
+	SetCXIndex(fchCXTune,             cx265->tune);
+	SetCXIndex(fchCXProfile,          cx265->profile);
+
 	SetNUValue(fchNUThreads,          cx265->threads);
 	SetNUValue(fchNUFrameThreads,     cx265->frame_threads);
 	SetNUValue(fchNUKeyintMax,        cx265->keyint_max);
@@ -1905,6 +1912,9 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->vid.amp_x265.check       |= fchCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
 	cnf->vid.amp_x265.limit_bitrate = (double)fchNUAMPLimitBitrate->Value;
 	cnf->vid.amp_x265.limit_file_size = (double)fchNUAMPLimitFileSize->Value;
+	cnf->x265.preset               = fchCXPreset->SelectedIndex;
+	cnf->x265.tune                 = fchCXTune->SelectedIndex;
+	cnf->x265.profile              = fchCXProfile->SelectedIndex;
 
 	cnf->x265.threads              = (int)fchNUThreads->Value;
 	cnf->x265.frame_threads        = (int)fchNUFrameThreads->Value;
