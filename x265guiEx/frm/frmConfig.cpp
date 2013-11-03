@@ -2683,7 +2683,7 @@ System::Void frmConfig::SetX265VersionToolTip(String^ x265Path, bool ashighbit) 
 		char mes_buf[2560];
 		char exe_path[MAX_PATH_LEN];
 		GetCHARfromString(exe_path, sizeof(exe_path), x265Path);
-		if (get_exe_message(exe_path, "--help", mes_buf, _countof(mes_buf), AUO_PIPE_ENABLE) == RP_SUCCESS)
+		if (get_exe_message(exe_path, "-V", mes_buf, _countof(mes_buf), AUO_PIPE_ENABLE) == RP_SUCCESS)
 			mes = String(mes_buf).ToString();
 		else
 			mes = L"バージョン情報の取得に失敗しました。";

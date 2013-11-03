@@ -257,6 +257,17 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
 	conf->vid.enc_type = sys_dat.exstg->s_encode_type;
 	conf->size_all = CONF_INITIALIZED;
 }
+void write_log_line_fmt(int log_type_index, const char *format, ...) {
+	va_list args;
+	int len;
+	char *buffer;
+	va_start(args, format);
+	len = _vscprintf(format, args) + 1; // _vscprintf doesn't count terminating '\0'
+	buffer = (char *)malloc(len * sizeof(buffer[0]));
+	vsprintf_s(buffer, len, format, args);
+	write_log_line(log_type_index, buffer);
+	free(buffer);
+}
 void write_log_auo_line_fmt(int log_type_index, const char *format, ... ) {
 	va_list args;
 	int len;
@@ -432,7 +443,10 @@ static void set_tmpdir(PRM_ENC *pe, int tmp_dir_index, const char *savefile) {
 }
 
 static int get_total_path() {
-	return (conf.x26x[conf.vid.enc_type].use_auto_npass && conf.x26x[conf.vid.enc_type].rc_mode == X26X_RC_BITRATE && !conf.oth.disable_guicmd) ? conf.x26x[conf.vid.enc_type].auto_npass : 1;
+	return (conf.x26x[conf.vid.enc_type].use_auto_npass
+		 && conf.x26x[conf.vid.enc_type].rc_mode == X26X_RC_BITRATE
+		 && !conf.oth.disable_guicmd)
+		 ? conf.x26x[conf.vid.enc_type].auto_npass : 1;
 }
 
 static void set_enc_prm(PRM_ENC *pe, const OUTPUT_INFO *oip) {

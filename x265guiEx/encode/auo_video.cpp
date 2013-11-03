@@ -46,6 +46,7 @@
 
 const int DROP_FRAME_FLAG = INT_MAX;
 
+
 static const char * specify_input_csp(int output_csp) {
 	return specify_csp[output_csp];
 }
@@ -380,6 +381,59 @@ static AUO_RESULT write_log_x264_version(const char *x264fullpath) {
 	return ret;
 }
 
+static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
+	AUO_RESULT ret = AUO_RESULT_WARNING;
+	char buffer[2048] = { 0 };
+	static const int REQUIRED_X265_VER[5] = { 0, 4, 0, 0, 0 };
+	//static const int REQUIRED_X265[5] = { 0, 5, 1, 0, 76 };
+	if (get_exe_message(x265fullpath, "-V", buffer, _countof(buffer), AUO_PIPE_ENABLE) == RP_SUCCESS) {
+		char print_line[512] = { 0 };
+		const char *EXPECTED_HEADER = "x265 [info]: HEVC encoder version ";
+		const char *LINE_HEADER = "x265 version: ";
+		const char *LINE_CONFIGURATION = "x265 [info]: build info ";
+		sprintf_s(print_line, _countof(print_line), LINE_HEADER);
+		int v[5] = { 0 };
+		for (char *ptr = buffer, *qtr = NULL; NULL != (ptr = strtok_s(ptr, "\r\n", &qtr)); ) {
+			if (ptr == buffer) {
+				if (   5 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d.%d+%d", &v[0], &v[1], &v[2], &v[3], &v[4])
+					&& 4 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d.%d",    &v[0], &v[1], &v[2], &v[3]       )
+					&& 4 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d+%d",    &v[0], &v[1], &v[2],        &v[4])
+					&& 3 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d",       &v[0], &v[1], &v[2]              )
+					&& 3 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d+%d",       &v[0], &v[1],               &v[4])
+					&& 2 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d",          &v[0], &v[1]                     )
+					&& 2 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d+%d",          &v[0],                      &v[4])
+					&& 1 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d",             &v[0]                            ) ) {
+					v[0] = v[1] = v[2] = v[3] = v[4] = -1;
+				} else {
+					char *pos = strchr(ptr + strlen(LINE_CONFIGURATION), '-');
+					if (NULL != pos) *pos = '\0';
+				}
+				strcat_s(print_line, _countof(print_line), ptr + strlen(EXPECTED_HEADER) * (NULL == strncmp(ptr, EXPECTED_HEADER, strlen(EXPECTED_HEADER))));
+				strcat_s(print_line, _countof(print_line), " ");
+			} else if (strstr(ptr, LINE_CONFIGURATION)) {
+				strcat_s(print_line, _countof(print_line), ptr + strlen(LINE_CONFIGURATION));
+			}
+			ptr = NULL;
+		}
+		if (strlen(print_line) > strlen(LINE_HEADER)) {
+			write_log_auo_line(LOG_INFO, print_line);
+		}
+		if (v[0] >= 0) {
+			for (int i = 0; i < _countof(REQUIRED_X265_VER); i++) {
+				if (REQUIRED_X265_VER[i] != v[i]) {
+					ret = (REQUIRED_X265_VER[i] < v[i]) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
+					break;
+				}
+			}
+			if (ret == AUO_RESULT_WARNING) ret = AUO_RESULT_SUCCESS;
+		}
+	}
+	return ret;
+}
+
+typedef AUO_RESULT (*func_write_log_encoder_version)(const char *exe_fullpath);
+static const func_write_log_encoder_version write_encoder_version[] = { write_log_x264_version, write_log_x265_version };
+
 //auo_pipe.cppのread_from_pipeの特別版
 static int ReadLogEnc(PIPE_SET *pipes, int total_drop, int current_frames) {
 	DWORD pipe_read = 0;
@@ -602,7 +656,6 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	PIPE_SET pipes = { 0 };
 	PROCESS_INFORMATION pi_enc = { 0 };
 
-	static const char *X26X_NAME[2] = { "x264", "x265" };
 	char x26xcmd[MAX_CMD_LEN]  = { 0 };
 	char x26xargs[MAX_CMD_LEN] = { 0 };
 	char x26xdir[MAX_PATH_LEN] = { 0 };
@@ -643,13 +696,10 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	pipes.stdErr.mode = AUO_PIPE_ENABLE;
 	pipes.stdIn.bufferSize = pixel_data.total_size * 2;
 
-	//x264バージョン情報表示・チェック
-	//x265はいまのところチェックなし
-	if (conf->vid.enc_type == ENC_TYPE_X264) {
-		if (AUO_RESULT_ERROR == write_log_x264_version(x26xfullpath)) {
-			ret |= AUO_RESULT_ERROR; error_x264_version();
-			return ret;
-		}
+	//x264/x265のバージョン情報表示・チェック
+	if (AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
+		ret |= AUO_RESULT_ERROR; error_x26x_version(conf->vid.enc_type);
+		return ret;
 	}
 
 	//コマンドライン生成
@@ -695,7 +745,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			//x26xが実行中なら、メッセージを取得・ログウィンドウに表示
 			if (ReadLogEnc(&pipes, pe->drop_count, i) < 0) {
 				//勝手に死んだ...
-				ret |= AUO_RESULT_ERROR; error_x264_dead();
+				ret |= AUO_RESULT_ERROR; error_x26x_dead(conf->vid.enc_type);
 				break;
 			}
 
