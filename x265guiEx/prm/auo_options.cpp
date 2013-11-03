@@ -197,7 +197,7 @@ static X26X_OPTIONS x265_options_table[] = {
 	{ "preset",           "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
 	{ "tune",             "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
 	{ "profile",          "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, profile        ) },
-	//{ "crf",              "",   OPTION_TYPE_CRF,           NULL,                 NULL                                 },
+	{ "crf",              "",   OPTION_TYPE_CRF,           NULL,                 NULL                                 },
 	{ "bitrate",           "",  OPTION_TYPE_BITRATE,       NULL,                 NULL                                 },
 	{ "qp",               "q",  OPTION_TYPE_QP,            NULL,                 NULL                                 },
 	//{ "ipratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, ip_ratio       ) },

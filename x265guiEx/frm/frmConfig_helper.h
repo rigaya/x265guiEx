@@ -263,6 +263,7 @@ const WCHAR * const x264_encodemode_desc[] = {
 const WCHAR * const x265_encodemode_desc[] = {
 	L"シングルパス - ビットレート指定",
 	L"シングルパス - 固定量子化量",
+	L"シングルパス - 品質基準VBR(可変レート)",
 	NULL
 };
 
