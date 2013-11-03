@@ -1,4 +1,4 @@
-#ifndef VPHELP_CLIENT_H
+﻿#ifndef VPHELP_CLIENT_H
 #define VPHELP_CLIENT_H
 
 #define VPH_VERSION          0x0100

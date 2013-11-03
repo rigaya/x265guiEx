@@ -1,4 +1,4 @@
-#ifndef AFS_CLIENT_H
+﻿#ifndef AFS_CLIENT_H
 #define AFS_CLIENT_H
 
 #define AFS_FLAG_SHIFT0      0x01
