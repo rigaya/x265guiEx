@@ -1196,6 +1196,8 @@ void get_default_conf(CONF_X26X *conf_set, BOOL use_highbit, int enc_type) {
 	set_cmd_to_conf(ex_stg->s_x26x[enc_type].default_cmd, conf_set, enc_type);
 	if (use_highbit)
 		set_cmd_to_conf(ex_stg->s_x26x[enc_type].default_cmd_highbit, conf_set, enc_type);
+
+	apply_presets(conf_set, enc_type);
 }
 
 void set_preset_to_conf(CONF_X26X *conf_set, int preset_index, int enc_type) {
