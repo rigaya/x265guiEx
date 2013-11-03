@@ -1,0 +1,4 @@
+LIBRARY "x265guiEx.auo"
+
+EXPORTS
+    GetOutputPluginTable
