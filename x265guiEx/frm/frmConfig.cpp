@@ -2363,7 +2363,7 @@ System::Void frmConfig::SetHelpToolTips() {
 		);
 	fchTTX265->SetToolTip(fchCXX265Mode, L""
 		+ L"【シングルパス】\n"
-		//+ L"   " + String(x265_encodemode_desc[2]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --crf\n"
+		+ L"   " + String(x265_encodemode_desc[2]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --crf\n"
 		+ L"   " + String(x265_encodemode_desc[1]).ToString()->Replace(L"シングルパス - ", L"") + L"\t\t … --qp\n"
 		+ L"   " + String(x265_encodemode_desc[0]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --bitrate\n"
 		+ L"\n"
@@ -2383,12 +2383,29 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
 	fchTTX265->SetToolTip(fchTXQuality,           L"--crf / --bitrate / --qp");
 	fchTTX265->SetToolTip(fchTXStatusFile,        L"--stats");
+	fchTTX265->SetToolTip(fchCXProfile,           L"--profile\n"
+		+ L"\n"
+		+ L"最終的にこの設定による制約が課されます。"
+		);
 
 	//自動マルチパス 上限設定
 	fcgTTEx->SetToolTip(fchCBAMPLimitBitrate,     AMP_LimitBitrate);
 	fcgTTEx->SetToolTip(fchNUAMPLimitBitrate,     AMP_LimitBitrate);
 	fcgTTEx->SetToolTip(fchCBAMPLimitFileSize,     AMP_LimitFileSize);
 	fcgTTEx->SetToolTip(fchNUAMPLimitFileSize,     AMP_LimitFileSize);
+	
+	//プロファイルとか
+	fchTTX265->SetToolTip(fchCXTune,              L"--tune");
+	fchTTX265->SetToolTip(fchCXPreset,            L"--preset");
+	fcgTTEx->SetToolTip(fchBTApplyPreset,         L""
+		+ L"ボックス内で指定した\n"
+		+ L"\n"
+		+ L"・速度 (Preset)\n"
+		+ L"・チューニング (tune)\n"
+		+ L"・プロファイル (Profile)\n"
+		+ L"\n"
+		+ L"をGUIに適用します。"
+		);
 
 	fchTTX265->SetToolTip(fchNUThreads,          L"--threads\n"
 		+ L"\"0\" で自動です。"

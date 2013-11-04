@@ -754,7 +754,8 @@ private: System::Windows::Forms::Label^  fchLBThreads;
 private: System::Windows::Forms::NumericUpDown^  fchNUThreads;
 private: System::Windows::Forms::ComboBox^  fchCXBadapt;
 private: System::Windows::Forms::ComboBox^  fchCXRD;
-private: System::Windows::Forms::Label^  label1;
+private: System::Windows::Forms::Label^  fchLBRD;
+
 private: System::Windows::Forms::CheckBox^  fchCBSAO;
 private: System::Windows::Forms::Label^  fchLBSAO;
 private: System::Windows::Forms::CheckBox^  fchCBLoopFilter;
@@ -774,10 +775,13 @@ private: System::Windows::Forms::ComboBox^  fchCXSubME;
 
 
 private: System::Windows::Forms::ComboBox^  fchCXME;
+private: System::Windows::Forms::Label^  fchLBMERange;
 
-private: System::Windows::Forms::Label^  label5;
-private: System::Windows::Forms::Label^  label6;
-private: System::Windows::Forms::Label^  label7;
+
+private: System::Windows::Forms::Label^  fchLBSubME;
+
+private: System::Windows::Forms::Label^  fchLBME;
+
 private: System::Windows::Forms::NumericUpDown^  fchNURef;
 private: System::Windows::Forms::Label^  fchLBRef;
 private: System::Windows::Forms::NumericUpDown^  fchNUMaxMerge;
@@ -1062,7 +1066,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBMaxMerge = (gcnew System::Windows::Forms::Label());
 			this->fchCXBadapt = (gcnew System::Windows::Forms::ComboBox());
 			this->fchCXRD = (gcnew System::Windows::Forms::ComboBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->fchLBRD = (gcnew System::Windows::Forms::Label());
 			this->fchCBSAO = (gcnew System::Windows::Forms::CheckBox());
 			this->fchLBSAO = (gcnew System::Windows::Forms::Label());
 			this->fchCBLoopFilter = (gcnew System::Windows::Forms::CheckBox());
@@ -1077,9 +1081,9 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUMERange = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchCXSubME = (gcnew System::Windows::Forms::ComboBox());
 			this->fchCXME = (gcnew System::Windows::Forms::ComboBox());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->fchLBMERange = (gcnew System::Windows::Forms::Label());
+			this->fchLBSubME = (gcnew System::Windows::Forms::Label());
+			this->fchLBME = (gcnew System::Windows::Forms::Label());
 			this->fchNURef = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchLBRef = (gcnew System::Windows::Forms::Label());
 			this->fchCBWpp = (gcnew System::Windows::Forms::CheckBox());
@@ -1419,7 +1423,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fcgPNStatusFile->Location = System::Drawing::Point(5, 271);
 			this->fcgPNStatusFile->Name = L"fcgPNStatusFile";
 			this->fcgPNStatusFile->Size = System::Drawing::Size(376, 32);
-			this->fcgPNStatusFile->TabIndex = 49;
+			this->fcgPNStatusFile->TabIndex = 6;
 			// 
 			// fcgLBSTATUS
 			// 
@@ -1462,7 +1466,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fcgPNBitrate->Location = System::Drawing::Point(5, 191);
 			this->fcgPNBitrate->Name = L"fcgPNBitrate";
 			this->fcgPNBitrate->Size = System::Drawing::Size(376, 84);
-			this->fcgPNBitrate->TabIndex = 48;
+			this->fcgPNBitrate->TabIndex = 5;
 			// 
 			// fcgLBQuality
 			// 
@@ -1554,7 +1558,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fcgPNX264Mode->Location = System::Drawing::Point(5, 67);
 			this->fcgPNX264Mode->Name = L"fcgPNX264Mode";
 			this->fcgPNX264Mode->Size = System::Drawing::Size(376, 126);
-			this->fcgPNX264Mode->TabIndex = 47;
+			this->fcgPNX264Mode->TabIndex = 4;
 			// 
 			// fcgNUAMPLimitBitrate
 			// 
@@ -3302,7 +3306,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchtabPageX265Main->Controls->Add(this->fchLBMaxMerge);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXBadapt);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXRD);
-			this->fchtabPageX265Main->Controls->Add(this->label1);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBRD);
 			this->fchtabPageX265Main->Controls->Add(this->fchCBSAO);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBSAO);
 			this->fchtabPageX265Main->Controls->Add(this->fchCBLoopFilter);
@@ -3317,9 +3321,9 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchtabPageX265Main->Controls->Add(this->fchNUMERange);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXSubME);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXME);
-			this->fchtabPageX265Main->Controls->Add(this->label5);
-			this->fchtabPageX265Main->Controls->Add(this->label6);
-			this->fchtabPageX265Main->Controls->Add(this->label7);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBMERange);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBSubME);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBME);
 			this->fchtabPageX265Main->Controls->Add(this->fchNURef);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBRef);
 			this->fchtabPageX265Main->Controls->Add(this->fchCBWpp);
@@ -3358,7 +3362,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchgroupBoxPreset->Location = System::Drawing::Point(7, 305);
 			this->fchgroupBoxPreset->Name = L"fchgroupBoxPreset";
 			this->fchgroupBoxPreset->Size = System::Drawing::Size(182, 183);
-			this->fchgroupBoxPreset->TabIndex = 57;
+			this->fchgroupBoxPreset->TabIndex = 7;
 			this->fchgroupBoxPreset->TabStop = false;
 			this->fchgroupBoxPreset->Text = L"プリセットのロード";
 			// 
@@ -3455,7 +3459,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCXBadapt->Location = System::Drawing::Point(514, 220);
 			this->fchCXBadapt->Name = L"fchCXBadapt";
 			this->fchCXBadapt->Size = System::Drawing::Size(88, 22);
-			this->fchCXBadapt->TabIndex = 24;
+			this->fchCXBadapt->TabIndex = 30;
 			this->fchCXBadapt->Tag = L"reCmd";
 			// 
 			// fchCXRD
@@ -3468,14 +3472,14 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCXRD->TabIndex = 48;
 			this->fchCXRD->Tag = L"reCmd";
 			// 
-			// label1
+			// fchLBRD
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(406, 323);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(86, 14);
-			this->label1->TabIndex = 47;
-			this->label1->Text = L"レート歪み最適化";
+			this->fchLBRD->AutoSize = true;
+			this->fchLBRD->Location = System::Drawing::Point(406, 323);
+			this->fchLBRD->Name = L"fchLBRD";
+			this->fchLBRD->Size = System::Drawing::Size(86, 14);
+			this->fchLBRD->TabIndex = 47;
+			this->fchLBRD->Text = L"レート歪み最適化";
 			// 
 			// fchCBSAO
 			// 
@@ -3483,7 +3487,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCBSAO->Location = System::Drawing::Point(563, 278);
 			this->fchCBSAO->Name = L"fchCBSAO";
 			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
-			this->fchCBSAO->TabIndex = 28;
+			this->fchCBSAO->TabIndex = 34;
 			this->fchCBSAO->Tag = L"reCmd";
 			this->fchCBSAO->UseVisualStyleBackColor = true;
 			// 
@@ -3493,7 +3497,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBSAO->Location = System::Drawing::Point(406, 278);
 			this->fchLBSAO->Name = L"fchLBSAO";
 			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
-			this->fchLBSAO->TabIndex = 27;
+			this->fchLBSAO->TabIndex = 33;
 			this->fchLBSAO->Text = L"画素適応オフセット(SAO)";
 			// 
 			// fchCBLoopFilter
@@ -3502,7 +3506,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCBLoopFilter->Location = System::Drawing::Point(563, 252);
 			this->fchCBLoopFilter->Name = L"fchCBLoopFilter";
 			this->fchCBLoopFilter->Size = System::Drawing::Size(15, 14);
-			this->fchCBLoopFilter->TabIndex = 26;
+			this->fchCBLoopFilter->TabIndex = 32;
 			this->fchCBLoopFilter->Tag = L"reCmd";
 			this->fchCBLoopFilter->UseVisualStyleBackColor = true;
 			// 
@@ -3512,7 +3516,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBLoopFilter->Location = System::Drawing::Point(406, 251);
 			this->fchLBLoopFilter->Name = L"fchLBLoopFilter";
 			this->fchLBLoopFilter->Size = System::Drawing::Size(63, 14);
-			this->fchLBLoopFilter->TabIndex = 25;
+			this->fchLBLoopFilter->TabIndex = 31;
 			this->fchLBLoopFilter->Text = L"ループフィルタ";
 			// 
 			// fchNURCLookahead
@@ -3522,7 +3526,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
 			this->fchNURCLookahead->Name = L"fchNURCLookahead";
 			this->fchNURCLookahead->Size = System::Drawing::Size(65, 21);
-			this->fchNURCLookahead->TabIndex = 18;
+			this->fchNURCLookahead->TabIndex = 24;
 			this->fchNURCLookahead->Tag = L"reCmd";
 			this->fchNURCLookahead->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3532,7 +3536,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBRcLookAhead->Location = System::Drawing::Point(406, 140);
 			this->fchLBRcLookAhead->Name = L"fchLBRcLookAhead";
 			this->fchLBRcLookAhead->Size = System::Drawing::Size(95, 14);
-			this->fchLBRcLookAhead->TabIndex = 17;
+			this->fchLBRcLookAhead->TabIndex = 23;
 			this->fchLBRcLookAhead->Text = L"先行探索フレーム数";
 			// 
 			// fchNUKeyintMax
@@ -3543,7 +3547,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUKeyintMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, System::Int32::MinValue });
 			this->fchNUKeyintMax->Name = L"fchNUKeyintMax";
 			this->fchNUKeyintMax->Size = System::Drawing::Size(65, 21);
-			this->fchNUKeyintMax->TabIndex = 16;
+			this->fchNUKeyintMax->TabIndex = 22;
 			this->fchNUKeyintMax->Tag = L"reCmd";
 			this->fchNUKeyintMax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3553,7 +3557,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBKeyintMax->Location = System::Drawing::Point(406, 113);
 			this->fchLBKeyintMax->Name = L"fchLBKeyintMax";
 			this->fchLBKeyintMax->Size = System::Drawing::Size(102, 14);
-			this->fchLBKeyintMax->TabIndex = 15;
+			this->fchLBKeyintMax->TabIndex = 21;
 			this->fchLBKeyintMax->Text = L"最大キーフレーム間隔";
 			// 
 			// fchLBBadapt
@@ -3562,7 +3566,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBBadapt->Location = System::Drawing::Point(406, 223);
 			this->fchLBBadapt->Name = L"fchLBBadapt";
 			this->fchLBBadapt->Size = System::Drawing::Size(102, 14);
-			this->fchLBBadapt->TabIndex = 23;
+			this->fchLBBadapt->TabIndex = 29;
 			this->fchLBBadapt->Text = L"適応的Bフレーム挿入";
 			// 
 			// fchNUBframes
@@ -3571,7 +3575,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNUBframes->Name = L"fchNUBframes";
 			this->fchNUBframes->Size = System::Drawing::Size(65, 21);
-			this->fchNUBframes->TabIndex = 22;
+			this->fchNUBframes->TabIndex = 28;
 			this->fchNUBframes->Tag = L"reCmd";
 			this->fchNUBframes->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3581,7 +3585,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBBframes->Location = System::Drawing::Point(406, 194);
 			this->fchLBBframes->Name = L"fchLBBframes";
 			this->fchLBBframes->Size = System::Drawing::Size(102, 14);
-			this->fchLBBframes->TabIndex = 21;
+			this->fchLBBframes->TabIndex = 27;
 			this->fchLBBframes->Text = L"最大連続Bフレーム数";
 			// 
 			// fchNUMERange
@@ -3615,32 +3619,32 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCXME->TabIndex = 50;
 			this->fchCXME->Tag = L"reCmd";
 			// 
-			// label5
+			// fchLBMERange
 			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(406, 439);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(70, 14);
-			this->label5->TabIndex = 53;
-			this->label5->Text = L"動き探索範囲";
+			this->fchLBMERange->AutoSize = true;
+			this->fchLBMERange->Location = System::Drawing::Point(406, 439);
+			this->fchLBMERange->Name = L"fchLBMERange";
+			this->fchLBMERange->Size = System::Drawing::Size(70, 14);
+			this->fchLBMERange->TabIndex = 53;
+			this->fchLBMERange->Text = L"動き探索範囲";
 			// 
-			// label6
+			// fchLBSubME
 			// 
-			this->label6->AutoSize = true;
-			this->label6->Location = System::Drawing::Point(406, 408);
-			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(99, 14);
-			this->label6->TabIndex = 51;
-			this->label6->Text = L"サブピクセル動き予測";
+			this->fchLBSubME->AutoSize = true;
+			this->fchLBSubME->Location = System::Drawing::Point(406, 408);
+			this->fchLBSubME->Name = L"fchLBSubME";
+			this->fchLBSubME->Size = System::Drawing::Size(99, 14);
+			this->fchLBSubME->TabIndex = 51;
+			this->fchLBSubME->Text = L"サブピクセル動き予測";
 			// 
-			// label7
+			// fchLBME
 			// 
-			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(406, 377);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(97, 14);
-			this->label7->TabIndex = 49;
-			this->label7->Text = L"動き予測アルゴリズム";
+			this->fchLBME->AutoSize = true;
+			this->fchLBME->Location = System::Drawing::Point(406, 377);
+			this->fchLBME->Name = L"fchLBME";
+			this->fchLBME->Size = System::Drawing::Size(97, 14);
+			this->fchLBME->TabIndex = 49;
+			this->fchLBME->Text = L"動き予測アルゴリズム";
 			// 
 			// fchNURef
 			// 
@@ -3648,7 +3652,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNURef->Name = L"fchNURef";
 			this->fchNURef->Size = System::Drawing::Size(65, 21);
-			this->fchNURef->TabIndex = 20;
+			this->fchNURef->TabIndex = 26;
 			this->fchNURef->Tag = L"reCmd";
 			this->fchNURef->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3658,7 +3662,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBRef->Location = System::Drawing::Point(406, 167);
 			this->fchLBRef->Name = L"fchLBRef";
 			this->fchLBRef->Size = System::Drawing::Size(51, 14);
-			this->fchLBRef->TabIndex = 19;
+			this->fchLBRef->TabIndex = 25;
 			this->fchLBRef->Text = L"参照距離";
 			// 
 			// fchCBWpp
@@ -3667,7 +3671,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchCBWpp->Location = System::Drawing::Point(205, 422);
 			this->fchCBWpp->Name = L"fchCBWpp";
 			this->fchCBWpp->Size = System::Drawing::Size(142, 18);
-			this->fchCBWpp->TabIndex = 46;
+			this->fchCBWpp->TabIndex = 16;
 			this->fchCBWpp->Tag = L"reCmd";
 			this->fchCBWpp->Text = L"波面状並列処理 (WPP)";
 			this->fchCBWpp->UseVisualStyleBackColor = true;
@@ -3678,7 +3682,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
 			this->fchNUCtu->Name = L"fchNUCtu";
 			this->fchNUCtu->Size = System::Drawing::Size(64, 21);
-			this->fchNUCtu->TabIndex = 41;
+			this->fchNUCtu->TabIndex = 11;
 			this->fchNUCtu->Tag = L"reCmd";
 			this->fchNUCtu->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->fchNUCtu->ValueChanged += gcnew System::EventHandler(this, &frmConfig::fchNUCtu_ValueChanged);
@@ -3689,7 +3693,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBCtu->Location = System::Drawing::Point(196, 336);
 			this->fchLBCtu->Name = L"fchLBCtu";
 			this->fchLBCtu->Size = System::Drawing::Size(96, 14);
-			this->fchLBCtu->TabIndex = 40;
+			this->fchLBCtu->TabIndex = 10;
 			this->fchLBCtu->Text = L"符号化ブロックサイズ";
 			// 
 			// fchNUTuIntraDepth
@@ -3698,7 +3702,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fchNUTuIntraDepth->Name = L"fchNUTuIntraDepth";
 			this->fchNUTuIntraDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuIntraDepth->TabIndex = 43;
+			this->fchNUTuIntraDepth->TabIndex = 13;
 			this->fchNUTuIntraDepth->Tag = L"reCmd";
 			this->fchNUTuIntraDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3708,7 +3712,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fchNUTuInterDepth->Name = L"fchNUTuInterDepth";
 			this->fchNUTuInterDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuInterDepth->TabIndex = 45;
+			this->fchNUTuInterDepth->TabIndex = 15;
 			this->fchNUTuInterDepth->Tag = L"reCmd";
 			this->fchNUTuInterDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3718,7 +3722,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBTuIntraDepth->Location = System::Drawing::Point(196, 363);
 			this->fchLBTuIntraDepth->Name = L"fchLBTuIntraDepth";
 			this->fchLBTuIntraDepth->Size = System::Drawing::Size(113, 14);
-			this->fchLBTuIntraDepth->TabIndex = 42;
+			this->fchLBTuIntraDepth->TabIndex = 12;
 			this->fchLBTuIntraDepth->Text = L"イントラ予測ブロック階層";
 			// 
 			// fchLBTuInterDepth
@@ -3727,7 +3731,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchLBTuInterDepth->Location = System::Drawing::Point(196, 390);
 			this->fchLBTuInterDepth->Name = L"fchLBTuInterDepth";
 			this->fchLBTuInterDepth->Size = System::Drawing::Size(114, 14);
-			this->fchLBTuInterDepth->TabIndex = 44;
+			this->fchLBTuInterDepth->TabIndex = 14;
 			this->fchLBTuInterDepth->Text = L"インター予測ブロック階層";
 			// 
 			// groupBox1
@@ -3739,7 +3743,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->groupBox1->Location = System::Drawing::Point(401, 4);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(201, 77);
-			this->groupBox1->TabIndex = 14;
+			this->groupBox1->TabIndex = 20;
 			this->groupBox1->TabStop = false;
 			// 
 			// fchLBFrameThreads
@@ -3786,7 +3790,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchPNStatusFile->Location = System::Drawing::Point(5, 271);
 			this->fchPNStatusFile->Name = L"fchPNStatusFile";
 			this->fchPNStatusFile->Size = System::Drawing::Size(376, 32);
-			this->fchPNStatusFile->TabIndex = 49;
+			this->fchPNStatusFile->TabIndex = 6;
 			this->fchPNStatusFile->Visible = false;
 			// 
 			// fchLBSTATUS
@@ -3830,7 +3834,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchPNBitrate->Location = System::Drawing::Point(5, 191);
 			this->fchPNBitrate->Name = L"fchPNBitrate";
 			this->fchPNBitrate->Size = System::Drawing::Size(376, 84);
-			this->fchPNBitrate->TabIndex = 48;
+			this->fchPNBitrate->TabIndex = 5;
 			// 
 			// fchLBQuality
 			// 
@@ -3922,7 +3926,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchPNX265Mode->Location = System::Drawing::Point(5, 67);
 			this->fchPNX265Mode->Name = L"fchPNX265Mode";
 			this->fchPNX265Mode->Size = System::Drawing::Size(376, 126);
-			this->fchPNX265Mode->TabIndex = 47;
+			this->fchPNX265Mode->TabIndex = 4;
 			// 
 			// fchNUAMPLimitBitrate
 			// 
