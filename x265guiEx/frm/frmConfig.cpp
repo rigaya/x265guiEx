@@ -1307,7 +1307,7 @@ System::Void frmConfig::InitData(CONF_GUIEX *set_config, const SYSTEM_DATA *syst
 System::Void frmConfig::InitComboBox() {
 	//コンボボックスに値を設定する
 	//x264
-	setComboBox(fcgCXAQMode,         list_aq);
+	setComboBox(fcgCXAQMode,         list_aq_x264);
 	setComboBox(fcgCXAspectRatio,    aspect_desc);
 	setComboBox(fcgCXAudioTempDir,   audtempdir_desc);
 	setComboBox(fcgCXBAdpapt,        list_b_adpat);
@@ -1335,6 +1335,7 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fcgCXInterlaced,     interlaced_desc);
 	
 	//x265
+	setComboBox(fchCXAQMode,         list_aq_x265);
 	setComboBox(fchCXX265Mode,       x265_encodemode_desc);
 	setComboBox(fchCXME,             list_me_x265);
 	setComboBox(fchCXSubME,          list_subme_x265);
@@ -1720,6 +1721,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	fchCBLoopFilter->Checked        = cx265->loop_filter != 0;
 	fchCBSAO->Checked               = cx265->sao != 0;
 	
+	SetCXIndex(fchCXAQMode,           cx265->aq_mode);
 	SetCXIndex(fchCXRD,               cx265->rd);
 	SetCXIndex(fchCXME,               cx265->me);
 	SetCXIndex(fchCXSubME,            cx265->subme);
@@ -1927,6 +1929,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.loop_filter          = fchCBLoopFilter->Checked;
 	cnf->x265.sao                  = fchCBSAO->Checked;
 
+	cnf->x265.aq_mode              = fchCXAQMode->SelectedIndex;
 	cnf->x265.rd                   = fchCXRD->SelectedIndex;
 	cnf->x265.me                   = fchCXME->SelectedIndex;
 	cnf->x265.subme                = fchCXSubME->SelectedIndex;
@@ -2422,6 +2425,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchCBLoopFilter,       L"--lft");
 	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
 	
+	fchTTX265->SetToolTip(fchCXAQMode,           L"--aq-mode");
 	fchTTX265->SetToolTip(fchCXRD,               L"--rd");
 
 	fchTTX265->SetToolTip(fchCXME,               L"--me");

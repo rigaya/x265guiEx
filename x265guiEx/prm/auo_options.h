@@ -81,11 +81,16 @@ const X26X_OPTION_STR list_output_csp[] = {
 	{ "rgb",  L"rgb"  },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_aq[] = { 
+const X26X_OPTION_STR list_aq_x264[] = { 
 	{ NULL, L"none"    }, 
 	{ NULL, L"VAQ"     }, 
 	{ NULL, L"AutoVAQ" }, 
 	{ NULL, NULL } 
+};
+const X26X_OPTION_STR list_aq_x265[] = {
+	{ NULL, L"none" },
+	{ NULL, L"VAQ" },
+	{ NULL, NULL }
 };
 const X26X_OPTION_STR list_weightp[] = { 
 	{ NULL, L"Disabled" }, 

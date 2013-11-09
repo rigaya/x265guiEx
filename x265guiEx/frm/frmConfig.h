@@ -805,6 +805,8 @@ private: System::Windows::Forms::Label^  fchLBProfile;
 private: System::Windows::Forms::Label^  fchLBX265Tune;
 
 private: System::Windows::Forms::Label^  fchLBX265Preset;
+private: System::Windows::Forms::ComboBox^  fchCXAQMode;
+private: System::Windows::Forms::Label^  fchLBAQMode;
 
 
 
@@ -1269,6 +1271,8 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->fchLBAQMode = (gcnew System::Windows::Forms::Label());
+			this->fchCXAQMode = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -3301,6 +3305,8 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			// 
 			// fchtabPageX265Main
 			// 
+			this->fchtabPageX265Main->Controls->Add(this->fchCXAQMode);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBAQMode);
 			this->fchtabPageX265Main->Controls->Add(this->fchgroupBoxPreset);
 			this->fchtabPageX265Main->Controls->Add(this->fchNUMaxMerge);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBMaxMerge);
@@ -3466,7 +3472,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			// 
 			this->fchCXRD->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXRD->FormattingEnabled = true;
-			this->fchCXRD->Location = System::Drawing::Point(514, 320);
+			this->fchCXRD->Location = System::Drawing::Point(514, 333);
 			this->fchCXRD->Name = L"fchCXRD";
 			this->fchCXRD->Size = System::Drawing::Size(88, 22);
 			this->fchCXRD->TabIndex = 48;
@@ -3475,7 +3481,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			// fchLBRD
 			// 
 			this->fchLBRD->AutoSize = true;
-			this->fchLBRD->Location = System::Drawing::Point(406, 323);
+			this->fchLBRD->Location = System::Drawing::Point(406, 336);
 			this->fchLBRD->Name = L"fchLBRD";
 			this->fchLBRD->Size = System::Drawing::Size(86, 14);
 			this->fchLBRD->TabIndex = 47;
@@ -3484,7 +3490,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			// fchCBSAO
 			// 
 			this->fchCBSAO->AutoSize = true;
-			this->fchCBSAO->Location = System::Drawing::Point(563, 278);
+			this->fchCBSAO->Location = System::Drawing::Point(563, 277);
 			this->fchCBSAO->Name = L"fchCBSAO";
 			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
 			this->fchCBSAO->TabIndex = 34;
@@ -3494,7 +3500,7 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			// fchLBSAO
 			// 
 			this->fchLBSAO->AutoSize = true;
-			this->fchLBSAO->Location = System::Drawing::Point(406, 278);
+			this->fchLBSAO->Location = System::Drawing::Point(406, 276);
 			this->fchLBSAO->Name = L"fchLBSAO";
 			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
 			this->fchLBSAO->TabIndex = 33;
@@ -5609,6 +5615,25 @@ private: System::Windows::Forms::Label^  fchLBX265Preset;
 			this->fchTTX265->ToolTipTitle = L"x265 options...";
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
+			// 
+			// fchLBAQMode
+			// 
+			this->fchLBAQMode->AutoSize = true;
+			this->fchLBAQMode->Location = System::Drawing::Point(406, 306);
+			this->fchLBAQMode->Name = L"fchLBAQMode";
+			this->fchLBAQMode->Size = System::Drawing::Size(84, 14);
+			this->fchLBAQMode->TabIndex = 45;
+			this->fchLBAQMode->Text = L"適応的QP (AQ)";
+			// 
+			// fchCXAQMode
+			// 
+			this->fchCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->fchCXAQMode->FormattingEnabled = true;
+			this->fchCXAQMode->Location = System::Drawing::Point(514, 303);
+			this->fchCXAQMode->Name = L"fchCXAQMode";
+			this->fchCXAQMode->Size = System::Drawing::Size(88, 22);
+			this->fchCXAQMode->TabIndex = 46;
+			this->fchCXAQMode->Tag = L"reCmd";
 			// 
 			// frmConfig
 			// 
