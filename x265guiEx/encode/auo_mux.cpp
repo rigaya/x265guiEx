@@ -458,6 +458,7 @@ AUO_RESULT mux(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, cons
 		ret |= check_muxout_filesize(muxout, expected_filesize);
 		if (ret == AUO_RESULT_SUCCESS) {
 			if (enable_vid_mux) {
+				if (str_has_char(pe->muxed_vid_filename) && PathFileExists(pe->muxed_vid_filename)) remove(pe->muxed_vid_filename);
 				apply_appendix(pe->muxed_vid_filename, _countof(pe->muxed_vid_filename), pe->temp_filename, VID_FILE_APPENDIX);
 				strcat_s(pe->muxed_vid_filename, _countof(pe->muxed_vid_filename), PathFindExtension(pe->temp_filename));
 				if (PathFileExists(pe->muxed_vid_filename)) remove(pe->muxed_vid_filename);
