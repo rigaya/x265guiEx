@@ -365,6 +365,20 @@ void convert_yuy2_to_nv16(void *pixel, CONVERT_CF_DATA *pixel_data, const int wi
 	}
 }
 
+void convert_yuy2_to_yuv422(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	BYTE *dst_Y = pixel_data->data[0];
+	BYTE *dst_U = pixel_data->data[1];
+	BYTE *dst_V = pixel_data->data[2];
+	BYTE *p = (BYTE *)pixel;
+	const int n = width * height;
+	for (int i = 0; i < n; i += 2) {
+		dst_Y[i +0] = p[i*2 + 0];
+		dst_U[i>>1] = p[i*2 + 1];
+		dst_Y[i +1] = p[i*2 + 2];
+		dst_V[i>>1] = p[i*2 + 3];
+	}
+}
+
 void convert_yc48_to_nv16_16bit(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	short *dst_Y = (short *)pixel_data->data[0];
 	short *dst_C = (short *)pixel_data->data[1];

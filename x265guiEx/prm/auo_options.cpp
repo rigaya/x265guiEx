@@ -68,7 +68,7 @@ static guiEx_settings *ex_stg;
 
 static X26X_OPTIONS x264_options_table[] = {
 	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X264, use_highbit_depth) },
-	{ "output-csp",       "",   OPTION_TYPE_LIST,          list_output_csp,      offsetof(CONF_X264, output_csp     ) },
+	{ "output-csp",       "",   OPTION_TYPE_LIST,          list_output_csp_x264, offsetof(CONF_X264, output_csp     ) },
 	{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X264, pass           ) },
 	{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X264, slow_first_pass) },
 	//{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },
@@ -190,7 +190,7 @@ static X26X_OPTIONS x264_options_table[] = {
 
 static X26X_OPTIONS x265_options_table[] = {
 	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X265, use_highbit_depth) },
-	//{ "output-csp",       "",   OPTION_TYPE_LIST,          list_output_csp,      offsetof(CONF_X265, output_csp     ) },
+	{ "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
 	//{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
 	//{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
 	//{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },

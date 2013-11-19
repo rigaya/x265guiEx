@@ -1321,7 +1321,7 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fcgCXME,             list_me);
 	setComboBox(fcgCXMP4BoxTempDir,  mp4boxtempdir_desc);
 	setComboBox(fcgCXNalHrd,         list_nal_hrd);
-	setComboBox(fcgCXOutputCsp,      list_output_csp);
+	setComboBox(fcgCXOutputCsp,      list_output_csp_x264);
 	setComboBox(fcgCXPreset,         sys_dat->exstg->s_x264.preset.name);
 	setComboBox(fcgCXProfile,        sys_dat->exstg->s_x264.profile.name);
 	setComboBox(fcgCXTune,		     sys_dat->exstg->s_x264.tune.name);

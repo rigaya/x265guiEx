@@ -48,6 +48,7 @@ enum {
 	OUT_CSP_RGB,
 	OUT_CSP_YUY2,
 	OUT_CSP_YV12,
+	OUT_CSP_YUV422,
 };
 
 enum {
@@ -70,16 +71,27 @@ static const char * const specify_csp[] = {
 	"i444", //OUT_CSP_YUV444
 	"rgb",  //OUT_CSP_RGB
 	"yuy2", //OUT_CSP_YUY2
-	"yv12", //OUT_CSP_YV12
+	"i420", //OUT_CSP_YV12
+	"i422", //OUT_CSP_YUV422
 };
 //文字列を引数にとるオプションの引数リスト
 //OUT_CSP_NV12, OUT_CSP_YUV444, OUT_CSP_RGB に合わせる
-const X26X_OPTION_STR list_output_csp[] = {
+const X26X_OPTION_STR list_output_csp_x264[] = {
 	{ "i420", L"i420" },
 	{ "i422", L"i422" },
 	{ "i444", L"i444" },
 	{ "rgb",  L"rgb"  },
 	{ NULL, NULL }
+};
+const X26X_OPTION_STR list_output_csp_x265[] = {
+	{ "i420", L"i420" },
+	{ "i422", L"i422" },
+	{ "i444", L"i444" },
+	{ NULL, NULL },
+	{ NULL, NULL },
+	{ "i420", L"i420" },
+	{ "i422", L"i422" },
+	{ NULL, NULL },
 };
 const X26X_OPTION_STR list_aq_x264[] = { 
 	{ NULL, L"none"    }, 
