@@ -1722,6 +1722,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	fchCBSAO->Checked               = cx265->sao != 0;
 	
 	SetCXIndex(fchCXAQMode,           cx265->aq_mode);
+	SetNUValue(fchNUAQStrength,       cx265->aq_strength);
 	SetCXIndex(fchCXRD,               cx265->rd);
 	SetCXIndex(fchCXME,               cx265->me);
 	SetCXIndex(fchCXSubME,            cx265->subme);
@@ -1930,6 +1931,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.sao                  = fchCBSAO->Checked;
 
 	cnf->x265.aq_mode              = fchCXAQMode->SelectedIndex;
+	cnf->x265.aq_strength          = (float)fchNUAQStrength->Value;
 	cnf->x265.rd                   = fchCXRD->SelectedIndex;
 	cnf->x265.me                   = fchCXME->SelectedIndex;
 	cnf->x265.subme                = fchCXSubME->SelectedIndex;
@@ -2426,6 +2428,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
 	
 	fchTTX265->SetToolTip(fchCXAQMode,           L"--aq-mode");
+	fchTTX265->SetToolTip(fchNUAQStrength,       L"--aq-strength");
 	fchTTX265->SetToolTip(fchCXRD,               L"--rd");
 
 	fchTTX265->SetToolTip(fchCXME,               L"--me");
