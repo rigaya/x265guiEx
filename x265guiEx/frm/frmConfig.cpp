@@ -1318,7 +1318,7 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fcgCXDirectME,       list_direct);
 	setComboBox(fcgCXLevel,          list_x264guiEx_level);
 	setComboBox(fcgCXLogLevel,       list_log_type);
-	setComboBox(fcgCXME,             list_me);
+	setComboBox(fcgCXME,             list_me_x264);
 	setComboBox(fcgCXMP4BoxTempDir,  mp4boxtempdir_desc);
 	setComboBox(fcgCXNalHrd,         list_nal_hrd);
 	setComboBox(fcgCXOutputCsp,      list_output_csp_x264);

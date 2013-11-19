@@ -122,7 +122,7 @@ const X26X_OPTION_STR list_trellis[] = {
 	{ NULL, L"All"             },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_me[] = {
+const X26X_OPTION_STR list_me_x264[] = {
 	{ "dia",  L"Diamond Search (高速)" },
 	{ "hex",  L"Hexagonal Search"      },
 	{ "umh",  L"Uneven Multi-Hexagon"  },
