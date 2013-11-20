@@ -1717,6 +1717,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fchNURef,              cx265->ref_frames);
 	SetNUValue(fchNUBframes,          cx265->bframes);
 	SetCXIndex(fchCXBadapt,           cx265->b_adapt);
+	fchCBBpyramid->Checked          = cx265->b_pyramid != 0;
 
 	fchCBLoopFilter->Checked        = cx265->loop_filter != 0;
 	fchCBSAO->Checked               = cx265->sao != 0;
@@ -1927,6 +1928,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.max_merge            = (int)fchNUMaxMerge->Value;
 	cnf->x265.bframes              = (int)fchNUBframes->Value;
 	cnf->x265.b_adapt              = fchCXBadapt->SelectedIndex;
+	cnf->x265.b_pyramid            = fchCBBpyramid->Checked;
 	cnf->x265.loop_filter          = fchCBLoopFilter->Checked;
 	cnf->x265.sao                  = fchCBSAO->Checked;
 
@@ -2424,6 +2426,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchNUMaxMerge,         L"--max-merge");
 	fchTTX265->SetToolTip(fchNUBframes,          L"--bframes");
 	fchTTX265->SetToolTip(fchCXBadapt,           L"--b-adapt");
+	fchTTX265->SetToolTip(fchCBBpyramid,         L"--b-pyramid");
 	fchTTX265->SetToolTip(fchCBLoopFilter,       L"--lft");
 	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
 	

@@ -229,7 +229,7 @@ static X26X_OPTIONS x265_options_table[] = {
 	{ "bframes",          "b",  OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, bframes        ) },
 	{ "b-adapt",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, b_adapt        ) },
 	{ "bframe-bias",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, b_bias         ) },
-	//{ "b-pyramid",        "",   OPTION_TYPE_LIST,          list_b_pyramid,       offsetof(CONF_X265, b_pyramid      ) },
+	{ "b-pyramid",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, b_pyramid      ) },
 	//{ "slices",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, slice_n        ) },
 	//{ "deblock",          "f",  OPTION_TYPE_DEBLOCK,       NULL,                 NULL                                 },
 	//{ "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, use_deblock    ) },
