@@ -341,13 +341,20 @@ void warning_mux_chapter(int sts) {
 	return;
 }
 
-void error_select_convert_func(int width, int height, BOOL use16bit, BOOL interlaced, int output_csp) {
+void error_select_convert_func(int width, int height, int bit_depth, BOOL interlaced, int output_csp) {
+	const char *bit_depth_str = "";
+	switch (bit_depth) {
+	case 16: bit_depth_str = "(16bit)"; break;
+	case 12: bit_depth_str = "(12bit)"; break;
+	case 10: bit_depth_str = "(10bit)"; break;
+	default: break;
+	}
 	write_log_auo_line(    LOG_ERROR, "色形式変換関数の取得に失敗しました。");
-	write_log_auo_line_fmt(LOG_ERROR, "%dx%d%s, output-csp %s%s%s",
+	write_log_auo_line_fmt(LOG_ERROR, "%dx%d%s, output-csp %s%s",
 		width, height,
 		(interlaced) ? "i" : "p",
 		specify_csp[output_csp],
-		(use16bit) ? "(16bit)" : ""
+		bit_depth_str
 		);
 }
 

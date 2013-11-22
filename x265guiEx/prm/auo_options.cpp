@@ -67,7 +67,7 @@ static const DWORD OPTION_NO_VALUE[] = {
 static guiEx_settings *ex_stg;
 
 static X26X_OPTIONS x264_options_table[] = {
-	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X264, use_highbit_depth) },
+	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X264, bit_depth      ) },
 	{ "output-csp",       "",   OPTION_TYPE_LIST,          list_output_csp_x264, offsetof(CONF_X264, output_csp     ) },
 	{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X264, pass           ) },
 	{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X264, slow_first_pass) },
@@ -189,7 +189,7 @@ static X26X_OPTIONS x264_options_table[] = {
 };
 
 static X26X_OPTIONS x265_options_table[] = {
-	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X265, use_highbit_depth) },
+	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X265, bit_depth      ) },
 	{ "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
 	//{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
 	//{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
@@ -534,10 +534,6 @@ static BOOL set_deblock(void *cx, const char *value, const X26X_OPTION_STR *list
 			((CONF_X264 *)cx)->use_deblock = TRUE;
 	return ret;
 }
-static BOOL set_input_depth(void *b, const char *value, const X26X_OPTION_STR *list) {
-	*(BOOL*)b = (atoi(value) > 8) ? TRUE : FALSE;
-	return TRUE;
-}
 static BOOL set_mb_partitions(void *cx, const char *value, const X26X_OPTION_STR *list) {
 	BOOL ret = TRUE;
 	*(DWORD*)cx = MB_PARTITION_NONE;
@@ -817,8 +813,8 @@ static void write_tcfilein(char *cmd, size_t nSize, const X26X_OPTIONS *options,
 		sprintf_s(cmd, nSize, " --tcfile-in \"%s\"", vid->tcfile_in);
 }
 static void write_input_depth(char *cmd, size_t nSize, const X26X_OPTIONS *options, const CONF_X264 *cx, const CONF_X264 *def, const CONF_VIDEO *vid, BOOL write_all) {
-	if (cx->use_highbit_depth)
-		strcpy_s(cmd, nSize, " --input-depth 16");
+	if (cx->bit_depth > 8)
+		sprintf_s(cmd, nSize, " --input-depth %d", cx->bit_depth);
 }
 static void write_mb_partitions(char *cmd, size_t nSize, const X26X_OPTIONS *options, const CONF_X264 *cx, const CONF_X264 *def, const CONF_VIDEO *vid, BOOL write_all) {	
 	DWORD *dwptr = (DWORD*)((BYTE*)cx + options->p_offset);
@@ -884,7 +880,7 @@ const SET_VALUE set_value[] = {
 	set_deblock,
 	set_list,
 	set_do_nothing,
-	set_input_depth,
+	set_int,
 	set_int,
 	set_mb_partitions,
 	set_tff,
@@ -948,7 +944,7 @@ const WRITE_CMD_x265 write_cmd_x265[] = {
 	write_do_nothing,
 	write_do_nothing,
 	write_do_nothing,
-	write_do_nothing,
+	(WRITE_CMD_x265)write_input_depth,
 	write_do_nothing,
 	write_do_nothing,
 	write_do_nothing,
@@ -1238,10 +1234,10 @@ void build_cmd_from_conf_x264(char *cmd, size_t nSize, const CONF_X264 *conf, co
 	CONF_X264 x264def;
 	CONF_X264 *def = &x264def;
 	CONF_VIDEO *vid = (CONF_VIDEO *)_vid;
-	get_default_conf(   (CONF_X26X *)def, conf->use_highbit_depth, ENC_TYPE_X264);
-	set_preset_to_conf( (CONF_X26X *)def, conf->preset,            ENC_TYPE_X264);
-	set_tune_to_conf(   (CONF_X26X *)def, conf->tune,              ENC_TYPE_X264);
-	set_profile_to_conf((CONF_X26X *)def, conf->profile,           ENC_TYPE_X264);
+	get_default_conf(   (CONF_X26X *)def, conf->bit_depth > 8, ENC_TYPE_X264);
+	set_preset_to_conf( (CONF_X26X *)def, conf->preset,        ENC_TYPE_X264);
+	set_tune_to_conf(   (CONF_X26X *)def, conf->tune,          ENC_TYPE_X264);
+	set_profile_to_conf((CONF_X26X *)def, conf->profile,       ENC_TYPE_X264);
 
 	for (X26X_OPTIONS *opt = x264_options_table; opt->long_name; opt++) {
 		write_cmd_x264[opt->type](cmd, nSize, opt, conf, def, vid, write_all);
@@ -1257,10 +1253,10 @@ void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_X265 *conf, co
 	CONF_X26X x265def = { 0 };
 	CONF_X265 *def = (CONF_X265 *)&x265def;
 	CONF_VIDEO *vid = (CONF_VIDEO *)_vid;
-	get_default_conf(   (CONF_X26X *)def, conf->use_highbit_depth, ENC_TYPE_X265);
-	set_preset_to_conf( (CONF_X26X *)def, conf->preset,            ENC_TYPE_X265);
-	set_tune_to_conf(   (CONF_X26X *)def, conf->tune,              ENC_TYPE_X265);
-	set_profile_to_conf((CONF_X26X *)def, conf->profile,           ENC_TYPE_X265);
+	get_default_conf(   (CONF_X26X *)def, conf->bit_depth > 8, ENC_TYPE_X265);
+	set_preset_to_conf( (CONF_X26X *)def, conf->preset,        ENC_TYPE_X265);
+	set_tune_to_conf(   (CONF_X26X *)def, conf->tune,          ENC_TYPE_X265);
+	set_profile_to_conf((CONF_X26X *)def, conf->profile,       ENC_TYPE_X265);
 
 	for (X26X_OPTIONS *opt = x265_options_table; opt->long_name; opt++) {
 		write_cmd_x265[opt->type](cmd, nSize, opt, conf, def, vid, write_all);
@@ -1316,7 +1312,7 @@ static void set_guiEx_auto_vbv(CONF_X26X *cx, int width, int height, int fps_num
 			level_index = calc_auto_level(width, height, cx->ref_frames, cx->interlaced, fps_num, fps_den, cx->vbv_maxrate, cx->vbv_bufsize);
 		int *vbv_buf = (cx->vbv_bufsize < 0) ? &cx->vbv_bufsize : NULL;
 		int *vbv_max = (cx->vbv_maxrate < 0) ? &cx->vbv_maxrate : NULL;
-		get_vbv_value(vbv_max, vbv_buf, level_index, profile_index, cx->use_highbit_depth, ex_stg);
+		get_vbv_value(vbv_max, vbv_buf, level_index, profile_index, 8 < cx->bit_depth, ex_stg);
 	}
 }
 

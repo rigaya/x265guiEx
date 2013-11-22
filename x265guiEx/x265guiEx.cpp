@@ -359,7 +359,7 @@ static BOOL check_output(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
 
 	//必要な実行ファイル
 	if (!conf.oth.disable_guicmd) {
-		const char *x26xfullpath = (conf.x26x[conf.vid.enc_type].use_highbit_depth) ? sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath_highbit : sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath;
+		const char *x26xfullpath = (8 < conf.x26x[conf.vid.enc_type].bit_depth) ? sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath_highbit : sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath;
 		if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(x26xfullpath)) {
 			error_no_exe_file((conf.vid.enc_type == ENC_TYPE_X264) ? "x264.exe" : "x265.exe", x26xfullpath);
 			check = FALSE;

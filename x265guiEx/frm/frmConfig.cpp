@@ -222,7 +222,7 @@ System::Boolean frmConfig::CheckLocalStg() {
 			char cmdex[2048] = { 0 };
 			GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
 			set_cmd_to_conf(cmdex, (CONF_X26X *)&cnf.x265, ENC_TYPE_X265);
-			CheckX265highbit = cnf.x265.use_highbit_depth != 0;
+			CheckX265highbit = 8 < cnf.x265.bit_depth;
 		} else {
 			CheckX265highbit = fchCBUsehighbit->Checked;
 		}
@@ -244,7 +244,7 @@ System::Boolean frmConfig::CheckLocalStg() {
 			char cmdex[2048] = { 0 };
 			GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
 			set_cmd_to_conf(cmdex, (CONF_X26X *)&cnf.x264, ENC_TYPE_X264);
-			CheckX264highbit = cnf.x264.use_highbit_depth != 0;
+			CheckX264highbit = 8 < cnf.x264.bit_depth;
 		} else {
 			CheckX264highbit = fcgCBUsehighbit->Checked;
 		}
@@ -1556,7 +1556,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	CONF_X264 *cx264 = &cnf->x264;
 	memcpy(cnf_fcgTemp, cx264, sizeof(CONF_X264)); //一時保存用
 	this->SuspendLayout();
-	fcgCBUsehighbit->Checked = cx264->use_highbit_depth != 0;
+	fcgCBUsehighbit->Checked = 8 < cx264->bit_depth;
 	switch (cx264->rc_mode) {
 		case X26X_RC_QP:
 			fcgCXX264Mode->SelectedIndex = 1;
@@ -1679,7 +1679,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	//x265
 	CONF_X265 *cx265 = &cnf->x265;
 	memcpy(cnf_fchTemp, cx265, sizeof(CONF_X265)); //一時保存用
-	fchCBUsehighbit->Checked = cx265->use_highbit_depth != 0;
+	fchCBUsehighbit->Checked = 8 < cx265->bit_depth;
 	switch (cx265->rc_mode) {
 		case X26X_RC_QP:
 			fchCXX265Mode->SelectedIndex = 1;
@@ -1802,7 +1802,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->vid.enc_type              = fcgTSBEncType->Checked;
 	
 	//x264部
-	cnf->x264.use_highbit_depth    = fcgCBUsehighbit->Checked;
+	cnf->x264.bit_depth            = fcgCBUsehighbit->Checked ? 16 : 8;
 	cnf->x264.rc_mode              = cnf_fcgTemp->rc_mode;
 	cnf->x264.bitrate              = cnf_fcgTemp->bitrate;
 	cnf->x264.qp                   = cnf_fcgTemp->qp;
@@ -1901,7 +1901,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x264.timebase.y           = (int)fcgNUTimebaseDen->Value;
 
 	//x265
-	cnf->x265.use_highbit_depth    = fchCBUsehighbit->Checked;
+	cnf->x265.bit_depth            = fchCBUsehighbit->Checked ? 10 : 8;
 	cnf->x265.rc_mode              = cnf_fchTemp->rc_mode;
 	cnf->x265.bitrate              = cnf_fchTemp->bitrate;
 	cnf->x265.qp                   = cnf_fchTemp->qp;
@@ -2339,10 +2339,10 @@ System::Void frmConfig::SetHelpToolTips() {
 
 	//x265
 	fchTTX265->SetToolTip(fchCBUsehighbit, L"" 
-		+ L"--input-depth 16\n"
+		+ L"--input-depth 10\n"
 		+ L"\n"
 		+ L"high bit-depthでエンコードを行います。\n"
-		+ L"x265も10bit版など、high bit depthのものを使用してください。\n"
+		+ L"x265もhigh bit depthのものを使用してください。\n"
 		+ L"通常のプレーヤーでは再生できないこともあるため、\n"
 		+ L"high bit depthエンコードがなにかを理解している場合にのみ、\n"
 		+ L"使用してください。\n"

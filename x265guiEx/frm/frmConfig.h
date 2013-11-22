@@ -1061,6 +1061,8 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fcgLBDeblockThreshold = (gcnew System::Windows::Forms::Label());
 			this->fcgLBDeblockStrength = (gcnew System::Windows::Forms::Label());
 			this->fchtabPageX265Main = (gcnew System::Windows::Forms::TabPage());
+			this->fchCBBpyramid = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBBpyramid = (gcnew System::Windows::Forms::Label());
 			this->fchNUAQStrength = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchLBAQStrength = (gcnew System::Windows::Forms::Label());
 			this->fchCXAQMode = (gcnew System::Windows::Forms::ComboBox());
@@ -1280,8 +1282,6 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
-			this->fchCBBpyramid = (gcnew System::Windows::Forms::CheckBox());
-			this->fchLBBpyramid = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -3370,6 +3370,25 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fchtabPageX265Main->Text = L" x265 ";
 			this->fchtabPageX265Main->UseVisualStyleBackColor = true;
 			// 
+			// fchCBBpyramid
+			// 
+			this->fchCBBpyramid->AutoSize = true;
+			this->fchCBBpyramid->Location = System::Drawing::Point(563, 235);
+			this->fchCBBpyramid->Name = L"fchCBBpyramid";
+			this->fchCBBpyramid->Size = System::Drawing::Size(15, 14);
+			this->fchCBBpyramid->TabIndex = 32;
+			this->fchCBBpyramid->Tag = L"reCmd";
+			this->fchCBBpyramid->UseVisualStyleBackColor = true;
+			// 
+			// fchLBBpyramid
+			// 
+			this->fchLBBpyramid->AutoSize = true;
+			this->fchLBBpyramid->Location = System::Drawing::Point(406, 234);
+			this->fchLBBpyramid->Name = L"fchLBBpyramid";
+			this->fchLBBpyramid->Size = System::Drawing::Size(66, 14);
+			this->fchLBBpyramid->TabIndex = 31;
+			this->fchLBBpyramid->Text = L"ピラミッド参照";
+			// 
 			// fchNUAQStrength
 			// 
 			this->fchNUAQStrength->DecimalPlaces = 2;
@@ -4097,7 +4116,6 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fchCBUsehighbit->Tag = L"reCmd";
 			this->fchCBUsehighbit->Text = L"highbit depth";
 			this->fchCBUsehighbit->UseVisualStyleBackColor = true;
-			this->fchCBUsehighbit->Visible = false;
 			this->fchCBUsehighbit->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fchCBUsehighbit_CheckedChanged);
 			// 
 			// fchpictureBoxX265
@@ -5669,25 +5687,6 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fchTTX265->ToolTipTitle = L"x265 options...";
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
-			// 
-			// fchCBBpyramid
-			// 
-			this->fchCBBpyramid->AutoSize = true;
-			this->fchCBBpyramid->Location = System::Drawing::Point(563, 235);
-			this->fchCBBpyramid->Name = L"fchCBBpyramid";
-			this->fchCBBpyramid->Size = System::Drawing::Size(15, 14);
-			this->fchCBBpyramid->TabIndex = 32;
-			this->fchCBBpyramid->Tag = L"reCmd";
-			this->fchCBBpyramid->UseVisualStyleBackColor = true;
-			// 
-			// fchLBBpyramid
-			// 
-			this->fchLBBpyramid->AutoSize = true;
-			this->fchLBBpyramid->Location = System::Drawing::Point(406, 234);
-			this->fchLBBpyramid->Name = L"fchLBBpyramid";
-			this->fchLBBpyramid->Size = System::Drawing::Size(66, 14);
-			this->fchLBBpyramid->TabIndex = 31;
-			this->fchLBBpyramid->Text = L"ピラミッド参照";
 			// 
 			// frmConfig
 			// 

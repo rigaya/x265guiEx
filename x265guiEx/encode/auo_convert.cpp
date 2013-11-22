@@ -43,7 +43,7 @@ enum eInterlace {
 typedef struct {
 	int        input_from_aviutl; //Aviutlからの入力に使用する
 	int        output_csp;        //出力色空間
-	BOOL       for_16bit;         //16bit用関数であるかどうか
+	int        bit_depth;         //bit深度
 	eInterlace for_interlaced;    //インタレース用関数であるかどうか
 	DWORD      mod;               //幅(横解像)に制限(割り切れるかどうか)
 	DWORD      SIMD;              //対応するSIMD
@@ -60,8 +60,11 @@ typedef struct {
 #define AVX   AUO_SIMD_AVX
 #define AVX2  AUO_SIMD_AVX2
 
-static const BOOL BIT_8 = 0;  //8bit用
-static const BOOL BIT16 = 1;  //16bit用
+//なんの数字かわかりやすいようにこう定義する
+static const int BIT_8 =  8;
+static const int BIT10 = 10;
+static const int BIT12 = 12;
+static const int BIT16 = 16;
 
 //変換関数のテーブル
 //上からチェックするので、より厳しい条件で速い関数を上に書くこと
@@ -134,6 +137,9 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
 	{ CF_YC48, OUT_CSP_NV12,   BIT16, I,  1,  SSE2,                 convert_yc48_to_nv12_i_16bit_sse2 },
 	{ CF_YC48, OUT_CSP_NV12,   BIT16, I,  1,  NONE,                 convert_yc48_to_nv12_i_16bit },
 
+	//YC48 -> yv12 (10bit)
+	{ CF_YC48, OUT_CSP_YV12,   BIT10, P,  1,  NONE,                 convert_yc48_to_yv12_10bit },
+	{ CF_YC48, OUT_CSP_YV12,   BIT10, I,  1,  NONE,                 convert_yc48_to_yv12_i_10bit },
 
 	//YUY2 -> nv16(8bit)
 #if (_MSC_VER >= 1700)
@@ -301,13 +307,19 @@ static void auo_write_func_info(const COVERT_FUNC_INFO *func_info) {
 		case A: 
 		default:interlaced = ""; break;
 	}
-	const char *use_16bit = (func_info->for_16bit == BIT16) ? "(16bit)" : "";
+	const char *bit_depth = "";
+	switch (func_info->bit_depth) {
+		case BIT10: bit_depth = "(10bit)"; break;
+		case BIT12: bit_depth = "(12bit)"; break;
+		case BIT16: bit_depth = "(16bit)"; break;
+		default: break;
+	}
 
 	write_log_auo_line_fmt(LOG_INFO, "converting %s -> %s%s%s%s",
 		CF_NAME[func_info->input_from_aviutl],
 		specify_csp[func_info->output_csp],
 		interlaced,
-		use_16bit,
+		bit_depth,
 		simd_buf);
 };
 
@@ -315,7 +327,7 @@ static void auo_write_func_info(const COVERT_FUNC_INFO *func_info) {
 #pragma warning( push )
 #pragma warning( disable: 4189 )
 //使用する関数を選択する
-func_convert_frame get_convert_func(int width, int input_csp, BOOL use16bit, BOOL interlaced, int output_csp) {
+func_convert_frame get_convert_func(int width, int input_csp, int bit_depth, BOOL interlaced, int output_csp) {
 	const DWORD availableSIMD = get_availableSIMD();
 
 	const COVERT_FUNC_INFO *func_info = NULL;
@@ -324,7 +336,7 @@ func_convert_frame get_convert_func(int width, int input_csp, BOOL use16bit, BOO
 			continue;
 		if (FUNC_TABLE[i].output_csp != output_csp)
 			continue;
-		if (FUNC_TABLE[i].for_16bit != use16bit)
+		if (FUNC_TABLE[i].bit_depth != bit_depth)
 			continue;
 		if (FUNC_TABLE[i].for_interlaced != A &&
 			FUNC_TABLE[i].for_interlaced != (eInterlace)interlaced)
@@ -346,10 +358,10 @@ func_convert_frame get_convert_func(int width, int input_csp, BOOL use16bit, BOO
 }
 #pragma warning( pop )
 
-BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height, int output_csp, BOOL use16bit) {
+BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height, int output_csp, int bit_depth) {
 	BOOL ret = TRUE;
 	const int to_yv12 = (output_csp == OUT_CSP_YV12);
-	const DWORD pixel_size = (use16bit) ? sizeof(short) : sizeof(BYTE);
+	const DWORD pixel_size = (bit_depth > 8) ? sizeof(short) : sizeof(BYTE);
 	const DWORD simd_check = get_availableSIMD();
 	const DWORD align_size = (simd_check & AUO_SIMD_SSE2) ? ((simd_check & AUO_SIMD_AVX2) ? (32<<to_yv12) : (16<<to_yv12)) : 1;
 #define ALIGN_NEXT(i, align) (((i) + (align-1)) & (~(align-1))) //alignは2の累乗(1,2,4,8,16,32...)

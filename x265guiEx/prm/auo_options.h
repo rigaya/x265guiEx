@@ -284,7 +284,7 @@ typedef struct FLOAT2 {
 // sizeof(CONF_X26X) == sizeof(CONF_X264) == sizeof(CONF_X265) になるようにする
 // これも、コンパイラの自動計算によりそうなるよう細工する (手動でのパディングはしない)
 #define VALUE_OF_STRUCT_COMMON \
-	BOOL    use_highbit_depth; \
+	int     bit_depth; \
 	int     output_csp; \
 	int     pass; \
 	BOOL    slow_first_pass; \

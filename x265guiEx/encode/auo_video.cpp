@@ -51,7 +51,7 @@ static const char * specify_input_csp(int output_csp) {
 	return specify_csp[output_csp];
 }
 
-int get_aviutl_color_format(int use_highbit, int output_csp, int input_as_lw48) {
+int get_aviutl_color_format(int bit_depth, int output_csp, int input_as_lw48) {
 	//Aviutlからの入力に使用するフォーマット
 
 	const int cf_aviutl_pixel48 = (input_as_lw48) ? CF_LW48 : CF_YC48;
@@ -66,7 +66,7 @@ int get_aviutl_color_format(int use_highbit, int output_csp, int input_as_lw48) 
 		case OUT_CSP_YV12:
 		case OUT_CSP_YUV422:
 		default:
-			return (use_highbit) ? cf_aviutl_pixel48 : CF_YUY2;
+			return (bit_depth > 8) ? cf_aviutl_pixel48 : CF_YUY2;
 	}
 }
 
@@ -80,7 +80,7 @@ BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL 
 	if (pe->afs_init || pe->video_out_type == VIDEO_OUTPUT_DISABLED || !conf->vid.afs)
 		return TRUE;
 
-	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
+	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
 	const int frame_size = calc_input_frame_size(oip->w, oip->h, color_format);
 	//Aviutl(自動フィールドシフト)からの映像入力
 	if (afs_vbuf_setup((OUTPUT_INFO *)oip, conf->vid.afs, frame_size, COLORFORMATS[color_format].FOURCC)) {
@@ -110,13 +110,13 @@ void close_afsvideo(PRM_ENC *pe) {
 
 static AUO_RESULT check_cmdex(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	DWORD ret = AUO_RESULT_SUCCESS;
-	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48); //現在の色形式を保存
+	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48); //現在の色形式を保存
 	if (conf->oth.disable_guicmd) 
 		get_default_conf(&conf->x26x[conf->vid.enc_type], FALSE, conf->vid.enc_type); //CLIモード時はとりあえず、デフォルトを呼んでおく
 	//cmdexを適用
 	set_cmd_to_conf(conf->vid.cmdex, &conf->x26x[conf->vid.enc_type], conf->vid.enc_type);
 
-	if (color_format != get_aviutl_color_format(conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)) {
+	if (color_format != get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)) {
 		//cmdexで入力色形式が変更になる場合、再初期化
 		close_afsvideo(pe);
 		if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
@@ -527,7 +527,7 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
 }
 
 static void set_pixel_data(CONVERT_CF_DATA *pixel_data, const CONF_GUIEX *conf, int w, int h) {
-	const int byte_per_pixel = (conf->x26x[conf->vid.enc_type].use_highbit_depth) ? sizeof(short) : sizeof(BYTE);
+	const int byte_per_pixel = (8 < conf->x26x[conf->vid.enc_type].bit_depth) ? sizeof(short) : sizeof(BYTE);
 	ZeroMemory(pixel_data, sizeof(CONVERT_CF_DATA));
 	switch (conf->x26x[conf->vid.enc_type].output_csp) {
 		case OUT_CSP_NV16: //nv16 (YUV422)
@@ -665,7 +665,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	char x26xcmd[MAX_CMD_LEN]  = { 0 };
 	char x26xargs[MAX_CMD_LEN] = { 0 };
 	char x26xdir[MAX_PATH_LEN] = { 0 };
-	char *x26xfullpath = (conf->x26x[conf->vid.enc_type].use_highbit_depth) ? sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath_highbit : sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath;
+	char *x26xfullpath = (8 < conf->x26x[conf->vid.enc_type].bit_depth) ? sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath_highbit : sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath;
 	
 	const BOOL afs = conf->vid.afs != 0;
 	CONVERT_CF_DATA pixel_data = { 0 };
@@ -685,14 +685,14 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	PathGetDirectory(x26xdir, _countof(x26xdir), x26xfullpath);
 
     //YUY2/YC48->NV12/YUV444, RGBコピー用関数
-	const int input_csp_idx = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
-	const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
+	const int input_csp_idx = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
+	const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
 	if (convert_frame == NULL) {
-		ret |= AUO_RESULT_ERROR; error_select_convert_func(oip->w, oip->h, conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
+		ret |= AUO_RESULT_ERROR; error_select_convert_func(oip->w, oip->h, conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
 		return ret;
 	}
 	//映像バッファ用メモリ確保
-	if (!malloc_pixel_data(&pixel_data, oip->w, oip->h, conf->x26x[conf->vid.enc_type].output_csp, conf->x26x[conf->vid.enc_type].use_highbit_depth)) {
+	if (!malloc_pixel_data(&pixel_data, oip->w, oip->h, conf->x26x[conf->vid.enc_type].output_csp, conf->x26x[conf->vid.enc_type].bit_depth)) {
 		ret |= AUO_RESULT_ERROR; error_malloc_pixel_data();
 		return ret;
 	}
@@ -731,7 +731,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		void *frame = NULL;
 		int *next_jitter = NULL;
 		BOOL enc_pause = FALSE, copy_frame = FALSE, drop = FALSE;
-		const DWORD aviutl_color_fmt = COLORFORMATS[get_aviutl_color_format(conf->x26x[conf->vid.enc_type].use_highbit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)].FOURCC;
+		const DWORD aviutl_color_fmt = COLORFORMATS[get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)].FOURCC;
 
 		//x26xが待機に入るまでこちらも待機
 		while (WaitForInputIdle(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)

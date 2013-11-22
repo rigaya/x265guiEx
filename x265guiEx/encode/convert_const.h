@@ -51,35 +51,47 @@ static const int UV_OFFSET_x4 = (1<<(LSFT_UV_OFFSET+2)); //16384
 
 static const int RSFT_ONE      = 15; //0xffff>>15=0x0001
 static const int LSFT_YCC_8    = 4; //1<<4 = 16
+static const int LSFT_YCC_10   = 6; //1<<6 = 64
 static const int LSFT_YCC_16   = 12; //1<<12 = 4096
 
 //各ビットの最大値
 static const int LIMIT_8    = (1<< 8) - 1;
+static const int LIMIT_10   = (1<<10) - 1;
 static const int LIMIT_16   = (1<<16) - 1;
 
 //YC圧縮レンジ用定数
 static const int Y_L_MUL    = 219;
 static const int Y_L_ADD_8  = 383;
+static const int Y_L_ADD_10 = Y_L_ADD_8>>2;
 static const int Y_L_ADD_16 = Y_L_ADD_8>>8;
 static const int Y_L_RSH_8  = 12;
+static const int Y_L_RSH_10 = Y_L_RSH_8-2;
 static const int Y_L_RSH_16 = Y_L_RSH_8-8;
 static const int Y_L_YCC_8  = 16;
+static const int Y_L_YCC_10 = Y_L_YCC_8<<2;
 static const int Y_L_YCC_16 = Y_L_YCC_8<<8;
 
 static const int UV_L_MUL         = 14;
 static const int UV_L_ADD_8_444   = 132;
 static const int UV_L_ADD_8_420P  = UV_L_ADD_8_444<<1;
 static const int UV_L_ADD_8_420I  = UV_L_ADD_8_444<<2;
+static const int UV_L_ADD_10_444  = UV_L_ADD_8_444>>2;
+static const int UV_L_ADD_10_420P = UV_L_ADD_10_444<<1;
+static const int UV_L_ADD_10_420I = UV_L_ADD_10_444<<2;
 static const int UV_L_ADD_16_444  = UV_L_ADD_8_444>>8;
 static const int UV_L_ADD_16_420P = UV_L_ADD_16_444<<1;
 static const int UV_L_ADD_16_420I = UV_L_ADD_16_444<<2;
 static const int UV_L_RSH_8_444   =  8;
 static const int UV_L_RSH_8_420P  =  UV_L_RSH_8_444 + 1;
 static const int UV_L_RSH_8_420I  =  UV_L_RSH_8_444 + 2;
+static const int UV_L_RSH_10_444  =  UV_L_RSH_8_444 + 0 - 2;
+static const int UV_L_RSH_10_420P =  UV_L_RSH_8_444 + 1 - 2;
+static const int UV_L_RSH_10_420I =  UV_L_RSH_8_444 + 2 - 2;
 static const int UV_L_RSH_16_444  =  UV_L_RSH_8_444 + 0 - 8;
 static const int UV_L_RSH_16_420P =  UV_L_RSH_8_444 + 1 - 8;
 static const int UV_L_RSH_16_420I =  UV_L_RSH_8_444 + 2 - 8;
 static const int UV_L_YCC_8       = 16;
+static const int UV_L_YCC_10      = UV_L_YCC_8<<2;
 static const int UV_L_YCC_16      = UV_L_YCC_8<<8;
 
 #define ALIGN32_CONST_ARRAY static const _declspec(align(32))

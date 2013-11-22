@@ -71,4 +71,5 @@ void guiEx_config::convert_x264stg_to_x265stg(CONF_GUIEX *conf, const BYTE *dat)
 	//x264オプションの復元
 	char *x264_all_cmd = ((char *)old_data) + old_data->block_head_p[5];
 	set_cmd_to_conf(x264_all_cmd, &conf->x26x[0], ENC_TYPE_X264);
+	conf->x264.bit_depth = (conf->x264.bit_depth) ? 16 : 8; //use_highbit_depthからbit_depthへの変換
 }
