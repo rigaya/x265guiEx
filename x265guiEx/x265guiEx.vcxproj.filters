@@ -132,6 +132,7 @@
     <None Include="x265guiEx.def">
       <Filter>ソース ファイル</Filter>
     </None>
+    <None Include="x265guiEx.ini" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auo.h">
