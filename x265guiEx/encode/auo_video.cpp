@@ -415,9 +415,10 @@ static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 			}
 			ptr = NULL;
 		}
-		if (strlen(print_line) > strlen(LINE_HEADER)) {
-			write_log_auo_line(LOG_INFO, print_line);
-		}
+		//x265はバージョン情報を出力してくれるので不要
+		//if (strlen(print_line) > strlen(LINE_HEADER)) {
+		//	write_log_auo_line(LOG_INFO, print_line);
+		//}
 		if (v[0] >= 0) {
 			for (int i = 0; i < _countof(REQUIRED_X265_VER); i++) {
 				if (REQUIRED_X265_VER[i] != v[i]) {
