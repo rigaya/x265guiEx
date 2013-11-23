@@ -10,8 +10,8 @@
 #ifndef _AUO_VERSION_H_
 #define _AUO_VERSION_H_
 
-#define AUO_VERSION          0,3,7,0
-#define AUO_VERSION_STR      "3.07β"
+#define AUO_VERSION          0,3,8,0
+#define AUO_VERSION_STR      "3.08β"
 #define AUO_NAME_WITHOUT_EXT "x265guiEx"
 #define AUO_NAME             "x265guiEx.auo"
 #define AUO_NAME_W          L"x265guiEx.auo"
