@@ -702,8 +702,6 @@ static int video_output_create_thread(video_output_thread_t *thread_data, CONVER
 
 static void video_output_close_thread(video_output_thread_t *thread_data) {
 	if (thread_data->thread) {
-		while (WAIT_TIMEOUT == WaitForSingleObject(thread_data->he_out_fin, LOG_UPDATE_INTERVAL))
-			log_process_events();
 		thread_data->abort = true;
 		SetEvent(thread_data->he_out_start);
 		WaitForSingleObject(thread_data->thread, INFINITE);
@@ -813,10 +811,8 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		//------------メインループ------------
 		for (i = 0, next_jitter = jitter + 1, pe->drop_count = 0; i < frames_to_enc; i++, i_frame++, next_jitter++) {
 			//中断を確認
-			if (FALSE != oip->func_is_abort()) {
-				ret |= AUO_RESULT_ABORT;
-				break;
-			}
+			ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
+
 			//x26xが実行中なら、メッセージを取得・ログウィンドウに表示
 			if (ReadLogEnc(&pipes, pe->drop_count, i) < 0) {
 				//勝手に死んだ...
@@ -825,8 +821,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			}
 
 			//一時停止
-			while (enc_pause) {
+			while (enc_pause & !ret) {
 				Sleep(LOG_UPDATE_INTERVAL);
+				ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
 				log_process_events();
 			}
 
@@ -840,9 +837,17 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				//音声同時処理
 				ret |= aud_parallel_task(oip, pe);
 			}
+
 			//標準入力への書き込み完了をチェック
-			while (WAIT_TIMEOUT == WaitForSingleObject(thread_data.he_out_fin, LOG_UPDATE_INTERVAL))
+			while (WAIT_TIMEOUT == WaitForSingleObject(thread_data.he_out_fin, LOG_UPDATE_INTERVAL)) {
+				ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
 				log_process_events();
+			}
+
+			//中断・エラー等をチェック
+			if (AUO_RESULT_SUCCESS != ret)
+				break;
+
 			//Aviutl(afs)からフレームをもらう
 			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
 				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
