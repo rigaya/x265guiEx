@@ -46,6 +46,14 @@
 
 const int DROP_FRAME_FLAG = INT_MAX;
 
+typedef struct {
+	CONVERT_CF_DATA *pixel_data;
+	FILE *f_out;
+	BOOL abort;
+	HANDLE thread;
+	HANDLE he_out_start;
+	HANDLE he_out_fin;
+} video_output_thread_t;
 
 static const char * specify_input_csp(int output_csp) {
 	return specify_csp[output_csp];
@@ -665,6 +673,47 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
 	return vid_ret;
 }
 
+static unsigned __stdcall video_output_thread_func(void *prm) {
+	video_output_thread_t *thread_data = reinterpret_cast<video_output_thread_t *>(prm);
+	CONVERT_CF_DATA *pixel_data = thread_data->pixel_data;
+	WaitForSingleObject(thread_data->he_out_start, INFINITE);
+	while (false == thread_data->abort) {
+		//映像データをパイプに
+		for (int j = 0; j < pixel_data->count; j++)
+			_fwrite_nolock((void *)pixel_data->data[j], 1, pixel_data->size[j], thread_data->f_out);
+		SetEvent(thread_data->he_out_fin);
+		WaitForSingleObject(thread_data->he_out_start, INFINITE);
+	}
+	return 0;
+}
+
+static int video_output_create_thread(video_output_thread_t *thread_data, CONVERT_CF_DATA *pixel_data, FILE *pipe_stdin) {
+	AUO_RESULT ret = AUO_RESULT_SUCCESS;
+	thread_data->abort = false;
+	thread_data->pixel_data = pixel_data;
+	thread_data->f_out = pipe_stdin;
+	if (   NULL == (thread_data->he_out_start = (HANDLE)CreateEvent(NULL, false, false, NULL))
+		|| NULL == (thread_data->he_out_fin   = (HANDLE)CreateEvent(NULL, false, true,  NULL))
+		|| NULL == (thread_data->thread       = (HANDLE)_beginthreadex(NULL, 0, video_output_thread_func, thread_data, 0, NULL))) {
+		ret = AUO_RESULT_ERROR;
+	}
+	return ret;
+}
+
+static void video_output_close_thread(video_output_thread_t *thread_data) {
+	if (thread_data->thread) {
+		while (WAIT_TIMEOUT == WaitForSingleObject(thread_data->he_out_fin, LOG_UPDATE_INTERVAL))
+			log_process_events();
+		thread_data->abort = true;
+		SetEvent(thread_data->he_out_start);
+		WaitForSingleObject(thread_data->thread, INFINITE);
+		CloseHandle(thread_data->thread);
+		CloseHandle(thread_data->he_out_start);
+		CloseHandle(thread_data->he_out_fin);
+	}
+	memset(thread_data, 0, sizeof(thread_data[0]));
+}
+
 static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	PIPE_SET pipes = { 0 };
@@ -677,6 +726,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	
 	const BOOL afs = conf->vid.afs != 0;
 	CONVERT_CF_DATA pixel_data = { 0 };
+	video_output_thread_t thread_data = { 0 };
 	set_pixel_data(&pixel_data, conf, oip->w, oip->h);
 	
 	int *jitter = NULL;
@@ -736,6 +786,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	//x26xプロセス開始
 	} else if ((rp_ret = RunProcess(x26xargs, x26xdir, &pi_enc, &pipes, (set_priority == AVIUTLSYNC_PRIORITY_CLASS) ? GetPriorityClass(pe->h_p_aviutl) : set_priority, TRUE, FALSE)) != RP_SUCCESS) {
 		ret |= AUO_RESULT_ERROR; error_run_process(X26X_NAME[conf->vid.enc_type], rp_ret);
+	//書き込みスレッドを開始
+	} else if (video_output_create_thread(&thread_data, &pixel_data, pipes.f_stdin)) {
+		ret |= AUO_RESULT_ERROR; //error_thread_start();
 	} else {
 		//全て正常
 		int i = 0;        //エンコードするフレーム (0からカウント)
@@ -787,6 +840,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				//音声同時処理
 				ret |= aud_parallel_task(oip, pe);
 			}
+			//標準入力への書き込み完了をチェック
+			while (WAIT_TIMEOUT == WaitForSingleObject(thread_data.he_out_fin, LOG_UPDATE_INTERVAL))
+				log_process_events();
 			//Aviutl(afs)からフレームをもらう
 			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
 				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
@@ -801,9 +857,8 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				//コピーフレームの場合は、映像バッファの中身を更新せず、そのままパイプに流す
 				if (!copy_frame)
 					convert_frame(frame, &pixel_data, oip->w, oip->h);  /// YUY2/YC48->NV12/YUV444変換, RGBコピー
-				//映像データをパイプに
-				for (int j = 0; j < pixel_data.count; j++)
-					_fwrite_nolock((void *)pixel_data.data[j], 1, pixel_data.size[j], pipes.f_stdin);
+				//標準入力への書き込みを開始
+				SetEvent(thread_data.he_out_start);
 			} else {
 				*(next_jitter - 1) = DROP_FRAME_FLAG;
 				pe->drop_count++;
@@ -815,6 +870,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			oip->func_update_preview();
 		}
 		//------------メインループここまで--------------
+
+		//書き込みスレッドを終了
+		video_output_close_thread(&thread_data);
 
 		//ログウィンドウからのx26x制御を無効化
 		disable_x264_control();
