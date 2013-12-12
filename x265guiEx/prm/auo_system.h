@@ -39,7 +39,7 @@ typedef struct {
 	int muxer_to_be_used;                  //使用するmuxerのインデックス
 	int current_pass;                      //現在の動画エンコパス数
 	int total_pass;                        //最大動画エンコパス数
-	int amp_pass_limit;               //自動マルチパス時に再エンコードをトライするときのパス数上限
+	int amp_pass_limit;                    //自動マルチパス時に再エンコードをトライするときのパス数上限
 	int drop_count;                        //ドロップ数
 	BOOL afs_init;                         //動画入力の準備ができているか
 	HANDLE h_p_aviutl;                     //優先度取得用のAviutlのハンドル
@@ -49,6 +49,8 @@ typedef struct {
 	                                       //auo_mux.cppのenable_aud_muxの制限から31以下
 	char aud_temp_dir[MAX_PATH_LEN];       //音声一時ディレクトリ
 	FILE_APPENDIX append;                  //ファイル名に追加する文字列のリスト
+	int div_num;                           //分割エンコードの何番目か (0 始まり)
+	int div_max;                           //分割エンコードでいくつに分割するか
 } PRM_ENC;
 
 typedef struct {

@@ -30,6 +30,8 @@
 #include "auo_encode.h"
 #include "auo_runbat.h"
 
+#include "auo_process_parallel.h"
+
 //---------------------------------------------------------------------
 //		関数プロトタイプ宣言
 //---------------------------------------------------------------------
@@ -138,6 +140,8 @@ BOOL func_init()
 
 BOOL func_exit() 
 {
+	if (parallel_task_close())
+		return FALSE;
 	delete_SYSTEM_DATA(&sys_dat);
 	return TRUE;
 }
@@ -157,11 +161,12 @@ BOOL func_output( OUTPUT_INFO *oip )
 	open_log_window(oip->savefile, 1, get_total_path());
 	//各種設定を行う
 	set_enc_prm(&pe, oip);
+	ret |= parallel_task_check(&conf, oip, &pe, &sys_dat);
 	set_prevent_log_close(TRUE); //※1 start
 	pe.h_p_aviutl = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, GetCurrentProcessId()); //※2 start
 
 	//チェックを行い、エンコード可能ならエンコードを開始する
-	if (check_output(oip, &pe) && setup_afsvideo(oip, &conf, &pe, sys_dat.exstg->s_local.auto_afs_disable)) { //※3 start
+	if (!ret && check_output(oip, &pe) && setup_afsvideo(oip, &conf, &pe, sys_dat.exstg->s_local.auto_afs_disable)) { //※3 start
 
 		ret |= run_bat_file(&conf, oip, &pe, &sys_dat, RUN_BAT_BEFORE);
 
@@ -192,6 +197,8 @@ BOOL func_output( OUTPUT_INFO *oip )
 
 	if (!(ret & (AUO_RESULT_ERROR | AUO_RESULT_ABORT)))
 		ret |= run_bat_file(&conf, oip, &pe, &sys_dat, RUN_BAT_AFTER);
+
+	ret |= parallel_task_add(&conf, oip, &pe, &sys_dat);
 
 	return (ret & AUO_RESULT_ERROR) ? FALSE : TRUE;
 }

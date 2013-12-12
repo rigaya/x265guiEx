@@ -75,6 +75,13 @@ static int calc_input_frame_size(int width, int height, int color_format) {
 	return width * height * COLORFORMATS[color_format].size;
 }
 
+static int get_frame_num_to_encode(int total_frames, const PRM_ENC *pe) {
+	//開始フレームと終了フレーム
+	int i_start = total_frames *  pe->div_num      / pe->div_max;
+	int i_fin   = total_frames * (pe->div_num + 1) / pe->div_max;
+	return i_fin - i_start;
+}
+
 BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL auto_afs_disable) {
 	//すでに初期化してある または 必要ない
 	if (pe->afs_init || pe->video_out_type == VIDEO_OUTPUT_DISABLED || !conf->vid.afs)
@@ -505,7 +512,7 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
 			sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
 	//1pass目でafsでない、--framesがなければ--framesを指定
 	if ((!prm.vid.afs || pe->current_pass > 1) && strstr(cmd, "--frames") == NULL)
-		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --frames %d", oip->n - pe->drop_count);
+		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --frames %d", get_frame_num_to_encode(oip->n, pe) - pe->drop_count);
 	//解像度情報追加(--input-res)
 	if (strcmp(input, PIPE_FN) == NULL)
 		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input-res %dx%d", oip->w, oip->h);
@@ -714,11 +721,14 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	write_log_auo_line_fmt(LOG_INFO, "%s options...", X26X_NAME[conf->vid.enc_type]);
 	write_args(x26xcmd);
 	sprintf_s(x26xargs, _countof(x26xargs), "\"%s\" %s", x26xfullpath, x26xcmd);
+
+	//エンコードするフレーム数
+	const int frames_to_enc = get_frame_num_to_encode(oip->n, pe);
 	
 	if (conf->vid.afs && conf->x26x[conf->vid.enc_type].interlaced) {
 		ret |= AUO_RESULT_ERROR; error_afs_interlace_stg();
 	//jitter用領域確保
-	} else if ((jitter = (int *)calloc(oip->n + 1, sizeof(int))) == NULL) {
+	} else if ((jitter = (int *)calloc(frames_to_enc + 1, sizeof(int))) == NULL) {
 		ret |= AUO_RESULT_ERROR; error_malloc_tc();
 	//Aviutl(afs)からのフレーム読み込み
 	} else if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
@@ -728,7 +738,8 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		ret |= AUO_RESULT_ERROR; error_run_process(X26X_NAME[conf->vid.enc_type], rp_ret);
 	} else {
 		//全て正常
-		int i = 0;
+		int i = 0;        //エンコードするフレーム (0からカウント)
+		int i_frame = 0;  //エンコードするフレームID
 		void *frame = NULL;
 		int *next_jitter = NULL;
 		BOOL enc_pause = FALSE, copy_frame = FALSE, drop = FALSE;
@@ -738,12 +749,16 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		while (WaitForInputIdle(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
 			log_process_events();
 
+
 		//ログウィンドウ側から制御を可能に
 		DWORD tm_vid_enc_start = timeGetTime();
-		enable_x264_control(&set_priority, &enc_pause, afs, afs && pe->current_pass == 1, tm_vid_enc_start, oip->n);
+		enable_x264_control(&set_priority, &enc_pause, afs, afs && pe->current_pass == 1, tm_vid_enc_start, frames_to_enc);
+
+		//開始フレーム
+		i_frame = oip->n * pe->div_num / pe->div_max;
 
 		//------------メインループ------------
-		for (i = 0, next_jitter = jitter + 1, pe->drop_count = 0; i < oip->n; i++, next_jitter++) {
+		for (i = 0, next_jitter = jitter + 1, pe->drop_count = 0; i < frames_to_enc; i++, i_frame++, next_jitter++) {
 			//中断を確認
 			if (FALSE != oip->func_is_abort()) {
 				ret |= AUO_RESULT_ABORT;
@@ -764,7 +779,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 			if (!(i & 7)) {
 				//Aviutlの進捗表示を更新
-				oip->func_rest_time_disp(i + oip->n * (pe->current_pass - 1), oip->n * pe->total_pass);
+				oip->func_rest_time_disp(i + frames_to_enc * (pe->current_pass - 1), frames_to_enc * pe->total_pass);
 
 				//x26x優先度
 				check_enc_priority(pe->h_p_aviutl, pi_enc.hProcess, set_priority);
@@ -773,13 +788,13 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				ret |= aud_parallel_task(oip, pe);
 			}
 			//Aviutl(afs)からフレームをもらう
-			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i, &drop, next_jitter) : oip->func_get_video_ex(i, aviutl_color_fmt)))) {
+			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
 				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
 				break;
 			}
 
 			//コピーフレームフラグ処理
-			copy_frame = (i && (oip->func_get_flag(i) & OUTPUT_INFO_FRAME_FLAG_COPYFRAME));
+			copy_frame = (!!i_frame & (oip->func_get_flag(i_frame) & OUTPUT_INFO_FRAME_FLAG_COPYFRAME));
 			drop |= (afs & copy_frame);
 
 			if (!drop) {
@@ -807,7 +822,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		//パイプを閉じる
 		CloseStdIn(&pipes);
 
-		if (!ret) oip->func_rest_time_disp(oip->n * pe->current_pass, oip->n * pe->total_pass);
+		if (!ret) oip->func_rest_time_disp(frames_to_enc * pe->current_pass, frames_to_enc * pe->total_pass);
 
 		//音声の同時処理を終了させる
 		ret |= finish_aud_parallel_task(oip, pe, ret);
@@ -816,7 +831,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 		//タイムコード出力
 		if (!ret && (afs || conf->vid.auo_tcfile_out))
-			tcfile_out(jitter, oip->n, (double)oip->rate / (double)oip->scale, afs, pe);
+			tcfile_out(jitter, frames_to_enc, (double)oip->rate / (double)oip->scale, afs, pe);
 
 		//エンコーダ終了待機
 		while (WaitForSingleObject(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)

@@ -124,6 +124,9 @@
     <ClCompile Include="prm\auo_conf_convert.cpp">
       <Filter>ソース ファイル\prm</Filter>
     </ClCompile>
+    <ClCompile Include="encode\auo_process_parallel.cpp">
+      <Filter>ソース ファイル\encode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="image\folder_open.ico">
@@ -253,6 +256,9 @@
       <Filter>フォーム</Filter>
     </ClInclude>
     <ClInclude Include="encode\convert_simd.h">
+      <Filter>ヘッダー ファイル\encode</Filter>
+    </ClInclude>
+    <ClInclude Include="encode\auo_process_parallel.h">
       <Filter>ヘッダー ファイル\encode</Filter>
     </ClInclude>
   </ItemGroup>
