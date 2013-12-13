@@ -245,7 +245,7 @@ static BOOL move_temp_file(const char *appendix, const char *temp_filename, cons
 }
 
 AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const SYSTEM_DATA *sys_dat, const OUTPUT_INFO *oip, DWORD ret) {
-	if (pe->div_max)
+	if (1 < pe->div_max)
 		return ret;
 	//動画ファイル
 	if (!conf->oth.out_audio_only)
