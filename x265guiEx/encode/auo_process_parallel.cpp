@@ -200,7 +200,9 @@ private:
 		sprintf_s(first_filename, _countof(first_filename), "%s_%d_%d_tmp%s", i_task->filebase, 1, i_task->pe.div_max, ext);
 		FILE *fp_write = NULL;
 		BYTE *buffer = (BYTE *)malloc(buf_max_bytes);
-		if (NULL == buffer || fopen_s(&fp_write, first_filename, "ab") || NULL == fp_write) {
+		if (NULL == buffer) {
+			ret = AUO_RESULT_ERROR; log_write("映像ファイル結合用のメモリ確保に失敗しました。\n");
+		} else if (fopen_s(&fp_write, first_filename, "ab") || NULL == fp_write) {
 			ret = AUO_RESULT_ERROR; log_writef("結合する映像ファイル(%d/%d)のオープンに失敗しました。: %s\n", 1, i_task->pe.div_max, first_filename);
 		} else {
 			//1_xのファイルの後に、残りのファイルを追記していく
