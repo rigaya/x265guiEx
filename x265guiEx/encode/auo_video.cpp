@@ -786,7 +786,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		ret |= AUO_RESULT_ERROR; error_run_process(X26X_NAME[conf->vid.enc_type], rp_ret);
 	//書き込みスレッドを開始
 	} else if (video_output_create_thread(&thread_data, &pixel_data, pipes.f_stdin)) {
-		ret |= AUO_RESULT_ERROR; //error_thread_start();
+		ret |= AUO_RESULT_ERROR; error_video_output_thread_start();
 	} else {
 		//全て正常
 		int i = 0;        //エンコードするフレーム (0からカウント)
@@ -820,13 +820,6 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				break;
 			}
 
-			//一時停止
-			while (enc_pause & !ret) {
-				Sleep(LOG_UPDATE_INTERVAL);
-				ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
-				log_process_events();
-			}
-
 			if (!(i & 7)) {
 				//Aviutlの進捗表示を更新
 				oip->func_rest_time_disp(i + frames_to_enc * (pe->current_pass - 1), frames_to_enc * pe->total_pass);
@@ -838,6 +831,19 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				ret |= aud_parallel_task(oip, pe);
 			}
 
+			//Aviutl(afs)からフレームをもらう
+			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
+				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
+				break;
+			}
+
+			//一時停止
+			while (enc_pause & !ret) {
+				Sleep(LOG_UPDATE_INTERVAL);
+				ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
+				log_process_events();
+			}
+
 			//標準入力への書き込み完了をチェック
 			while (WAIT_TIMEOUT == WaitForSingleObject(thread_data.he_out_fin, LOG_UPDATE_INTERVAL)) {
 				ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
@@ -847,12 +853,6 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			//中断・エラー等をチェック
 			if (AUO_RESULT_SUCCESS != ret)
 				break;
-
-			//Aviutl(afs)からフレームをもらう
-			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
-				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
-				break;
-			}
 
 			//コピーフレームフラグ処理
 			copy_frame = (!!i_frame & (oip->func_get_flag(i_frame) & OUTPUT_INFO_FRAME_FLAG_COPYFRAME));
@@ -867,6 +867,8 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			} else {
 				*(next_jitter - 1) = DROP_FRAME_FLAG;
 				pe->drop_count++;
+				//次のフレームの変換を許可
+				SetEvent(thread_data.he_out_fin);
 			}
 
 			// 「表示 -> セーブ中もプレビュー表示」がチェックされていると
