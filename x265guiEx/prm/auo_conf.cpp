@@ -82,14 +82,30 @@ BOOL guiEx_config::adjust_conf_size(CONF_GUIEX *conf_buf, void *old_data, int ol
 		}
 		if (data_table == NULL)
 			return ret;
-		BYTE *dst = (BYTE *)conf_buf;
-		BYTE *block = NULL;
-		dst += CONF_HEAD_SIZE;
-		//ブロック部分のコピー
-		for (int i = 0; i < ((CONF_GUIEX *)data_table)->block_count; ++i) {
-			block = (BYTE *)old_data + ((CONF_GUIEX *)data_table)->block_head_p[i];
-			dst = (BYTE *)conf_buf + conf_block_pointer[i];
-			memcpy(dst, block, min(((CONF_GUIEX *)data_table)->block_size[i], conf_block_data[i]));
+		if (5 == ((CONF_GUIEX *)data_table)->block_count) {
+			//x264guiEx 1.xx/2.xxの設定ファイルからの拡張
+			//まずx264guiEx 2.xx系の設定ファイルに変換する
+			const int CONF_V2_03_SIZE = 8088;
+			static const CONF_GUIEX CONF_V2_03 = { { 0 }, CONF_V2_03_SIZE, 300, 5, { 332, 5176, 40, 40, 2196, 0 }, { 300, 632, 5808, 5848, 5888, 0 } };  //v2.03
+			BYTE conf_2_03[CONF_V2_03_SIZE] = { 0 };
+			BYTE *dst, *block = NULL;
+			for (int i = 0; i < CONF_V2_03.block_count; ++i) {
+				block = (BYTE *)old_data +((CONF_GUIEX *)data_table)->block_head_p[i];
+				dst = (BYTE *)conf_2_03 + CONF_V2_03.block_head_p[i];
+				memcpy(dst, block, min(((CONF_GUIEX *)data_table)->block_size[i], CONF_V2_03.block_size[i]));
+			}
+			//さらにx264/x265guiEx 3.xx系の設定ファイルに変換する
+			convert_x264stg_to_x265stg(conf_buf, conf_2_03);
+		} else {
+			BYTE *dst = (BYTE *)conf_buf;
+			BYTE *block = NULL;
+			dst += CONF_HEAD_SIZE;
+			//ブロック部分のコピー
+			for (int i = 0; i < ((CONF_GUIEX *)data_table)->block_count; ++i) {
+				block = (BYTE *)old_data + ((CONF_GUIEX *)data_table)->block_head_p[i];
+				dst = (BYTE *)conf_buf + conf_block_pointer[i];
+				memcpy(dst, block, min(((CONF_GUIEX *)data_table)->block_size[i], conf_block_data[i]));
+			}
 		}
 		ret = TRUE;
 	}

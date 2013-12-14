@@ -145,7 +145,7 @@ class guiEx_config {
 private:
 	static const size_t conf_block_pointer[CONF_BLOCK_COUNT];
 	static const int conf_block_data[CONF_BLOCK_COUNT];
-	void convert_x264stg_to_x265stg(CONF_GUIEX *conf, const BYTE *dat);
+	static void convert_x264stg_to_x265stg(CONF_GUIEX *conf, const BYTE *dat);
 public:
 	guiEx_config();
 	static void write_conf_header(CONF_GUIEX *conf);
