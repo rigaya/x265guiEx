@@ -895,21 +895,6 @@ static BOOL swap_file(const WCHAR *fileA, const WCHAR *fileB) {
 		return FALSE;
 	return TRUE;
 }
-//最後に"\"なしで戻る
-static inline void get_aviutl_dir(char *aviutl_dir, size_t nSize) {
-	GetModuleFileNameA(NULL, aviutl_dir, (DWORD)nSize);
-	PathRemoveFileSpecFixed(aviutl_dir);
-}
-static inline void get_aviutl_dir(WCHAR *aviutl_dir, size_t nSize) {
-	GetModuleFileNameW(NULL, aviutl_dir, (DWORD)nSize);
-	PathRemoveFileSpecFixed(aviutl_dir);
-}
-static inline void get_auo_path(char *auo_path, size_t nSize) {
-	GetModuleFileNameA(GetModuleHandleA(AUO_NAME), auo_path, (DWORD)nSize);
-}
-static inline void get_auo_path(WCHAR *auo_path, size_t nSize) {
-	GetModuleFileNameW(GetModuleHandleW(AUO_NAME_W), auo_path, (DWORD)nSize);
-}
 
 static inline int replace_cmd_CRLF_to_Space(char *cmd, size_t nSize) {
 	int ret = 0;

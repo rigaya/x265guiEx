@@ -6,7 +6,7 @@
 //   ・本ソースコードを使用したことによるいかなる損害・トラブルについてrigayaは責任を負いません。
 //   以上に了解して頂ける場合、本ソースコードの使用、複製、改変、再頒布を行って頂いて構いません。
 //  -----------------------------------------------------------------------------------------
-
+#define AUO_MAIN
 #include <windows.h>
 #include <stdio.h>
 #include <shlwapi.h>
@@ -47,15 +47,17 @@ static int get_total_path();
 static CONF_GUIEX conf;
 static SYSTEM_DATA sys_dat = { 0 };
 static char auo_filefilter[1024] = { 0 };
+static char auo_path[MAX_PATH_LEN] = { 0 };
+static int default_enc_type = ENC_TYPE_X264; //auoのファイル名からどちらがデフォルトかを決定
 
 //---------------------------------------------------------------------
 //		出力プラグイン構造体定義
 //---------------------------------------------------------------------
 OUTPUT_PLUGIN_TABLE output_plugin_table = {
 	NULL,                         // フラグ
-	AUO_FULL_NAME,                // プラグインの名前
+	AUO_FULL_NAME_X264,           // プラグインの名前
 	AUO_EXT_FILTER,               // 出力ファイルのフィルタ
-	AUO_VERSION_INFO,             // プラグインの情報
+	AUO_VERSION_INFO_X264,        // プラグインの情報
 	func_init,                    // DLL開始時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 	func_exit,                    // DLL終了時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 	func_output,                  // 出力時に呼ばれる関数へのポインタ
@@ -64,6 +66,29 @@ OUTPUT_PLUGIN_TABLE output_plugin_table = {
 	func_config_set,              // 出力設定データを設定する時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 };
 
+//---------------------------------------------------------------------
+//		エントリポイント
+//---------------------------------------------------------------------
+#pragma warning( push )
+#pragma warning( disable: 4100 ) //C4100 : 引数は関数の本体部で 1 度も参照されません。
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+	if (fdwReason == DLL_PROCESS_ATTACH) {
+		//auoファイル名からx264モードか、x265モードかを決定する
+		GetModuleFileName(hinstDLL, auo_path, _countof(auo_path));
+		const char *dll_name = PathFindFileName(auo_path);
+		default_enc_type = (NULL != stristr(dll_name, "x264guiEx")) ? ENC_TYPE_X264 : ENC_TYPE_X265;
+		auo_name         = (default_enc_type == ENC_TYPE_X264) ? AUO_NAME_X264         : AUO_NAME_X265;
+		auo_name_w       = (default_enc_type == ENC_TYPE_X264) ? AUO_NAME_X264_W       : AUO_NAME_X265_W;
+		auo_full_name    = (default_enc_type == ENC_TYPE_X264) ? AUO_FULL_NAME_X264    : AUO_FULL_NAME_X265;
+		auo_version_name = (default_enc_type == ENC_TYPE_X264) ? AUO_VERSION_NAME_X264 : AUO_VERSION_NAME_X265;
+		auo_version_info = (default_enc_type == ENC_TYPE_X264) ? AUO_VERSION_INFO_X264 : AUO_VERSION_INFO_X265;
+		output_plugin_table.name        = (char *)auo_full_name;
+		output_plugin_table.information = (char *)auo_version_info;
+	}
+	return TRUE;
+}
+#pragma warning( pop )
 
 //---------------------------------------------------------------------
 //		出力プラグイン構造体のポインタを渡す関数
@@ -261,8 +286,23 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
 	guiEx_config::write_conf_header(conf);
 	for (int i_enctype = 0; i_enctype < 2; i_enctype++)
 		get_default_conf(&conf->x26x[i_enctype], use_highbit, i_enctype);
-	conf->vid.enc_type = sys_dat.exstg->s_encode_type;
+	conf->vid.enc_type = default_enc_type;
 	conf->size_all = CONF_INITIALIZED;
+}
+//最後に"\"なしで戻る
+void get_aviutl_dir(char *aviutl_dir, size_t nSize) {
+	GetModuleFileNameA(NULL, aviutl_dir, (DWORD)nSize);
+	PathRemoveFileSpecFixed(aviutl_dir);
+}
+void get_aviutl_dir(WCHAR *aviutl_dir, size_t nSize) {
+	GetModuleFileNameW(NULL, aviutl_dir, (DWORD)nSize);
+	PathRemoveFileSpecFixed(aviutl_dir);
+}
+void get_auo_path(char *auo_path, size_t nSize) {
+	GetModuleFileNameA(GetModuleHandleA(auo_name), auo_path, (DWORD)nSize);
+}
+void get_auo_path(WCHAR *auo_path, size_t nSize) {
+	GetModuleFileNameW(GetModuleHandleW(auo_name_w), auo_path, (DWORD)nSize);
 }
 void write_log_line_fmt(int log_type_index, const char *format, ...) {
 	va_list args;
@@ -515,7 +555,7 @@ void overwrite_aviutl_ini_file_filter(int idx) {
 	
 	char filefilter_ini[1024] = { 0 };
 	make_file_filter(filefilter_ini, _countof(filefilter_ini), idx);
-	WritePrivateProfileString(AUO_NAME, "filefilter", filefilter_ini, ini_file);
+	WritePrivateProfileString(auo_name, "filefilter", filefilter_ini, ini_file);
 }
 
 void make_file_filter(char *filter, size_t nSize, int default_index) {

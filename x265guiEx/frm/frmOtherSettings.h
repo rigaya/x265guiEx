@@ -742,7 +742,7 @@ namespace x265guiEx {
 		System::Void frmOtherSettings_Load(System::Object^  sender, System::EventArgs^  e) {
 			fosSetComboBox();
 
-			this->Text = String(AUO_FULL_NAME).ToString();
+			this->Text = String(auo_full_name).ToString();
 			fosTXStgDir->Text = stgDir;
 			fos_ex_stg->load_encode_stg();
 			fos_ex_stg->load_log_win();

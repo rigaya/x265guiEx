@@ -291,7 +291,6 @@ private:
 	void load_x26x_cmd(X26X_CMD *x264cmd, int *count, int *default_index, const char *section);  //x264コマンドライン設定の読み込み
 	void clear_x26x_cmd(X26X_CMD *x264cmd, int count);                                           //x264コマンドライン設定の消去
 
-	void load_encode_mode();  //x264を使うかx265を使うか読み込み
 	void load_aud();          //音声エンコーダ関連の設定の読み込み・更新
 	void load_mux();          //muxerの設定の読み込み・更新
 	void load_x26x();         //x264/x265関連の設定の読み込み・更新
@@ -305,7 +304,6 @@ private:
 
 public:
 	static char blog_url[MAX_PATH_LEN];      //ブログページのurl
-	int s_encode_type;               //エンコーダの種類 (0: x264, 1: x265)
 	int s_aud_count;                 //音声エンコーダの数
 	int s_mux_count;                 //muxerの数 (基本3固定)
 	AUDIO_SETTINGS *s_aud;           //音声エンコーダの設定

@@ -661,7 +661,7 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
 		}
 		flush_audio_log();
 		if (wait_for_audio_count > 10)
-			set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
+			set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
 
 		DWORD exit_code = 0;
 		//GetExitCodeThreadの返り値がNULLならエラー
@@ -1061,7 +1061,7 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
 		ret |= x26x_out(conf, oip, pe, sys_dat);
 	}
 
-	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
+	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
 	return ret;
 }
 

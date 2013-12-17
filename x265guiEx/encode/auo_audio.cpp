@@ -50,7 +50,7 @@ inline void *get_audio_data(const OUTPUT_INFO *oip, PRM_ENC *pe, int start, int 
 
 static void auo_faw_check(CONF_AUDIO *aud, const OUTPUT_INFO *oip, PRM_ENC *pe, const guiEx_settings *ex_stg) {
 	if (ex_stg->s_aud_faw_index == FAW_INDEX_ERROR) {
-		write_log_auo_line(LOG_WARNING, "FAWCheck : "AUO_NAME_WITHOUT_EXT".iniからのFAWの情報取得に失敗したため、判定を中止しました。");
+		write_log_auo_line(LOG_WARNING, "FAWCheck : ini設定ファイルからのFAWの情報取得に失敗したため、判定を中止しました。");
 		return;
 	}
 	int n = 0;
@@ -420,7 +420,7 @@ AUO_RESULT audio_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, c
 	for (int i_aud = 0; i_aud < pe->aud_count; i_aud++)
 		ret |= audio_finish_enc(ret, &aud_dat[i_aud], aud_stg);
 
-	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
+	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
 
 	return ret;
 }

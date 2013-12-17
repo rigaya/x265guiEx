@@ -169,7 +169,6 @@ void guiEx_settings::initialize(BOOL disable_loading) {
 }
 
 void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, const char *main_section) {
-	s_encode_type = 0;
 	s_aud_count = 0;
 	s_mux_count = 0;
 	s_aud = NULL;
@@ -225,12 +224,12 @@ BOOL guiEx_settings::get_init_success(BOOL no_message) {
 	if (!init && !no_message) {
 		char mes[1024];
 		char title[256];
-		strcpy_s(mes, _countof(mes), AUO_NAME);
+		strcpy_s(mes, _countof(mes), auo_name);
 		sprintf_s(PathFindExtension(mes), _countof(mes) - strlen(mes), 
 			".iniが存在しないか、iniファイルが古いです。\n%s を開始できません。\n"
 			"iniファイルを更新してみてください。",
-			AUO_FULL_NAME);
-		sprintf_s(title, _countof(title), "%s - エラー", AUO_FULL_NAME);
+			auo_full_name);
+		sprintf_s(title, _countof(title), "%s - エラー", auo_full_name);
 		MessageBox(NULL, mes, title, MB_ICONERROR);
 	}
 	return init;
@@ -244,15 +243,10 @@ int guiEx_settings::get_faw_index() {
 }
 
 void guiEx_settings::load_encode_stg() {
-	load_encode_mode();
 	load_aud();
 	load_mux();
 	load_x26x();
 	load_local(); //fullpathの情報がきちんと格納されるよう、最後に呼ぶ
-}
-
-void guiEx_settings::load_encode_mode() {
-	s_encode_type = GetPrivateProfileInt(ini_section_main, "encoder_type", 0, ini_fileName);
 }
 
 void guiEx_settings::load_aud() {

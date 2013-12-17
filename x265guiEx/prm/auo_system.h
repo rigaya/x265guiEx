@@ -14,6 +14,7 @@
 #include "auo.h"
 #include "auo_settings.h"
 #include "auo_conf.h"
+#include "auo_version.h"
 
 #if _M_IX86
 #define ALIGN_PTR __declspec(align(4))

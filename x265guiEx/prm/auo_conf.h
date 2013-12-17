@@ -29,7 +29,7 @@ enum {
 };
 
 static const char *const CONF_NAME_OLD = "x264guiEx ConfigFile";
-static const char *const CONF_NAME     = "x265guiEx ConfigFile";
+static const char *const CONF_NAME     = "x264/x265guiEx ConfigFile";
 const int CONF_NAME_BLOCK_LEN          = 32;
 const int CONF_BLOCK_MAX               = 32;
 const int CONF_BLOCK_COUNT             = 6; //最大 CONF_BLOCK_MAXまで

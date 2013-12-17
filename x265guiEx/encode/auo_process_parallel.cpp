@@ -463,13 +463,17 @@ AUO_RESULT parallel_task_close() {
 	if (NULL == g_controller)
 		return AUO_RESULT_SUCCESS;
 
-	const char *MES = ""
-		AUO_NAME"は並列処理の待機中です。\n"
+	const char *MES_BASE = ""
+		"は並列処理の待機中です。\n"
 		"ここでAviutlを終了すると並列処理は完了しませんが、\n"
 		"Aviutlを終了しますか ?";
 
+	char message[1024] = { 0 };
+	strcpy_s(message, _countof(message), auo_name);
+	strcat_s(message, _countof(message), MES_BASE);
+
 	if (   0 == g_controller->get_current_task_waiting()
-		|| IDOK == MessageBox(NULL, MES, AUO_FULL_NAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING)) {
+		|| IDOK == MessageBox(NULL, message, auo_full_name, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING)) {
 		delete g_controller;
 		g_controller = NULL;
 		return AUO_RESULT_SUCCESS;

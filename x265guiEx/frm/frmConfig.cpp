@@ -1503,9 +1503,9 @@ System::Void frmConfig::InitForm() {
 	//タイムコードのappendix(後付修飾子)を反映
 	fcgCBAuoTcfileout->Text = L"タイムコード出力 (" + String(sys_dat->exstg->s_append.tc).ToString() + L")";
 	//タイトル表示
-	this->Text = String(AUO_FULL_NAME).ToString();
+	this->Text = String(auo_full_name).ToString();
 	//バージョン情報,コンパイル日時
-	fcgLBVersion->Text     = String(AUO_VERSION_NAME).ToString();
+	fcgLBVersion->Text     = String(auo_version_name).ToString();
 	fcgLBVersionDate->Text = L"build " + String(__DATE__).ToString() + L" " + String(__TIME__).ToString();
 	//スレッド数上限
 	int max_threads_set = (int)(cpu_core_count() * 1.5 + 0.51);

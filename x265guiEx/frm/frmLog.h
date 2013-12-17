@@ -66,7 +66,7 @@ namespace x265guiEx {
 				this->WindowState = FormWindowState::Minimized;
 			_x264_priority = NULL;
 			_enc_pause = NULL;
-			LogTitle = String(AUO_FULL_NAME).ToString();
+			LogTitle = String(auo_full_name).ToString();
 
 			InitializeComponent();
 			//
@@ -991,7 +991,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
 				try {
 					System::Diagnostics::Process::Start(selectedPathbyMouse);
 				} catch (...) {
-					MessageBox::Show(L"ファイルオープンでエラーが発生しました。", AUO_NAME_W, MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					MessageBox::Show(L"ファイルオープンでエラーが発生しました。", String(auo_name_w).ToString(), MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				}
 			}
 		}
@@ -1001,7 +1001,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
 				try {
 					System::Diagnostics::Process::Start(L"explorer.exe", L"/select," + selectedPathbyMouse);
 				} catch (...) {
-					MessageBox::Show(L"ファイルの表示でエラーが発生しました。", AUO_NAME_W, MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+					MessageBox::Show(L"ファイルの表示でエラーが発生しました。", String(auo_name_w).ToString(), MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				}
 			}
 		}
