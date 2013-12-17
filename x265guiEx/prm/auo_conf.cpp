@@ -88,6 +88,7 @@ BOOL guiEx_config::adjust_conf_size(CONF_GUIEX *conf_buf, void *old_data, int ol
 			const int CONF_V2_03_SIZE = 8088;
 			static const CONF_GUIEX CONF_V2_03 = { { 0 }, CONF_V2_03_SIZE, 300, 5, { 332, 5176, 40, 40, 2196, 0 }, { 300, 632, 5808, 5848, 5888, 0 } };  //v2.03
 			BYTE conf_2_03[CONF_V2_03_SIZE] = { 0 };
+			memcpy(conf_2_03, &CONF_V2_03, min(CONF_V2_03_SIZE, sizeof(CONF_GUIEX))); //ヘッダ部分のコピー
 			BYTE *dst, *block = NULL;
 			for (int i = 0; i < CONF_V2_03.block_count; ++i) {
 				block = (BYTE *)old_data +((CONF_GUIEX *)data_table)->block_head_p[i];
