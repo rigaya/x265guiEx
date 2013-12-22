@@ -19,6 +19,7 @@
 #include "frmSaveNewStg.h"
 #include "frmOtherSettings.h"
 #include "frmBitrateCalculator.h"
+#include "auo_process_parallel.h"
 
 using namespace x265guiEx;
 
@@ -1526,6 +1527,9 @@ System::Void frmConfig::InitForm() {
 	SetTXMaxLenAll(); //テキストボックスの最大文字数
 	SetAllCheckChangedEvents(this); //変更の確認,ついでにNUの
 	//フォームの変更可不可を更新
+	bool process_parallel_enabled = 0 != (PROCESS_PARALLEL_ENABLED & sys_dat->exstg->s_local.enable_process_parallel);
+	fcgLBParallelDivMax->Visible = process_parallel_enabled;
+	fcgNUParallelDivMax->Visible = process_parallel_enabled;
 	fcgChangeMuxerVisible(nullptr, nullptr);
 	fcgChangeEnabled(nullptr, nullptr);
 	fcgCBAFS_CheckedChanged(nullptr, nullptr);
@@ -1748,6 +1752,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 		fcgCBCheckKeyframes->Checked       =(cnf->vid.check_keyframe & CHECK_KEYFRAME_AVIUTL) != 0;
 		fcgCBSetKeyframeAtChapter->Checked =(cnf->vid.check_keyframe & CHECK_KEYFRAME_CHAPTER) != 0;
 		fcgCBInputAsLW48->Checked          = cnf->vid.input_as_lw48 != 0;
+		SetNUValue(fcgNUParallelDivMax,      parallel_info_get_div_max(cnf->vid.parallel_div_info));
 
 		SetCXIndex(fcgCXX264Priority,        cnf->vid.priority);
 		SetCXIndex(fcgCXTempDir,             cnf->oth.temp_dir);
@@ -1958,6 +1963,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->vid.input_as_lw48          = fcgCBInputAsLW48->Checked;
 	cnf->oth.temp_dir               = fcgCXTempDir->SelectedIndex;
 	GetCHARfromString(cnf->vid.cmdex, sizeof(cnf->vid.cmdex), fcgTXCmdEx->Text);
+	parallel_info_write(cnf->vid.parallel_div_info, _countof(cnf->vid.parallel_div_info), (int)fcgNUParallelDivMax->Value);
 
 	//音声部
 	cnf->aud.encoder                = fcgCXAudioEncoder->SelectedIndex;

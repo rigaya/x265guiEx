@@ -186,9 +186,9 @@ BOOL func_output( OUTPUT_INFO *oip )
 	open_log_window(oip->savefile, 1, get_total_path());
 	//各種設定を行う
 	set_enc_prm(&pe, oip);
-	ret |= parallel_task_check(&conf, oip, &pe, &sys_dat);
 	set_prevent_log_close(TRUE); //※1 start
 	pe.h_p_aviutl = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, GetCurrentProcessId()); //※2 start
+	ret |= parallel_task_check(&conf, oip, &pe, &sys_dat);
 
 	//チェックを行い、エンコード可能ならエンコードを開始する
 	if (!ret && check_output(oip, &pe) && setup_afsvideo(oip, &conf, &pe, sys_dat.exstg->s_local.auto_afs_disable)) { //※3 start
@@ -244,14 +244,17 @@ BOOL func_config(HWND hwnd, HINSTANCE dll_hinst)
 }
 #pragma warning( pop )
 
-int func_config_get( void *data, int size )
+int func_config_get(void *data, int size)
 {
-	if (data && size == sizeof(CONF_GUIEX))
+	if (data && size == sizeof(CONF_GUIEX)) {
+		if (PROCESS_PARALLEL_ENABLED & sys_dat.exstg->s_local.enable_process_parallel)
+			parallel_task_set_unused_parallel_info(conf.vid.parallel_div_info, _countof(conf.vid.parallel_div_info));
 		memcpy(data, &conf, sizeof(conf));
+	}
 	return sizeof(conf);
 }
 
-int func_config_set( void *data,int size )
+int func_config_set(void *data,int size)
 {
 	init_SYSTEM_DATA(&sys_dat);
 	if (!sys_dat.exstg->get_init_success(TRUE))

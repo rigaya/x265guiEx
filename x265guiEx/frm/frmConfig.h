@@ -812,6 +812,10 @@ private: System::Windows::Forms::Label^  fchLBAQStrength;
 private: System::Windows::Forms::CheckBox^  fchCBBpyramid;
 
 private: System::Windows::Forms::Label^  fchLBBpyramid;
+private: System::Windows::Forms::NumericUpDown^  fcgNUParallelDivMax;
+private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
+
+
 
 
 
@@ -1166,6 +1170,8 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fcgCXX264Priority = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgLBX264Priority = (gcnew System::Windows::Forms::Label());
 			this->fcggroupBoxExSettings = (gcnew System::Windows::Forms::GroupBox());
+			this->fcgNUParallelDivMax = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgLBParallelDivMax = (gcnew System::Windows::Forms::Label());
 			this->fcgCBSetKeyframeAtChapter = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgCBInputAsLW48 = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgCBCheckKeyframes = (gcnew System::Windows::Forms::CheckBox());
@@ -1365,6 +1371,7 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fchPNX265Sub->SuspendLayout();
 			this->fcggroupBoxCmdEx->SuspendLayout();
 			this->fcggroupBoxExSettings->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUParallelDivMax))->BeginInit();
 			this->fcgCSExeFiles->SuspendLayout();
 			this->fcgtoolStripSettings->SuspendLayout();
 			this->fcggroupBoxAudio->SuspendLayout();
@@ -4451,6 +4458,8 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			// 
 			// fcggroupBoxExSettings
 			// 
+			this->fcggroupBoxExSettings->Controls->Add(this->fcgNUParallelDivMax);
+			this->fcggroupBoxExSettings->Controls->Add(this->fcgLBParallelDivMax);
 			this->fcggroupBoxExSettings->Controls->Add(this->fcgCBSetKeyframeAtChapter);
 			this->fcggroupBoxExSettings->Controls->Add(this->fcgCBInputAsLW48);
 			this->fcggroupBoxExSettings->Controls->Add(this->fcgCBCheckKeyframes);
@@ -4463,6 +4472,27 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fcggroupBoxExSettings->TabIndex = 0;
 			this->fcggroupBoxExSettings->TabStop = false;
 			this->fcggroupBoxExSettings->Text = L"拡張設定";
+			// 
+			// fcgNUParallelDivMax
+			// 
+			this->fcgNUParallelDivMax->Location = System::Drawing::Point(120, 204);
+			this->fcgNUParallelDivMax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32, 0, 0, 0 });
+			this->fcgNUParallelDivMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->fcgNUParallelDivMax->Name = L"fcgNUParallelDivMax";
+			this->fcgNUParallelDivMax->Size = System::Drawing::Size(54, 21);
+			this->fcgNUParallelDivMax->TabIndex = 6;
+			this->fcgNUParallelDivMax->Tag = L"reCmd";
+			this->fcgNUParallelDivMax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fcgNUParallelDivMax->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// fcgLBParallelDivMax
+			// 
+			this->fcgLBParallelDivMax->AutoSize = true;
+			this->fcgLBParallelDivMax->Location = System::Drawing::Point(15, 206);
+			this->fcgLBParallelDivMax->Name = L"fcgLBParallelDivMax";
+			this->fcgLBParallelDivMax->Size = System::Drawing::Size(99, 14);
+			this->fcgLBParallelDivMax->TabIndex = 7;
+			this->fcgLBParallelDivMax->Text = L"プロセス並列 分割数";
 			// 
 			// fcgCBSetKeyframeAtChapter
 			// 
@@ -4478,7 +4508,7 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			// fcgCBInputAsLW48
 			// 
 			this->fcgCBInputAsLW48->AutoSize = true;
-			this->fcgCBInputAsLW48->Location = System::Drawing::Point(18, 179);
+			this->fcgCBInputAsLW48->Location = System::Drawing::Point(18, 171);
 			this->fcgCBInputAsLW48->Name = L"fcgCBInputAsLW48";
 			this->fcgCBInputAsLW48->Size = System::Drawing::Size(81, 18);
 			this->fcgCBInputAsLW48->TabIndex = 4;
@@ -5826,6 +5856,7 @@ private: System::Windows::Forms::Label^  fchLBBpyramid;
 			this->fcggroupBoxCmdEx->PerformLayout();
 			this->fcggroupBoxExSettings->ResumeLayout(false);
 			this->fcggroupBoxExSettings->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUParallelDivMax))->EndInit();
 			this->fcgCSExeFiles->ResumeLayout(false);
 			this->fcgtoolStripSettings->ResumeLayout(false);
 			this->fcgtoolStripSettings->PerformLayout();

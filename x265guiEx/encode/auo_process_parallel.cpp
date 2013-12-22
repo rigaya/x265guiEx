@@ -8,12 +8,18 @@
 //  -----------------------------------------------------------------------------------------
 
 #include <Windows.h>
+#include <tlhelp32.h>
 #include <process.h>
 #pragma comment(lib, "winmm.lib")
 #include <Shlwapi.h>
 #pragma comment(lib, "Shlwapi.lib")
+#include <Psapi.h>
+#pragma comment(lib, "Psapi.lib")
 #include <utility>
 #include <vector>
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "auo.h"
 #include "auo_version.h"
 #include "auo_system.h"
@@ -21,10 +27,53 @@
 #include "auo_frm.h"
 #include "auo_mux.h"
 #include "auo_util.h"
+#include "auo_pipe.h"
 #include "auo_encode.h"
 #include "auo_runbat.h"
+#include "auo_process_parallel.h"
 
-typedef struct {
+#define PARALLEL_INFO_HEAD "x264/x265guiEx_parallel_info"
+#define PARALLEL_INFO_BASE PARALLEL_INFO_HEAD"_v%d_id_%d_divided_to_%d_parts"
+
+static const int PARALLEL_INFO_VER = 1;
+
+typedef struct parallel_info_t {
+	int version;
+	int id;
+	int div_count;
+} parallel_info_t;
+
+static parallel_info_t parallel_info_default() {
+	parallel_info_t info;
+	info.version   = PARALLEL_INFO_VER;
+	info.id        = 0;
+	info.div_count = 1;
+	return info;
+}
+
+static parallel_info_t parallel_info_parse(const char *info_string) {
+	parallel_info_t info = parallel_info_default();
+	int _ver, _id, _div_count;
+	if (3 == sscanf_s(info_string, PARALLEL_INFO_BASE, &_ver, &_id, &_div_count)
+		&& _ver == PARALLEL_INFO_VER) {
+		info.id = _id;
+		info.div_count = _div_count;
+	}
+	return info;
+}
+
+int parallel_info_get_div_max(const char *info_string) {
+	return parallel_info_parse(info_string).div_count;
+}
+
+static void parallel_info_write(char *info_string, size_t buf_size, const parallel_info_t *info) {
+	sprintf_s(info_string, buf_size, PARALLEL_INFO_BASE, info->version, info->id, info->div_count);
+}
+void parallel_info_write(char *info_string, size_t buf_size, int div_count) {
+	sprintf_s(info_string, buf_size, PARALLEL_INFO_BASE, PARALLEL_INFO_VER, 0, div_count);
+}
+
+typedef struct TASK_INFO {
 	int id;
 	CONF_GUIEX conf;
 	OUTPUT_INFO oip;
@@ -378,28 +427,374 @@ private:
 
 static TaskController *g_controller = NULL;
 
-AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
-	AUO_RESULT ret = AUO_RESULT_SUCCESS;
-	pe->div_num = 0;
-	pe->div_max = 1;
-	if (sys_dat->exstg->s_local.enable_process_parallel) {
-		const char *ptr = PathFindExtension(pe->temp_filename);
-		for (int i = 0; ptr && i < 2; i++) {
-			ptr--;
-			for (; *ptr != '_'; ptr--) {
-				if (ptr == pe->temp_filename) {
-					ptr = NULL;
+//Aviutlのバッチファイル名の一覧を作成する
+static std::vector<std::string> get_bat_aup_list() {
+	std::vector<std::string> list;
+	HANDLE hFind = NULL;
+	WIN32_FIND_DATA win32fd;
+	
+	char aviutl_dir[MAX_PATH_LEN] = { 0 };
+	char bat_aup_base[MAX_PATH_LEN] = { 0 };
+	get_aviutl_dir(aviutl_dir, _countof(aviutl_dir));
+	PathCombineLong(bat_aup_base, _countof(bat_aup_base), aviutl_dir, "batch*.aup");
+
+	if (INVALID_HANDLE_VALUE != (hFind = FindFirstFile(bat_aup_base, &win32fd))) {
+		do {
+			if (!(win32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				char bat_aup_fullpath[MAX_PATH_LEN] = { 0 };
+				PathCombineLong(bat_aup_fullpath, _countof(bat_aup_fullpath), aviutl_dir, win32fd.cFileName);
+				list.push_back(bat_aup_fullpath);
+			}
+		} while (FindNextFile(hFind, &win32fd));
+	}
+
+	return list;
+}
+
+static int get_conf_from_bat_aup(parallel_info_t *info, const char *bat_aup) {
+	int ret = AUO_RESULT_SUCCESS;
+	*info = parallel_info_default();
+	//FILE_SHARE_READ | FILE_SHARE_WRITEを両方指定して読み込むことで、Aviutlがすでに開いているバッチも読み取ることができる
+	HANDLE h_file = CreateFile(bat_aup, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (INVALID_HANDLE_VALUE == h_file) {
+		ret = AUO_RESULT_ERROR;
+	} else {
+		DWORD bytes_read = 0;
+		const DWORD filesize = GetFileSize(h_file, NULL);
+		char *buffer = (char *)malloc(filesize);
+		const char *header = NULL;
+		if (   NULL == buffer
+			|| 0 == ReadFile(h_file, buffer, filesize, &bytes_read, NULL)
+			|| filesize != bytes_read
+			|| NULL == (header = (const char *)find_data(buffer, filesize, PARALLEL_INFO_HEAD, strlen(PARALLEL_INFO_HEAD)))) {
+			ret = AUO_RESULT_ERROR;
+		} else {
+			*info = parallel_info_parse(header);
+		}
+		if (buffer) free(buffer);
+		CloseHandle(h_file);
+	}
+	return ret;
+}
+
+//現在使用されていないparallel_idを取得する
+int parallel_task_get_unused_parallel_id() {
+	HANDLE hFind = NULL;
+	WIN32_FIND_DATA win32fd = { 0 };
+	
+	char aviutl_dir[MAX_PATH_LEN] = { 0 };
+	char bat_aup_base[MAX_PATH_LEN] = { 0 };
+	get_aviutl_dir(aviutl_dir, _countof(aviutl_dir));
+	PathCombineLong(bat_aup_base, _countof(bat_aup_base), aviutl_dir, "batch*.aup");
+
+	//parallel_idのリストを作成
+	std::vector<int> id_list;
+	if (INVALID_HANDLE_VALUE != (hFind = FindFirstFile(bat_aup_base, &win32fd))) {
+		do {
+			if (!(win32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				parallel_info_t info = parallel_info_default();
+				char bat_aup_fullpath[MAX_PATH_LEN] = { 0 };
+				PathCombineLong(bat_aup_fullpath, _countof(bat_aup_fullpath), aviutl_dir, win32fd.cFileName);
+				if (AUO_RESULT_SUCCESS == get_conf_from_bat_aup(&info, bat_aup_fullpath) && 1 < info.div_count)
+					id_list.push_back(info.id);
+			}
+		} while (FindNextFile(hFind, &win32fd));
+	}
+
+	//IDを検索し、使われていないものを返す
+	int unused_id = 1;
+	if (id_list.size())
+		for ( ; ; unused_id++)
+			if (id_list.end() == std::find(id_list.begin(), id_list.end(), unused_id))
+				break;
+
+	return unused_id;
+}
+
+void parallel_task_set_unused_parallel_info(char *info_string, size_t buf_size) {
+	parallel_info_t info = parallel_info_parse(info_string);
+	info.id = parallel_task_get_unused_parallel_id();
+	parallel_info_write(info_string, buf_size, &info);
+}
+
+//現在使用されていないAviutlのバッチファイル名を取得する
+static std::string get_bat_aup_new(std::string current_bat_aup) {
+	int current_id = 0;
+	std::string new_bat_aup;
+	if (1 == sscanf_s(PathFindFileName(current_bat_aup.c_str()), "batch%d.aup", &current_id)) {
+		bool batch_exists = true;
+		char aviutl_dir[MAX_PATH_LEN] = { 0 };
+		char bat_filename[MAX_PATH_LEN] = { 0 };
+		get_aviutl_dir(aviutl_dir, _countof(aviutl_dir));
+		for (int id = current_id + 1; batch_exists && id < 100; id++) {
+			sprintf_s(bat_filename, _countof(bat_filename), "%s\\batch%d.aup", aviutl_dir, id);
+			batch_exists &= !!PathFileExists(bat_filename);
+		}
+		for (int id = 0; batch_exists && id < current_id; id++) {
+			sprintf_s(bat_filename, _countof(bat_filename), "%s\\batch%d.aup", aviutl_dir, id);
+			batch_exists &= !!PathFileExists(bat_filename);
+		}
+		new_bat_aup = bat_filename;
+	}
+	return new_bat_aup;
+}
+
+//ファイル名: bat_aup_origのバッチファイルから、
+//ファイル名: bat_aup_filename_newのバッチファイルを作成
+//その際バッチファイルの中のsavefile_origをsavefile_newで置き換える
+static int create_new_bat_aup_file(const char *bat_aup_filename_new, const char *bat_aup_orig, const char *savefile_new, const char *savefile_orig) {
+	int ret = AUO_RESULT_SUCCESS;
+	std::ifstream inputFile(bat_aup_orig, std::ios::in | std::ios::binary);
+	std::ofstream outputFile(bat_aup_filename_new, std::ios::out | std::ios::binary);
+	if (!inputFile.good() || !outputFile.good()) {
+		ret = AUO_RESULT_ERROR;
+	} else {
+		std::vector<char> bat_aup_orig_data((size_t)inputFile.seekg(0, std::ios::end).tellg());
+		inputFile.seekg(0, std::ios::beg).read(&bat_aup_orig_data[0], static_cast<std::streamsize>(bat_aup_orig_data.size()));
+		char *ptr = (char *)find_data(&bat_aup_orig_data[0], bat_aup_orig_data.size(), savefile_orig, strlen(savefile_orig) + 1);
+		if (NULL != ptr) {
+			strcpy_s(ptr, MAX_PATH, savefile_new);
+			outputFile.write(&bat_aup_orig_data[0], bat_aup_orig_data.size());
+		}
+	}
+	return ret;
+}
+
+//自分のバッチファイルを探す
+static std::string get_bat_aup_of_self(const CONF_GUIEX *conf, std::vector<std::string>& bat_aup_list) {
+	const parallel_info_t own_parallel_info = parallel_info_parse(conf->vid.parallel_div_info);
+
+	std::string bat_aup_file_orig;
+	for (auto bat_aup : bat_aup_list) {
+		parallel_info_t info = parallel_info_default();
+		if (AUO_RESULT_SUCCESS == get_conf_from_bat_aup(&info, bat_aup.c_str())
+			&& 1 < info.div_count
+			&& own_parallel_info.id == info.id) {
+			bat_aup_file_orig = bat_aup;
+			break;
+		}
+	}
+	return bat_aup_file_orig;
+}
+
+//同じパスから実行されているAviutlのプロセスIDリストを返す
+static std::vector<DWORD> get_current_running_aviutl_process_id() {
+	char aviutl_path[MAX_PATH_LEN] = { 0 };
+	GetModuleFileName(NULL, aviutl_path, _countof(aviutl_path));
+	const char *aviutl_filename = PathFindFileName(aviutl_path);
+	std::vector<DWORD> aviutl_process_id;
+
+	HANDLE h_snapshot = NULL;
+
+	if (INVALID_HANDLE_VALUE != (h_snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0))) {
+		PROCESSENTRY32 pe32 = { 0 };
+		pe32.dwSize = sizeof(PROCESSENTRY32);
+
+		if (Process32First(h_snapshot, &pe32)) {
+			do {
+				if (0 == _stricmp(pe32.szExeFile, aviutl_filename)) {
+					HANDLE h_process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pe32.th32ProcessID);
+					if (NULL != h_process) {
+						HMODULE module_list[4096] = { 0 };
+						DWORD module_count = 0;
+						if (EnumProcessModules(h_process, module_list, sizeof(module_list), &module_count)) {
+							char exe_fullpath[MAX_PATH_LEN];
+							GetModuleFileNameEx(h_process, module_list[0], exe_fullpath, _countof(exe_fullpath));
+							if (0 == _stricmp(exe_fullpath, aviutl_path)) {
+								aviutl_process_id.push_back(pe32.th32ProcessID);
+							}
+						}
+						CloseHandle(h_process);
+					}
+				}
+			} while (Process32Next(h_snapshot, &pe32));
+		}
+		CloseHandle(h_snapshot);
+	}
+	return aviutl_process_id;
+}
+
+//自分と同じAviutlを立ち上げ、バッチ出力の開始
+static int load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
+	int ret = AUO_RESULT_SUCCESS;
+	PROCESS_INFORMATION pi = { 0 };
+	char aviutl_cmd[MAX_PATH_LEN]  = { 0 };
+	char aviutl_path[MAX_PATH_LEN] = { 0 };
+	GetModuleFileName(NULL, aviutl_path, _countof(aviutl_path));
+	sprintf_s(aviutl_cmd, _countof(aviutl_cmd), "\"%s\" -bs", aviutl_path); //バッチ出力の開始
+	PathRemoveFileSpec(aviutl_path);
+
+	if (RP_SUCCESS != RunProcess(aviutl_cmd, aviutl_path, &pi, NULL, GetPriorityClass(pe->h_p_aviutl), FALSE, TRUE))
+		ret = AUO_RESULT_ERROR;
+	
+	for (int i = 0; i < 20 && WAIT_TIMEOUT == WaitForInputIdle(pi.hProcess, LOG_UPDATE_INTERVAL); i++)
+		log_process_events();
+
+	*pid = pi.dwProcessId;
+
+	return ret;
+}
+
+static HWND get_top_window_handle_from_process_id(DWORD target_process_id) {
+	HWND result = NULL;
+	for (HWND hwnd = GetTopWindow(NULL); NULL != hwnd && NULL == result; hwnd = GetNextWindow(hwnd, GW_HWNDNEXT)) {
+		if (0 == GetWindowLong(hwnd, GWL_HWNDPARENT) && IsWindowVisible(hwnd)) {
+			DWORD window_process_id = 0;
+			GetWindowThreadProcessId(hwnd, &window_process_id);
+			if (window_process_id == target_process_id)
+				result = hwnd;
+		}
+	}
+	return result;
+}
+
+static HWND get_bat_list_hwnd(HWND hwnd_aviutl) {
+	log_process_events();
+	Sleep(LOG_UPDATE_INTERVAL);
+	static const int max_wait = 10000 / LOG_UPDATE_INTERVAL;
+	HWND hwnd_bat_list = NULL;
+	for (int i = 0; NULL == hwnd_bat_list && i < max_wait; i++) {
+		HWND hwnd_dialog = FindWindowEx(NULL, NULL, "#32770", NULL);
+		for (; NULL != hwnd_dialog; hwnd_dialog = FindWindowEx(NULL, hwnd_dialog, "#32770", NULL)) {
+			if (hwnd_aviutl == (HWND)GetWindowLong(hwnd_dialog, GWL_HWNDPARENT)) {
+				char buf[256] = { 0 };
+				GetWindowText(hwnd_dialog, buf, _countof(buf));
+				if (0 == strcmp(buf, "バッチ出力リスト")) {
+					hwnd_bat_list = hwnd_dialog;
 					break;
 				}
 			}
 		}
-		if (NULL == ptr
-			|| 2 != sscanf_s(ptr, "_%d_%d_tmp", &pe->div_num, &pe->div_max)
-			|| !check_range(pe->div_num, 1, pe->div_max)) {
-			pe->div_num = 0;
-			pe->div_max = 1;
-		} else {
-			pe->div_num--; //"1"始まりから"0"始まりへ変換する
+		log_process_events();
+		Sleep(LOG_UPDATE_INTERVAL);
+	}
+	return hwnd_bat_list;
+}
+
+static int aviutl_restart_bat_task(DWORD target_process_id) {
+	int run_started = 0;
+	if (GetCurrentProcessId() != target_process_id) {
+		HWND hwnd_bat_list = NULL;
+		HWND hwnd_aviutl = get_top_window_handle_from_process_id(target_process_id);
+
+		if (NULL != hwnd_aviutl
+			//すでにバッチ出力リスト画面が開かれているAviutlがあれば、それを再利用する
+			&& NULL != (hwnd_bat_list = get_bat_list_hwnd(hwnd_aviutl))) {
+
+			HWND hwnd_start_button = FindWindowEx(hwnd_bat_list, NULL, "Button", "開始");
+			if (NULL != hwnd_start_button) {
+				for (int i = 0; i < 2000 / LOG_UPDATE_INTERVAL; i++) {
+					log_process_events();
+					Sleep(LOG_UPDATE_INTERVAL);
+				}
+				run_started = 1;
+				//「開始」ボタンが有効 (= バッチ出力中でない) なら再開する 
+				if (IsWindowEnabled(hwnd_start_button)) {
+					//一度閉じる
+					SendMessage(hwnd_bat_list, WM_CLOSE, 0, 0);
+					Sleep(200);
+					log_process_events();
+
+					//再び開くことでバッチリストを更新する
+					SendMessage(hwnd_aviutl, WM_COMMAND, 1025, 0);
+					Sleep(200);
+					log_process_events();
+
+					hwnd_bat_list = get_bat_list_hwnd(hwnd_aviutl);
+					hwnd_start_button = FindWindowEx(hwnd_bat_list, NULL, "Button", "開始");
+					PostMessage(hwnd_start_button, WM_LBUTTONDOWN, MK_LBUTTON, 0);
+					PostMessage(hwnd_start_button, WM_LBUTTONUP, MK_LBUTTON, 0);
+				}
+			}
+		}
+	}
+	return run_started;
+}
+
+AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
+	AUO_RESULT ret = AUO_RESULT_SUCCESS;
+	pe->div_num = 0;
+	pe->div_max = 1;
+	if (!(PROCESS_PARALLEL_ENABLED & sys_dat->exstg->s_local.enable_process_parallel))
+		return ret;
+
+	const char *ptr = PathFindExtension(pe->temp_filename);
+	for (int i = 0; ptr && i < 2; i++) {
+		ptr--;
+		for (; *ptr != '_'; ptr--) {
+			if (ptr == pe->temp_filename) {
+				ptr = NULL;
+				break;
+			}
+		}
+	}
+	if (NULL == ptr
+		|| 2 != sscanf_s(ptr, "_%d_%d", &pe->div_num, &pe->div_max)
+		|| !check_range(pe->div_num, 0, pe->div_max)) {
+		pe->div_num = 0;
+		pe->div_max = 1;
+	} else {
+		pe->div_num--; //"1"始まりから"0"始まりへ変換する
+	}
+
+	log_process_events();
+
+	if (1 >= pe->div_max && oip->flag & OUTPUT_INFO_FLAG_BATCH) {
+		parallel_info_t info = parallel_info_parse(conf->vid.parallel_div_info);
+		if (1 < info.div_count) {
+			//分割バッチファイル自動生成
+			//現在のAviutlのバッチファイル名のリストを作成
+			std::vector<std::string> bat_aup_list = get_bat_aup_list();
+			//自分のバッチファイル名を探す
+			std::string bat_aup_file_orig = get_bat_aup_of_self(conf, bat_aup_list);
+			if (0 == bat_aup_file_orig.size()) {
+				write_log_auo_line(LOG_INFO, "自分のバッチファイルの検索に失敗しました。");
+				ret = AUO_RESULT_ERROR;
+			} else {
+				//新たなバッチファイルを作成
+				const BOOL auto_aviutl_run = !!(PROCESS_PARALLEL_AUTO_RUN & sys_dat->exstg->s_local.enable_process_parallel);
+				for (int i = 0; !ret && i < info.div_count - 1; i++) {
+					char savefile_new[MAX_PATH_LEN] = { 0 };
+					char appendix[MAX_APPENDIX_LEN] = { 0 };
+					sprintf_s(appendix, _countof(appendix), "_%d_%d%s", i+1, info.div_count, ".aup");
+					apply_appendix(savefile_new, _countof(savefile_new), oip->savefile, appendix);
+					std::string bat_aup_filename_new = (auto_aviutl_run) ? get_bat_aup_new(bat_aup_file_orig) : savefile_new;
+					change_ext(savefile_new, _countof(savefile_new), PathFindExtension(oip->savefile));
+
+					if (AUO_RESULT_SUCCESS != (ret |= create_new_bat_aup_file(bat_aup_filename_new.c_str(), bat_aup_file_orig.c_str(), savefile_new, oip->savefile))) {
+						write_log_auo_line(LOG_INFO, "分割エンコードのバッチファイルの作成に失敗しました。");
+					} else {
+						write_log_auo_line_fmt(LOG_INFO, "分割エンコードのバッチファイルを作成しました。(%d / %d)", i+1, info.div_count);
+					}
+				}
+				if (auto_aviutl_run) {
+					const std::vector<DWORD> current_running_aviutl_process_id = get_current_running_aviutl_process_id();
+					int bat_running_count = 1; //最初の1は自分の分
+					for (auto aviutl_process_id : current_running_aviutl_process_id) {
+						if (bat_running_count <= info.div_count && aviutl_restart_bat_task(aviutl_process_id)) {
+							write_log_auo_line_fmt(LOG_INFO, "並列でのバッチ出力を開始しました。(%d / %d, PID: %d)", bat_running_count, info.div_count, aviutl_process_id);
+							bat_running_count++;
+						}
+					}
+					for (int i = bat_running_count; !ret && i < info.div_count; i++) {
+						DWORD process_id = 0;
+						if (AUO_RESULT_SUCCESS != (ret |= load_aviutl_and_run_bat_task(pe, &process_id))) {
+							write_log_auo_line(LOG_INFO, "Aviutlの起動に失敗しました。");
+						} else {
+							write_log_auo_line_fmt(LOG_INFO, "Aviutlを起動し、並列でのバッチ出力を開始しました。(%d / %d, PID: %d)", i, info.div_count, process_id);
+						}
+					}
+				}
+				if (!ret) {
+					//自分が最後のプロセスとして振る舞う
+					pe->div_max = info.div_count;
+					pe->div_num = info.div_count - 1;
+					char appendix[MAX_APPENDIX_LEN] = { 0 };
+					sprintf_s(appendix, _countof(appendix), "_%d_%d%s", pe->div_num+1, pe->div_max, PathFindExtension(oip->savefile));
+					apply_appendix(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, appendix);
+				}
+			}
+			log_process_events();
 		}
 	}
 	if (1 < pe->div_max) {
@@ -411,7 +806,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 			write_log_auo_line(LOG_INFO, "分割エンコードとtcfile-inは併用できません。");
 			ret = AUO_RESULT_ERROR;
 		} else {
-			write_log_auo_line_fmt(LOG_INFO, "分割エンコードを行います。(%d / %d)", pe->div_num + 1, pe->div_max);
+			write_log_auo_line_fmt(LOG_INFO, "分割エンコードを行います。(%d / %d, PID: %d)", pe->div_num + 1, pe->div_max, GetCurrentProcessId());
 			//キーフレーム関係の機能は非対応
 			if (conf->vid.check_keyframe) {
 				write_log_auo_line(LOG_WARNING, "分割エンコードに伴い、キーフレームの検出は無効化されます。");

@@ -17,9 +17,18 @@
 #include "auo_conf.h"
 #include "auo_system.h"
 
+enum : DWORD {
+	PROCESS_PARALLEL_ENABLED  = 0x01,
+	PROCESS_PARALLEL_AUTO_RUN = 0x02,
+};
+
+int parallel_info_get_div_max(const char *info_string);
+void parallel_info_write(char *info_string, size_t nSize, int div_max);
+
 AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat);
 AUO_RESULT parallel_task_add(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat);
 AUO_RESULT parallel_task_close();
 
+void parallel_task_set_unused_parallel_info(char *info_string, size_t buf_size);
 
 #endif //_AUO_PROCESS_PARALLEL_H_

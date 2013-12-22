@@ -256,7 +256,7 @@ typedef struct LOCAL_SETTINGS {
 	BOOL   get_relative_path;                   //相対パスで保存する
 	BOOL   run_bat_minimized;                   //エンコ前後バッチ処理を最小化で実行
 	BOOL   set_keyframe_as_afs_24fps;           //自動フィールドシフト使用時にも24fps化としてキーフレーム設定を強制的に行う
-	BOOL   enable_process_parallel;             //プロセス並列を有効にする
+	DWORD  enable_process_parallel;             //プロセス並列を有効にする
 	char   custom_tmp_dir[MAX_PATH_LEN];        //一時フォルダ
 	char   custom_audio_tmp_dir[MAX_PATH_LEN];  //音声用一時フォルダ
 	char   custom_mp4box_tmp_dir[MAX_PATH_LEN]; //mp4box用一時フォルダ
