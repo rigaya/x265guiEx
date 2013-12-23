@@ -702,6 +702,8 @@ static int video_output_create_thread(video_output_thread_t *thread_data, CONVER
 
 static void video_output_close_thread(video_output_thread_t *thread_data) {
 	if (thread_data->thread) {
+		while (WAIT_TIMEOUT == WaitForSingleObject(thread_data->he_out_fin, LOG_UPDATE_INTERVAL))
+			log_process_events();
 		thread_data->abort = true;
 		SetEvent(thread_data->he_out_start);
 		WaitForSingleObject(thread_data->thread, INFINITE);
