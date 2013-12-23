@@ -124,7 +124,7 @@ public:
 		task.oip.func_is_abort       = NULL;
 		task.oip.func_rest_time_disp = NULL;
 		task.oip.func_update_preview = NULL;
-		task.oip.savefile = task.savefile;
+		task.oip.savefile            = NULL;
 		strcpy_s(task.savefile, _countof(task.savefile), oip->savefile);
 		
 		//task_listに追加するあたりはスレッド間での競合を阻止する
@@ -269,6 +269,7 @@ private:
 							fwrite(buffer, 1, bytes_read, fp_write);
 					} while (bytes_read == buf_max_bytes);
 					fclose(fp_read);
+					remove(add_filename);
 				}
 			}
 		}
@@ -360,6 +361,9 @@ private:
 		AUO_RESULT ret = AUO_RESULT_SUCCESS;
 		log_writef("%sの処理を行います。\n", i_task->filebase);
 
+		//savefileへのポインタを設定
+		i_task->oip.savefile = i_task->savefile;
+
 		//結合
 		if (!ret) ret |= combine_files(i_task);
 
@@ -376,6 +380,7 @@ private:
 			char ext[64];
 			strcpy_s(ext, _countof(ext), PathFindExtension(i_task->savefile));
 			sprintf_s(i_task->savefile, _countof(i_task->savefile), "%s%s", i_task->filebase, ext);
+			i_task->pe.div_max = 1; //move_temporary_filesを実行するため
 			ret |= move_temporary_files(&i_task->conf, &i_task->pe, i_task->sys_dat, &i_task->oip, ret);
 		}
 
