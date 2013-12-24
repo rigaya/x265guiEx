@@ -700,10 +700,11 @@ static int video_output_create_thread(video_output_thread_t *thread_data, CONVER
 	return ret;
 }
 
-static void video_output_close_thread(video_output_thread_t *thread_data) {
+static void video_output_close_thread(video_output_thread_t *thread_data, AUO_RESULT ret) {
 	if (thread_data->thread) {
-		while (WAIT_TIMEOUT == WaitForSingleObject(thread_data->he_out_fin, LOG_UPDATE_INTERVAL))
-			log_process_events();
+		if (!ret)
+			while (WAIT_TIMEOUT == WaitForSingleObject(thread_data->he_out_fin, LOG_UPDATE_INTERVAL))
+				log_process_events();
 		thread_data->abort = true;
 		SetEvent(thread_data->he_out_start);
 		WaitForSingleObject(thread_data->thread, INFINITE);
@@ -881,7 +882,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		//------------メインループここまで--------------
 
 		//書き込みスレッドを終了
-		video_output_close_thread(&thread_data);
+		video_output_close_thread(&thread_data, ret);
 
 		//ログウィンドウからのx26x制御を無効化
 		disable_x264_control();
