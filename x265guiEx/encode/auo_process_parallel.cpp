@@ -310,7 +310,9 @@ private:
 				char buffer[1024] = { 0 };
 				while (!ret && fgets(buffer, _countof(buffer)-1, fp_read)) {
 					double value = 0.0;
-					if (1 != sscanf_s(buffer, "%lf", &value)) {
+					if (buffer[0] == '#') {
+						continue;
+					} else if (1 != sscanf_s(buffer, "%lf", &value)) {
 						ret = AUO_RESULT_ERROR;
 					} else {
 						//タイムコードを整数値に変換
@@ -320,34 +322,36 @@ private:
 				fclose(fp_read);
 
 				//ファイルの最後の5フレームから、最終フレームの時間を推定してfile_offsetの計算を行う
-				int sum = 0;
-				const int max_frame_minus_5 = timecode.size()-5;
-				for (DWORD i_frame = max_frame_minus_5; i_frame < timecode.size(); i_frame++) {
-					sum += timecode[i_frame];
+				if (timecode.size()) {
+					int sum = 0;
+					const DWORD scan_start = (std::max)(1u, timecode.size()-5);
+					for (DWORD i_frame = scan_start; i_frame < timecode.size(); i_frame++) {
+						sum += timecode[i_frame] - timecode[i_frame-1];
+					}
+					file_offset = timecode[timecode.size()-1] + (int)(sum / (double)(timecode.size() - scan_start) + 0.5);
 				}
-				file_offset = timecode[timecode.size()-1] + (int)((double)(sum - timecode[max_frame_minus_5]) / 5.0 + 0.5);
 			}
 		}
 		if (!ret) {
 			char tc_filename[MAX_PATH_LEN];
 			sprintf_s(tc_filename, _countof(tc_filename), "%s_%d_%d%s", i_task->filebase, i_task->pe.div_max, i_task->pe.div_max, ext);
 			apply_appendix(tc_filename, _countof(tc_filename), tc_filename, i_task->pe.append.tc);
+
+			//もともとのx_x.timecodeのファイルをoldに除けておく
+			char tc_filename_old[MAX_PATH_LEN];
+			sprintf_s(tc_filename_old, _countof(tc_filename_old), "%s_%d_%d_old%s", i_task->filebase, i_task->pe.div_max, i_task->pe.div_max, ext);
+			apply_appendix(tc_filename_old, _countof(tc_filename_old), tc_filename_old, i_task->pe.append.tc);
+			if (PathFileExists(tc_filename_old))
+				remove(tc_filename_old);
+			rename(tc_filename, tc_filename_old);
+
 			FILE *tcfile = NULL;
 			if (fopen_s(&tcfile, tc_filename, "w") || NULL == tcfile) {
 				ret = AUO_RESULT_ERROR; log_writef("結合タイムコードファイルのオープンに失敗しました。: %s\n", tc_filename);
 			} else {
-				{
-					//もともとのx_x.timecodeのファイルをoldに除けておく
-					char tc_filename_old[MAX_PATH_LEN];
-					sprintf_s(tc_filename_old, _countof(tc_filename_old), "%s_%d_%d_old%s", i_task->filebase, i_task->pe.div_max, i_task->pe.div_max, ext);
-					apply_appendix(tc_filename_old, _countof(tc_filename_old), tc_filename_old, i_task->pe.append.tc);
-					if (PathFileExists(tc_filename_old))
-						remove(tc_filename_old);
-					rename(tc_filename, tc_filename_old);
-				}
 				//出力
 				const double tm_multi = 1000.0 / fps;
-				fprintf(tcfile, "# timecode format v2\r\n");
+				fprintf(tcfile, "# timecode format v2\n");
 				for (auto time : timecode) {
 					fprintf(tcfile, "%.6lf\n", time * tm_multi);
 				}
