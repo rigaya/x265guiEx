@@ -223,7 +223,7 @@ BOOL func_output( OUTPUT_INFO *oip )
 	if (!(ret & (AUO_RESULT_ERROR | AUO_RESULT_ABORT)))
 		ret |= run_bat_file(&conf, oip, &pe, &sys_dat, RUN_BAT_AFTER);
 
-	ret |= parallel_task_add(&conf, oip, &pe, &sys_dat);
+	if (!ret) ret |= parallel_task_add(&conf, oip, &pe, &sys_dat);
 
 	return (ret & AUO_RESULT_ERROR) ? FALSE : TRUE;
 }
@@ -247,7 +247,7 @@ BOOL func_config(HWND hwnd, HINSTANCE dll_hinst)
 int func_config_get(void *data, int size)
 {
 	if (data && size == sizeof(CONF_GUIEX)) {
-		if (PROCESS_PARALLEL_ENABLED & sys_dat.exstg->s_local.enable_process_parallel)
+		if (sys_dat.exstg->s_local.enable_process_parallel)
 			parallel_task_set_unused_parallel_info(conf.vid.parallel_div_info, _countof(conf.vid.parallel_div_info));
 		memcpy(data, &conf, sizeof(conf));
 	}

@@ -1527,7 +1527,7 @@ System::Void frmConfig::InitForm() {
 	SetTXMaxLenAll(); //テキストボックスの最大文字数
 	SetAllCheckChangedEvents(this); //変更の確認,ついでにNUの
 	//フォームの変更可不可を更新
-	bool process_parallel_enabled = 0 != (PROCESS_PARALLEL_ENABLED & sys_dat->exstg->s_local.enable_process_parallel);
+	bool process_parallel_enabled = 0 != sys_dat->exstg->s_local.enable_process_parallel;
 	fcgLBParallelDivMax->Visible = process_parallel_enabled;
 	fcgNUParallelDivMax->Visible = process_parallel_enabled;
 	fcgChangeMuxerVisible(nullptr, nullptr);

@@ -724,7 +724,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	pe->div_num = 0;
 	pe->div_max = 1;
-	if (!(PROCESS_PARALLEL_ENABLED & sys_dat->exstg->s_local.enable_process_parallel))
+	if (!sys_dat->exstg->s_local.enable_process_parallel)
 		return ret;
 
 	const char *ptr = PathFindExtension(pe->temp_filename);
@@ -761,13 +761,14 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 				ret = AUO_RESULT_ERROR;
 			} else {
 				//新たなバッチファイルを作成
-				const BOOL auto_aviutl_run = !!(PROCESS_PARALLEL_AUTO_RUN & sys_dat->exstg->s_local.enable_process_parallel);
-				for (int i = 0; !ret && i < info.div_count - 1; i++) {
+				const BOOL auto_run_all    = PROCESS_PARALLEL_AUTO_RUN_ALL    == sys_dat->exstg->s_local.process_parallel_mode;
+				const BOOL auto_run_master = PROCESS_PARALLEL_AUTO_RUN_MASTER == sys_dat->exstg->s_local.process_parallel_mode;
+				for (int i = 0; !ret && i < info.div_count - auto_run_all; i++) {
 					char savefile_new[MAX_PATH_LEN] = { 0 };
 					char appendix[MAX_APPENDIX_LEN] = { 0 };
 					sprintf_s(appendix, _countof(appendix), "_%d_%d%s", i+1, info.div_count, ".aup");
 					apply_appendix(savefile_new, _countof(savefile_new), oip->savefile, appendix);
-					std::string bat_aup_filename_new = (auto_aviutl_run) ? get_bat_aup_new(bat_aup_file_orig) : savefile_new;
+					std::string bat_aup_filename_new = (auto_run_all || (auto_run_master && i+1 == info.div_count)) ? get_bat_aup_new(bat_aup_file_orig) : savefile_new;
 					change_ext(savefile_new, _countof(savefile_new), PathFindExtension(oip->savefile));
 
 					if (AUO_RESULT_SUCCESS != (ret |= create_new_bat_aup_file(bat_aup_filename_new.c_str(), bat_aup_file_orig.c_str(), savefile_new, oip->savefile))) {
@@ -776,7 +777,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 						write_log_auo_line_fmt(LOG_INFO, "分割エンコードのバッチファイルを作成しました。(%d / %d)", i+1, info.div_count);
 					}
 				}
-				if (auto_aviutl_run) {
+				if (auto_run_all) {
 					const std::vector<DWORD> current_running_aviutl_process_id = get_current_running_aviutl_process_id();
 					int bat_running_count = 1; //最初の1は自分の分
 					for (auto aviutl_process_id : current_running_aviutl_process_id) {
@@ -793,20 +794,23 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 							write_log_auo_line_fmt(LOG_INFO, "Aviutlを起動し、並列でのバッチ出力を開始しました。(%d / %d, PID: %d)", i, info.div_count, process_id);
 						}
 					}
-				}
-				if (!ret) {
-					//自分が最後のプロセスとして振る舞う
+					if (!ret) {
+						//自分が最後のプロセスとして振る舞う
+						pe->div_max = info.div_count;
+						pe->div_num = info.div_count - 1;
+						char appendix[MAX_APPENDIX_LEN] = { 0 };
+						sprintf_s(appendix, _countof(appendix), "_%d_%d%s", pe->div_num+1, pe->div_max, PathFindExtension(oip->savefile));
+						apply_appendix(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, appendix);
+					}
+				} else {
 					pe->div_max = info.div_count;
-					pe->div_num = info.div_count - 1;
-					char appendix[MAX_APPENDIX_LEN] = { 0 };
-					sprintf_s(appendix, _countof(appendix), "_%d_%d%s", pe->div_num+1, pe->div_max, PathFindExtension(oip->savefile));
-					apply_appendix(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, appendix);
+					ret |= AUO_RESULT_ABORT;
 				}
 			}
 			log_process_events();
 		}
 	}
-	if (1 < pe->div_max) {
+	if (!ret && 1 < pe->div_max) {
 		if (1 != pe->total_pass) {
 			write_log_auo_line(LOG_INFO, "マルチパスエンコードでは、分割エンコードは利用できません。");
 			if (pe->div_num < pe->div_max)

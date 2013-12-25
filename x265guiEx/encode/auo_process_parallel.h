@@ -17,9 +17,10 @@
 #include "auo_conf.h"
 #include "auo_system.h"
 
-enum : DWORD {
-	PROCESS_PARALLEL_ENABLED  = 0x01,
-	PROCESS_PARALLEL_AUTO_RUN = 0x02,
+enum {
+	PROCESS_PARALLEL_AUTO_RUN_ALL    = 0, //すべての分割プロセスを自動実行
+	PROCESS_PARALLEL_AUTO_RUN_MASTER = 1, //マスタープロセスのみ自動実行(遅延実行)し、その他はバッチファイルを出力先に
+	PROCESS_PARALLEL_AUTO_RUN_NONE   = 2, //分割プロセスのバッチファイルを出力先に
 };
 
 int parallel_info_get_div_max(const char *info_string);
