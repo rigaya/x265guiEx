@@ -16,8 +16,8 @@
 #define EXTERN extern
 #endif //DEFINE_GLOBAL
 
-#define AUO_VERSION           0,3,13,0
-#define AUO_VERSION_STR       "3.13β"
+#define AUO_VERSION           0,3,14,0
+#define AUO_VERSION_STR       "3.14β"
 #define AUO_NAME_X264         "x264guiEx.auo"
 #define AUO_NAME_X265         "x265guiEx.auo"
 #define AUO_NAME_X264_W      L"x264guiEx.auo"
