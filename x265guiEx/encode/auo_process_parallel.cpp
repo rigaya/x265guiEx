@@ -90,6 +90,12 @@ private:
 	HANDLE thread;                     //待機・監視スレッド
 	HANDLE he_abort;                   //終了スレッド
 	CRITICAL_SECTION critical_section; //同期用
+private:
+	enum {
+		TASK_WAIT  = 0,
+		TASK_READY = 1,
+		TASK_ABORT = 2,
+	};
 public:
 	TaskController::TaskController() {
 		thread = NULL;
@@ -402,22 +408,37 @@ private:
 
 		return ret;
 	}
-	bool task_check(TASK_INFO *i_task) {
-		bool all_files_fin = true;
-		const char *ext = PathFindExtension(i_task->pe.temp_filename);
-		for (int i = 0; all_files_fin && i < i_task->pe.div_max; i++) {
-			char check_filename[MAX_PATH_LEN];
-			sprintf_s(check_filename, _countof(check_filename), "%s_%d_%d_tmp%s", i_task->filebase, i+1, i_task->pe.div_max, ext);
-			all_files_fin &= !!PathFileExists(check_filename);
+	AUO_RESULT task_abort(TASK_INFO *i_task) {
+		for (int i = 0; i < i_task->pe.div_max; i++) {
+			char check_filename[MAX_PATH_LEN] = { 0 };
+			sprintf_s(check_filename, _countof(check_filename), "%s_%d_%d_abort.txt", i_task->filebase, i+1, i_task->pe.div_max);
+			if (PathFileExists(check_filename))
+				remove(check_filename);
 		}
-		return all_files_fin;
+		return AUO_RESULT_ABORT;
+	}
+	int task_check(TASK_INFO *i_task) {
+		int task_status = TASK_READY;
+		const char *ext = PathFindExtension(i_task->pe.temp_filename);
+		for (int i = 0; task_status != TASK_WAIT && i < i_task->pe.div_max; i++) {
+			char check_filename[MAX_PATH_LEN] = { 0 };
+			sprintf_s(check_filename, _countof(check_filename), "%s_%d_%d_tmp%s", i_task->filebase, i+1, i_task->pe.div_max, ext);
+			if (!PathFileExists(check_filename)) {
+				task_status = TASK_WAIT;
+				sprintf_s(check_filename, _countof(check_filename), "%s_%d_%d_abort.txt", i_task->filebase, i+1, i_task->pe.div_max);
+				if (PathFileExists(check_filename))
+					task_status = TASK_ABORT;
+			}
+		}
+		return task_status;
 	}
 	AUO_RESULT task_check(BOOL *task_empty) {
 		AUO_RESULT ret = AUO_RESULT_SUCCESS;
 		int task_processed = 0;
 		for (auto i_task : task_list) {
-			if (task_check(&i_task)) {
-				ret |= task_run(&i_task);
+			int task_status = task_check(&i_task);
+			if (TASK_WAIT != task_status) {
+				ret |= (TASK_READY == task_status) ? task_run(&i_task) : task_abort(&i_task);
 				task_delete(i_task.id);
 				task_processed++;
 				break;
@@ -812,6 +833,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 					}
 				} else {
 					pe->div_max = info.div_count;
+					pe->div_num = -1;
 					ret |= AUO_RESULT_ABORT;
 				}
 			}
@@ -847,9 +869,24 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 	return ret;
 }
 
-AUO_RESULT parallel_task_add(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
+AUO_RESULT parallel_task_add(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat, AUO_RESULT ret) {
 	if (1 >= pe->div_max)
 		return AUO_RESULT_SUCCESS;
+
+	if (ret & (AUO_RESULT_ABORT | AUO_RESULT_ERROR)) {
+		if (0 <= pe->div_num) {
+			//abortファイルを作る
+			char appendix[MAX_APPENDIX_LEN] = { 0 };
+			char abort_file[MAX_PATH_LEN] = { 0 };
+			sprintf_s(appendix, _countof(appendix), "_%d_%d_abort.txt", pe->div_num+1, pe->div_max);
+			apply_appendix(abort_file, _countof(abort_file), pe->temp_filename, appendix);
+			HANDLE hnd = CreateFile(abort_file, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			if (INVALID_HANDLE_VALUE != hnd) {
+				CloseHandle(hnd);
+			}
+		}
+		return ret;
+	}
 
 	//ファイル名に"_tmp"を追加して改名
 	const char *ext = PathFindExtension(pe->temp_filename);
