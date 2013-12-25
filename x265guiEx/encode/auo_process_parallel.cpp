@@ -359,6 +359,14 @@ private:
 				log_writef("結合タイムコードファイルを出力しました。: %s\n", tc_filename);
 			}
 		}
+		for (int i = 0; !ret && i < i_task->pe.div_max; i++) {
+			//タイムコードの結合が成功していたら後片付け
+			char tc_filename_old[MAX_PATH_LEN] = { 0 };
+			sprintf_s(tc_filename_old, _countof(tc_filename_old), "%s_%d_%d%s%s", i_task->filebase, i+1, i_task->pe.div_max, (i+1 == i_task->pe.div_max) ? "_old" : "", ext);
+			apply_appendix(tc_filename_old, _countof(tc_filename_old), tc_filename_old, i_task->pe.append.tc);
+			if (PathFileExists(tc_filename_old))
+				remove(tc_filename_old);
+		}
 		return ret;
 	}
 	AUO_RESULT task_run(TASK_INFO *i_task) {
