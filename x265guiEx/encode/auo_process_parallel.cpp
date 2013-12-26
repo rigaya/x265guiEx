@@ -673,6 +673,43 @@ static int load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
 	return ret;
 }
 
+//自分と同じAviutlを立ち上げ、バッチ出力の開始
+static AUO_RESULT aviutl_add_bat_task(const char *bat_file, const char *savefile) {
+	AUO_RESULT ret = AUO_RESULT_SUCCESS;
+	PROCESS_INFORMATION pi = { 0 };
+	char aviutl_cmd[MAX_PATH_LEN]  = { 0 };
+	char aviutl_path[MAX_PATH_LEN] = { 0 };
+	GetModuleFileName(NULL, aviutl_path, _countof(aviutl_path));
+	sprintf_s(aviutl_cmd, _countof(aviutl_cmd), "\"%s\" \"%s\" -bp \"%s\" -q", aviutl_path, bat_file, savefile); //バッチ登録して終了
+	PathRemoveFileSpec(aviutl_path);
+
+	if (RP_SUCCESS != RunProcess(aviutl_cmd, aviutl_path, &pi, NULL, BELOW_NORMAL_PRIORITY_CLASS, TRUE, TRUE))
+		ret = AUO_RESULT_ERROR;
+	
+	while (WAIT_TIMEOUT == WaitForInputIdle(pi.hProcess, LOG_UPDATE_INTERVAL))
+		log_process_events();
+
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+
+	for (int i = 0; i < 1000 / LOG_UPDATE_INTERVAL; i++) {
+		log_process_events();
+		Sleep(LOG_UPDATE_INTERVAL);
+	}
+
+	return ret;
+}
+
+static AUO_RESULT add_master_batfile_to_aviutl(int div_count, const char *savefile) {
+	char new_savefile[MAX_PATH_LEN] ={ 0 };
+	char src_bat_file[MAX_PATH_LEN] ={ 0 };
+	char appendix[MAX_APPENDIX_LEN] ={ 0 };
+	sprintf_s(appendix, _countof(appendix), "_%d_%d%s", div_count, div_count, PathFindExtension(savefile));
+	apply_appendix(new_savefile, _countof(new_savefile), savefile, appendix);
+	apply_appendix(src_bat_file, _countof(src_bat_file), new_savefile, ".aup");
+	return aviutl_add_bat_task(src_bat_file, new_savefile);
+}
+
 static HWND get_top_window_handle_from_process_id(HWND hwnd_last, DWORD target_process_id) {
 	HWND result = NULL;
 	for (HWND hwnd = (hwnd_last) ? GetNextWindow(hwnd_last, GW_HWNDNEXT) : GetTopWindow(NULL); NULL != hwnd && NULL == result; hwnd = GetNextWindow(hwnd, GW_HWNDNEXT)) {
@@ -810,7 +847,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 					char appendix[MAX_APPENDIX_LEN] = { 0 };
 					sprintf_s(appendix, _countof(appendix), "_%d_%d%s", i+1, info.div_count, ".aup");
 					apply_appendix(savefile_new, _countof(savefile_new), oip->savefile, appendix);
-					std::string bat_aup_filename_new = (auto_run_all || (auto_run_master && i+1 == info.div_count)) ? get_bat_aup_new(bat_aup_file_orig) : savefile_new;
+					std::string bat_aup_filename_new = (auto_run_all) ? get_bat_aup_new(bat_aup_file_orig) : savefile_new;
 					change_ext(savefile_new, _countof(savefile_new), PathFindExtension(oip->savefile));
 
 					if (AUO_RESULT_SUCCESS != (ret |= create_new_bat_aup_file(bat_aup_filename_new.c_str(), bat_aup_file_orig.c_str(), savefile_new, oip->savefile))) {
@@ -845,6 +882,8 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 						apply_appendix(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, appendix);
 					}
 				} else {
+					if (auto_run_master)
+						add_master_batfile_to_aviutl(info.div_count, oip->savefile);
 					pe->div_max = info.div_count;
 					pe->div_num = -1;
 					ret |= AUO_RESULT_ABORT;
