@@ -653,8 +653,8 @@ static std::vector<DWORD> get_current_running_aviutl_process_id() {
 }
 
 //自分と同じAviutlを立ち上げ、バッチ出力の開始
-static int load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
-	int ret = AUO_RESULT_SUCCESS;
+static AUO_RESULT load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
+	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	PROCESS_INFORMATION pi = { 0 };
 	char aviutl_cmd[MAX_PATH_LEN]  = { 0 };
 	char aviutl_path[MAX_PATH_LEN] = { 0 };
@@ -669,6 +669,9 @@ static int load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
 		log_process_events();
 
 	*pid = pi.dwProcessId;
+
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
 
 	return ret;
 }
