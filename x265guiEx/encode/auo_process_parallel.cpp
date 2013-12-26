@@ -673,10 +673,10 @@ static int load_aviutl_and_run_bat_task(const PRM_ENC *pe, DWORD *pid) {
 	return ret;
 }
 
-static HWND get_top_window_handle_from_process_id(DWORD target_process_id) {
+static HWND get_top_window_handle_from_process_id(HWND hwnd_last, DWORD target_process_id) {
 	HWND result = NULL;
-	for (HWND hwnd = GetTopWindow(NULL); NULL != hwnd && NULL == result; hwnd = GetNextWindow(hwnd, GW_HWNDNEXT)) {
-		if (0 == GetWindowLong(hwnd, GWL_HWNDPARENT) && IsWindowVisible(hwnd)) {
+	for (HWND hwnd = (hwnd_last) ? GetNextWindow(hwnd_last, GW_HWNDNEXT) : GetTopWindow(NULL); NULL != hwnd && NULL == result; hwnd = GetNextWindow(hwnd, GW_HWNDNEXT)) {
+		if (hwnd != hwnd_last && 0 == GetWindowLong(hwnd, GWL_HWNDPARENT) && IsWindowVisible(hwnd)) {
 			DWORD window_process_id = 0;
 			GetWindowThreadProcessId(hwnd, &window_process_id);
 			if (window_process_id == target_process_id)
@@ -689,7 +689,7 @@ static HWND get_top_window_handle_from_process_id(DWORD target_process_id) {
 static HWND get_bat_list_hwnd(HWND hwnd_aviutl) {
 	log_process_events();
 	Sleep(LOG_UPDATE_INTERVAL);
-	static const int max_wait = 10000 / LOG_UPDATE_INTERVAL;
+	static const int max_wait = 2000 / LOG_UPDATE_INTERVAL;
 	HWND hwnd_bat_list = NULL;
 	for (int i = 0; NULL == hwnd_bat_list && i < max_wait; i++) {
 		HWND hwnd_dialog = FindWindowEx(NULL, NULL, "#32770", NULL);
@@ -709,24 +709,25 @@ static HWND get_bat_list_hwnd(HWND hwnd_aviutl) {
 	return hwnd_bat_list;
 }
 
+//すでにバッチ出力リスト画面が開かれているAviutlがあれば、それを再利用する
+//バッチ出力リストを閉じて再び開くことで更新を書ける
 static int aviutl_restart_bat_task(DWORD target_process_id) {
 	int run_started = 0;
+	HWND hwnd_bat_list = NULL, hwnd_start_button = NULL;
+
 	if (GetCurrentProcessId() != target_process_id) {
-		HWND hwnd_bat_list = NULL;
-		HWND hwnd_aviutl = get_top_window_handle_from_process_id(target_process_id);
 
-		if (NULL != hwnd_aviutl
-			//すでにバッチ出力リスト画面が開かれているAviutlがあれば、それを再利用する
-			&& NULL != (hwnd_bat_list = get_bat_list_hwnd(hwnd_aviutl))) {
-
-			HWND hwnd_start_button = FindWindowEx(hwnd_bat_list, NULL, "Button", "開始");
-			if (NULL != hwnd_start_button) {
+		for (HWND hwnd_aviutl = get_top_window_handle_from_process_id(NULL, target_process_id); NULL != hwnd_aviutl;
+			hwnd_aviutl = get_top_window_handle_from_process_id(hwnd_aviutl, target_process_id)) {
+			if (NULL != (hwnd_bat_list = get_bat_list_hwnd(hwnd_aviutl))
+				&& NULL != (hwnd_start_button = FindWindowEx(hwnd_bat_list, NULL, "Button", "開始"))) {
 				for (int i = 0; i < 2000 / LOG_UPDATE_INTERVAL; i++) {
 					log_process_events();
 					Sleep(LOG_UPDATE_INTERVAL);
 				}
 				run_started = 1;
-				//「開始」ボタンが有効 (= バッチ出力中でない) なら再開する 
+				//「開始」ボタンが有効 (= バッチ出力中でない) なら再開する
+				// 自分自身に対しては、強制的に更新をかける
 				if (IsWindowEnabled(hwnd_start_button)) {
 					//一度閉じる
 					SendMessage(hwnd_bat_list, WM_CLOSE, 0, 0);
@@ -742,7 +743,9 @@ static int aviutl_restart_bat_task(DWORD target_process_id) {
 					hwnd_start_button = FindWindowEx(hwnd_bat_list, NULL, "Button", "開始");
 					PostMessage(hwnd_start_button, WM_LBUTTONDOWN, MK_LBUTTON, 0);
 					PostMessage(hwnd_start_button, WM_LBUTTONUP, MK_LBUTTON, 0);
+					log_process_events();
 				}
+				break;
 			}
 		}
 	}
