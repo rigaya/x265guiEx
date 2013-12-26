@@ -211,7 +211,7 @@ BOOL func_output( OUTPUT_INFO *oip )
 		close_afsvideo(&pe); //※3 end
 
 	} else {
-		ret |= AUO_RESULT_ERROR;
+		if (!ret) ret |= AUO_RESULT_ERROR;
 	}
 
 	if (ret & AUO_RESULT_ABORT) info_encoding_aborted();
