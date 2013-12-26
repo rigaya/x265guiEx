@@ -749,6 +749,16 @@ static int aviutl_restart_bat_task(DWORD target_process_id) {
 	return run_started;
 }
 
+static bool check_parallel_process_compatible(const CONF_GUIEX *conf, const PRM_ENC *pe) {
+	bool result = true;
+	if (1 != pe->total_pass) {
+		result = false; write_log_auo_line(LOG_INFO, "マルチパスエンコードでは、分割エンコードは利用できません。");
+	} else if (conf->x26x[conf->vid.enc_type].use_tcfilein) {
+		result = false; write_log_auo_line(LOG_INFO, "分割エンコードとtcfile-inは併用できません。");
+	}
+	return result;
+}
+
 AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	pe->div_num = 0;
@@ -779,7 +789,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 
 	if (1 >= pe->div_max && oip->flag & OUTPUT_INFO_FLAG_BATCH) {
 		parallel_info_t info = parallel_info_parse(conf->vid.parallel_div_info);
-		if (1 < info.div_count) {
+		if (1 < info.div_count && check_parallel_process_compatible(conf, pe)) {
 			//分割バッチファイル自動生成
 			//現在のAviutlのバッチファイル名のリストを作成
 			std::vector<std::string> bat_aup_list = get_bat_aup_list();
@@ -841,12 +851,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 		}
 	}
 	if (!ret && 1 < pe->div_max) {
-		if (1 != pe->total_pass) {
-			write_log_auo_line(LOG_INFO, "マルチパスエンコードでは、分割エンコードは利用できません。");
-			if (pe->div_num < pe->div_max)
-				ret = AUO_RESULT_ERROR;
-		} else if (conf->x26x[conf->vid.enc_type].use_tcfilein) {
-			write_log_auo_line(LOG_INFO, "分割エンコードとtcfile-inは併用できません。");
+		if (!check_parallel_process_compatible(conf, pe)) {
 			ret = AUO_RESULT_ERROR;
 		} else {
 			write_log_auo_line_fmt(LOG_INFO, "分割エンコードを行います。(%d / %d, PID: %d)", pe->div_num + 1, pe->div_max, GetCurrentProcessId());
