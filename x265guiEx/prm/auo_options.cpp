@@ -306,6 +306,7 @@ static X26X_OPTIONS x265_options_table[] = {
 	//{ "timebase",         "",   OPTION_TYPE_TIMEBASE,      NULL,                 NULL                                 },
 	//{ "progress",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, disable_progress) },
 	//{ "no-progress",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, disable_progress) },
+	//{ "cutree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, cutree         ) },
 	{ NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 

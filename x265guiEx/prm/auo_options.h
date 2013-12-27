@@ -387,7 +387,8 @@ typedef struct FLOAT2 {
 	BOOL    strong_intra_smooth; \
 	int     rd; \
 	BOOL    loop_filter; \
-	BOOL    sao;
+	BOOL    sao; \
+	//BOOL    cutree;
 
 //サイズ計算用
 typedef struct CONF_X26x_dummy {
