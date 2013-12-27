@@ -214,7 +214,7 @@ static X26X_OPTIONS x265_options_table[] = {
 	{ "rc-lookahead",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rc_lookahead   ) },
 	//{ "vbv-bufsize",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, vbv_bufsize    ) },
 	//{ "vbv-maxrate",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, vbv_maxrate    ) },
-	{ "aq-mode",          "",   OPTION_TYPE_LIST,          list_aq,              offsetof(CONF_X265, aq_mode        ) },
+	{ "aq-mode",          "",   OPTION_TYPE_INT,           list_aq,              offsetof(CONF_X265, aq_mode        ) },
 	{ "aq-strength",      "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, aq_strength    ) },
 	//{ "psy-rd",           "",   OPTION_TYPE_FLOAT2,        NULL,                 offsetof(CONF_X265, psy_rd         ) },
 	//{ "psy",              "",   OPTION_TYPE_PSY,           NULL,                 offsetof(CONF_X265, psy_rd         ) },
