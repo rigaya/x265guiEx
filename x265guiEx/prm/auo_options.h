@@ -93,16 +93,11 @@ const X26X_OPTION_STR list_output_csp_x265[] = {
 	{ "i422", L"i422" },
 	{ NULL, NULL },
 };
-const X26X_OPTION_STR list_aq_x264[] = { 
+const X26X_OPTION_STR list_aq[] = { 
 	{ NULL, L"none"    }, 
 	{ NULL, L"VAQ"     }, 
 	{ NULL, L"AutoVAQ" }, 
 	{ NULL, NULL } 
-};
-const X26X_OPTION_STR list_aq_x265[] = {
-	{ NULL, L"none" },
-	{ NULL, L"VAQ" },
-	{ NULL, NULL }
 };
 const X26X_OPTION_STR list_weightp[] = { 
 	{ NULL, L"Disabled" }, 

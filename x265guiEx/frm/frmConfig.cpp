@@ -1308,7 +1308,7 @@ System::Void frmConfig::InitData(CONF_GUIEX *set_config, const SYSTEM_DATA *syst
 System::Void frmConfig::InitComboBox() {
 	//コンボボックスに値を設定する
 	//x264
-	setComboBox(fcgCXAQMode,         list_aq_x264);
+	setComboBox(fcgCXAQMode,         list_aq);
 	setComboBox(fcgCXAspectRatio,    aspect_desc);
 	setComboBox(fcgCXAudioTempDir,   audtempdir_desc);
 	setComboBox(fcgCXBAdpapt,        list_b_adpat);
@@ -1336,7 +1336,7 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fcgCXInterlaced,     interlaced_desc);
 	
 	//x265
-	setComboBox(fchCXAQMode,         list_aq_x265);
+	setComboBox(fchCXAQMode,         list_aq);
 	setComboBox(fchCXX265Mode,       x265_encodemode_desc);
 	setComboBox(fchCXME,             list_me_x265);
 	setComboBox(fchCXSubME,          list_subme_x265);
