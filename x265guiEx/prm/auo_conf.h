@@ -28,7 +28,8 @@ enum {
 	RUN_BAT_BEFORE = 0x02,
 };
 
-static const char *const CONF_NAME_OLD = "x264guiEx ConfigFile";
+static const char *const CONF_NAME_OLD_X264 = "x264guiEx ConfigFile";
+static const char *const CONF_NAME_OLD_X265 = "x265guiEx ConfigFile";
 static const char *const CONF_NAME     = "x264/x265guiEx ConfigFile";
 const int CONF_NAME_BLOCK_LEN          = 32;
 const int CONF_BLOCK_MAX               = 32;

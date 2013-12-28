@@ -125,7 +125,9 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 	//設定ファイルチェック
 	char conf_name[CONF_NAME_BLOCK_LEN + 32];
 	fread(&conf_name, sizeof(char), CONF_NAME_BLOCK_LEN, fp);
-	if (strcmp(CONF_NAME, conf_name) && strcmp(CONF_NAME_OLD, conf_name)) {
+	if (   strcmp(CONF_NAME,          conf_name)
+		&& strcmp(CONF_NAME_OLD_X264, conf_name)
+		&& strcmp(CONF_NAME_OLD_X265, conf_name)) {
 		fclose(fp);
 		return CONF_ERROR_FILE_OPEN;
 	}
@@ -139,7 +141,7 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 	write_conf_header(conf);
 	
 	//旧設定ファイルから変換
-	if (0 == strcmp(CONF_NAME_OLD, conf_name)) {
+	if (0 == strcmp(CONF_NAME_OLD_X264, conf_name)) {
 		convert_x264stg_to_x265stg(conf, dat);
 		return 0;
 	}
