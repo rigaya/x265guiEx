@@ -926,10 +926,8 @@ AUO_RESULT parallel_task_add(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM
 	if (ret & (AUO_RESULT_ABORT | AUO_RESULT_ERROR)) {
 		if (0 <= pe->div_num) {
 			//abortファイルを作る
-			char appendix[MAX_APPENDIX_LEN] = { 0 };
 			char abort_file[MAX_PATH_LEN] = { 0 };
-			sprintf_s(appendix, _countof(appendix), "_%d_%d_abort.txt", pe->div_num+1, pe->div_max);
-			apply_appendix(abort_file, _countof(abort_file), pe->temp_filename, appendix);
+			apply_appendix(abort_file, _countof(abort_file), pe->temp_filename, "_abort.txt");
 			HANDLE hnd = CreateFile(abort_file, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 			if (INVALID_HANDLE_VALUE != hnd) {
 				CloseHandle(hnd);
