@@ -32,6 +32,7 @@ static const double DEFAULT_AMP_REENC_AUDIO_MULTI = 0.10;
 static const BOOL   DEFAULT_AMP_KEEP_OLD_FILE     = 0;
 static const BOOL   DEFAULT_RUN_BAT_MINIMIZED     = 0;
 static const BOOL   DEFAULT_SET_KEYFRAME_AFS24FPS = 0;
+static const BOOL   DEFAULT_DISABLE_X26X_VERCHECK = 0;
 static const BOOL   DEFAULT_USE_PROCESS_PARALLEL  = 0;
 static const int    DEFAULT_PROCESS_PARALLEL_MODE = 0;
 
@@ -257,6 +258,7 @@ typedef struct LOCAL_SETTINGS {
 	BOOL   get_relative_path;                   //相対パスで保存する
 	BOOL   run_bat_minimized;                   //エンコ前後バッチ処理を最小化で実行
 	BOOL   set_keyframe_as_afs_24fps;           //自動フィールドシフト使用時にも24fps化としてキーフレーム設定を強制的に行う
+	BOOL   disable_x26x_version_check;          //x264/x265実行ファイルのバージョンチェックを行わない
 	BOOL   enable_process_parallel;             //プロセス並列を有効にする
 	int    process_parallel_mode;               //プロセス並列の方式
 	char   custom_tmp_dir[MAX_PATH_LEN];        //一時フォルダ

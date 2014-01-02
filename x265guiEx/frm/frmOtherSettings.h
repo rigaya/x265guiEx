@@ -117,6 +117,7 @@ namespace x265guiEx {
 	private: System::Windows::Forms::ComboBox^  fosCXDefaultOutExt;
 	private: System::Windows::Forms::CheckBox^  fosCBRunBatMinimized;
 	private: System::Windows::Forms::CheckBox^  fosCBKeepQPFile;
+	private: System::Windows::Forms::CheckBox^  fosCBDisableX26XVersionCheck;
 
 
 
@@ -194,6 +195,7 @@ namespace x265guiEx {
 			this->fosLBAMPLimitMarginMin = (gcnew System::Windows::Forms::Label());
 			this->fosTBAMPLimitMarginMulti = (gcnew System::Windows::Forms::TrackBar());
 			this->fosCBAmpKeepOldFile = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBDisableX26XVersionCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->fosTabControl->SuspendLayout();
 			this->fostabPageGeneral->SuspendLayout();
 			this->fostabPageAMP->SuspendLayout();
@@ -207,7 +209,7 @@ namespace x265guiEx {
 			// 
 			this->fosCBCancel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->fosCBCancel->DialogResult = System::Windows::Forms::DialogResult::Cancel;
-			this->fosCBCancel->Location = System::Drawing::Point(171, 522);
+			this->fosCBCancel->Location = System::Drawing::Point(171, 545);
 			this->fosCBCancel->Name = L"fosCBCancel";
 			this->fosCBCancel->Size = System::Drawing::Size(84, 29);
 			this->fosCBCancel->TabIndex = 1;
@@ -218,7 +220,7 @@ namespace x265guiEx {
 			// fosCBOK
 			// 
 			this->fosCBOK->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->fosCBOK->Location = System::Drawing::Point(283, 522);
+			this->fosCBOK->Location = System::Drawing::Point(283, 545);
 			this->fosCBOK->Name = L"fosCBOK";
 			this->fosCBOK->Size = System::Drawing::Size(84, 29);
 			this->fosCBOK->TabIndex = 2;
@@ -360,11 +362,12 @@ namespace x265guiEx {
 			this->fosTabControl->Location = System::Drawing::Point(1, 1);
 			this->fosTabControl->Name = L"fosTabControl";
 			this->fosTabControl->SelectedIndex = 0;
-			this->fosTabControl->Size = System::Drawing::Size(392, 515);
+			this->fosTabControl->Size = System::Drawing::Size(392, 538);
 			this->fosTabControl->TabIndex = 17;
 			// 
 			// fostabPageGeneral
 			// 
+			this->fostabPageGeneral->Controls->Add(this->fosCBDisableX26XVersionCheck);
 			this->fostabPageGeneral->Controls->Add(this->fosCBKeepQPFile);
 			this->fostabPageGeneral->Controls->Add(this->fosCBRunBatMinimized);
 			this->fostabPageGeneral->Controls->Add(this->fosLBDefaultOutExt2);
@@ -386,7 +389,7 @@ namespace x265guiEx {
 			this->fostabPageGeneral->Location = System::Drawing::Point(4, 24);
 			this->fostabPageGeneral->Name = L"fostabPageGeneral";
 			this->fostabPageGeneral->Padding = System::Windows::Forms::Padding(3);
-			this->fostabPageGeneral->Size = System::Drawing::Size(384, 487);
+			this->fostabPageGeneral->Size = System::Drawing::Size(384, 510);
 			this->fostabPageGeneral->TabIndex = 0;
 			this->fostabPageGeneral->Text = L"一般設定";
 			this->fostabPageGeneral->UseVisualStyleBackColor = true;
@@ -667,13 +670,24 @@ namespace x265guiEx {
 			this->fosCBAmpKeepOldFile->Text = L"自動マルチパスで、上限をオーバーしてしまい再エンコードする際に、上限オーバーの動画を削除しない";
 			this->fosCBAmpKeepOldFile->UseVisualStyleBackColor = true;
 			// 
+			// fosCBDisableX26XVersionCheck
+			// 
+			this->fosCBDisableX26XVersionCheck->AutoSize = true;
+			this->fosCBDisableX26XVersionCheck->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->fosCBDisableX26XVersionCheck->Location = System::Drawing::Point(17, 477);
+			this->fosCBDisableX26XVersionCheck->Name = L"fosCBDisableX26XVersionCheck";
+			this->fosCBDisableX26XVersionCheck->Size = System::Drawing::Size(263, 19);
+			this->fosCBDisableX26XVersionCheck->TabIndex = 17;
+			this->fosCBDisableX26XVersionCheck->Text = L"エンコーダのバージョンチェックをスキップ (デバッグ用)";
+			this->fosCBDisableX26XVersionCheck->UseVisualStyleBackColor = true;
+			// 
 			// frmOtherSettings
 			// 
 			this->AcceptButton = this->fosCBOK;
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Dpi;
 			this->CancelButton = this->fosCBCancel;
-			this->ClientSize = System::Drawing::Size(392, 561);
+			this->ClientSize = System::Drawing::Size(392, 584);
 			this->Controls->Add(this->fosTabControl);
 			this->Controls->Add(this->fosCBOK);
 			this->Controls->Add(this->fosCBCancel);
@@ -711,20 +725,21 @@ namespace x265guiEx {
 			stgDir = fosTXStgDir->Text;
 			fos_ex_stg->load_encode_stg();
 			fos_ex_stg->load_log_win();
-			fos_ex_stg->s_local.auto_afs_disable         = fosCBAutoAFSDisable->Checked;
-			fos_ex_stg->s_local.amp_keep_old_file        = fosCBAmpKeepOldFile->Checked;
-			fos_ex_stg->s_local.amp_bitrate_margin_multi = (double)(fosNUAMPLimitMargin->Value) / 100.0;
-			fos_ex_stg->s_local.auto_del_stats           = fosCBAutoDelStats->Checked;
-			fos_ex_stg->s_local.auto_del_chap            = fosCBAutoDelChap->Checked;
-			fos_ex_stg->s_local.keep_qp_file             = fosCBKeepQPFile->Checked;
-			fos_ex_stg->s_local.disable_tooltip_help     = fosCBDisableToolTip->Checked;
-			fos_ex_stg->s_local.disable_visual_styles    = fosCBDisableVisualStyles->Checked;
-			fos_ex_stg->s_local.enable_stg_esc_key       = fosCBStgEscKey->Checked;
-			fos_ex_stg->s_log.minimized                  = fosCBLogStartMinimized->Checked;
-			fos_ex_stg->s_log.transparent                = !fosCBLogDisableTransparency->Checked;
-			fos_ex_stg->s_local.get_relative_path        = fosCBGetRelativePath->Checked;
-			fos_ex_stg->s_local.default_output_ext       = fosCXDefaultOutExt->SelectedIndex;
-			fos_ex_stg->s_local.run_bat_minimized        = fosCBRunBatMinimized->Checked;
+			fos_ex_stg->s_local.auto_afs_disable           = fosCBAutoAFSDisable->Checked;
+			fos_ex_stg->s_local.amp_keep_old_file          = fosCBAmpKeepOldFile->Checked;
+			fos_ex_stg->s_local.amp_bitrate_margin_multi   = (double)(fosNUAMPLimitMargin->Value) / 100.0;
+			fos_ex_stg->s_local.auto_del_stats             = fosCBAutoDelStats->Checked;
+			fos_ex_stg->s_local.auto_del_chap              = fosCBAutoDelChap->Checked;
+			fos_ex_stg->s_local.keep_qp_file               = fosCBKeepQPFile->Checked;
+			fos_ex_stg->s_local.disable_tooltip_help       = fosCBDisableToolTip->Checked;
+			fos_ex_stg->s_local.disable_visual_styles      = fosCBDisableVisualStyles->Checked;
+			fos_ex_stg->s_local.enable_stg_esc_key         = fosCBStgEscKey->Checked;
+			fos_ex_stg->s_log.minimized                    = fosCBLogStartMinimized->Checked;
+			fos_ex_stg->s_log.transparent                  = !fosCBLogDisableTransparency->Checked;
+			fos_ex_stg->s_local.get_relative_path          = fosCBGetRelativePath->Checked;
+			fos_ex_stg->s_local.default_output_ext         = fosCXDefaultOutExt->SelectedIndex;
+			fos_ex_stg->s_local.run_bat_minimized          = fosCBRunBatMinimized->Checked;
+			fos_ex_stg->s_local.disable_x26x_version_check = fosCBDisableX26XVersionCheck->Checked;
 			fos_ex_stg->save_local();
 			fos_ex_stg->save_log_win();
 			this->Close();
@@ -746,20 +761,21 @@ namespace x265guiEx {
 			fosTXStgDir->Text = stgDir;
 			fos_ex_stg->load_encode_stg();
 			fos_ex_stg->load_log_win();
-			fosCBAutoAFSDisable->Checked         = fos_ex_stg->s_local.auto_afs_disable != 0;
-			fosNUAMPLimitMargin->Value           = clamp(Convert::ToDecimal(fos_ex_stg->s_local.amp_bitrate_margin_multi * 100.0), fosNUAMPLimitMargin->Minimum, fosNUAMPLimitMargin->Maximum);
-			fosCBAmpKeepOldFile->Checked         = fos_ex_stg->s_local.amp_keep_old_file != 0;
-			fosCBAutoDelStats->Checked           = fos_ex_stg->s_local.auto_del_stats != 0;
-			fosCBAutoDelChap->Checked            = fos_ex_stg->s_local.auto_del_chap != 0;
-			fosCBKeepQPFile->Checked             = fos_ex_stg->s_local.keep_qp_file != 0;
-			fosCBDisableToolTip->Checked         = fos_ex_stg->s_local.disable_tooltip_help != 0;
-			fosCBDisableVisualStyles->Checked    = fos_ex_stg->s_local.disable_visual_styles != 0;
-			fosCBStgEscKey->Checked              = fos_ex_stg->s_local.enable_stg_esc_key != 0;
-			fosCBLogStartMinimized->Checked      = fos_ex_stg->s_log.minimized != 0;
-			fosCBLogDisableTransparency->Checked = fos_ex_stg->s_log.transparent == 0;
-			fosCBGetRelativePath->Checked        = fos_ex_stg->s_local.get_relative_path != 0;
-			fosCXDefaultOutExt->SelectedIndex    = fos_ex_stg->s_local.default_output_ext;
-			fosCBRunBatMinimized->Checked        = fos_ex_stg->s_local.run_bat_minimized != 0;
+			fosCBAutoAFSDisable->Checked          = fos_ex_stg->s_local.auto_afs_disable != 0;
+			fosNUAMPLimitMargin->Value            = clamp(Convert::ToDecimal(fos_ex_stg->s_local.amp_bitrate_margin_multi * 100.0), fosNUAMPLimitMargin->Minimum, fosNUAMPLimitMargin->Maximum);
+			fosCBAmpKeepOldFile->Checked          = fos_ex_stg->s_local.amp_keep_old_file != 0;
+			fosCBAutoDelStats->Checked            = fos_ex_stg->s_local.auto_del_stats != 0;
+			fosCBAutoDelChap->Checked             = fos_ex_stg->s_local.auto_del_chap != 0;
+			fosCBKeepQPFile->Checked              = fos_ex_stg->s_local.keep_qp_file != 0;
+			fosCBDisableToolTip->Checked          = fos_ex_stg->s_local.disable_tooltip_help != 0;
+			fosCBDisableVisualStyles->Checked     = fos_ex_stg->s_local.disable_visual_styles != 0;
+			fosCBStgEscKey->Checked               = fos_ex_stg->s_local.enable_stg_esc_key != 0;
+			fosCBLogStartMinimized->Checked       = fos_ex_stg->s_log.minimized != 0;
+			fosCBLogDisableTransparency->Checked  = fos_ex_stg->s_log.transparent == 0;
+			fosCBGetRelativePath->Checked         = fos_ex_stg->s_local.get_relative_path != 0;
+			fosCXDefaultOutExt->SelectedIndex     = fos_ex_stg->s_local.default_output_ext;
+			fosCBRunBatMinimized->Checked         = fos_ex_stg->s_local.run_bat_minimized != 0;
+			fosCBDisableX26XVersionCheck->Checked = fos_ex_stg->s_local.disable_x26x_version_check != 0;
 			if (str_has_char(fos_ex_stg->s_local.conf_font.name))
 				SetFontFamilyToForm(this, gcnew FontFamily(String(fos_ex_stg->s_local.conf_font.name).ToString()), this->Font->FontFamily);
 			fosNUAMPLimitMargin_ValueChanged(nullptr, nullptr);

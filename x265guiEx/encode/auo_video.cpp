@@ -815,7 +815,8 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	const func_read_log_enc ReadLogEnc = read_log_enc_list[((!!pipes.stdErr.mode)<<1) + !!pipes.stdOut.mode];
 
 	//x264/x265のバージョン情報表示・チェック
-	if (AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
+	if (!sys_dat->exstg->s_local.disable_x26x_version_check
+		&& AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
 		return (ret | AUO_RESULT_ERROR);
 	}
 
