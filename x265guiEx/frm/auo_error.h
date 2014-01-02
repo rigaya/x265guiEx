@@ -39,7 +39,7 @@ void error_malloc_tc();
 void error_malloc_8bit();
 void error_afs_interlace_stg();
 void error_x26x_dead(int enc_type);
-void error_x26x_version(int enc_type);
+void error_x26x_version(int enc_type, const char *required_ver, const char *current_ver);
 void error_afs_get_frame();
 void error_audenc_failed(const char *name, const char *args);
 void error_no_wavefile();

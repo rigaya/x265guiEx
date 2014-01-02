@@ -393,8 +393,25 @@ static AUO_RESULT write_log_x264_version(const char *x264fullpath) {
 		if (a >= 0 && b >= 0 && c >= 0) {
 			ret = (b >= REQUIRED_X264_CORE || c >= REQUIRED_X264_REV) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
 		}
+		if (ret & AUO_RESULT_ERROR) {
+			char required_ver[128] = { 0 };
+			char current_ver[128] = { 0 };
+			sprintf_s(required_ver, _countof(required_ver), "Core:%4d, Rev: %4d", REQUIRED_X264_CORE, REQUIRED_X264_REV);
+			sprintf_s(current_ver,  _countof(current_ver),  "Core:%4d, Rev: %4d", b, c);
+			error_x26x_version(ENC_TYPE_X264, required_ver, current_ver);
+		}
 	}
 	return ret;
+}
+
+static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
+	int len = sprintf_s(str, nSize, "%d", version[0]);
+	for (int i = 1; i < 4; i++) {
+		if (version[i])
+			len += sprintf_s(str + len, nSize - len, ".%d", version[i]);
+	}
+	len += sprintf_s(str + len, nSize - len, "+%d", version[4]);
+	return len;
 }
 
 static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
@@ -442,6 +459,13 @@ static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 				}
 			}
 			if (ret == AUO_RESULT_WARNING) ret = AUO_RESULT_SUCCESS;
+		}
+		if (ret & AUO_RESULT_ERROR) {
+			char required_ver[128] = { 0 };
+			char current_ver[128] = { 0 };
+			create_x265_ver_string(required_ver, _countof(required_ver), REQUIRED_X265_VER);
+			create_x265_ver_string(current_ver,  _countof(current_ver),  v);
+			error_x26x_version(ENC_TYPE_X265, required_ver, current_ver);
 		}
 	}
 	return ret;
@@ -792,8 +816,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 	//x264/x265のバージョン情報表示・チェック
 	if (AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
-		ret |= AUO_RESULT_ERROR; error_x26x_version(conf->vid.enc_type);
-		return ret;
+		return (ret | AUO_RESULT_ERROR);
 	}
 
 	//コマンドライン生成

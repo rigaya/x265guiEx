@@ -176,10 +176,13 @@ void error_x26x_dead(int enc_type) {
 	write_log_auo_line_fmt(LOG_ERROR, "%sが予期せず途中終了しました。%sに不正なパラメータ(オプション)が渡された可能性があります。", X26X_NAME[enc_type], X26X_NAME[enc_type]);
 }
 
-void error_x26x_version(int enc_type) {
+void error_x26x_version(int enc_type, const char *required_ver, const char *current_ver) {
 	write_log_line_fmt(LOG_ERROR, ""
 		"auo [error]: %sのバージョンが古く、エンコードできません。\n"
-		"             最新の%sをダウンロードし、設定画面で最新版に指定しなおしてください。", X26X_NAME[enc_type], X26X_NAME[enc_type]);
+		"             最新の%sをダウンロードし、設定画面で最新版に指定しなおしてください。\n"
+		"             必要なバージョン:         %s\n"
+		"             実行ファイルのバージョン: %s\n",
+		X26X_NAME[enc_type], X26X_NAME[enc_type], required_ver, current_ver);
 }
 
 void error_afs_get_frame() {
