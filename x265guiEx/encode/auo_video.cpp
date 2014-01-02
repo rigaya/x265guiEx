@@ -451,12 +451,14 @@ typedef AUO_RESULT (*func_write_log_encoder_version)(const char *exe_fullpath);
 static const func_write_log_encoder_version write_encoder_version[] = { write_log_x264_version, write_log_x265_version };
 
 //auo_pipe.cppのread_from_pipeの特別版
-static int ReadLogEnc(PIPE_SET *pipes, int total_drop, int current_frames) {
+template <bool for_stderr>
+inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames) {
 	DWORD pipe_read = 0;
-	if (!PeekNamedPipe(pipes->stdErr.h_read, NULL, 0, NULL, &pipe_read, NULL))
+	HANDLE h_read = (for_stderr) ? pipes->stdErr.h_read : pipes->stdOut.h_read;
+	if (!PeekNamedPipe(h_read, NULL, 0, NULL, &pipe_read, NULL))
 		return -1;
 	if (pipe_read) {
-		ReadFile(pipes->stdErr.h_read, pipes->read_buf + pipes->buf_len, sizeof(pipes->read_buf) - pipes->buf_len - 1, &pipe_read, NULL);
+		ReadFile(h_read, pipes->read_buf + pipes->buf_len, sizeof(pipes->read_buf) - pipes->buf_len - 1, &pipe_read, NULL);
 		pipes->buf_len += pipe_read;
 		write_log_enc_mes(pipes->read_buf, &pipes->buf_len, total_drop, current_frames);
 	} else {
@@ -464,6 +466,31 @@ static int ReadLogEnc(PIPE_SET *pipes, int total_drop, int current_frames) {
 	}
 	return pipe_read;
 }
+
+#pragma warning( push )
+#pragma warning( disable: 4100 ) //C4100 : 引数は関数の本体部で 1 度も参照されません。
+static int read_log_enc_none(PIPE_SET *pipes, int total_drop, int current_frames) {
+	return 0;
+}
+#pragma warning( pop )
+
+static int read_log_enc_stderr(PIPE_SET *pipes, int total_drop, int current_frames) {
+	return read_log_enc<true>(pipes, total_drop, current_frames);
+}
+
+static int read_log_enc_stdout(PIPE_SET *pipes, int total_drop, int current_frames) {
+	return read_log_enc<false>(pipes, total_drop, current_frames);
+}
+
+static int read_log_enc_all(PIPE_SET *pipes, int total_drop, int current_frames) {
+	int pipe_read = 0;
+	pipe_read += read_log_enc<true>(pipes, total_drop, current_frames);
+	pipe_read += read_log_enc<false>(pipes, total_drop, current_frames);
+	return pipe_read;
+}
+
+typedef int (*func_read_log_enc)(PIPE_SET *pipes, int total_drop, int current_frames);
+static const func_read_log_enc read_log_enc_list[] = { read_log_enc_none, read_log_enc_stdout, read_log_enc_stderr, read_log_enc_all };
 
 //cmdexのうち、guiから発行されるオプションとの衝突をチェックして、読み取られなかったコマンドを追加する
 static void append_cmdex(char *cmd, size_t nSize, const char *cmdex, BOOL disble_guicmd, const CONF_GUIEX *conf) {
@@ -759,7 +786,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	//パイプの設定
 	pipes.stdIn.mode = AUO_PIPE_ENABLE;
 	pipes.stdErr.mode = AUO_PIPE_ENABLE;
+	pipes.stdOut.mode = (ENC_TYPE_X265 == conf->vid.enc_type) ? AUO_PIPE_ENABLE : AUO_PIPE_DISABLE;
 	pipes.stdIn.bufferSize = pixel_data.total_size * 2;
+	const func_read_log_enc ReadLogEnc = read_log_enc_list[((!!pipes.stdErr.mode)<<1) + !!pipes.stdOut.mode];
 
 	//x264/x265のバージョン情報表示・チェック
 	if (AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
