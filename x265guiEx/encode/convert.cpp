@@ -333,14 +333,14 @@ void convert_yc48_to_yv12_10bit(void *pixel, CONVERT_CF_DATA *pixel_data, const 
 	PIXEL_YC *ycp;
 	short *dst_Y = (short *)pixel_data->data[0];
 	short *dst_U = (short *)pixel_data->data[1];
-	short *dst_V = (short *)pixel_data->data[1];
+	short *dst_V = (short *)pixel_data->data[2];
 	short *Y = NULL, *U = NULL, *V = NULL;
 	for (y = 0; y < height; y += 2) {
 		i = width * y;
 		ycp = (PIXEL_YC *)pixel + i;
 		Y = (short *)dst_Y + i;
-		U = (short *)dst_U + (i>>1);
-		V = (short *)dst_V + (i>>1);
+		U = (short *)dst_U + (i>>2);
+		V = (short *)dst_V + (i>>2);
 		for (x = 0; x < width; x += 2) {
 			Y[x        ] = (short)pixel_YC48_to_YUV(ycp[x        ].y, Y_L_MUL, Y_L_ADD_10, Y_L_RSH_10, Y_L_YCC_10, 0, LIMIT_10);
 			Y[x+1      ] = (short)pixel_YC48_to_YUV(ycp[x+1      ].y, Y_L_MUL, Y_L_ADD_10, Y_L_RSH_10, Y_L_YCC_10, 0, LIMIT_10);
