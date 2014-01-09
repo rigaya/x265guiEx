@@ -887,12 +887,6 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 				ret |= aud_parallel_task(oip, pe);
 			}
 
-			//Aviutl(afs)からフレームをもらう
-			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
-				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
-				break;
-			}
-
 			//一時停止
 			while (enc_pause & !ret) {
 				Sleep(LOG_UPDATE_INTERVAL);
@@ -912,6 +906,13 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 			//コピーフレームフラグ処理
 			copy_frame = (!!i_frame & (oip->func_get_flag(i_frame) & OUTPUT_INFO_FRAME_FLAG_COPYFRAME));
+
+			//Aviutl(afs)からフレームをもらう
+			if (NULL == (frame = ((afs) ? afs_get_video((OUTPUT_INFO *)oip, i_frame, &drop, next_jitter) : oip->func_get_video_ex(i_frame, aviutl_color_fmt)))) {
+				ret |= AUO_RESULT_ERROR; error_afs_get_frame();
+				break;
+			}
+
 			drop |= (afs & copy_frame);
 
 			if (!drop) {
