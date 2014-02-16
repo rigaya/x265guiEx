@@ -85,7 +85,7 @@ const X26X_OPTION_STR list_output_csp_x264[] = {
 };
 const X26X_OPTION_STR list_output_csp_x265[] = {
 	{ "i420", L"i420" },
-	{ "i422", L"i422" },
+	{ "----", L"----" },
 	{ "i444", L"i444" },
 	{ NULL, NULL },
 	{ NULL, NULL },
@@ -383,7 +383,7 @@ typedef struct FLOAT2 {
 	int     rd; \
 	BOOL    loop_filter; \
 	BOOL    sao; \
-	//BOOL    cutree;
+	BOOL    cutree;
 
 //サイズ計算用
 typedef struct CONF_X26x_dummy {

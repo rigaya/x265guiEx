@@ -442,6 +442,7 @@ System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sende
 	if (!fcgTSBCMDOnly->Checked) {
 		if (fcgTSBEncType->Checked) {
 			fcgtabControlVideo->TabPages->Insert(0, fchtabPageX265Main);
+			fcgtabControlVideo->TabPages->Insert(1, fchtabPageX265Other);
 		} else {
 			fcgtabControlVideo->TabPages->Insert(0, fcgtabPageX264Main);
 			fcgtabControlVideo->TabPages->Insert(1, fcgtabPageX264RC);
@@ -1336,12 +1337,12 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fcgCXInterlaced,     interlaced_desc);
 	
 	//x265
+	setComboBox(fchCXCSP,            list_output_csp_x265);
 	setComboBox(fchCXAQMode,         list_aq);
 	setComboBox(fchCXX265Mode,       x265_encodemode_desc);
 	setComboBox(fchCXME,             list_me_x265);
 	setComboBox(fchCXSubME,          list_subme_x265);
 	setComboBox(fchCXBadapt,         list_b_adpat);
-	setComboBox(fchCXRD,             list_rd);
 	setComboBox(fchCXPreset,         sys_dat->exstg->s_x265.preset.name);
 	setComboBox(fchCXProfile,        sys_dat->exstg->s_x265.profile.name);
 	setComboBox(fchCXTune,		     sys_dat->exstg->s_x265.tune.name);
@@ -1714,30 +1715,44 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetCXIndex(fchCXTune,             cx265->tune);
 	SetCXIndex(fchCXProfile,          cx265->profile);
 
-	SetNUValue(fchNUThreads,          cx265->threads);
-	SetNUValue(fchNUFrameThreads,     cx265->frame_threads);
+	SetCXIndex(fchCXCSP,              cx265->output_csp);
+	
+	SetNUValue(fchNUScenecut,         cx265->scenecut);
+	SetNUValue(fchNUKeyintMin,        cx265->keyint_min);
 	SetNUValue(fchNUKeyintMax,        cx265->keyint_max);
+	fchCBOpenGOP->Checked           = cx265->open_gop != 0;
 	SetNUValue(fchNURCLookahead,      cx265->rc_lookahead);
 	SetNUValue(fchNURef,              cx265->ref_frames);
 	SetNUValue(fchNUBframes,          cx265->bframes);
 	SetCXIndex(fchCXBadapt,           cx265->b_adapt);
 	fchCBBpyramid->Checked          = cx265->b_pyramid != 0;
-
-	fchCBLoopFilter->Checked        = cx265->loop_filter != 0;
-	fchCBSAO->Checked               = cx265->sao != 0;
+	fchCBWeightP->Checked           = cx265->weight_p != 0;
 	
+	SetNUValue(fchNUVBVbuf,           cx265->vbv_bufsize);
+	SetNUValue(fchNUVBVmax,           cx265->vbv_maxrate);
+
+	SetNUValue(fchNURD,               cx265->rd);
 	SetCXIndex(fchCXAQMode,           cx265->aq_mode);
 	SetNUValue(fchNUAQStrength,       cx265->aq_strength);
-	SetCXIndex(fchCXRD,               cx265->rd);
-	SetCXIndex(fchCXME,               cx265->me);
-	SetCXIndex(fchCXSubME,            cx265->subme);
-	SetNUValue(fchNUMERange,          cx265->me_range);
-	SetNUValue(fchNUMaxMerge,         cx265->max_merge);
+	fchCBCUTree->Checked            = cx265->cutree != 0;
 
 	SetNUValue(fchNUCtu,              cx265->ctu);
 	SetNUValue(fchNUTuIntraDepth,     cx265->tu_intra_depth);
 	SetNUValue(fchNUTuInterDepth,     cx265->tu_inter_depth);
 	fchCBWpp->Checked               = cx265->wpp != 0;
+	
+	SetCXIndex(fchCXME,               cx265->me);
+	SetCXIndex(fchCXSubME,            cx265->subme);
+	SetNUValue(fchNUMERange,          cx265->me_range);
+	SetNUValue(fchNUMaxMerge,         cx265->max_merge);
+	fchCBRectMP->Checked            = cx265->rect_mp != 0;
+	fchCBAsymmetricMP->Checked      = cx265->asymmnteric_mp != 0;
+
+	SetNUValue(fchNUThreads,          cx265->threads);
+	SetNUValue(fchNUFrameThreads,     cx265->frame_threads);
+
+	fchCBLoopFilter->Checked        = cx265->loop_filter != 0;
+	fchCBSAO->Checked               = cx265->sao != 0;
 	}
 
 	 
@@ -1925,29 +1940,44 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.tune                 = fchCXTune->SelectedIndex;
 	cnf->x265.profile              = fchCXProfile->SelectedIndex;
 
-	cnf->x265.threads              = (int)fchNUThreads->Value;
-	cnf->x265.frame_threads        = (int)fchNUFrameThreads->Value;
+	cnf->x265.output_csp           = fchCXCSP->SelectedIndex;
+
+	cnf->x265.scenecut             = (int)fchNUScenecut->Value;
+	cnf->x265.keyint_min           = (int)fchNUKeyintMin->Value;
 	cnf->x265.keyint_max           = (int)fchNUKeyintMax->Value;
+	cnf->x265.open_gop             = fchCBOpenGOP->Checked;
 	cnf->x265.rc_lookahead         = (int)fchNURCLookahead->Value;
 	cnf->x265.ref_frames           = (int)fchNURef->Value;
-	cnf->x265.max_merge            = (int)fchNUMaxMerge->Value;
 	cnf->x265.bframes              = (int)fchNUBframes->Value;
 	cnf->x265.b_adapt              = fchCXBadapt->SelectedIndex;
 	cnf->x265.b_pyramid            = fchCBBpyramid->Checked;
-	cnf->x265.loop_filter          = fchCBLoopFilter->Checked;
-	cnf->x265.sao                  = fchCBSAO->Checked;
+	cnf->x265.weight_p             = fchCBWeightP->Checked;
 
+	cnf->x265.vbv_bufsize          = (int)fchNUVBVbuf->Value;
+	cnf->x265.vbv_maxrate          = (int)fchNUVBVmax->Value;
+	
+	cnf->x265.rd                   = (int)fchNURD->Value;
 	cnf->x265.aq_mode              = fchCXAQMode->SelectedIndex;
 	cnf->x265.aq_strength          = (float)fchNUAQStrength->Value;
-	cnf->x265.rd                   = fchCXRD->SelectedIndex;
-	cnf->x265.me                   = fchCXME->SelectedIndex;
-	cnf->x265.subme                = fchCXSubME->SelectedIndex;
-	cnf->x265.me_range             = (int)fchNUMERange->Value;
+	cnf->x265.cutree               = fchCBCUTree->Checked;
 
 	cnf->x265.ctu                  = (int)fchNUCtu->Value;
 	cnf->x265.tu_intra_depth       = (int)fchNUTuIntraDepth->Value;
 	cnf->x265.tu_inter_depth       = (int)fchNUTuInterDepth->Value;
 	cnf->x265.wpp                  = fchCBWpp->Checked;
+
+	cnf->x265.me                   = fchCXME->SelectedIndex;
+	cnf->x265.subme                = fchCXSubME->SelectedIndex;
+	cnf->x265.me_range             = (int)fchNUMERange->Value;
+	cnf->x265.max_merge            = (int)fchNUMaxMerge->Value;
+	cnf->x265.rect_mp              = fchCBRectMP->Checked;
+	cnf->x265.asymmnteric_mp       = fchCBAsymmetricMP->Checked;
+	
+	cnf->x265.threads              = (int)fchNUThreads->Value;
+	cnf->x265.frame_threads        = (int)fchNUFrameThreads->Value;
+
+	cnf->x265.loop_filter          = fchCBLoopFilter->Checked;
+	cnf->x265.sao                  = fchCBSAO->Checked;
 
 	GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats),     (fcgTSBEncType->Checked) ? fchTXStatusFile->Text : fcgTXStatusFile->Text);
 	GetCHARfromString(cnf->vid.tcfile_in, sizeof(cnf->vid.tcfile_in), fcgTXTCIN->Text);
@@ -2402,8 +2432,8 @@ System::Void frmConfig::SetHelpToolTips() {
 		);
 
 	//自動マルチパス 上限設定
-	fcgTTEx->SetToolTip(fchCBAMPLimitBitrate,     AMP_LimitBitrate);
-	fcgTTEx->SetToolTip(fchNUAMPLimitBitrate,     AMP_LimitBitrate);
+	fcgTTEx->SetToolTip(fchCBAMPLimitBitrate,      AMP_LimitBitrate);
+	fcgTTEx->SetToolTip(fchNUAMPLimitBitrate,      AMP_LimitBitrate);
 	fcgTTEx->SetToolTip(fchCBAMPLimitFileSize,     AMP_LimitFileSize);
 	fcgTTEx->SetToolTip(fchNUAMPLimitFileSize,     AMP_LimitFileSize);
 	
@@ -2419,35 +2449,45 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"\n"
 		+ L"をGUIに適用します。"
 		);
-
-	fchTTX265->SetToolTip(fchNUThreads,          L"--threads\n"
-		+ L"\"0\" で自動です。"
-		);
-	fchTTX265->SetToolTip(fchNUKeyintMax,        L""
-		+ L"--keyint\n"
-		+ L"\"-1\"で エンコ時に自動的にfps×10を設定します。");
-	fchTTX265->SetToolTip(fchNUFrameThreads,     L"--frame-threads");
+	
+	fchTTX265->SetToolTip(fchNUScenecut,         L"--sccenecut");
+	fchTTX265->SetToolTip(fchNUKeyintMin,        L"--min-keyint");
+	fchTTX265->SetToolTip(fchNUKeyintMax,        L"--keyint");
+	fchTTX265->SetToolTip(fchCBOpenGOP,          L"--open-gop");
 	fchTTX265->SetToolTip(fchNURCLookahead,      L"--rc-lookahead");
 	fchTTX265->SetToolTip(fchNURef,              L"--ref");
-	fchTTX265->SetToolTip(fchNUMaxMerge,         L"--max-merge");
 	fchTTX265->SetToolTip(fchNUBframes,          L"--bframes");
 	fchTTX265->SetToolTip(fchCXBadapt,           L"--b-adapt");
 	fchTTX265->SetToolTip(fchCBBpyramid,         L"--b-pyramid");
-	fchTTX265->SetToolTip(fchCBLoopFilter,       L"--lft");
-	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
+	fchTTX265->SetToolTip(fchCBWeightP,          L"--weightp");
 	
+	fchTTX265->SetToolTip(fchNUVBVbuf,           L"--vbv-bufsize");
+	fchTTX265->SetToolTip(fchNUVBVmax,           L"--vbv-maxrate");
+
+	fchTTX265->SetToolTip(fchNURD,               L"--rd");
 	fchTTX265->SetToolTip(fchCXAQMode,           L"--aq-mode");
 	fchTTX265->SetToolTip(fchNUAQStrength,       L"--aq-strength");
-	fchTTX265->SetToolTip(fchCXRD,               L"--rd");
-
-	fchTTX265->SetToolTip(fchCXME,               L"--me");
-	fchTTX265->SetToolTip(fchCXSubME,            L"--subme");
-	fchTTX265->SetToolTip(fchNUMERange,          L"--merange");
+	fchTTX265->SetToolTip(fchCBCUTree,           L"--cutree");
 
 	fchTTX265->SetToolTip(fchNUCtu,              L"--ctu");
 	fchTTX265->SetToolTip(fchNUTuIntraDepth,     L"--tu-intra-depth");
 	fchTTX265->SetToolTip(fchNUTuInterDepth,     L"--tu-inter-depth");
 	fchTTX265->SetToolTip(fchCBWpp,              L"--wpp");
+
+	fchTTX265->SetToolTip(fchCXME,               L"--me");
+	fchTTX265->SetToolTip(fchCXSubME,            L"--subme");
+	fchTTX265->SetToolTip(fchNUMERange,          L"--merange");
+	fchTTX265->SetToolTip(fchNUMaxMerge,         L"--max-merge");
+	fchTTX265->SetToolTip(fchCBAsymmetricMP,     L"--amp");
+	fchTTX265->SetToolTip(fchCBRectMP,           L"--rect");
+
+	fchTTX265->SetToolTip(fchNUThreads,          L"--threads\n"
+		+ L"\"0\" で自動です。"
+		);
+	fchTTX265->SetToolTip(fchNUFrameThreads,     L"--frame-threads");
+
+	fchTTX265->SetToolTip(fchCBLoopFilter,       L"--lft");
+	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
 
 	//拡張
 	fcgTTEx->SetToolTip(fcgCBAFS,                L""

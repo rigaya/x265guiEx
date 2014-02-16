@@ -92,6 +92,8 @@ namespace x265guiEx {
 
 	private: System::Windows::Forms::ToolStrip^  fcgtoolStripSettings;
 	private: System::Windows::Forms::GroupBox^  fcggroupBoxAudio;
+
+
 	private: System::Windows::Forms::TabControl^  fcgtabControlMux;
 
 
@@ -736,30 +738,30 @@ private: System::Windows::Forms::Panel^  fchPNX265Sub;
 private: System::Windows::Forms::ToolTip^  fchTTX265Version;
 private: System::Windows::Forms::Label^  fchLBX265PathSub;
 private: System::Windows::Forms::ToolTip^  fchTTX265;
-private: System::Windows::Forms::CheckBox^  fchCBWpp;
-private: System::Windows::Forms::NumericUpDown^  fchNUCtu;
-private: System::Windows::Forms::Label^  fchLBCtu;
-private: System::Windows::Forms::NumericUpDown^  fchNUTuIntraDepth;
-private: System::Windows::Forms::NumericUpDown^  fchNUTuInterDepth;
-private: System::Windows::Forms::Label^  fchLBTuIntraDepth;
-private: System::Windows::Forms::Label^  fchLBTuInterDepth;
-private: System::Windows::Forms::GroupBox^  groupBox1;
-private: System::Windows::Forms::Label^  fchLBFrameThreads;
-private: System::Windows::Forms::NumericUpDown^  fchNUFrameThreads;
 
 
 
-private: System::Windows::Forms::Label^  fchLBThreads;
 
-private: System::Windows::Forms::NumericUpDown^  fchNUThreads;
+
+
+
+
+
+
+
+
+
+
+
+
 private: System::Windows::Forms::ComboBox^  fchCXBadapt;
-private: System::Windows::Forms::ComboBox^  fchCXRD;
+
 private: System::Windows::Forms::Label^  fchLBRD;
 
-private: System::Windows::Forms::CheckBox^  fchCBSAO;
-private: System::Windows::Forms::Label^  fchLBSAO;
-private: System::Windows::Forms::CheckBox^  fchCBLoopFilter;
-private: System::Windows::Forms::Label^  fchLBLoopFilter;
+
+
+
+
 private: System::Windows::Forms::NumericUpDown^  fchNURCLookahead;
 
 
@@ -769,23 +771,23 @@ private: System::Windows::Forms::Label^  fchLBKeyintMax;
 private: System::Windows::Forms::Label^  fchLBBadapt;
 private: System::Windows::Forms::NumericUpDown^  fchNUBframes;
 private: System::Windows::Forms::Label^  fchLBBframes;
-private: System::Windows::Forms::NumericUpDown^  fchNUMERange;
-
-private: System::Windows::Forms::ComboBox^  fchCXSubME;
 
 
-private: System::Windows::Forms::ComboBox^  fchCXME;
-private: System::Windows::Forms::Label^  fchLBMERange;
 
 
-private: System::Windows::Forms::Label^  fchLBSubME;
 
-private: System::Windows::Forms::Label^  fchLBME;
+
+
+
+
+
+
+
 
 private: System::Windows::Forms::NumericUpDown^  fchNURef;
 private: System::Windows::Forms::Label^  fchLBRef;
-private: System::Windows::Forms::NumericUpDown^  fchNUMaxMerge;
-private: System::Windows::Forms::Label^  fchLBMaxMerge;
+
+
 private: System::Windows::Forms::GroupBox^  fchgroupBoxPreset;
 private: System::Windows::Forms::Button^  fchBTApplyPreset;
 
@@ -814,6 +816,65 @@ private: System::Windows::Forms::CheckBox^  fchCBBpyramid;
 private: System::Windows::Forms::Label^  fchLBBpyramid;
 private: System::Windows::Forms::NumericUpDown^  fcgNUParallelDivMax;
 private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
+private: System::Windows::Forms::CheckBox^  fchCBOpenGOP;
+
+private: System::Windows::Forms::Label^  fchLBOpenGOP;
+
+
+
+
+private: System::Windows::Forms::TabPage^  fchtabPageX265Other;
+private: System::Windows::Forms::CheckBox^  fchCBWpp;
+private: System::Windows::Forms::NumericUpDown^  fchNUCtu;
+private: System::Windows::Forms::Label^  fchLBCtu;
+private: System::Windows::Forms::NumericUpDown^  fchNUTuIntraDepth;
+private: System::Windows::Forms::NumericUpDown^  fchNUTuInterDepth;
+private: System::Windows::Forms::Label^  fchLBTuIntraDepth;
+private: System::Windows::Forms::Label^  fchLBTuInterDepth;
+private: System::Windows::Forms::NumericUpDown^  fchNUMaxMerge;
+private: System::Windows::Forms::Label^  fchLBMaxMerge;
+private: System::Windows::Forms::NumericUpDown^  fchNUMERange;
+private: System::Windows::Forms::ComboBox^  fchCXSubME;
+private: System::Windows::Forms::ComboBox^  fchCXME;
+private: System::Windows::Forms::Label^  fchLBMERange;
+private: System::Windows::Forms::Label^  fchLBSubME;
+private: System::Windows::Forms::Label^  fchLBME;
+private: System::Windows::Forms::CheckBox^  fchCBSAO;
+private: System::Windows::Forms::Label^  fchLBSAO;
+private: System::Windows::Forms::CheckBox^  fchCBLoopFilter;
+private: System::Windows::Forms::Label^  fchLBLoopFilter;
+private: System::Windows::Forms::GroupBox^  groupBox1;
+private: System::Windows::Forms::Label^  fchLBFrameThreads;
+private: System::Windows::Forms::NumericUpDown^  fchNUFrameThreads;
+private: System::Windows::Forms::Label^  fchLBThreads;
+private: System::Windows::Forms::NumericUpDown^  fchNUThreads;
+private: System::Windows::Forms::NumericUpDown^  fchNUVBVbuf;
+private: System::Windows::Forms::NumericUpDown^  fchNUVBVmax;
+private: System::Windows::Forms::Label^  fchLBVBVbuf;
+private: System::Windows::Forms::Label^  fchLBVBVmax;
+private: System::Windows::Forms::NumericUpDown^  fchNUScenecut;
+private: System::Windows::Forms::Label^  fchLBScenecut;
+private: System::Windows::Forms::NumericUpDown^  fchNUKeyintMin;
+private: System::Windows::Forms::Label^  fchLBKeyintMin;
+private: System::Windows::Forms::GroupBox^  groupBox2;
+private: System::Windows::Forms::GroupBox^  fchGroupBoxME;
+private: System::Windows::Forms::Label^  fchLBAsymmetricMP;
+private: System::Windows::Forms::CheckBox^  fchCBAsymmetricMP;
+
+
+private: System::Windows::Forms::Label^  fchLBRectMP;
+private: System::Windows::Forms::CheckBox^  fchCBRectMP;
+
+
+private: System::Windows::Forms::GroupBox^  fchGroupBoxCTU;
+private: System::Windows::Forms::Label^  fchLBWpp;
+private: System::Windows::Forms::ComboBox^  fchCXCSP;
+private: System::Windows::Forms::Label^  fchLBCSP;
+private: System::Windows::Forms::NumericUpDown^  fchNURD;
+private: System::Windows::Forms::CheckBox^  fchCBCUTree;
+private: System::Windows::Forms::Label^  fchLBCUTree;
+private: System::Windows::Forms::CheckBox^  fchCBWeightP;
+private: System::Windows::Forms::Label^  fchLBWeightP;
 
 
 
@@ -1065,6 +1126,8 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fcgLBDeblockThreshold = (gcnew System::Windows::Forms::Label());
 			this->fcgLBDeblockStrength = (gcnew System::Windows::Forms::Label());
 			this->fchtabPageX265Main = (gcnew System::Windows::Forms::TabPage());
+			this->fchCBOpenGOP = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBOpenGOP = (gcnew System::Windows::Forms::Label());
 			this->fchCBBpyramid = (gcnew System::Windows::Forms::CheckBox());
 			this->fchLBBpyramid = (gcnew System::Windows::Forms::Label());
 			this->fchNUAQStrength = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1079,15 +1142,8 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchLBProfile = (gcnew System::Windows::Forms::Label());
 			this->fchLBX265Tune = (gcnew System::Windows::Forms::Label());
 			this->fchLBX265Preset = (gcnew System::Windows::Forms::Label());
-			this->fchNUMaxMerge = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBMaxMerge = (gcnew System::Windows::Forms::Label());
 			this->fchCXBadapt = (gcnew System::Windows::Forms::ComboBox());
-			this->fchCXRD = (gcnew System::Windows::Forms::ComboBox());
 			this->fchLBRD = (gcnew System::Windows::Forms::Label());
-			this->fchCBSAO = (gcnew System::Windows::Forms::CheckBox());
-			this->fchLBSAO = (gcnew System::Windows::Forms::Label());
-			this->fchCBLoopFilter = (gcnew System::Windows::Forms::CheckBox());
-			this->fchLBLoopFilter = (gcnew System::Windows::Forms::Label());
 			this->fchNURCLookahead = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchLBRcLookAhead = (gcnew System::Windows::Forms::Label());
 			this->fchNUKeyintMax = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1095,26 +1151,8 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchLBBadapt = (gcnew System::Windows::Forms::Label());
 			this->fchNUBframes = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchLBBframes = (gcnew System::Windows::Forms::Label());
-			this->fchNUMERange = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchCXSubME = (gcnew System::Windows::Forms::ComboBox());
-			this->fchCXME = (gcnew System::Windows::Forms::ComboBox());
-			this->fchLBMERange = (gcnew System::Windows::Forms::Label());
-			this->fchLBSubME = (gcnew System::Windows::Forms::Label());
-			this->fchLBME = (gcnew System::Windows::Forms::Label());
 			this->fchNURef = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchLBRef = (gcnew System::Windows::Forms::Label());
-			this->fchCBWpp = (gcnew System::Windows::Forms::CheckBox());
-			this->fchNUCtu = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBCtu = (gcnew System::Windows::Forms::Label());
-			this->fchNUTuIntraDepth = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchNUTuInterDepth = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBTuIntraDepth = (gcnew System::Windows::Forms::Label());
-			this->fchLBTuInterDepth = (gcnew System::Windows::Forms::Label());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->fchLBFrameThreads = (gcnew System::Windows::Forms::Label());
-			this->fchNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBThreads = (gcnew System::Windows::Forms::Label());
-			this->fchNUThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fchPNStatusFile = (gcnew System::Windows::Forms::Panel());
 			this->fchLBSTATUS = (gcnew System::Windows::Forms::Label());
 			this->fchTXStatusFile = (gcnew System::Windows::Forms::TextBox());
@@ -1142,6 +1180,31 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchBTX265Path = (gcnew System::Windows::Forms::Button());
 			this->fchTXX265Path = (gcnew System::Windows::Forms::TextBox());
 			this->fchLBX265Path = (gcnew System::Windows::Forms::Label());
+			this->fchtabPageX265Other = (gcnew System::Windows::Forms::TabPage());
+			this->fchCBWpp = (gcnew System::Windows::Forms::CheckBox());
+			this->fchNUCtu = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBCtu = (gcnew System::Windows::Forms::Label());
+			this->fchNUTuIntraDepth = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchNUTuInterDepth = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBTuIntraDepth = (gcnew System::Windows::Forms::Label());
+			this->fchLBTuInterDepth = (gcnew System::Windows::Forms::Label());
+			this->fchNUMaxMerge = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBMaxMerge = (gcnew System::Windows::Forms::Label());
+			this->fchNUMERange = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchCXSubME = (gcnew System::Windows::Forms::ComboBox());
+			this->fchCXME = (gcnew System::Windows::Forms::ComboBox());
+			this->fchLBMERange = (gcnew System::Windows::Forms::Label());
+			this->fchLBSubME = (gcnew System::Windows::Forms::Label());
+			this->fchLBME = (gcnew System::Windows::Forms::Label());
+			this->fchCBSAO = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBSAO = (gcnew System::Windows::Forms::Label());
+			this->fchCBLoopFilter = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBLoopFilter = (gcnew System::Windows::Forms::Label());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->fchLBFrameThreads = (gcnew System::Windows::Forms::Label());
+			this->fchNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBThreads = (gcnew System::Windows::Forms::Label());
+			this->fchNUThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgtabPageExSettings = (gcnew System::Windows::Forms::TabPage());
 			this->fchPNX265Sub = (gcnew System::Windows::Forms::Panel());
 			this->fchLBX265PathSub = (gcnew System::Windows::Forms::Label());
@@ -1288,6 +1351,29 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->fchNUKeyintMin = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBKeyintMin = (gcnew System::Windows::Forms::Label());
+			this->fchNUScenecut = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBScenecut = (gcnew System::Windows::Forms::Label());
+			this->fchNUVBVbuf = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchNUVBVmax = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBVBVbuf = (gcnew System::Windows::Forms::Label());
+			this->fchLBVBVmax = (gcnew System::Windows::Forms::Label());
+			this->fchGroupBoxCTU = (gcnew System::Windows::Forms::GroupBox());
+			this->fchGroupBoxME = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->fchLBWpp = (gcnew System::Windows::Forms::Label());
+			this->fchLBRectMP = (gcnew System::Windows::Forms::Label());
+			this->fchCBRectMP = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBAsymmetricMP = (gcnew System::Windows::Forms::Label());
+			this->fchCBAsymmetricMP = (gcnew System::Windows::Forms::CheckBox());
+			this->fchCXCSP = (gcnew System::Windows::Forms::ComboBox());
+			this->fchLBCSP = (gcnew System::Windows::Forms::Label());
+			this->fchNURD = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchCBCUTree = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBCUTree = (gcnew System::Windows::Forms::Label());
+			this->fchCBWeightP = (gcnew System::Windows::Forms::CheckBox());
+			this->fchLBWeightP = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -1347,18 +1433,10 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchtabPageX265Main->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAQStrength))->BeginInit();
 			this->fchgroupBoxPreset->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMaxMerge))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURCLookahead))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUKeyintMax))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUBframes))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMERange))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURef))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->BeginInit();
-			this->groupBox1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->BeginInit();
 			this->fchPNStatusFile->SuspendLayout();
 			this->fchPNBitrate->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchTBQuality))->BeginInit();
@@ -1367,6 +1445,15 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAMPLimitFileSize))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAutoNPass))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchpictureBoxX265))->BeginInit();
+			this->fchtabPageX265Other->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMaxMerge))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMERange))->BeginInit();
+			this->groupBox1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->BeginInit();
 			this->fcgtabPageExSettings->SuspendLayout();
 			this->fchPNX265Sub->SuspendLayout();
 			this->fcggroupBoxCmdEx->SuspendLayout();
@@ -1383,6 +1470,14 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSCQM->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUKeyintMin))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUScenecut))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUVBVbuf))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUVBVmax))->BeginInit();
+			this->fchGroupBoxCTU->SuspendLayout();
+			this->fchGroupBoxME->SuspendLayout();
+			this->groupBox2->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURD))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1391,6 +1486,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fcgtabControlVideo->Controls->Add(this->fcgtabPageX264RC);
 			this->fcgtabControlVideo->Controls->Add(this->fcgtabPageX264Frame);
 			this->fcgtabControlVideo->Controls->Add(this->fchtabPageX265Main);
+			this->fcgtabControlVideo->Controls->Add(this->fchtabPageX265Other);
 			this->fcgtabControlVideo->Controls->Add(this->fcgtabPageExSettings);
 			this->fcgtabControlVideo->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
@@ -3322,6 +3418,20 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// 
 			// fchtabPageX265Main
 			// 
+			this->fchtabPageX265Main->Controls->Add(this->fchCBWeightP);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBWeightP);
+			this->fchtabPageX265Main->Controls->Add(this->fchCBCUTree);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBCUTree);
+			this->fchtabPageX265Main->Controls->Add(this->fchNURD);
+			this->fchtabPageX265Main->Controls->Add(this->fchCXCSP);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBCSP);
+			this->fchtabPageX265Main->Controls->Add(this->groupBox2);
+			this->fchtabPageX265Main->Controls->Add(this->fchNUScenecut);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBScenecut);
+			this->fchtabPageX265Main->Controls->Add(this->fchNUKeyintMin);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBKeyintMin);
+			this->fchtabPageX265Main->Controls->Add(this->fchCBOpenGOP);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBOpenGOP);
 			this->fchtabPageX265Main->Controls->Add(this->fchCBBpyramid);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBBpyramid);
 			this->fchtabPageX265Main->Controls->Add(this->fchNUAQStrength);
@@ -3329,15 +3439,8 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchtabPageX265Main->Controls->Add(this->fchCXAQMode);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBAQMode);
 			this->fchtabPageX265Main->Controls->Add(this->fchgroupBoxPreset);
-			this->fchtabPageX265Main->Controls->Add(this->fchNUMaxMerge);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBMaxMerge);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXBadapt);
-			this->fchtabPageX265Main->Controls->Add(this->fchCXRD);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBRD);
-			this->fchtabPageX265Main->Controls->Add(this->fchCBSAO);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBSAO);
-			this->fchtabPageX265Main->Controls->Add(this->fchCBLoopFilter);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBLoopFilter);
 			this->fchtabPageX265Main->Controls->Add(this->fchNURCLookahead);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBRcLookAhead);
 			this->fchtabPageX265Main->Controls->Add(this->fchNUKeyintMax);
@@ -3345,22 +3448,8 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchtabPageX265Main->Controls->Add(this->fchLBBadapt);
 			this->fchtabPageX265Main->Controls->Add(this->fchNUBframes);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBBframes);
-			this->fchtabPageX265Main->Controls->Add(this->fchNUMERange);
-			this->fchtabPageX265Main->Controls->Add(this->fchCXSubME);
-			this->fchtabPageX265Main->Controls->Add(this->fchCXME);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBMERange);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBSubME);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBME);
 			this->fchtabPageX265Main->Controls->Add(this->fchNURef);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBRef);
-			this->fchtabPageX265Main->Controls->Add(this->fchCBWpp);
-			this->fchtabPageX265Main->Controls->Add(this->fchNUCtu);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBCtu);
-			this->fchtabPageX265Main->Controls->Add(this->fchNUTuIntraDepth);
-			this->fchtabPageX265Main->Controls->Add(this->fchNUTuInterDepth);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBTuIntraDepth);
-			this->fchtabPageX265Main->Controls->Add(this->fchLBTuInterDepth);
-			this->fchtabPageX265Main->Controls->Add(this->groupBox1);
 			this->fchtabPageX265Main->Controls->Add(this->fchPNStatusFile);
 			this->fchtabPageX265Main->Controls->Add(this->fchPNBitrate);
 			this->fchtabPageX265Main->Controls->Add(this->fchPNX265Mode);
@@ -3377,10 +3466,29 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchtabPageX265Main->Text = L" x265 ";
 			this->fchtabPageX265Main->UseVisualStyleBackColor = true;
 			// 
+			// fchCBOpenGOP
+			// 
+			this->fchCBOpenGOP->AutoSize = true;
+			this->fchCBOpenGOP->Location = System::Drawing::Point(561, 136);
+			this->fchCBOpenGOP->Name = L"fchCBOpenGOP";
+			this->fchCBOpenGOP->Size = System::Drawing::Size(15, 14);
+			this->fchCBOpenGOP->TabIndex = 50;
+			this->fchCBOpenGOP->Tag = L"reCmd";
+			this->fchCBOpenGOP->UseVisualStyleBackColor = true;
+			// 
+			// fchLBOpenGOP
+			// 
+			this->fchLBOpenGOP->AutoSize = true;
+			this->fchLBOpenGOP->Location = System::Drawing::Point(404, 135);
+			this->fchLBOpenGOP->Name = L"fchLBOpenGOP";
+			this->fchLBOpenGOP->Size = System::Drawing::Size(62, 14);
+			this->fchLBOpenGOP->TabIndex = 49;
+			this->fchLBOpenGOP->Text = L"Open GOP";
+			// 
 			// fchCBBpyramid
 			// 
 			this->fchCBBpyramid->AutoSize = true;
-			this->fchCBBpyramid->Location = System::Drawing::Point(563, 235);
+			this->fchCBBpyramid->Location = System::Drawing::Point(561, 273);
 			this->fchCBBpyramid->Name = L"fchCBBpyramid";
 			this->fchCBBpyramid->Size = System::Drawing::Size(15, 14);
 			this->fchCBBpyramid->TabIndex = 32;
@@ -3390,7 +3498,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBBpyramid
 			// 
 			this->fchLBBpyramid->AutoSize = true;
-			this->fchLBBpyramid->Location = System::Drawing::Point(406, 234);
+			this->fchLBBpyramid->Location = System::Drawing::Point(404, 272);
 			this->fchLBBpyramid->Name = L"fchLBBpyramid";
 			this->fchLBBpyramid->Size = System::Drawing::Size(66, 14);
 			this->fchLBBpyramid->TabIndex = 31;
@@ -3400,7 +3508,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// 
 			this->fchNUAQStrength->DecimalPlaces = 2;
 			this->fchNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fchNUAQStrength->Location = System::Drawing::Point(521, 343);
+			this->fchNUAQStrength->Location = System::Drawing::Point(520, 396);
 			this->fchNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fchNUAQStrength->Name = L"fchNUAQStrength";
 			this->fchNUAQStrength->Size = System::Drawing::Size(64, 21);
@@ -3411,7 +3519,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBAQStrength
 			// 
 			this->fchLBAQStrength->AutoSize = true;
-			this->fchLBAQStrength->Location = System::Drawing::Point(407, 345);
+			this->fchLBAQStrength->Location = System::Drawing::Point(405, 398);
 			this->fchLBAQStrength->Name = L"fchLBAQStrength";
 			this->fchLBAQStrength->Size = System::Drawing::Size(41, 14);
 			this->fchLBAQStrength->TabIndex = 47;
@@ -3421,7 +3529,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// 
 			this->fchCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXAQMode->FormattingEnabled = true;
-			this->fchCXAQMode->Location = System::Drawing::Point(514, 312);
+			this->fchCXAQMode->Location = System::Drawing::Point(512, 365);
 			this->fchCXAQMode->Name = L"fchCXAQMode";
 			this->fchCXAQMode->Size = System::Drawing::Size(88, 22);
 			this->fchCXAQMode->TabIndex = 46;
@@ -3430,7 +3538,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBAQMode
 			// 
 			this->fchLBAQMode->AutoSize = true;
-			this->fchLBAQMode->Location = System::Drawing::Point(406, 315);
+			this->fchLBAQMode->Location = System::Drawing::Point(404, 368);
 			this->fchLBAQMode->Name = L"fchLBAQMode";
 			this->fchLBAQMode->Size = System::Drawing::Size(84, 14);
 			this->fchLBAQMode->TabIndex = 45;
@@ -3519,96 +3627,29 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchLBX265Preset->TabIndex = 0;
 			this->fchLBX265Preset->Text = L"速度";
 			// 
-			// fchNUMaxMerge
-			// 
-			this->fchNUMaxMerge->Location = System::Drawing::Point(514, 464);
-			this->fchNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
-			this->fchNUMaxMerge->Name = L"fchNUMaxMerge";
-			this->fchNUMaxMerge->Size = System::Drawing::Size(65, 21);
-			this->fchNUMaxMerge->TabIndex = 56;
-			this->fchNUMaxMerge->Tag = L"reCmd";
-			this->fchNUMaxMerge->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchLBMaxMerge
-			// 
-			this->fchLBMaxMerge->AutoSize = true;
-			this->fchLBMaxMerge->Location = System::Drawing::Point(406, 466);
-			this->fchLBMaxMerge->Name = L"fchLBMaxMerge";
-			this->fchLBMaxMerge->Size = System::Drawing::Size(103, 14);
-			this->fchLBMaxMerge->TabIndex = 55;
-			this->fchLBMaxMerge->Text = L"最大動き領域統合数";
-			// 
 			// fchCXBadapt
 			// 
 			this->fchCXBadapt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXBadapt->FormattingEnabled = true;
-			this->fchCXBadapt->Location = System::Drawing::Point(514, 201);
+			this->fchCXBadapt->Location = System::Drawing::Point(512, 242);
 			this->fchCXBadapt->Name = L"fchCXBadapt";
 			this->fchCXBadapt->Size = System::Drawing::Size(88, 22);
 			this->fchCXBadapt->TabIndex = 30;
 			this->fchCXBadapt->Tag = L"reCmd";
 			// 
-			// fchCXRD
-			// 
-			this->fchCXRD->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-			this->fchCXRD->FormattingEnabled = true;
-			this->fchCXRD->Location = System::Drawing::Point(297, 458);
-			this->fchCXRD->Name = L"fchCXRD";
-			this->fchCXRD->Size = System::Drawing::Size(88, 22);
-			this->fchCXRD->TabIndex = 18;
-			this->fchCXRD->Tag = L"reCmd";
-			// 
 			// fchLBRD
 			// 
 			this->fchLBRD->AutoSize = true;
-			this->fchLBRD->Location = System::Drawing::Point(196, 461);
+			this->fchLBRD->Location = System::Drawing::Point(404, 333);
 			this->fchLBRD->Name = L"fchLBRD";
 			this->fchLBRD->Size = System::Drawing::Size(86, 14);
 			this->fchLBRD->TabIndex = 17;
 			this->fchLBRD->Text = L"レート歪み最適化";
 			// 
-			// fchCBSAO
-			// 
-			this->fchCBSAO->AutoSize = true;
-			this->fchCBSAO->Location = System::Drawing::Point(563, 286);
-			this->fchCBSAO->Name = L"fchCBSAO";
-			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
-			this->fchCBSAO->TabIndex = 36;
-			this->fchCBSAO->Tag = L"reCmd";
-			this->fchCBSAO->UseVisualStyleBackColor = true;
-			// 
-			// fchLBSAO
-			// 
-			this->fchLBSAO->AutoSize = true;
-			this->fchLBSAO->Location = System::Drawing::Point(406, 285);
-			this->fchLBSAO->Name = L"fchLBSAO";
-			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
-			this->fchLBSAO->TabIndex = 35;
-			this->fchLBSAO->Text = L"画素適応オフセット(SAO)";
-			// 
-			// fchCBLoopFilter
-			// 
-			this->fchCBLoopFilter->AutoSize = true;
-			this->fchCBLoopFilter->Location = System::Drawing::Point(563, 261);
-			this->fchCBLoopFilter->Name = L"fchCBLoopFilter";
-			this->fchCBLoopFilter->Size = System::Drawing::Size(15, 14);
-			this->fchCBLoopFilter->TabIndex = 34;
-			this->fchCBLoopFilter->Tag = L"reCmd";
-			this->fchCBLoopFilter->UseVisualStyleBackColor = true;
-			// 
-			// fchLBLoopFilter
-			// 
-			this->fchLBLoopFilter->AutoSize = true;
-			this->fchLBLoopFilter->Location = System::Drawing::Point(406, 260);
-			this->fchLBLoopFilter->Name = L"fchLBLoopFilter";
-			this->fchLBLoopFilter->Size = System::Drawing::Size(63, 14);
-			this->fchLBLoopFilter->TabIndex = 33;
-			this->fchLBLoopFilter->Text = L"ループフィルタ";
-			// 
 			// fchNURCLookahead
 			// 
 			this->fchNURCLookahead->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-			this->fchNURCLookahead->Location = System::Drawing::Point(521, 119);
+			this->fchNURCLookahead->Location = System::Drawing::Point(519, 160);
 			this->fchNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
 			this->fchNURCLookahead->Name = L"fchNURCLookahead";
 			this->fchNURCLookahead->Size = System::Drawing::Size(65, 21);
@@ -3619,7 +3660,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBRcLookAhead
 			// 
 			this->fchLBRcLookAhead->AutoSize = true;
-			this->fchLBRcLookAhead->Location = System::Drawing::Point(406, 121);
+			this->fchLBRcLookAhead->Location = System::Drawing::Point(404, 162);
 			this->fchLBRcLookAhead->Name = L"fchLBRcLookAhead";
 			this->fchLBRcLookAhead->Size = System::Drawing::Size(95, 14);
 			this->fchLBRcLookAhead->TabIndex = 23;
@@ -3628,7 +3669,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchNUKeyintMax
 			// 
 			this->fchNUKeyintMax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-			this->fchNUKeyintMax->Location = System::Drawing::Point(521, 92);
+			this->fchNUKeyintMax->Location = System::Drawing::Point(519, 107);
 			this->fchNUKeyintMax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
 			this->fchNUKeyintMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, System::Int32::MinValue });
 			this->fchNUKeyintMax->Name = L"fchNUKeyintMax";
@@ -3640,7 +3681,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBKeyintMax
 			// 
 			this->fchLBKeyintMax->AutoSize = true;
-			this->fchLBKeyintMax->Location = System::Drawing::Point(406, 94);
+			this->fchLBKeyintMax->Location = System::Drawing::Point(404, 109);
 			this->fchLBKeyintMax->Name = L"fchLBKeyintMax";
 			this->fchLBKeyintMax->Size = System::Drawing::Size(102, 14);
 			this->fchLBKeyintMax->TabIndex = 21;
@@ -3649,7 +3690,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBBadapt
 			// 
 			this->fchLBBadapt->AutoSize = true;
-			this->fchLBBadapt->Location = System::Drawing::Point(406, 204);
+			this->fchLBBadapt->Location = System::Drawing::Point(404, 245);
 			this->fchLBBadapt->Name = L"fchLBBadapt";
 			this->fchLBBadapt->Size = System::Drawing::Size(102, 14);
 			this->fchLBBadapt->TabIndex = 29;
@@ -3657,7 +3698,7 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// 
 			// fchNUBframes
 			// 
-			this->fchNUBframes->Location = System::Drawing::Point(521, 173);
+			this->fchNUBframes->Location = System::Drawing::Point(519, 214);
 			this->fchNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNUBframes->Name = L"fchNUBframes";
 			this->fchNUBframes->Size = System::Drawing::Size(65, 21);
@@ -3668,73 +3709,15 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBBframes
 			// 
 			this->fchLBBframes->AutoSize = true;
-			this->fchLBBframes->Location = System::Drawing::Point(406, 175);
+			this->fchLBBframes->Location = System::Drawing::Point(404, 216);
 			this->fchLBBframes->Name = L"fchLBBframes";
 			this->fchLBBframes->Size = System::Drawing::Size(102, 14);
 			this->fchLBBframes->TabIndex = 27;
 			this->fchLBBframes->Text = L"最大連続Bフレーム数";
 			// 
-			// fchNUMERange
-			// 
-			this->fchNUMERange->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
-			this->fchNUMERange->Location = System::Drawing::Point(514, 437);
-			this->fchNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128, 0, 0, 0 });
-			this->fchNUMERange->Name = L"fchNUMERange";
-			this->fchNUMERange->Size = System::Drawing::Size(65, 21);
-			this->fchNUMERange->TabIndex = 54;
-			this->fchNUMERange->Tag = L"reCmd";
-			this->fchNUMERange->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchCXSubME
-			// 
-			this->fchCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-			this->fchCXSubME->FormattingEnabled = true;
-			this->fchCXSubME->Location = System::Drawing::Point(514, 405);
-			this->fchCXSubME->Name = L"fchCXSubME";
-			this->fchCXSubME->Size = System::Drawing::Size(88, 22);
-			this->fchCXSubME->TabIndex = 52;
-			this->fchCXSubME->Tag = L"reCmd";
-			// 
-			// fchCXME
-			// 
-			this->fchCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-			this->fchCXME->FormattingEnabled = true;
-			this->fchCXME->Location = System::Drawing::Point(514, 374);
-			this->fchCXME->Name = L"fchCXME";
-			this->fchCXME->Size = System::Drawing::Size(88, 22);
-			this->fchCXME->TabIndex = 50;
-			this->fchCXME->Tag = L"reCmd";
-			// 
-			// fchLBMERange
-			// 
-			this->fchLBMERange->AutoSize = true;
-			this->fchLBMERange->Location = System::Drawing::Point(406, 439);
-			this->fchLBMERange->Name = L"fchLBMERange";
-			this->fchLBMERange->Size = System::Drawing::Size(70, 14);
-			this->fchLBMERange->TabIndex = 53;
-			this->fchLBMERange->Text = L"動き探索範囲";
-			// 
-			// fchLBSubME
-			// 
-			this->fchLBSubME->AutoSize = true;
-			this->fchLBSubME->Location = System::Drawing::Point(406, 408);
-			this->fchLBSubME->Name = L"fchLBSubME";
-			this->fchLBSubME->Size = System::Drawing::Size(99, 14);
-			this->fchLBSubME->TabIndex = 51;
-			this->fchLBSubME->Text = L"サブピクセル動き予測";
-			// 
-			// fchLBME
-			// 
-			this->fchLBME->AutoSize = true;
-			this->fchLBME->Location = System::Drawing::Point(406, 377);
-			this->fchLBME->Name = L"fchLBME";
-			this->fchLBME->Size = System::Drawing::Size(97, 14);
-			this->fchLBME->TabIndex = 49;
-			this->fchLBME->Text = L"動き予測アルゴリズム";
-			// 
 			// fchNURef
 			// 
-			this->fchNURef->Location = System::Drawing::Point(521, 146);
+			this->fchNURef->Location = System::Drawing::Point(519, 187);
 			this->fchNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNURef->Name = L"fchNURef";
 			this->fchNURef->Size = System::Drawing::Size(65, 21);
@@ -3745,128 +3728,11 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			// fchLBRef
 			// 
 			this->fchLBRef->AutoSize = true;
-			this->fchLBRef->Location = System::Drawing::Point(406, 148);
+			this->fchLBRef->Location = System::Drawing::Point(404, 189);
 			this->fchLBRef->Name = L"fchLBRef";
 			this->fchLBRef->Size = System::Drawing::Size(51, 14);
 			this->fchLBRef->TabIndex = 25;
 			this->fchLBRef->Text = L"参照距離";
-			// 
-			// fchCBWpp
-			// 
-			this->fchCBWpp->AutoSize = true;
-			this->fchCBWpp->Location = System::Drawing::Point(205, 422);
-			this->fchCBWpp->Name = L"fchCBWpp";
-			this->fchCBWpp->Size = System::Drawing::Size(142, 18);
-			this->fchCBWpp->TabIndex = 16;
-			this->fchCBWpp->Tag = L"reCmd";
-			this->fchCBWpp->Text = L"波面状並列処理 (WPP)";
-			this->fchCBWpp->UseVisualStyleBackColor = true;
-			// 
-			// fchNUCtu
-			// 
-			this->fchNUCtu->Location = System::Drawing::Point(321, 334);
-			this->fchNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
-			this->fchNUCtu->Name = L"fchNUCtu";
-			this->fchNUCtu->Size = System::Drawing::Size(64, 21);
-			this->fchNUCtu->TabIndex = 11;
-			this->fchNUCtu->Tag = L"reCmd";
-			this->fchNUCtu->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			this->fchNUCtu->ValueChanged += gcnew System::EventHandler(this, &frmConfig::fchNUCtu_ValueChanged);
-			// 
-			// fchLBCtu
-			// 
-			this->fchLBCtu->AutoSize = true;
-			this->fchLBCtu->Location = System::Drawing::Point(196, 336);
-			this->fchLBCtu->Name = L"fchLBCtu";
-			this->fchLBCtu->Size = System::Drawing::Size(96, 14);
-			this->fchLBCtu->TabIndex = 10;
-			this->fchLBCtu->Text = L"符号化ブロックサイズ";
-			// 
-			// fchNUTuIntraDepth
-			// 
-			this->fchNUTuIntraDepth->Location = System::Drawing::Point(321, 361);
-			this->fchNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
-			this->fchNUTuIntraDepth->Name = L"fchNUTuIntraDepth";
-			this->fchNUTuIntraDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuIntraDepth->TabIndex = 13;
-			this->fchNUTuIntraDepth->Tag = L"reCmd";
-			this->fchNUTuIntraDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchNUTuInterDepth
-			// 
-			this->fchNUTuInterDepth->Location = System::Drawing::Point(321, 388);
-			this->fchNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
-			this->fchNUTuInterDepth->Name = L"fchNUTuInterDepth";
-			this->fchNUTuInterDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuInterDepth->TabIndex = 15;
-			this->fchNUTuInterDepth->Tag = L"reCmd";
-			this->fchNUTuInterDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchLBTuIntraDepth
-			// 
-			this->fchLBTuIntraDepth->AutoSize = true;
-			this->fchLBTuIntraDepth->Location = System::Drawing::Point(196, 363);
-			this->fchLBTuIntraDepth->Name = L"fchLBTuIntraDepth";
-			this->fchLBTuIntraDepth->Size = System::Drawing::Size(113, 14);
-			this->fchLBTuIntraDepth->TabIndex = 12;
-			this->fchLBTuIntraDepth->Text = L"イントラ予測ブロック階層";
-			// 
-			// fchLBTuInterDepth
-			// 
-			this->fchLBTuInterDepth->AutoSize = true;
-			this->fchLBTuInterDepth->Location = System::Drawing::Point(196, 390);
-			this->fchLBTuInterDepth->Name = L"fchLBTuInterDepth";
-			this->fchLBTuInterDepth->Size = System::Drawing::Size(114, 14);
-			this->fchLBTuInterDepth->TabIndex = 14;
-			this->fchLBTuInterDepth->Text = L"インター予測ブロック階層";
-			// 
-			// groupBox1
-			// 
-			this->groupBox1->Controls->Add(this->fchLBFrameThreads);
-			this->groupBox1->Controls->Add(this->fchNUFrameThreads);
-			this->groupBox1->Controls->Add(this->fchLBThreads);
-			this->groupBox1->Controls->Add(this->fchNUThreads);
-			this->groupBox1->Location = System::Drawing::Point(401, 4);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(201, 77);
-			this->groupBox1->TabIndex = 20;
-			this->groupBox1->TabStop = false;
-			// 
-			// fchLBFrameThreads
-			// 
-			this->fchLBFrameThreads->AutoSize = true;
-			this->fchLBFrameThreads->Location = System::Drawing::Point(9, 47);
-			this->fchLBFrameThreads->Name = L"fchLBFrameThreads";
-			this->fchLBFrameThreads->Size = System::Drawing::Size(73, 14);
-			this->fchLBFrameThreads->TabIndex = 2;
-			this->fchLBFrameThreads->Text = L"フレーム並列数";
-			// 
-			// fchNUFrameThreads
-			// 
-			this->fchNUFrameThreads->Location = System::Drawing::Point(120, 45);
-			this->fchNUFrameThreads->Name = L"fchNUFrameThreads";
-			this->fchNUFrameThreads->Size = System::Drawing::Size(64, 21);
-			this->fchNUFrameThreads->TabIndex = 3;
-			this->fchNUFrameThreads->Tag = L"reCmd";
-			this->fchNUFrameThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchLBThreads
-			// 
-			this->fchLBThreads->AutoSize = true;
-			this->fchLBThreads->Location = System::Drawing::Point(34, 19);
-			this->fchLBThreads->Name = L"fchLBThreads";
-			this->fchLBThreads->Size = System::Drawing::Size(48, 14);
-			this->fchLBThreads->TabIndex = 0;
-			this->fchLBThreads->Text = L"スレッド数";
-			// 
-			// fchNUThreads
-			// 
-			this->fchNUThreads->Location = System::Drawing::Point(120, 17);
-			this->fchNUThreads->Name = L"fchNUThreads";
-			this->fchNUThreads->Size = System::Drawing::Size(64, 21);
-			this->fchNUThreads->TabIndex = 1;
-			this->fchNUThreads->Tag = L"reCmd";
-			this->fchNUThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchPNStatusFile
 			// 
@@ -4165,6 +4031,252 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchLBX265Path->Size = System::Drawing::Size(49, 14);
 			this->fchLBX265Path->TabIndex = 0;
 			this->fchLBX265Path->Text = L"～の指定";
+			// 
+			// fchtabPageX265Other
+			// 
+			this->fchtabPageX265Other->Controls->Add(this->fchGroupBoxME);
+			this->fchtabPageX265Other->Controls->Add(this->fchGroupBoxCTU);
+			this->fchtabPageX265Other->Controls->Add(this->fchCBSAO);
+			this->fchtabPageX265Other->Controls->Add(this->fchLBSAO);
+			this->fchtabPageX265Other->Controls->Add(this->fchCBLoopFilter);
+			this->fchtabPageX265Other->Controls->Add(this->fchLBLoopFilter);
+			this->fchtabPageX265Other->Controls->Add(this->groupBox1);
+			this->fchtabPageX265Other->Location = System::Drawing::Point(4, 23);
+			this->fchtabPageX265Other->Name = L"fchtabPageX265Other";
+			this->fchtabPageX265Other->Size = System::Drawing::Size(608, 493);
+			this->fchtabPageX265Other->TabIndex = 6;
+			this->fchtabPageX265Other->Text = L"x265 (2)";
+			this->fchtabPageX265Other->UseVisualStyleBackColor = true;
+			// 
+			// fchCBWpp
+			// 
+			this->fchCBWpp->AutoSize = true;
+			this->fchCBWpp->Location = System::Drawing::Point(189, 106);
+			this->fchCBWpp->Name = L"fchCBWpp";
+			this->fchCBWpp->Size = System::Drawing::Size(15, 14);
+			this->fchCBWpp->TabIndex = 71;
+			this->fchCBWpp->Tag = L"reCmd";
+			this->fchCBWpp->UseVisualStyleBackColor = true;
+			// 
+			// fchNUCtu
+			// 
+			this->fchNUCtu->Location = System::Drawing::Point(153, 19);
+			this->fchNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
+			this->fchNUCtu->Name = L"fchNUCtu";
+			this->fchNUCtu->Size = System::Drawing::Size(64, 21);
+			this->fchNUCtu->TabIndex = 66;
+			this->fchNUCtu->Tag = L"reCmd";
+			this->fchNUCtu->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBCtu
+			// 
+			this->fchLBCtu->AutoSize = true;
+			this->fchLBCtu->Location = System::Drawing::Point(14, 21);
+			this->fchLBCtu->Name = L"fchLBCtu";
+			this->fchLBCtu->Size = System::Drawing::Size(96, 14);
+			this->fchLBCtu->TabIndex = 65;
+			this->fchLBCtu->Text = L"符号化ブロックサイズ";
+			// 
+			// fchNUTuIntraDepth
+			// 
+			this->fchNUTuIntraDepth->Location = System::Drawing::Point(153, 46);
+			this->fchNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+			this->fchNUTuIntraDepth->Name = L"fchNUTuIntraDepth";
+			this->fchNUTuIntraDepth->Size = System::Drawing::Size(64, 21);
+			this->fchNUTuIntraDepth->TabIndex = 68;
+			this->fchNUTuIntraDepth->Tag = L"reCmd";
+			this->fchNUTuIntraDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchNUTuInterDepth
+			// 
+			this->fchNUTuInterDepth->Location = System::Drawing::Point(153, 73);
+			this->fchNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+			this->fchNUTuInterDepth->Name = L"fchNUTuInterDepth";
+			this->fchNUTuInterDepth->Size = System::Drawing::Size(64, 21);
+			this->fchNUTuInterDepth->TabIndex = 70;
+			this->fchNUTuInterDepth->Tag = L"reCmd";
+			this->fchNUTuInterDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBTuIntraDepth
+			// 
+			this->fchLBTuIntraDepth->AutoSize = true;
+			this->fchLBTuIntraDepth->Location = System::Drawing::Point(14, 48);
+			this->fchLBTuIntraDepth->Name = L"fchLBTuIntraDepth";
+			this->fchLBTuIntraDepth->Size = System::Drawing::Size(113, 14);
+			this->fchLBTuIntraDepth->TabIndex = 67;
+			this->fchLBTuIntraDepth->Text = L"イントラ予測ブロック階層";
+			// 
+			// fchLBTuInterDepth
+			// 
+			this->fchLBTuInterDepth->AutoSize = true;
+			this->fchLBTuInterDepth->Location = System::Drawing::Point(14, 75);
+			this->fchLBTuInterDepth->Name = L"fchLBTuInterDepth";
+			this->fchLBTuInterDepth->Size = System::Drawing::Size(114, 14);
+			this->fchLBTuInterDepth->TabIndex = 69;
+			this->fchLBTuInterDepth->Text = L"インター予測ブロック階層";
+			// 
+			// fchNUMaxMerge
+			// 
+			this->fchNUMaxMerge->Location = System::Drawing::Point(153, 110);
+			this->fchNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			this->fchNUMaxMerge->Name = L"fchNUMaxMerge";
+			this->fchNUMaxMerge->Size = System::Drawing::Size(65, 21);
+			this->fchNUMaxMerge->TabIndex = 64;
+			this->fchNUMaxMerge->Tag = L"reCmd";
+			this->fchNUMaxMerge->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBMaxMerge
+			// 
+			this->fchLBMaxMerge->AutoSize = true;
+			this->fchLBMaxMerge->Location = System::Drawing::Point(19, 112);
+			this->fchLBMaxMerge->Name = L"fchLBMaxMerge";
+			this->fchLBMaxMerge->Size = System::Drawing::Size(103, 14);
+			this->fchLBMaxMerge->TabIndex = 63;
+			this->fchLBMaxMerge->Text = L"最大動き領域統合数";
+			// 
+			// fchNUMERange
+			// 
+			this->fchNUMERange->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
+			this->fchNUMERange->Location = System::Drawing::Point(153, 83);
+			this->fchNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128, 0, 0, 0 });
+			this->fchNUMERange->Name = L"fchNUMERange";
+			this->fchNUMERange->Size = System::Drawing::Size(65, 21);
+			this->fchNUMERange->TabIndex = 62;
+			this->fchNUMERange->Tag = L"reCmd";
+			this->fchNUMERange->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchCXSubME
+			// 
+			this->fchCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->fchCXSubME->FormattingEnabled = true;
+			this->fchCXSubME->Location = System::Drawing::Point(153, 51);
+			this->fchCXSubME->Name = L"fchCXSubME";
+			this->fchCXSubME->Size = System::Drawing::Size(176, 22);
+			this->fchCXSubME->TabIndex = 60;
+			this->fchCXSubME->Tag = L"reCmd";
+			// 
+			// fchCXME
+			// 
+			this->fchCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->fchCXME->FormattingEnabled = true;
+			this->fchCXME->Location = System::Drawing::Point(153, 20);
+			this->fchCXME->Name = L"fchCXME";
+			this->fchCXME->Size = System::Drawing::Size(176, 22);
+			this->fchCXME->TabIndex = 58;
+			this->fchCXME->Tag = L"reCmd";
+			// 
+			// fchLBMERange
+			// 
+			this->fchLBMERange->AutoSize = true;
+			this->fchLBMERange->Location = System::Drawing::Point(19, 85);
+			this->fchLBMERange->Name = L"fchLBMERange";
+			this->fchLBMERange->Size = System::Drawing::Size(70, 14);
+			this->fchLBMERange->TabIndex = 61;
+			this->fchLBMERange->Text = L"動き探索範囲";
+			// 
+			// fchLBSubME
+			// 
+			this->fchLBSubME->AutoSize = true;
+			this->fchLBSubME->Location = System::Drawing::Point(19, 54);
+			this->fchLBSubME->Name = L"fchLBSubME";
+			this->fchLBSubME->Size = System::Drawing::Size(99, 14);
+			this->fchLBSubME->TabIndex = 59;
+			this->fchLBSubME->Text = L"サブピクセル動き予測";
+			// 
+			// fchLBME
+			// 
+			this->fchLBME->AutoSize = true;
+			this->fchLBME->Location = System::Drawing::Point(19, 23);
+			this->fchLBME->Name = L"fchLBME";
+			this->fchLBME->Size = System::Drawing::Size(97, 14);
+			this->fchLBME->TabIndex = 57;
+			this->fchLBME->Text = L"動き予測アルゴリズム";
+			// 
+			// fchCBSAO
+			// 
+			this->fchCBSAO->AutoSize = true;
+			this->fchCBSAO->Location = System::Drawing::Point(560, 144);
+			this->fchCBSAO->Name = L"fchCBSAO";
+			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
+			this->fchCBSAO->TabIndex = 40;
+			this->fchCBSAO->Tag = L"reCmd";
+			this->fchCBSAO->UseVisualStyleBackColor = true;
+			// 
+			// fchLBSAO
+			// 
+			this->fchLBSAO->AutoSize = true;
+			this->fchLBSAO->Location = System::Drawing::Point(403, 143);
+			this->fchLBSAO->Name = L"fchLBSAO";
+			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
+			this->fchLBSAO->TabIndex = 39;
+			this->fchLBSAO->Text = L"画素適応オフセット(SAO)";
+			// 
+			// fchCBLoopFilter
+			// 
+			this->fchCBLoopFilter->AutoSize = true;
+			this->fchCBLoopFilter->Location = System::Drawing::Point(560, 119);
+			this->fchCBLoopFilter->Name = L"fchCBLoopFilter";
+			this->fchCBLoopFilter->Size = System::Drawing::Size(15, 14);
+			this->fchCBLoopFilter->TabIndex = 38;
+			this->fchCBLoopFilter->Tag = L"reCmd";
+			this->fchCBLoopFilter->UseVisualStyleBackColor = true;
+			// 
+			// fchLBLoopFilter
+			// 
+			this->fchLBLoopFilter->AutoSize = true;
+			this->fchLBLoopFilter->Location = System::Drawing::Point(403, 118);
+			this->fchLBLoopFilter->Name = L"fchLBLoopFilter";
+			this->fchLBLoopFilter->Size = System::Drawing::Size(63, 14);
+			this->fchLBLoopFilter->TabIndex = 37;
+			this->fchLBLoopFilter->Text = L"ループフィルタ";
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->fchLBFrameThreads);
+			this->groupBox1->Controls->Add(this->fchNUFrameThreads);
+			this->groupBox1->Controls->Add(this->fchLBThreads);
+			this->groupBox1->Controls->Add(this->fchNUThreads);
+			this->groupBox1->Location = System::Drawing::Point(398, 5);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(201, 77);
+			this->groupBox1->TabIndex = 21;
+			this->groupBox1->TabStop = false;
+			// 
+			// fchLBFrameThreads
+			// 
+			this->fchLBFrameThreads->AutoSize = true;
+			this->fchLBFrameThreads->Location = System::Drawing::Point(9, 47);
+			this->fchLBFrameThreads->Name = L"fchLBFrameThreads";
+			this->fchLBFrameThreads->Size = System::Drawing::Size(73, 14);
+			this->fchLBFrameThreads->TabIndex = 2;
+			this->fchLBFrameThreads->Text = L"フレーム並列数";
+			// 
+			// fchNUFrameThreads
+			// 
+			this->fchNUFrameThreads->Location = System::Drawing::Point(120, 45);
+			this->fchNUFrameThreads->Name = L"fchNUFrameThreads";
+			this->fchNUFrameThreads->Size = System::Drawing::Size(64, 21);
+			this->fchNUFrameThreads->TabIndex = 3;
+			this->fchNUFrameThreads->Tag = L"reCmd";
+			this->fchNUFrameThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBThreads
+			// 
+			this->fchLBThreads->AutoSize = true;
+			this->fchLBThreads->Location = System::Drawing::Point(34, 19);
+			this->fchLBThreads->Name = L"fchLBThreads";
+			this->fchLBThreads->Size = System::Drawing::Size(48, 14);
+			this->fchLBThreads->TabIndex = 0;
+			this->fchLBThreads->Text = L"スレッド数";
+			// 
+			// fchNUThreads
+			// 
+			this->fchNUThreads->Location = System::Drawing::Point(120, 17);
+			this->fchNUThreads->Name = L"fchNUThreads";
+			this->fchNUThreads->Size = System::Drawing::Size(64, 21);
+			this->fchNUThreads->TabIndex = 1;
+			this->fchNUThreads->Tag = L"reCmd";
+			this->fchNUThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fcgtabPageExSettings
 			// 
@@ -5718,6 +5830,248 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
 			// 
+			// fchNUKeyintMin
+			// 
+			this->fchNUKeyintMin->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->fchNUKeyintMin->Location = System::Drawing::Point(519, 80);
+			this->fchNUKeyintMin->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
+			this->fchNUKeyintMin->Name = L"fchNUKeyintMin";
+			this->fchNUKeyintMin->Size = System::Drawing::Size(65, 21);
+			this->fchNUKeyintMin->TabIndex = 52;
+			this->fchNUKeyintMin->Tag = L"reCmd";
+			this->fchNUKeyintMin->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBKeyintMin
+			// 
+			this->fchLBKeyintMin->AutoSize = true;
+			this->fchLBKeyintMin->Location = System::Drawing::Point(404, 82);
+			this->fchLBKeyintMin->Name = L"fchLBKeyintMin";
+			this->fchLBKeyintMin->Size = System::Drawing::Size(102, 14);
+			this->fchLBKeyintMin->TabIndex = 51;
+			this->fchLBKeyintMin->Text = L"最小キーフレーム間隔";
+			// 
+			// fchNUScenecut
+			// 
+			this->fchNUScenecut->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->fchNUScenecut->Location = System::Drawing::Point(519, 52);
+			this->fchNUScenecut->Name = L"fchNUScenecut";
+			this->fchNUScenecut->Size = System::Drawing::Size(65, 21);
+			this->fchNUScenecut->TabIndex = 54;
+			this->fchNUScenecut->Tag = L"reCmd";
+			this->fchNUScenecut->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBScenecut
+			// 
+			this->fchLBScenecut->AutoSize = true;
+			this->fchLBScenecut->Location = System::Drawing::Point(404, 54);
+			this->fchLBScenecut->Name = L"fchLBScenecut";
+			this->fchLBScenecut->Size = System::Drawing::Size(77, 14);
+			this->fchLBScenecut->TabIndex = 53;
+			this->fchLBScenecut->Text = L"シーンカット閾値";
+			// 
+			// fchNUVBVbuf
+			// 
+			this->fchNUVBVbuf->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
+			this->fchNUVBVbuf->Location = System::Drawing::Point(89, 53);
+			this->fchNUVBVbuf->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
+			this->fchNUVBVbuf->Name = L"fchNUVBVbuf";
+			this->fchNUVBVbuf->Size = System::Drawing::Size(75, 21);
+			this->fchNUVBVbuf->TabIndex = 57;
+			this->fchNUVBVbuf->Tag = L"reCmd";
+			this->fchNUVBVbuf->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchNUVBVmax
+			// 
+			this->fchNUVBVmax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
+			this->fchNUVBVmax->Location = System::Drawing::Point(89, 23);
+			this->fchNUVBVmax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
+			this->fchNUVBVmax->Name = L"fchNUVBVmax";
+			this->fchNUVBVmax->Size = System::Drawing::Size(75, 21);
+			this->fchNUVBVmax->TabIndex = 55;
+			this->fchNUVBVmax->Tag = L"reCmd";
+			this->fchNUVBVmax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBVBVbuf
+			// 
+			this->fchLBVBVbuf->AutoSize = true;
+			this->fchLBVBVbuf->Location = System::Drawing::Point(7, 55);
+			this->fchLBVBVbuf->Name = L"fchLBVBVbuf";
+			this->fchLBVBVbuf->Size = System::Drawing::Size(61, 14);
+			this->fchLBVBVbuf->TabIndex = 58;
+			this->fchLBVBVbuf->Text = L"バッファサイズ";
+			// 
+			// fchLBVBVmax
+			// 
+			this->fchLBVBVmax->AutoSize = true;
+			this->fchLBVBVmax->Location = System::Drawing::Point(6, 25);
+			this->fchLBVBVmax->Name = L"fchLBVBVmax";
+			this->fchLBVBVmax->Size = System::Drawing::Size(76, 14);
+			this->fchLBVBVmax->TabIndex = 56;
+			this->fchLBVBVmax->Text = L"最大ビットレート";
+			// 
+			// fchGroupBoxCTU
+			// 
+			this->fchGroupBoxCTU->Controls->Add(this->fchLBWpp);
+			this->fchGroupBoxCTU->Controls->Add(this->fchCBWpp);
+			this->fchGroupBoxCTU->Controls->Add(this->fchLBCtu);
+			this->fchGroupBoxCTU->Controls->Add(this->fchLBTuInterDepth);
+			this->fchGroupBoxCTU->Controls->Add(this->fchNUCtu);
+			this->fchGroupBoxCTU->Controls->Add(this->fchLBTuIntraDepth);
+			this->fchGroupBoxCTU->Controls->Add(this->fchNUTuInterDepth);
+			this->fchGroupBoxCTU->Controls->Add(this->fchNUTuIntraDepth);
+			this->fchGroupBoxCTU->Location = System::Drawing::Point(8, 5);
+			this->fchGroupBoxCTU->Name = L"fchGroupBoxCTU";
+			this->fchGroupBoxCTU->Size = System::Drawing::Size(345, 137);
+			this->fchGroupBoxCTU->TabIndex = 72;
+			this->fchGroupBoxCTU->TabStop = false;
+			// 
+			// fchGroupBoxME
+			// 
+			this->fchGroupBoxME->Controls->Add(this->fchLBAsymmetricMP);
+			this->fchGroupBoxME->Controls->Add(this->fchCBAsymmetricMP);
+			this->fchGroupBoxME->Controls->Add(this->fchLBRectMP);
+			this->fchGroupBoxME->Controls->Add(this->fchCBRectMP);
+			this->fchGroupBoxME->Controls->Add(this->fchLBME);
+			this->fchGroupBoxME->Controls->Add(this->fchLBSubME);
+			this->fchGroupBoxME->Controls->Add(this->fchNUMaxMerge);
+			this->fchGroupBoxME->Controls->Add(this->fchLBMERange);
+			this->fchGroupBoxME->Controls->Add(this->fchLBMaxMerge);
+			this->fchGroupBoxME->Controls->Add(this->fchCXME);
+			this->fchGroupBoxME->Controls->Add(this->fchNUMERange);
+			this->fchGroupBoxME->Controls->Add(this->fchCXSubME);
+			this->fchGroupBoxME->Location = System::Drawing::Point(8, 148);
+			this->fchGroupBoxME->Name = L"fchGroupBoxME";
+			this->fchGroupBoxME->Size = System::Drawing::Size(345, 200);
+			this->fchGroupBoxME->TabIndex = 73;
+			this->fchGroupBoxME->TabStop = false;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->fchLBVBVmax);
+			this->groupBox2->Controls->Add(this->fchNUVBVbuf);
+			this->groupBox2->Controls->Add(this->fchLBVBVbuf);
+			this->groupBox2->Controls->Add(this->fchNUVBVmax);
+			this->groupBox2->Location = System::Drawing::Point(195, 306);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(186, 85);
+			this->groupBox2->TabIndex = 59;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"VBV (ビデオバッファ制御)";
+			// 
+			// fchLBWpp
+			// 
+			this->fchLBWpp->AutoSize = true;
+			this->fchLBWpp->Location = System::Drawing::Point(14, 105);
+			this->fchLBWpp->Name = L"fchLBWpp";
+			this->fchLBWpp->Size = System::Drawing::Size(123, 14);
+			this->fchLBWpp->TabIndex = 71;
+			this->fchLBWpp->Text = L"波面状並列処理 (WPP)";
+			// 
+			// fchLBRectMP
+			// 
+			this->fchLBRectMP->AutoSize = true;
+			this->fchLBRectMP->Location = System::Drawing::Point(19, 140);
+			this->fchLBRectMP->Name = L"fchLBRectMP";
+			this->fchLBRectMP->Size = System::Drawing::Size(92, 14);
+			this->fchLBRectMP->TabIndex = 72;
+			this->fchLBRectMP->Text = L"非正方予測ブロック";
+			// 
+			// fchCBRectMP
+			// 
+			this->fchCBRectMP->AutoSize = true;
+			this->fchCBRectMP->Location = System::Drawing::Point(194, 141);
+			this->fchCBRectMP->Name = L"fchCBRectMP";
+			this->fchCBRectMP->Size = System::Drawing::Size(15, 14);
+			this->fchCBRectMP->TabIndex = 73;
+			this->fchCBRectMP->Tag = L"reCmd";
+			this->fchCBRectMP->UseVisualStyleBackColor = true;
+			// 
+			// fchLBAsymmetricMP
+			// 
+			this->fchLBAsymmetricMP->AutoSize = true;
+			this->fchLBAsymmetricMP->Location = System::Drawing::Point(19, 167);
+			this->fchLBAsymmetricMP->Name = L"fchLBAsymmetricMP";
+			this->fchLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
+			this->fchLBAsymmetricMP->TabIndex = 74;
+			this->fchLBAsymmetricMP->Text = L"非対称予測ブロック";
+			// 
+			// fchCBAsymmetricMP
+			// 
+			this->fchCBAsymmetricMP->AutoSize = true;
+			this->fchCBAsymmetricMP->Location = System::Drawing::Point(194, 168);
+			this->fchCBAsymmetricMP->Name = L"fchCBAsymmetricMP";
+			this->fchCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
+			this->fchCBAsymmetricMP->TabIndex = 75;
+			this->fchCBAsymmetricMP->Tag = L"reCmd";
+			this->fchCBAsymmetricMP->UseVisualStyleBackColor = true;
+			// 
+			// fchCXCSP
+			// 
+			this->fchCXCSP->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->fchCXCSP->FormattingEnabled = true;
+			this->fchCXCSP->Location = System::Drawing::Point(512, 9);
+			this->fchCXCSP->Name = L"fchCXCSP";
+			this->fchCXCSP->Size = System::Drawing::Size(88, 22);
+			this->fchCXCSP->TabIndex = 61;
+			this->fchCXCSP->Tag = L"reCmd";
+			// 
+			// fchLBCSP
+			// 
+			this->fchLBCSP->AutoSize = true;
+			this->fchLBCSP->Location = System::Drawing::Point(404, 12);
+			this->fchLBCSP->Name = L"fchLBCSP";
+			this->fchLBCSP->Size = System::Drawing::Size(40, 14);
+			this->fchLBCSP->TabIndex = 60;
+			this->fchLBCSP->Text = L"色空間";
+			// 
+			// fchNURD
+			// 
+			this->fchNURD->Location = System::Drawing::Point(519, 331);
+			this->fchNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
+			this->fchNURD->Name = L"fchNURD";
+			this->fchNURD->Size = System::Drawing::Size(65, 21);
+			this->fchNURD->TabIndex = 62;
+			this->fchNURD->Tag = L"reCmd";
+			this->fchNURD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchCBCUTree
+			// 
+			this->fchCBCUTree->AutoSize = true;
+			this->fchCBCUTree->Location = System::Drawing::Point(562, 427);
+			this->fchCBCUTree->Name = L"fchCBCUTree";
+			this->fchCBCUTree->Size = System::Drawing::Size(15, 14);
+			this->fchCBCUTree->TabIndex = 64;
+			this->fchCBCUTree->Tag = L"reCmd";
+			this->fchCBCUTree->UseVisualStyleBackColor = true;
+			// 
+			// fchLBCUTree
+			// 
+			this->fchLBCUTree->AutoSize = true;
+			this->fchLBCUTree->Location = System::Drawing::Point(405, 426);
+			this->fchLBCUTree->Name = L"fchLBCUTree";
+			this->fchLBCUTree->Size = System::Drawing::Size(45, 14);
+			this->fchLBCUTree->TabIndex = 63;
+			this->fchLBCUTree->Text = L"CUTree";
+			// 
+			// fchCBWeightP
+			// 
+			this->fchCBWeightP->AutoSize = true;
+			this->fchCBWeightP->Location = System::Drawing::Point(561, 297);
+			this->fchCBWeightP->Name = L"fchCBWeightP";
+			this->fchCBWeightP->Size = System::Drawing::Size(15, 14);
+			this->fchCBWeightP->TabIndex = 66;
+			this->fchCBWeightP->Tag = L"reCmd";
+			this->fchCBWeightP->UseVisualStyleBackColor = true;
+			// 
+			// fchLBWeightP
+			// 
+			this->fchLBWeightP->AutoSize = true;
+			this->fchLBWeightP->Location = System::Drawing::Point(404, 296);
+			this->fchLBWeightP->Name = L"fchLBWeightP";
+			this->fchLBWeightP->Size = System::Drawing::Size(87, 14);
+			this->fchLBWeightP->TabIndex = 65;
+			this->fchLBWeightP->Text = L"重み付きPフレーム";
+			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -5824,19 +6178,10 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAQStrength))->EndInit();
 			this->fchgroupBoxPreset->ResumeLayout(false);
 			this->fchgroupBoxPreset->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMaxMerge))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURCLookahead))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUKeyintMax))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUBframes))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMERange))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURef))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->EndInit();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->EndInit();
 			this->fchPNStatusFile->ResumeLayout(false);
 			this->fchPNStatusFile->PerformLayout();
 			this->fchPNBitrate->ResumeLayout(false);
@@ -5848,6 +6193,17 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAMPLimitFileSize))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAutoNPass))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchpictureBoxX265))->EndInit();
+			this->fchtabPageX265Other->ResumeLayout(false);
+			this->fchtabPageX265Other->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMaxMerge))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUMERange))->EndInit();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->EndInit();
 			this->fcgtabPageExSettings->ResumeLayout(false);
 			this->fcgtabPageExSettings->PerformLayout();
 			this->fchPNX265Sub->ResumeLayout(false);
@@ -5875,6 +6231,17 @@ private: System::Windows::Forms::Label^  fcgLBParallelDivMax;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSCQM->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUKeyintMin))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUScenecut))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUVBVbuf))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUVBVmax))->EndInit();
+			this->fchGroupBoxCTU->ResumeLayout(false);
+			this->fchGroupBoxCTU->PerformLayout();
+			this->fchGroupBoxME->ResumeLayout(false);
+			this->fchGroupBoxME->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURD))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
