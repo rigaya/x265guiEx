@@ -417,7 +417,7 @@ static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
 static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 	AUO_RESULT ret = AUO_RESULT_WARNING;
 	char buffer[2048] = { 0 };
-	static const int REQUIRED_X265_VER[5] = { 0, 7, 0, 0, 167 };
+	static const int REQUIRED_X265_VER[5] = { 0, 7, 0, 0, 172 };
 	if (get_exe_message(x265fullpath, "-V", buffer, _countof(buffer), AUO_PIPE_ENABLE) == RP_SUCCESS) {
 		char print_line[512] = { 0 };
 		const char *EXPECTED_HEADER = "x265 [info]: HEVC encoder version ";
