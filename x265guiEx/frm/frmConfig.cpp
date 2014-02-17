@@ -2383,6 +2383,8 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"high bit depthエンコードがなにかを理解している場合にのみ、\n"
 		+ L"使用してください。\n"
 		+ L"\n"
+		+ L"現在high bit-depthは10bitのみ可能です。\n"
+		+ L"\n"
 		+ L"8bit用x265.exeとhigh bit depth用x265.exeは別々に設定でき、\n"
 		+ L"このチェックボックスによって切り替わります。"
 		);
@@ -2450,7 +2452,10 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"をGUIに適用します。"
 		);
 	
-	fchTTX265->SetToolTip(fchNUScenecut,         L"--sccenecut");
+	fchTTX265->SetToolTip(fcgCXOutputCsp,        L"--input-csp\n"
+		+ L"通常は i420 を使用します。"
+		);
+	fchTTX265->SetToolTip(fchNUScenecut,         L"--scenecut");
 	fchTTX265->SetToolTip(fchNUKeyintMin,        L"--min-keyint");
 	fchTTX265->SetToolTip(fchNUKeyintMax,        L"--keyint");
 	fchTTX265->SetToolTip(fchCBOpenGOP,          L"--open-gop");

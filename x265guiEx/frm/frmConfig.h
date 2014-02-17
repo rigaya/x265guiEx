@@ -3463,7 +3463,7 @@ private: System::Windows::Forms::Label^  fchLBWeightP;
 			this->fchtabPageX265Main->Padding = System::Windows::Forms::Padding(3);
 			this->fchtabPageX265Main->Size = System::Drawing::Size(608, 493);
 			this->fchtabPageX265Main->TabIndex = 5;
-			this->fchtabPageX265Main->Text = L" x265 ";
+			this->fchtabPageX265Main->Text = L" x265 (1)";
 			this->fchtabPageX265Main->UseVisualStyleBackColor = true;
 			// 
 			// fchCBWeightP
