@@ -180,6 +180,9 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
 	{ CF_YC48, OUT_CSP_YUV444, BIT_8, A, 16,  SSE2,                 convert_yc48_to_yuv444_sse2_mod16 },
 	{ CF_YC48, OUT_CSP_YUV444, BIT_8, A,  1,  SSE2,                 convert_yc48_to_yuv444_sse2 },
 	{ CF_YC48, OUT_CSP_YUV444, BIT_8, A,  1,  NONE,                 convert_yc48_to_yuv444 },
+	
+	//YC48 -> yuv444(10bit)
+	{ CF_YC48, OUT_CSP_YUV444, BIT10, A,  1,  NONE,                 convert_yc48_to_yuv444_10bit },
 
 	//YC48 -> yuv444(16bit)
 #if (_MSC_VER >= 1700)

@@ -397,6 +397,18 @@ void convert_yc48_to_yuv444(void *pixel, CONVERT_CF_DATA *pixel_data, const int 
 	}
 }
 
+void convert_yc48_to_yuv444_10bit(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	PIXEL_YC *ycp_fin = (PIXEL_YC *)pixel + width * height;
+	short *Y = (short *)pixel_data->data[0];
+	short *U = (short *)pixel_data->data[1];
+	short *V = (short *)pixel_data->data[2];
+	for (PIXEL_YC *ycp = (PIXEL_YC *)pixel; ycp < ycp_fin; ycp++, Y++, U++, V++) {
+		*Y = (short)pixel_YC48_to_YUV(ycp->y,                  Y_L_MUL,  Y_L_ADD_10,      Y_L_RSH_10,      Y_L_YCC_10, 0, LIMIT_10);
+		*U = (short)pixel_YC48_to_YUV(ycp->cb + UV_OFFSET_x1, UV_L_MUL, UV_L_ADD_10_444, UV_L_RSH_10_444, UV_L_YCC_10, 0, LIMIT_10);
+		*V = (short)pixel_YC48_to_YUV(ycp->cr + UV_OFFSET_x1, UV_L_MUL, UV_L_ADD_10_444, UV_L_RSH_10_444, UV_L_YCC_10, 0, LIMIT_10);
+	}
+}
+
 void convert_yc48_to_yuv444_16bit(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	PIXEL_YC *ycp_fin = (PIXEL_YC *)pixel + width * height;
 	short *Y = (short *)pixel_data->data[0];

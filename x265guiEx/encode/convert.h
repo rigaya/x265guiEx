@@ -189,6 +189,8 @@ void convert_yc48_to_yuv444_avx2(void *pixel, CONVERT_CF_DATA *pixel_data, const
 #endif
 
 
+//YC48 -> yuv444 (10bit)
+void convert_yc48_to_yuv444_10bit(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height);
 //YC48 -> yuv444 (16bit)
 void convert_yc48_to_yuv444_16bit(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height);
 
