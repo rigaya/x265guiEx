@@ -417,7 +417,7 @@ static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
 static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 	AUO_RESULT ret = AUO_RESULT_WARNING;
 	char buffer[2048] = { 0 };
-	static const int REQUIRED_X265_VER[5] = { 0, 7, 0, 0, 172 };
+	static const int REQUIRED_X265_VER[5] = { 0, 7, 0, 0, 225 };
 	if (get_exe_message(x265fullpath, "-V", buffer, _countof(buffer), AUO_PIPE_ENABLE) == RP_SUCCESS) {
 		char print_line[512] = { 0 };
 		const char *EXPECTED_HEADER = "x265 [info]: HEVC encoder version ";
@@ -578,13 +578,10 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
 	//rawの形式情報追加
 	if (conf->vid.enc_type == ENC_TYPE_X264)
 		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input-csp %s", specify_input_csp(prm.x26x[conf->vid.enc_type].output_csp));
-	//fps//tcfile-inが指定されていた場合、fpsの自動付加を停止]
+	//fps//tcfile-inが指定されていた場合、fpsの自動付加を停止
 	if (!prm.x26x[conf->vid.enc_type].use_tcfilein && strstr(cmd, "--tcfile-in") == NULL) {
 		int gcd = get_gcd(oip->rate, oip->scale);
-		if (conf->vid.enc_type == ENC_TYPE_X264)
-			sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --fps %d/%d", oip->rate / gcd, oip->scale / gcd);
-		else
-			sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --fps %d", (int)(oip->rate / (double)oip->scale + 0.5)); //x265は現状、fps指定が恐ろしいことに整数である
+		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --fps %d/%d", oip->rate / gcd, oip->scale / gcd);
 	}
 	//出力ファイル
 	const char * const outfile = (prm.x26x[conf->vid.enc_type].nul_out) ? "nul" : pe->temp_filename;
