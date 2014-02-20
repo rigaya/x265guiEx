@@ -51,6 +51,7 @@ enum {
 	OPTION_TYPE_AQ,
 	OPTION_TYPE_INTERLACED,
 	OPTION_TYPE_PSY,
+	OPTION_TYPE_SAR_X265
 };
 
 //値を取らないオプションタイプのリスト
@@ -285,13 +286,15 @@ static X26X_OPTIONS x265_options_table[] = {
 	//{ "trellis",          "t",  OPTION_TYPE_INT,           list_trellis,         offsetof(CONF_X265, trellis        ) },
 	//{ "cqm",              "",   OPTION_TYPE_CQM,           list_cqm,             offsetof(CONF_X265, cqm            ) },
 	//{ "cqmfile",          "",   OPTION_TYPE_CQMFILE,       NULL,                 NULL                                 },
-	//{ "colormatrix",      "",   OPTION_TYPE_LIST,          list_colormatrix,     offsetof(CONF_X265, colormatrix    ) },
-	//{ "colorprim",        "",   OPTION_TYPE_LIST,          list_colorprim,       offsetof(CONF_X265, colorprim      ) },
-	//{ "transfer",         "",   OPTION_TYPE_LIST,          list_transfer,        offsetof(CONF_X265, transfer       ) },
-	//{ "input-range",      "",   OPTION_TYPE_LIST,          list_input_range,     offsetof(CONF_X265, input_range    ) },
-	//{ "sar",              "",   OPTION_TYPE_INT2,          NULL,                 offsetof(CONF_X265, sar            ) },
+	{ "colormatrix",      "",   OPTION_TYPE_LIST,          list_colormatrix,     offsetof(CONF_X265, colormatrix    ) },
+	{ "colorprim",        "",   OPTION_TYPE_LIST,          list_colorprim,       offsetof(CONF_X265, colorprim      ) },
+	{ "transfer",         "",   OPTION_TYPE_LIST,          list_transfer,        offsetof(CONF_X265, transfer       ) },
+	{ "range",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, input_range    ) },
+	{ "no-range",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, input_range    ) },
+	{ "sar",              "",   OPTION_TYPE_SAR_X265,      list_sar_x265,        offsetof(CONF_X265, sar            ) },
+	{ "extended-sar",     "",   OPTION_TYPE_SAR_X265,      NULL,                 offsetof(CONF_X265, sar            ) },
 	//{ "level",            "",   OPTION_TYPE_LEVEL,         list_x264guiEx_level, offsetof(CONF_X265, h264_level     ) },
-	//{ "videoformat",      "",   OPTION_TYPE_LIST,          list_videoformat,     offsetof(CONF_X265, videoformat    ) },
+	{ "videoformat",      "",   OPTION_TYPE_LIST,          list_videoformat,     offsetof(CONF_X265, videoformat    ) },
 	//{ "aud",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, aud            ) },
 	//{ "pic-struct",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pic_struct     ) },
 	//{ "nal-hrd",          "",   OPTION_TYPE_LIST,          list_nal_hrd,         offsetof(CONF_X265, nal_hrd        ) },
@@ -694,6 +697,25 @@ static BOOL set_psy(void *cx, const char *value, const X26X_OPTION_STR *list) {
 	}
 	return ret;
 }
+static BOOL set_x265_sar(void *cx, const char *value, const X26X_OPTION_STR *list) {
+	BOOL ret = FALSE;
+	if (list) {
+		for (int i = 0; list[i].name; i++) {
+			if (NULL == _stricmp(value, list[i].name)) {
+				int a = 0, b = 0;
+				if (2 == sscanf_s(list[i].name, "%d:%d", &a, &b)) {
+					((INT2 *)cx)->x = a;
+					((INT2 *)cx)->y = b;
+					ret = TRUE;
+				}
+				break;
+			}
+		}
+	} else {
+		ret = set_int2(cx, value, list);
+	}
+	return ret;
+}
 static BOOL set_do_nothing(void *cx, const char *value, const X26X_OPTION_STR *list) {
 	return FALSE;
 }
@@ -873,6 +895,27 @@ static int write_timebase(char *cmd, size_t nSize, const X26X_OPTIONS *options, 
 				return sprintf_s(cmd, nSize, " --%s %d/%d", options->long_name, cx->timebase.x, cx->timebase.y);
 	return 0;
 }
+static int write_x265_sar(char *cmd, size_t nSize, const X26X_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+	INT2 *iptr = (INT2*)((BYTE*)cx + options->p_offset);
+	INT2 *defptr = (INT2*)((BYTE*)def + options->p_offset);
+	if (write_all || iptr->x != defptr->x || iptr->y != defptr->y) {
+		if (0 < iptr->x && 0 < iptr->y) {
+			int gcd = get_gcd(iptr->x, iptr->y);
+			int sar_x = iptr->x / gcd;
+			int sar_y = iptr->y / gcd;
+			for (int i = 1; list_sar_x265[i].name; i++) {
+				int list_sar_x = 0, list_sar_y = 0;
+				if (2 == sscanf_s(list_sar_x265[i].name, "%d:%d", &list_sar_x, &list_sar_y)) {
+					if (sar_x == list_sar_x && sar_y == list_sar_y) {
+						return sprintf_s(cmd, nSize, " --sar %d", i);
+					}
+				}
+			}
+		}
+		return sprintf_s(cmd, nSize, " --extended-sar %d:%d", iptr->x, iptr->y);
+	}
+	return 0;
+}
 static int write_do_nothing(char *cmd, size_t nSize, const X26X_OPTIONS *options, const CONF_X264 *cx, const CONF_X264 *def, const CONF_VIDEO *vid, BOOL write_all) {
 	return 0;
 }
@@ -912,7 +955,8 @@ const SET_VALUE set_value[] = {
 	set_rc,
 	set_aq,
 	set_interlaced,
-	set_psy
+	set_psy,
+	set_x265_sar,
 };
 
 //この配列に従って各関数に飛ばされる
@@ -942,6 +986,7 @@ const WRITE_CMD_x264 write_cmd_x264[] = {
 	write_do_nothing,
 	write_timebase,
 	(WRITE_CMD_x264)write_list,
+	write_do_nothing,
 	write_do_nothing,
 	write_do_nothing,
 	write_do_nothing,
@@ -976,7 +1021,8 @@ const WRITE_CMD_x265 write_cmd_x265[] = {
 	write_do_nothing,
 	write_do_nothing,
 	write_do_nothing,
-	write_do_nothing
+	write_do_nothing,
+	write_x265_sar,
 };
 
 //MediaInfoからの情報で無視するもの

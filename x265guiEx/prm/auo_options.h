@@ -166,19 +166,25 @@ const X26X_OPTION_STR list_colorprim[] = {
 	{ "bt470bg",   L"bt470bg"   },
 	{ "smpte240m", L"smpte240m" },
 	{ "film",      L"film"      },
+	{ "bt2020",    L"bt2020"    },
 	{ NULL, NULL }
 };
 const X26X_OPTION_STR list_transfer[] = {
-	{ "undef",     L"指定なし"  },
-	{ "auto",      L"自動"      },
-	{ "bt709",     L"bt709"     },
-	{ "smpte170m", L"smpte170m" },
-	{ "bt470m",    L"bt470m"    },
-	{ "bt470bg",   L"bt470bg"   },
-	{ "smpte240m", L"smpte240m" },
-	{ "linear",    L"linear"    },
-	{ "log100",    L"log100"    },
-	{ "log316",    L"log316"    },
+	{ "undef",        L"指定なし"     },
+	{ "auto",         L"自動"         },
+	{ "bt709",        L"bt709"        },
+	{ "smpte170m",    L"smpte170m"    },
+	{ "bt470m",       L"bt470m"       },
+	{ "bt470bg",      L"bt470bg"      },
+	{ "smpte240m",    L"smpte240m"    },
+	{ "linear",       L"linear"       },
+	{ "log100",       L"log100"       },
+	{ "log316",       L"log316"       },
+	{ "iec61966-2-4", L"iec61966-2-4" },
+	{ "bt1361e",      L"bt1361e"      },
+	{ "iec61966-2-1", L"iec61966-2-1" },
+	{ "bt2020-10",    L"bt2020-10"    },
+	{ "bt2020-12",    L"bt2020-12"    },
 	{ NULL, NULL }
 };
 const X26X_OPTION_STR list_colormatrix[] = {
@@ -191,6 +197,8 @@ const X26X_OPTION_STR list_colormatrix[] = {
 	{ "YCgCo",     L"YCgCo"     },
 	{ "fcc",       L"fcc"       },
 	{ "GBR",       L"GBR"       },
+	{ "bt2020nc",  L"bt2020nc"  },
+	{ "bt2020c",   L"bt2020c"   },
 	{ NULL, NULL }
 };
 const X26X_OPTION_STR list_videoformat[] = {
@@ -200,6 +208,26 @@ const X26X_OPTION_STR list_videoformat[] = {
 	{ "pal",       L"pal"       },
 	{ "secam",     L"secam"     },
 	{ "mac",       L"mac"       },
+	{ NULL, NULL } 
+};
+const X26X_OPTION_STR list_sar_x265[] = {
+	{ "undef",     L"undef"     },
+	{ "1:1",       L"1:1"       },
+	{ "12:11",     L"12:11"     },
+	{ "10:11",     L"10:11"     },
+	{ "16:11",     L"16:11"     },
+	{ "40:33",     L"40:33"     },
+	{ "24:11",     L"24:11"     },
+	{ "20:11",     L"20:11"     },
+	{ "32:11",     L"32:11"     },
+	{ "80:33",     L"80:33"     },
+	{ "18:11",     L"18:11"     },
+	{ "15:11",     L"15:11"     },
+	{ "64:33",     L"64:33"     },
+	{ "160:99",    L"160:99"    },
+	{ "4:3",       L"4:3"       },
+	{ "3:2",       L"3:2"       },
+	{ "2:1",       L"2:1"       },
 	{ NULL, NULL } 
 };
 const X26X_OPTION_STR list_log_type[] = {

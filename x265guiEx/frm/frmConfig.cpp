@@ -1339,6 +1339,7 @@ System::Void frmConfig::InitComboBox() {
 	//x265
 	setComboBox(fchCXCSP,            list_output_csp_x265);
 	setComboBox(fchCXAQMode,         list_aq);
+	setComboBox(fchCXAspectRatio,    aspect_desc);
 	setComboBox(fchCXX265Mode,       x265_encodemode_desc);
 	setComboBox(fchCXME,             list_me_x265);
 	setComboBox(fchCXSubME,          list_subme_x265);
@@ -1346,6 +1347,10 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fchCXPreset,         sys_dat->exstg->s_x265.preset.name);
 	setComboBox(fchCXProfile,        sys_dat->exstg->s_x265.profile.name);
 	setComboBox(fchCXTune,		     sys_dat->exstg->s_x265.tune.name);
+	setComboBox(fchCXTransfer,       list_transfer);
+	setComboBox(fchCXColorMatrix,    list_colormatrix);
+	setComboBox(fchCXColorPrim,      list_colorprim);
+	setComboBox(fchCXVideoFormat,    list_videoformat);
 
 	setComboBox(fcgCXAudioEncTiming, audio_enc_timing_desc);
 
@@ -1714,9 +1719,21 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetCXIndex(fchCXPreset,           cx265->preset);
 	SetCXIndex(fchCXTune,             cx265->tune);
 	SetCXIndex(fchCXProfile,          cx265->profile);
-
+	
+	if (cx265->sar.x * cx265->sar.y < 0)
+		cx265->sar.x = cx265->sar.y = 0;
+	fchCXAspectRatio->SelectedIndex= (cx265->sar.x < 0);
+	SetNUValue(fchNUAspectRatioX, abs(cx265->sar.x));
+	SetNUValue(fchNUAspectRatioY, abs(cx265->sar.y));
+	
+	SetCXIndex(fchCXVideoFormat,      cx265->videoformat);
 	SetCXIndex(fchCXCSP,              cx265->output_csp);
 	
+	SetCXIndex(fchCXColorMatrix,      cx265->colormatrix);
+	SetCXIndex(fchCXColorPrim,        cx265->colorprim);
+	SetCXIndex(fchCXTransfer,         cx265->transfer);
+	fchCBFullRange->Checked         = cx265->input_range != 0;
+
 	SetNUValue(fchNUScenecut,         cx265->scenecut);
 	SetNUValue(fchNUKeyintMin,        cx265->keyint_min);
 	SetNUValue(fchNUKeyintMax,        cx265->keyint_max);
@@ -1940,7 +1957,16 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.tune                 = fchCXTune->SelectedIndex;
 	cnf->x265.profile              = fchCXProfile->SelectedIndex;
 
+	cnf->x265.sar.x                = (int)fchNUAspectRatioX->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+	cnf->x265.sar.y                = (int)fchNUAspectRatioY->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+	
+	cnf->x265.videoformat          = fchCXVideoFormat->SelectedIndex;
 	cnf->x265.output_csp           = fchCXCSP->SelectedIndex;
+
+	cnf->x265.colormatrix          = fchCXColorMatrix->SelectedIndex;
+	cnf->x265.colorprim            = fchCXColorPrim->SelectedIndex;
+	cnf->x265.transfer             = fchCXTransfer->SelectedIndex;
+	cnf->x265.input_range          = fchCBFullRange->Checked;
 
 	cnf->x265.scenecut             = (int)fchNUScenecut->Value;
 	cnf->x265.keyint_min           = (int)fchNUKeyintMin->Value;
@@ -2110,6 +2136,17 @@ System::Void frmConfig::SetAllCheckChangedEvents(Control ^top) {
 System::Void frmConfig::SetHelpToolTipsColorMatrixX264(Control^ control, const char *type) {
 	const X26X_OPTION_STR *list = get_option_list_x264(type);
 	fcgTTX264->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
+		+ L"auto とするとAviutlの色空間「自動」に合わせ\n"
+		+ L"以下のように設定します。\n"
+		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"以上 … " + String(list[COLOR_MATRIX_HD].desc).ToString() + L"\n"
+		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"未満 … " + String(list[COLOR_MATRIX_SD].desc).ToString() + L"\n"
+		+ L"よくわからない場合は 指定なし が無難です。"
+		);
+}
+
+System::Void frmConfig::SetHelpToolTipsColorMatrixX265(Control^ control, const char *type) {
+	const X26X_OPTION_STR *list = get_option_list_x265(type);
+	fchTTX265->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
 		+ L"auto とするとAviutlの色空間「自動」に合わせ\n"
 		+ L"以下のように設定します。\n"
 		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"以上 … " + String(list[COLOR_MATRIX_HD].desc).ToString() + L"\n"
@@ -2452,9 +2489,28 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"をGUIに適用します。"
 		);
 	
+	fchTTX265->SetToolTip(fchCXAspectRatio,      L""
+		+ String(aspect_desc[0]).ToString() + L"\n"
+		+ L"   --sar を直接指定します。\n"
+		+ L"\n"
+		+ String(aspect_desc[1]).ToString() + L"\n"
+		+ L"   エンコード時に 解像度から --sarを自動計算します。"
+		);
+	fchTTX265->SetToolTip(fchNUAspectRatioX,     L"アスペクト比 横 (幅)");
+	fchTTX265->SetToolTip(fchNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
+	
+	fchTTX265->SetToolTip(fchCXVideoFormat,      L"--videoformat");
+
 	fchTTX265->SetToolTip(fcgCXOutputCsp,        L"--input-csp\n"
 		+ L"通常は i420 を使用します。"
 		);
+	SetHelpToolTipsColorMatrixX265(fchCXColorMatrix, "colormatrix");
+	SetHelpToolTipsColorMatrixX265(fchCXColorPrim,   "colorprim");
+	SetHelpToolTipsColorMatrixX265(fchCXTransfer,    "transfer");
+	fchTTX265->SetToolTip(fchCBFullRange,        L"--range");
+	
+	fchTTX265->SetToolTip(fchNUVBVbuf,           L"--vbv-bufsize");
+	fchTTX265->SetToolTip(fchNUVBVmax,           L"--vbv-maxrate");
 	fchTTX265->SetToolTip(fchNUScenecut,         L"--scenecut");
 	fchTTX265->SetToolTip(fchNUKeyintMin,        L"--min-keyint");
 	fchTTX265->SetToolTip(fchNUKeyintMax,        L"--keyint");
@@ -2465,9 +2521,6 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchCXBadapt,           L"--b-adapt");
 	fchTTX265->SetToolTip(fchCBBpyramid,         L"--b-pyramid");
 	fchTTX265->SetToolTip(fchCBWeightP,          L"--weightp");
-	
-	fchTTX265->SetToolTip(fchNUVBVbuf,           L"--vbv-bufsize");
-	fchTTX265->SetToolTip(fchNUVBVmax,           L"--vbv-maxrate");
 
 	fchTTX265->SetToolTip(fchNURD,               L"--rd");
 	fchTTX265->SetToolTip(fchCXAQMode,           L"--aq-mode");
