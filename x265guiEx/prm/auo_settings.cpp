@@ -32,7 +32,8 @@ static const char * const STG_DEFAULT_DIRECTORY_APPENDIX = "_stg";
 
 //----    セクション名    ---------------------------------------------------
 
-static const char * const INI_SECTION_MAIN         = "X26XGUIEX";
+static const char * const INI_SECTION_MAIN_X264    = "X264GUIEX";
+static const char * const INI_SECTION_MAIN_X26X    = "X26XGUIEX";
 static const char * const INI_SECTION_APPENDIX     = "APPENDIX";
 static const char * const INI_SECTION_AUD          = "AUDIO";
 static const char * const INI_SECTION_X264         = "X264";
@@ -184,6 +185,8 @@ void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, con
 			get_auo_path(auo_path, _countof(auo_path));
 		else
 			strcpy_s(auo_path, _countof(auo_path), _auo_path);
+
+		const char *INI_SECTION_MAIN = (0 == strcmp(auo_name, AUO_NAME_X264)) ? INI_SECTION_MAIN_X264 : INI_SECTION_MAIN_X26X;
 		strcpy_s(ini_section_main, _countof(ini_section_main), (main_section == NULL) ? INI_SECTION_MAIN : main_section);
 		apply_appendix(ini_fileName,  _countof(ini_fileName),  auo_path, INI_APPENDIX);
 		apply_appendix(conf_fileName, _countof(conf_fileName), auo_path, CONF_APPENDIX);
