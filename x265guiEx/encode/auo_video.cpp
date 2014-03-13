@@ -53,6 +53,7 @@ typedef struct {
 	HANDLE thread;
 	HANDLE he_out_start;
 	HANDLE he_out_fin;
+	int repeat;
 } video_output_thread_t;
 
 static const char * specify_input_csp(int output_csp) {
@@ -87,7 +88,7 @@ static int get_frame_num_to_encode(int total_frames, const PRM_ENC *pe) {
 	//開始フレームと終了フレーム
 	int i_start = total_frames *  pe->div_num      / pe->div_max;
 	int i_fin   = total_frames * (pe->div_num + 1) / pe->div_max;
-	return i_fin - i_start;
+	return i_fin - i_start + ((pe->div_num > 0) ? 0 : pe->delay_cut_additional_vframe);
 }
 
 BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL auto_afs_disable) {
@@ -727,8 +728,11 @@ static unsigned __stdcall video_output_thread_func(void *prm) {
 	WaitForSingleObject(thread_data->he_out_start, INFINITE);
 	while (false == thread_data->abort) {
 		//映像データをパイプに
-		for (int j = 0; j < pixel_data->count; j++)
-			_fwrite_nolock((void *)pixel_data->data[j], 1, pixel_data->size[j], thread_data->f_out);
+		for (int i = 0; i < 1 + thread_data->repeat; i++)
+			for (int j = 0; j < pixel_data->count; j++)
+				_fwrite_nolock((void *)pixel_data->data[j], 1, pixel_data->size[j], thread_data->f_out);
+
+		thread_data->repeat = 0;
 		SetEvent(thread_data->he_out_fin);
 		WaitForSingleObject(thread_data->he_out_start, INFINITE);
 	}
@@ -776,6 +780,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	const BOOL afs = conf->vid.afs != 0;
 	CONVERT_CF_DATA pixel_data = { 0 };
 	video_output_thread_t thread_data = { 0 };
+	thread_data.repeat = pe->delay_cut_additional_vframe;
 	set_pixel_data(&pixel_data, conf, oip->w, oip->h);
 	
 	int *jitter = NULL;

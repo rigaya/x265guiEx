@@ -97,6 +97,7 @@ typedef struct CONF_AUDIO {
 	BOOL minimized;           //音声エンコーダを最小化で実行
 	int  aud_temp_dir;        //音声専用一時フォルダ
 	int  audio_encode_timing; //音声を先にエンコード
+	int  delay_cut;           //エンコード遅延の削除
 } CONF_AUDIO; //音声用設定
 
 typedef struct CONF_MUX {

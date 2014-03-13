@@ -52,6 +52,8 @@ typedef struct {
 	FILE_APPENDIX append;                  //ファイル名に追加する文字列のリスト
 	int div_num;                           //分割エンコードの何番目か (0 始まり)
 	int div_max;                           //分割エンコードでいくつに分割するか
+	int delay_cut_additional_vframe;       //音声エンコード遅延解消のための追加の動画フレーム (負値なら先頭を削ることを意味する)
+	int delay_cut_additional_aframe;       //音声エンコード遅延解消のための追加の音声フレーム (負値なら先頭を削ることを意味する)
 } PRM_ENC;
 
 typedef struct {
