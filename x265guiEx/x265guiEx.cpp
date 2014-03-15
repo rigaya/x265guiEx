@@ -547,7 +547,6 @@ static void set_enc_prm(PRM_ENC *pe, const OUTPUT_INFO *oip) {
 	pe->amp_pass_limit = pe->total_pass + sys_dat.exstg->s_local.amp_retry_limit;
 	pe->current_pass = 1;
 	pe->drop_count = 0;
-	set_aud_delay_cut(pe, oip);
 	memcpy(&pe->append, &sys_dat.exstg->s_append, sizeof(FILE_APPENDIX));
 	ZeroMemory(&pe->append.aud, sizeof(pe->append.aud));
 
@@ -571,6 +570,11 @@ static void set_enc_prm(PRM_ENC *pe, const OUTPUT_INFO *oip) {
 	strcpy_s(filename_replace, _countof(filename_replace), PathFindFileName(oip->savefile));
 	sys_dat.exstg->apply_fn_replace(filename_replace, _countof(filename_replace));
 	PathCombineLong(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, filename_replace);
+	
+	//FAWチェックとオーディオディレイの修正
+	if (conf.aud.faw_check)
+		auo_faw_check(&conf.aud, oip, pe, sys_dat.exstg);
+	set_aud_delay_cut(pe, oip);
 }
 
 static void auto_save_log(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
