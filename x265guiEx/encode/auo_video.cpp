@@ -163,6 +163,7 @@ static AUO_RESULT tcfile_out(int *jitter, int frame_n, double fps, BOOL afs, con
 				if (jitter[i] != DROP_FRAME_FLAG)
 					fprintf(tcfile, "%.6lf\r\n", (i * 4 + jitter[i]) * tm_multi);
 		} else {
+			frame_n += pe->delay_cut_additional_vframe;
 			for (int i = 0; i < frame_n; i++)
 				fprintf(tcfile, "%.6lf\r\n", i * tm_multi);
 		}
@@ -346,8 +347,8 @@ static AUO_RESULT set_keyframe(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, c
 				ret |= AUO_RESULT_ERROR; warning_auto_qpfile_failed();
 			} else {
 				//出力
-				foreach(std::vector<int>, it_keyframe, &keyframe_list)
-					fprintf(qpfile, "%d I\r\n", *it_keyframe);
+				for (auto i_keyframe : keyframe_list)
+					fprintf(qpfile, "%d I\r\n", (i_keyframe) ? i_keyframe + pe->delay_cut_additional_vframe : 0);
 				fclose(qpfile);
 			}
 		}
