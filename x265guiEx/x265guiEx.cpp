@@ -363,6 +363,9 @@ static BOOL check_amp() {
 		if (conf.vid.amp[conf.vid.enc_type].limit_file_size <= 0.0)
 			conf.vid.amp[conf.vid.enc_type].check &= ~AMPLIMIT_FILE_SIZE; //フラグを折る
 	}
+	if (conf.vid.amp[conf.vid.enc_type].check && conf.vid.afs && AUDIO_DELAY_CUT_ADD_VIDEO == conf.aud.delay_cut) {
+		check = FALSE; error_amp_afs_audio_delay_confliction();
+	}
 	return check;
 }
 
@@ -444,6 +447,12 @@ static BOOL check_output(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
 	//自動マルチパス設定
 	check &= check_amp();
 
+	//オーディオディレイカット
+	if (conf.vid.afs && AUDIO_DELAY_CUT_ADD_VIDEO == conf.aud.delay_cut) {
+		info_afs_audio_delay_confliction();
+		conf.aud.audio_encode_timing = 0;
+	}
+
 	return check;
 }
 
@@ -499,36 +508,29 @@ static int get_total_path() {
 		 ? conf.x26x[conf.vid.enc_type].auto_npass : 1;
 }
 
-static int additional_vframe_for_aud_delay_cut(const OUTPUT_INFO *oip, int audio_delay) {
-	double delay_sec = audio_delay / (double)oip->audio_rate;
-	double fps = oip->rate / (double)oip->scale;
-	return (int)ceil(delay_sec * fps);
-}
-
-static int additional_silence_for_aud_delay_cut(const OUTPUT_INFO *oip, int audio_delay) {
-	int vframe_added = additional_vframe_for_aud_delay_cut(oip, audio_delay);
-	double fps = oip->rate / (double)oip->scale;
-	return (int)(vframe_added / (double)fps * oip->audio_rate + 0.5) - audio_delay;
-}
-
 static void set_aud_delay_cut(PRM_ENC *pe, const OUTPUT_INFO *oip) {
 	pe->delay_cut_additional_vframe = 0;
 	pe->delay_cut_additional_aframe = 0;
 	if (oip->flag & OUTPUT_INFO_FLAG_AUDIO) {
 		int audio_delay = sys_dat.exstg->s_aud[conf.aud.encoder].mode[conf.aud.enc_mode].delay;
 		if (audio_delay) {
+			const double fps = oip->rate / (double)oip->scale;
+			const int audio_rate = oip->audio_rate;
 			switch (conf.aud.delay_cut) {
-			case 1:
+			case AUDIO_DELAY_CUT_DELETE_AUDIO:
 				pe->delay_cut_additional_aframe = -1 * audio_delay;
 				break;
-			case 2:
-				pe->delay_cut_additional_vframe = additional_vframe_for_aud_delay_cut(oip, audio_delay);
-				pe->delay_cut_additional_aframe = additional_silence_for_aud_delay_cut(oip, audio_delay);
+			case AUDIO_DELAY_CUT_ADD_VIDEO:
+				pe->delay_cut_additional_vframe = additional_vframe_for_aud_delay_cut(fps, audio_rate, audio_delay);
+				pe->delay_cut_additional_aframe = additional_silence_for_aud_delay_cut(fps, audio_rate, audio_delay);
 				break;
-			case 0:
+			case AUDIO_DELAY_CUT_NONE:
 			default:
+				conf.aud.delay_cut = AUDIO_DELAY_CUT_NONE;
 				break;
 			}
+		} else {
+			conf.aud.delay_cut = AUDIO_DELAY_CUT_NONE;
 		}
 	}
 }
@@ -557,13 +559,14 @@ static void set_enc_prm(PRM_ENC *pe, const OUTPUT_INFO *oip) {
 
 	//音声一時フォルダの決定
 	char *cus_aud_tdir = pe->temp_filename;
-	if (conf.aud.aud_temp_dir)
-	if (DirectoryExistsOrCreate(sys_dat.exstg->s_local.custom_audio_tmp_dir)) {
-		cus_aud_tdir = sys_dat.exstg->s_local.custom_audio_tmp_dir;
-		write_log_auo_line_fmt(LOG_INFO, "音声一時フォルダ : %s", cus_aud_tdir);
+	if (conf.aud.aud_temp_dir) {
+		if (DirectoryExistsOrCreate(sys_dat.exstg->s_local.custom_audio_tmp_dir)) {
+			cus_aud_tdir = sys_dat.exstg->s_local.custom_audio_tmp_dir;
+			write_log_auo_line_fmt(LOG_INFO, "音声一時フォルダ : %s", cus_aud_tdir);
+		} else {
+			warning_no_aud_temp_root(sys_dat.exstg->s_local.custom_audio_tmp_dir);
+		}
 	}
-	else
-		warning_no_aud_temp_root(sys_dat.exstg->s_local.custom_audio_tmp_dir);
 	strcpy_s(pe->aud_temp_dir, _countof(pe->aud_temp_dir), cus_aud_tdir);
 
 	//ファイル名置換を行い、一時ファイル名を作成
