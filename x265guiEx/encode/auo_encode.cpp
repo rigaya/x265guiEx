@@ -45,10 +45,11 @@ BOOL fps_after_afs_is_24fps(const int frame_n, const PRM_ENC *pe) {
 int get_mux_excmd_mode(const CONF_GUIEX *conf, const PRM_ENC *pe) {
 	int mode = 0;
 	switch (pe->muxer_to_be_used) {
-		case MUXER_MKV:    mode = conf->mux.mkv_mode; break;
-		case MUXER_MPG:    mode = conf->mux.mpg_mode; break;
+		case MUXER_MKV:     mode = conf->mux.mkv_mode; break;
+		case MUXER_MPG:     mode = conf->mux.mpg_mode; break;
 		case MUXER_MP4:
-		case MUXER_TC2MP4: mode = conf->mux.mp4_mode; break;
+		case MUXER_TC2MP4: 
+		case MUXER_MP4_RAW: mode = conf->mux.mp4_mode; break;
 	}
 	return mode;
 }
