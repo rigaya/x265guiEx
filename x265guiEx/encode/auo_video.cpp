@@ -46,7 +46,7 @@
 
 const int DROP_FRAME_FLAG = INT_MAX;
 
-typedef struct {
+typedef struct video_output_thread_t {
 	CONVERT_CF_DATA *pixel_data;
 	FILE *f_out;
 	BOOL abort;
@@ -733,6 +733,23 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
 	return vid_ret;
 }
 
+static UINT64 get_amp_filesize_limit(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
+	UINT64 filesize_limit = MAXUINT64;
+	//上限ファイルサイズのチェック
+	if (conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_FILE_SIZE) {
+		filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp[conf->vid.enc_type].limit_file_size*1024*1024));
+	}
+	//上限ビットレートのチェック
+	if (conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_BITRATE) {
+		const double duration = get_duration(conf, sys_dat, pe, oip);
+		filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp[conf->vid.enc_type].limit_bitrate * 1000 / 8 * duration));
+	}
+	//音声のサイズはここでは考慮しない
+	//音声のサイズも考慮してしまうと、のちの判定で面倒なことになる
+	//(muxをしないファイルを評価してしまい、上限をクリアしていると判定されてしまう)
+	return (MAXUINT64 == filesize_limit) ? 0 : filesize_limit;
+}
+
 static unsigned __stdcall video_output_thread_func(void *prm) {
 	video_output_thread_t *thread_data = reinterpret_cast<video_output_thread_t *>(prm);
 	CONVERT_CF_DATA *pixel_data = thread_data->pixel_data;
@@ -838,6 +855,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	write_log_auo_line_fmt(LOG_INFO, "%s options...", X26X_NAME[conf->vid.enc_type]);
 	write_args(x26xcmd);
 	sprintf_s(x26xargs, _countof(x26xargs), "\"%s\" %s", x26xfullpath, x26xcmd);
+	remove(pe->temp_filename); //ファイルサイズチェックの時に旧ファイルを参照してしまうのを回避
 
 	//エンコードするフレーム数
 	const int frames_to_enc = get_frame_num_to_encode(oip->n, pe);
@@ -862,6 +880,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		int i_frame = 0;  //エンコードするフレームID
 		void *frame = NULL;
 		int *next_jitter = NULL;
+		UINT64 amp_filesize_limit = (UINT64)(1.02 * get_amp_filesize_limit(conf, oip, pe, sys_dat));
 		BOOL enc_pause = FALSE, copy_frame = FALSE, drop = FALSE;
 		const DWORD aviutl_color_fmt = COLORFORMATS[get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)].FOURCC;
 
@@ -898,6 +917,18 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 				//音声同時処理
 				ret |= aud_parallel_task(oip, pe);
+
+				//上限をオーバーしていないかチェック
+				if (!(i & 63)
+					&& amp_filesize_limit //上限設定が存在する
+					&& !(1 == pe->current_pass && 1 < pe->total_pass)) { //multi passエンコードの1pass目でない
+					UINT64 current_filesize = 0;
+					if (GetFileSizeUInt64(pe->temp_filename, &current_filesize) && current_filesize > amp_filesize_limit) {
+						warning_amp_filesize_over_limit();
+						pe->muxer_to_be_used = MUXER_DISABLED; //muxをスキップ
+						break;
+					}
+				}
 			}
 
 			//一時停止
