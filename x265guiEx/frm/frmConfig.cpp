@@ -1352,6 +1352,7 @@ System::Void frmConfig::InitComboBox() {
 	setComboBox(fchCXPreset,         sys_dat->exstg->s_x265.preset.name);
 	setComboBox(fchCXProfile,        sys_dat->exstg->s_x265.profile.name);
 	setComboBox(fchCXTune,		     sys_dat->exstg->s_x265.tune.name);
+	setComboBox(fchCXInterlaced,     interlaced_desc);
 	setComboBox(fchCXTransfer,       list_transfer);
 	setComboBox(fchCXColorMatrix,    list_colormatrix);
 	setComboBox(fchCXColorPrim,      list_colorprim);
@@ -1731,6 +1732,8 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	fchCXAspectRatio->SelectedIndex= (cx265->sar.x < 0);
 	SetNUValue(fchNUAspectRatioX, abs(cx265->sar.x));
 	SetNUValue(fchNUAspectRatioY, abs(cx265->sar.y));
+
+	SetCXIndex(fchCXInterlaced,       cx265->interlaced);
 	
 	SetCXIndex(fchCXVideoFormat,      cx265->videoformat);
 	SetCXIndex(fchCXCSP,              cx265->output_csp);
@@ -1749,6 +1752,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fchNUBframes,          cx265->bframes);
 	SetCXIndex(fchCXBadapt,           cx265->b_adapt);
 	fchCBBpyramid->Checked          = cx265->b_pyramid != 0;
+	fchCBWeightB->Checked           = cx265->weight_b != 0;
 	fchCBWeightP->Checked           = cx265->weight_p != 0;
 	
 	SetNUValue(fchNUVBVbuf,           cx265->vbv_bufsize);
@@ -1966,6 +1970,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 
 	cnf->x265.sar.x                = (int)fchNUAspectRatioX->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
 	cnf->x265.sar.y                = (int)fchNUAspectRatioY->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+	cnf->x265.interlaced           = fchCXInterlaced->SelectedIndex;
 	
 	cnf->x265.videoformat          = fchCXVideoFormat->SelectedIndex;
 	cnf->x265.output_csp           = fchCXCSP->SelectedIndex;
@@ -1984,6 +1989,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.bframes              = (int)fchNUBframes->Value;
 	cnf->x265.b_adapt              = fchCXBadapt->SelectedIndex;
 	cnf->x265.b_pyramid            = fchCBBpyramid->Checked;
+	cnf->x265.weight_b             = fchCBWeightB->Checked;
 	cnf->x265.weight_p             = fchCBWeightP->Checked;
 
 	cnf->x265.vbv_bufsize          = (int)fchNUVBVbuf->Value;
@@ -2507,6 +2513,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchNUAspectRatioX,     L"アスペクト比 横 (幅)");
 	fchTTX265->SetToolTip(fchNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
 	
+	fchTTX265->SetToolTip(fchCXInterlaced,       L"--interlace");
 	fchTTX265->SetToolTip(fchCXVideoFormat,      L"--videoformat");
 
 	fchTTX265->SetToolTip(fcgCXOutputCsp,        L"--input-csp\n"
@@ -2528,6 +2535,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fchTTX265->SetToolTip(fchNUBframes,          L"--bframes");
 	fchTTX265->SetToolTip(fchCXBadapt,           L"--b-adapt");
 	fchTTX265->SetToolTip(fchCBBpyramid,         L"--b-pyramid");
+	fchTTX265->SetToolTip(fchCBWeightB,          L"--weightb");
 	fchTTX265->SetToolTip(fchCBWeightP,          L"--weightp");
 
 	fchTTX265->SetToolTip(fchNURD,               L"--rd");

@@ -157,6 +157,13 @@ const X26X_OPTION_STR list_input_range[] = {
 	{ "pc",   L"pc" },
 	{ NULL, NULL }
 };
+const X26X_OPTION_STR list_interlace_x265[] = {
+	{ "prog", L"progressive" },
+	{ "tff",  L"tff" },
+	{ "bff",  L"bff" },
+	{ NULL, NULL }
+};
+
 const X26X_OPTION_STR list_colorprim[] = {
 	{ "undef",     L"指定なし"  },
 	{ "auto",      L"自動"      },
@@ -327,7 +334,7 @@ typedef struct FLOAT2 {
 	int     qp_max; \
 	int     qp_step; \
 	float   qp_compress; \
-	BOOL    interlaced; \
+	int     interlaced; \
 	BOOL    tff; \
 	BOOL    mbtree; \
 	int     rc_lookahead; \

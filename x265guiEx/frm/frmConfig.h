@@ -940,6 +940,10 @@ private: System::Windows::Forms::Label^  fchLBRD;
 private: System::Windows::Forms::CheckBox^  fchCBFullRange;
 private: System::Windows::Forms::ComboBox^  fcgCXAudioDelayCut;
 private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
+private: System::Windows::Forms::ComboBox^  fchCXInterlaced;
+private: System::Windows::Forms::Label^  fchLBInterlaced;
+private: System::Windows::Forms::Label^  fchLBWeightB;
+private: System::Windows::Forms::CheckBox^  fchCBWeightB;
 
 
 
@@ -1471,6 +1475,10 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->fchCXInterlaced = (gcnew System::Windows::Forms::ComboBox());
+			this->fchLBInterlaced = (gcnew System::Windows::Forms::Label());
+			this->fchLBWeightB = (gcnew System::Windows::Forms::Label());
+			this->fchCBWeightB = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -3520,6 +3528,8 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// 
 			// fchtabPageX265Main
 			// 
+			this->fchtabPageX265Main->Controls->Add(this->fchCXInterlaced);
+			this->fchtabPageX265Main->Controls->Add(this->fchLBInterlaced);
 			this->fchtabPageX265Main->Controls->Add(this->fchgroupBoxVUIColor);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXVideoFormat);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBVideoFormat);
@@ -4188,6 +4198,8 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// 
 			// fchgroupBoxFrame
 			// 
+			this->fchgroupBoxFrame->Controls->Add(this->fchLBWeightB);
+			this->fchgroupBoxFrame->Controls->Add(this->fchCBWeightB);
 			this->fchgroupBoxFrame->Controls->Add(this->fchLBScenecut);
 			this->fchgroupBoxFrame->Controls->Add(this->fchLBRef);
 			this->fchgroupBoxFrame->Controls->Add(this->fchNURef);
@@ -4210,7 +4222,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			this->fchgroupBoxFrame->Controls->Add(this->fchCBOpenGOP);
 			this->fchgroupBoxFrame->Location = System::Drawing::Point(359, 5);
 			this->fchgroupBoxFrame->Name = L"fchgroupBoxFrame";
-			this->fchgroupBoxFrame->Size = System::Drawing::Size(230, 298);
+			this->fchgroupBoxFrame->Size = System::Drawing::Size(230, 335);
 			this->fchgroupBoxFrame->TabIndex = 102;
 			this->fchgroupBoxFrame->TabStop = false;
 			// 
@@ -4303,7 +4315,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchCBWeightP
 			// 
 			this->fchCBWeightP->AutoSize = true;
-			this->fchCBWeightP->Location = System::Drawing::Point(188, 264);
+			this->fchCBWeightP->Location = System::Drawing::Point(188, 288);
 			this->fchCBWeightP->Name = L"fchCBWeightP";
 			this->fchCBWeightP->Size = System::Drawing::Size(15, 14);
 			this->fchCBWeightP->TabIndex = 93;
@@ -4324,7 +4336,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchLBWeightP
 			// 
 			this->fchLBWeightP->AutoSize = true;
-			this->fchLBWeightP->Location = System::Drawing::Point(17, 263);
+			this->fchLBWeightP->Location = System::Drawing::Point(17, 287);
 			this->fchLBWeightP->Name = L"fchLBWeightP";
 			this->fchLBWeightP->Size = System::Drawing::Size(87, 14);
 			this->fchLBWeightP->TabIndex = 92;
@@ -4718,7 +4730,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchCBSAO
 			// 
 			this->fchCBSAO->AutoSize = true;
-			this->fchCBSAO->Location = System::Drawing::Point(547, 341);
+			this->fchCBSAO->Location = System::Drawing::Point(546, 384);
 			this->fchCBSAO->Name = L"fchCBSAO";
 			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
 			this->fchCBSAO->TabIndex = 40;
@@ -4728,7 +4740,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchLBSAO
 			// 
 			this->fchLBSAO->AutoSize = true;
-			this->fchLBSAO->Location = System::Drawing::Point(376, 340);
+			this->fchLBSAO->Location = System::Drawing::Point(375, 383);
 			this->fchLBSAO->Name = L"fchLBSAO";
 			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
 			this->fchLBSAO->TabIndex = 39;
@@ -4737,7 +4749,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchCBLoopFilter
 			// 
 			this->fchCBLoopFilter->AutoSize = true;
-			this->fchCBLoopFilter->Location = System::Drawing::Point(547, 316);
+			this->fchCBLoopFilter->Location = System::Drawing::Point(546, 359);
 			this->fchCBLoopFilter->Name = L"fchCBLoopFilter";
 			this->fchCBLoopFilter->Size = System::Drawing::Size(15, 14);
 			this->fchCBLoopFilter->TabIndex = 38;
@@ -4747,7 +4759,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			// fchLBLoopFilter
 			// 
 			this->fchLBLoopFilter->AutoSize = true;
-			this->fchLBLoopFilter->Location = System::Drawing::Point(376, 315);
+			this->fchLBLoopFilter->Location = System::Drawing::Point(375, 358);
 			this->fchLBLoopFilter->Name = L"fchLBLoopFilter";
 			this->fchLBLoopFilter->Size = System::Drawing::Size(63, 14);
 			this->fchLBLoopFilter->TabIndex = 37;
@@ -6373,6 +6385,44 @@ private: System::Windows::Forms::Label^  fcgLBAudioDelayCut;
 			this->fchTTX265->ToolTipTitle = L"x265 options...";
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
+			// 
+			// fchCXInterlaced
+			// 
+			this->fchCXInterlaced->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->fchCXInterlaced->FormattingEnabled = true;
+			this->fchCXInterlaced->Location = System::Drawing::Point(498, 143);
+			this->fchCXInterlaced->Name = L"fchCXInterlaced";
+			this->fchCXInterlaced->Size = System::Drawing::Size(96, 22);
+			this->fchCXInterlaced->TabIndex = 69;
+			this->fchCXInterlaced->Tag = L"reCmd";
+			// 
+			// fchLBInterlaced
+			// 
+			this->fchLBInterlaced->AutoSize = true;
+			this->fchLBInterlaced->Location = System::Drawing::Point(396, 146);
+			this->fchLBInterlaced->Name = L"fchLBInterlaced";
+			this->fchLBInterlaced->Size = System::Drawing::Size(87, 14);
+			this->fchLBInterlaced->TabIndex = 70;
+			this->fchLBInterlaced->Text = L"インターレース保持";
+			// 
+			// fchLBWeightB
+			// 
+			this->fchLBWeightB->AutoSize = true;
+			this->fchLBWeightB->Location = System::Drawing::Point(17, 263);
+			this->fchLBWeightB->Name = L"fchLBWeightB";
+			this->fchLBWeightB->Size = System::Drawing::Size(87, 14);
+			this->fchLBWeightB->TabIndex = 94;
+			this->fchLBWeightB->Text = L"重み付きBフレーム";
+			// 
+			// fchCBWeightB
+			// 
+			this->fchCBWeightB->AutoSize = true;
+			this->fchCBWeightB->Location = System::Drawing::Point(188, 264);
+			this->fchCBWeightB->Name = L"fchCBWeightB";
+			this->fchCBWeightB->Size = System::Drawing::Size(15, 14);
+			this->fchCBWeightB->TabIndex = 95;
+			this->fchCBWeightB->Tag = L"reCmd";
+			this->fchCBWeightB->UseVisualStyleBackColor = true;
 			// 
 			// frmConfig
 			// 
