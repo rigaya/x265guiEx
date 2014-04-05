@@ -225,6 +225,7 @@ BOOL func_output( OUTPUT_INFO *oip )
 
 	ret |= parallel_task_add(&conf, oip, &pe, &sys_dat, ret);
 
+	log_process_events();
 	return (ret & AUO_RESULT_ERROR) ? FALSE : TRUE;
 }
 
