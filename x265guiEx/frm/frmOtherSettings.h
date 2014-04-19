@@ -64,19 +64,19 @@ namespace x265guiEx {
 	protected: 
 	private: System::Windows::Forms::Button^  fosCBCancel;
 	private: System::Windows::Forms::Button^  fosCBOK;
-	private: System::Windows::Forms::TextBox^  fosTXStgDir;
-	private: System::Windows::Forms::Label^  fosLBStgDir;
-	private: System::Windows::Forms::Button^  fosBTStgDir;
+
+
+
 	private: System::Windows::Forms::CheckBox^  fosCBAutoAFSDisable;
 
-	private: System::Windows::Forms::CheckBox^  fosCBDisableToolTip;
-	private: System::Windows::Forms::CheckBox^  fosCBDisableVisualStyles;
-	private: System::Windows::Forms::Label^  fosLBDisableVisualStyles;
-	private: System::Windows::Forms::CheckBox^  fosCBLogStartMinimized;
-	private: System::Windows::Forms::CheckBox^  fosCBLogDisableTransparency;
+
+
+
+
+
 	private: System::Windows::Forms::CheckBox^  fosCBAutoDelChap;
-	private: System::Windows::Forms::CheckBox^  fosCBStgEscKey;
-	private: System::Windows::Forms::Button^  fosBTSetFont;
+
+
 	private: System::Windows::Forms::FontDialog^  fosfontDialog;
 
 	private: System::Windows::Forms::TabControl^  fosTabControl;
@@ -111,13 +111,26 @@ namespace x265guiEx {
 	private: System::Windows::Forms::Button^  fosBTAMPMarginMulti;
 	private: System::Windows::Forms::Label^  fosLBAMPLimitMarginWarning;
 	private: System::Windows::Forms::CheckBox^  fosCBAutoDelStats;
-	private: System::Windows::Forms::CheckBox^  fosCBGetRelativePath;
+
 	private: System::Windows::Forms::Label^  fosLBDefaultOutExt;
 	private: System::Windows::Forms::Label^  fosLBDefaultOutExt2;
 	private: System::Windows::Forms::ComboBox^  fosCXDefaultOutExt;
 	private: System::Windows::Forms::CheckBox^  fosCBRunBatMinimized;
 	private: System::Windows::Forms::CheckBox^  fosCBKeepQPFile;
 	private: System::Windows::Forms::CheckBox^  fosCBDisableX26XVersionCheck;
+	private: System::Windows::Forms::TabPage^  fostabPageGUI;
+	private: System::Windows::Forms::CheckBox^  fosCBGetRelativePath;
+	private: System::Windows::Forms::Button^  fosBTSetFont;
+	private: System::Windows::Forms::CheckBox^  fosCBStgEscKey;
+	private: System::Windows::Forms::CheckBox^  fosCBDisableToolTip;
+	private: System::Windows::Forms::CheckBox^  fosCBDisableVisualStyles;
+	private: System::Windows::Forms::CheckBox^  fosCBLogDisableTransparency;
+	private: System::Windows::Forms::Label^  fosLBDisableVisualStyles;
+	private: System::Windows::Forms::CheckBox^  fosCBLogStartMinimized;
+	private: System::Windows::Forms::Label^  fosLBStgDir;
+	private: System::Windows::Forms::Button^  fosBTStgDir;
+	private: System::Windows::Forms::TextBox^  fosTXStgDir;
+	private: System::Windows::Forms::CheckBox^  fosCBChapConvertToUTF8;
 
 
 
@@ -154,27 +167,17 @@ namespace x265guiEx {
 		{
 			this->fosCBCancel = (gcnew System::Windows::Forms::Button());
 			this->fosCBOK = (gcnew System::Windows::Forms::Button());
-			this->fosTXStgDir = (gcnew System::Windows::Forms::TextBox());
-			this->fosLBStgDir = (gcnew System::Windows::Forms::Label());
-			this->fosBTStgDir = (gcnew System::Windows::Forms::Button());
 			this->fosCBAutoAFSDisable = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBDisableToolTip = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBDisableVisualStyles = (gcnew System::Windows::Forms::CheckBox());
-			this->fosLBDisableVisualStyles = (gcnew System::Windows::Forms::Label());
-			this->fosCBLogStartMinimized = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBLogDisableTransparency = (gcnew System::Windows::Forms::CheckBox());
 			this->fosCBAutoDelChap = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBStgEscKey = (gcnew System::Windows::Forms::CheckBox());
-			this->fosBTSetFont = (gcnew System::Windows::Forms::Button());
 			this->fosfontDialog = (gcnew System::Windows::Forms::FontDialog());
 			this->fosTabControl = (gcnew System::Windows::Forms::TabControl());
 			this->fostabPageGeneral = (gcnew System::Windows::Forms::TabPage());
+			this->fosCBDisableX26XVersionCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->fosCBKeepQPFile = (gcnew System::Windows::Forms::CheckBox());
 			this->fosCBRunBatMinimized = (gcnew System::Windows::Forms::CheckBox());
 			this->fosLBDefaultOutExt2 = (gcnew System::Windows::Forms::Label());
 			this->fosCXDefaultOutExt = (gcnew System::Windows::Forms::ComboBox());
 			this->fosLBDefaultOutExt = (gcnew System::Windows::Forms::Label());
-			this->fosCBGetRelativePath = (gcnew System::Windows::Forms::CheckBox());
 			this->fostabPageAMP = (gcnew System::Windows::Forms::TabPage());
 			this->fosCBAutoDelStats = (gcnew System::Windows::Forms::CheckBox());
 			this->fosGroupBoxAMPLimit = (gcnew System::Windows::Forms::GroupBox());
@@ -195,7 +198,19 @@ namespace x265guiEx {
 			this->fosLBAMPLimitMarginMin = (gcnew System::Windows::Forms::Label());
 			this->fosTBAMPLimitMarginMulti = (gcnew System::Windows::Forms::TrackBar());
 			this->fosCBAmpKeepOldFile = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBDisableX26XVersionCheck = (gcnew System::Windows::Forms::CheckBox());
+			this->fostabPageGUI = (gcnew System::Windows::Forms::TabPage());
+			this->fosLBStgDir = (gcnew System::Windows::Forms::Label());
+			this->fosBTStgDir = (gcnew System::Windows::Forms::Button());
+			this->fosTXStgDir = (gcnew System::Windows::Forms::TextBox());
+			this->fosCBGetRelativePath = (gcnew System::Windows::Forms::CheckBox());
+			this->fosBTSetFont = (gcnew System::Windows::Forms::Button());
+			this->fosCBStgEscKey = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBDisableToolTip = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBDisableVisualStyles = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBLogDisableTransparency = (gcnew System::Windows::Forms::CheckBox());
+			this->fosLBDisableVisualStyles = (gcnew System::Windows::Forms::Label());
+			this->fosCBLogStartMinimized = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBChapConvertToUTF8 = (gcnew System::Windows::Forms::CheckBox());
 			this->fosTabControl->SuspendLayout();
 			this->fostabPageGeneral->SuspendLayout();
 			this->fostabPageAMP->SuspendLayout();
@@ -203,13 +218,14 @@ namespace x265guiEx {
 			this->fosGroupBoxAMPLimitMarginExample->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosNUAMPLimitMargin))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosTBAMPLimitMarginMulti))->BeginInit();
+			this->fostabPageGUI->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// fosCBCancel
 			// 
 			this->fosCBCancel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->fosCBCancel->DialogResult = System::Windows::Forms::DialogResult::Cancel;
-			this->fosCBCancel->Location = System::Drawing::Point(171, 545);
+			this->fosCBCancel->Location = System::Drawing::Point(171, 407);
 			this->fosCBCancel->Name = L"fosCBCancel";
 			this->fosCBCancel->Size = System::Drawing::Size(84, 29);
 			this->fosCBCancel->TabIndex = 1;
@@ -220,7 +236,7 @@ namespace x265guiEx {
 			// fosCBOK
 			// 
 			this->fosCBOK->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->fosCBOK->Location = System::Drawing::Point(283, 545);
+			this->fosCBOK->Location = System::Drawing::Point(283, 407);
 			this->fosCBOK->Name = L"fosCBOK";
 			this->fosCBOK->Size = System::Drawing::Size(84, 29);
 			this->fosCBOK->TabIndex = 2;
@@ -228,122 +244,24 @@ namespace x265guiEx {
 			this->fosCBOK->UseVisualStyleBackColor = true;
 			this->fosCBOK->Click += gcnew System::EventHandler(this, &frmOtherSettings::fosCBOK_Click);
 			// 
-			// fosTXStgDir
-			// 
-			this->fosTXStgDir->Location = System::Drawing::Point(41, 35);
-			this->fosTXStgDir->Name = L"fosTXStgDir";
-			this->fosTXStgDir->Size = System::Drawing::Size(294, 23);
-			this->fosTXStgDir->TabIndex = 1;
-			// 
-			// fosLBStgDir
-			// 
-			this->fosLBStgDir->AutoSize = true;
-			this->fosLBStgDir->Location = System::Drawing::Point(14, 15);
-			this->fosLBStgDir->Name = L"fosLBStgDir";
-			this->fosLBStgDir->Size = System::Drawing::Size(123, 15);
-			this->fosLBStgDir->TabIndex = 0;
-			this->fosLBStgDir->Text = L"設定ファイルの保存場所";
-			// 
-			// fosBTStgDir
-			// 
-			this->fosBTStgDir->Location = System::Drawing::Point(341, 35);
-			this->fosBTStgDir->Name = L"fosBTStgDir";
-			this->fosBTStgDir->Size = System::Drawing::Size(35, 23);
-			this->fosBTStgDir->TabIndex = 2;
-			this->fosBTStgDir->Text = L"...";
-			this->fosBTStgDir->UseVisualStyleBackColor = true;
-			this->fosBTStgDir->Click += gcnew System::EventHandler(this, &frmOtherSettings::fosBTStgDir_Click);
-			// 
 			// fosCBAutoAFSDisable
 			// 
-			this->fosCBAutoAFSDisable->Location = System::Drawing::Point(17, 138);
+			this->fosCBAutoAFSDisable->Location = System::Drawing::Point(16, 72);
 			this->fosCBAutoAFSDisable->Name = L"fosCBAutoAFSDisable";
 			this->fosCBAutoAFSDisable->Size = System::Drawing::Size(308, 53);
 			this->fosCBAutoAFSDisable->TabIndex = 6;
 			this->fosCBAutoAFSDisable->Text = L"自動フィールドシフト(afs)オンで初期化に失敗した場合、afsをオフにしてエンコード続行を試みる";
 			this->fosCBAutoAFSDisable->UseVisualStyleBackColor = true;
 			// 
-			// fosCBDisableToolTip
-			// 
-			this->fosCBDisableToolTip->AutoSize = true;
-			this->fosCBDisableToolTip->Location = System::Drawing::Point(17, 256);
-			this->fosCBDisableToolTip->Name = L"fosCBDisableToolTip";
-			this->fosCBDisableToolTip->Size = System::Drawing::Size(158, 19);
-			this->fosCBDisableToolTip->TabIndex = 9;
-			this->fosCBDisableToolTip->Text = L"ポップアップヘルプを抑制する";
-			this->fosCBDisableToolTip->UseVisualStyleBackColor = true;
-			// 
-			// fosCBDisableVisualStyles
-			// 
-			this->fosCBDisableVisualStyles->AutoSize = true;
-			this->fosCBDisableVisualStyles->Location = System::Drawing::Point(17, 286);
-			this->fosCBDisableVisualStyles->Name = L"fosCBDisableVisualStyles";
-			this->fosCBDisableVisualStyles->Size = System::Drawing::Size(128, 19);
-			this->fosCBDisableVisualStyles->TabIndex = 10;
-			this->fosCBDisableVisualStyles->Text = L"視覚効果をオフにする";
-			this->fosCBDisableVisualStyles->UseVisualStyleBackColor = true;
-			// 
-			// fosLBDisableVisualStyles
-			// 
-			this->fosLBDisableVisualStyles->AutoSize = true;
-			this->fosLBDisableVisualStyles->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(128)));
-			this->fosLBDisableVisualStyles->ForeColor = System::Drawing::Color::OrangeRed;
-			this->fosLBDisableVisualStyles->Location = System::Drawing::Point(38, 305);
-			this->fosLBDisableVisualStyles->Name = L"fosLBDisableVisualStyles";
-			this->fosLBDisableVisualStyles->Size = System::Drawing::Size(161, 14);
-			this->fosLBDisableVisualStyles->TabIndex = 11;
-			this->fosLBDisableVisualStyles->Text = L"※反映にはAviutlの再起動が必要";
-			// 
-			// fosCBLogStartMinimized
-			// 
-			this->fosCBLogStartMinimized->AutoSize = true;
-			this->fosCBLogStartMinimized->Location = System::Drawing::Point(17, 332);
-			this->fosCBLogStartMinimized->Name = L"fosCBLogStartMinimized";
-			this->fosCBLogStartMinimized->Size = System::Drawing::Size(184, 19);
-			this->fosCBLogStartMinimized->TabIndex = 12;
-			this->fosCBLogStartMinimized->Text = L"ログウィンドウを最小化で開始する";
-			this->fosCBLogStartMinimized->UseVisualStyleBackColor = true;
-			// 
-			// fosCBLogDisableTransparency
-			// 
-			this->fosCBLogDisableTransparency->AutoSize = true;
-			this->fosCBLogDisableTransparency->Location = System::Drawing::Point(17, 362);
-			this->fosCBLogDisableTransparency->Name = L"fosCBLogDisableTransparency";
-			this->fosCBLogDisableTransparency->Size = System::Drawing::Size(174, 19);
-			this->fosCBLogDisableTransparency->TabIndex = 13;
-			this->fosCBLogDisableTransparency->Text = L"ログウィンドウの透過をオフにする";
-			this->fosCBLogDisableTransparency->UseVisualStyleBackColor = true;
-			// 
 			// fosCBAutoDelChap
 			// 
 			this->fosCBAutoDelChap->AutoSize = true;
-			this->fosCBAutoDelChap->Location = System::Drawing::Point(17, 197);
+			this->fosCBAutoDelChap->Location = System::Drawing::Point(16, 131);
 			this->fosCBAutoDelChap->Name = L"fosCBAutoDelChap";
 			this->fosCBAutoDelChap->Size = System::Drawing::Size(295, 19);
 			this->fosCBAutoDelChap->TabIndex = 7;
 			this->fosCBAutoDelChap->Text = L"mux正常終了後、チャプターファイルを自動的に削除する";
 			this->fosCBAutoDelChap->UseVisualStyleBackColor = true;
-			// 
-			// fosCBStgEscKey
-			// 
-			this->fosCBStgEscKey->AutoSize = true;
-			this->fosCBStgEscKey->Location = System::Drawing::Point(17, 392);
-			this->fosCBStgEscKey->Name = L"fosCBStgEscKey";
-			this->fosCBStgEscKey->Size = System::Drawing::Size(168, 19);
-			this->fosCBStgEscKey->TabIndex = 14;
-			this->fosCBStgEscKey->Text = L"設定画面でEscキーを有効化";
-			this->fosCBStgEscKey->UseVisualStyleBackColor = true;
-			// 
-			// fosBTSetFont
-			// 
-			this->fosBTSetFont->Location = System::Drawing::Point(238, 387);
-			this->fosBTSetFont->Name = L"fosBTSetFont";
-			this->fosBTSetFont->Size = System::Drawing::Size(124, 27);
-			this->fosBTSetFont->TabIndex = 15;
-			this->fosBTSetFont->Text = L"フォントの変更...";
-			this->fosBTSetFont->UseVisualStyleBackColor = true;
-			this->fosBTSetFont->Click += gcnew System::EventHandler(this, &frmOtherSettings::fosBTSetFont_Click);
 			// 
 			// fosfontDialog
 			// 
@@ -357,47 +275,52 @@ namespace x265guiEx {
 			// 
 			// fosTabControl
 			// 
+			this->fosTabControl->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->fosTabControl->Controls->Add(this->fostabPageGeneral);
+			this->fosTabControl->Controls->Add(this->fostabPageGUI);
 			this->fosTabControl->Controls->Add(this->fostabPageAMP);
 			this->fosTabControl->Location = System::Drawing::Point(1, 1);
 			this->fosTabControl->Name = L"fosTabControl";
 			this->fosTabControl->SelectedIndex = 0;
-			this->fosTabControl->Size = System::Drawing::Size(392, 538);
+			this->fosTabControl->Size = System::Drawing::Size(392, 400);
 			this->fosTabControl->TabIndex = 17;
 			// 
 			// fostabPageGeneral
 			// 
+			this->fostabPageGeneral->Controls->Add(this->fosCBChapConvertToUTF8);
 			this->fostabPageGeneral->Controls->Add(this->fosCBDisableX26XVersionCheck);
 			this->fostabPageGeneral->Controls->Add(this->fosCBKeepQPFile);
 			this->fostabPageGeneral->Controls->Add(this->fosCBRunBatMinimized);
 			this->fostabPageGeneral->Controls->Add(this->fosLBDefaultOutExt2);
 			this->fostabPageGeneral->Controls->Add(this->fosCXDefaultOutExt);
 			this->fostabPageGeneral->Controls->Add(this->fosLBDefaultOutExt);
-			this->fostabPageGeneral->Controls->Add(this->fosCBGetRelativePath);
-			this->fostabPageGeneral->Controls->Add(this->fosLBStgDir);
-			this->fostabPageGeneral->Controls->Add(this->fosBTStgDir);
-			this->fostabPageGeneral->Controls->Add(this->fosTXStgDir);
 			this->fostabPageGeneral->Controls->Add(this->fosCBAutoAFSDisable);
-			this->fostabPageGeneral->Controls->Add(this->fosBTSetFont);
-			this->fostabPageGeneral->Controls->Add(this->fosCBStgEscKey);
-			this->fostabPageGeneral->Controls->Add(this->fosCBDisableToolTip);
 			this->fostabPageGeneral->Controls->Add(this->fosCBAutoDelChap);
-			this->fostabPageGeneral->Controls->Add(this->fosCBDisableVisualStyles);
-			this->fostabPageGeneral->Controls->Add(this->fosCBLogDisableTransparency);
-			this->fostabPageGeneral->Controls->Add(this->fosLBDisableVisualStyles);
-			this->fostabPageGeneral->Controls->Add(this->fosCBLogStartMinimized);
 			this->fostabPageGeneral->Location = System::Drawing::Point(4, 24);
 			this->fostabPageGeneral->Name = L"fostabPageGeneral";
 			this->fostabPageGeneral->Padding = System::Windows::Forms::Padding(3);
-			this->fostabPageGeneral->Size = System::Drawing::Size(384, 510);
+			this->fostabPageGeneral->Size = System::Drawing::Size(384, 372);
 			this->fostabPageGeneral->TabIndex = 0;
-			this->fostabPageGeneral->Text = L"一般設定";
+			this->fostabPageGeneral->Text = L"エンコード設定";
 			this->fostabPageGeneral->UseVisualStyleBackColor = true;
+			// 
+			// fosCBDisableX26XVersionCheck
+			// 
+			this->fosCBDisableX26XVersionCheck->AutoSize = true;
+			this->fosCBDisableX26XVersionCheck->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->fosCBDisableX26XVersionCheck->Location = System::Drawing::Point(16, 241);
+			this->fosCBDisableX26XVersionCheck->Name = L"fosCBDisableX26XVersionCheck";
+			this->fosCBDisableX26XVersionCheck->Size = System::Drawing::Size(263, 19);
+			this->fosCBDisableX26XVersionCheck->TabIndex = 17;
+			this->fosCBDisableX26XVersionCheck->Text = L"エンコーダのバージョンチェックをスキップ (デバッグ用)";
+			this->fosCBDisableX26XVersionCheck->UseVisualStyleBackColor = true;
 			// 
 			// fosCBKeepQPFile
 			// 
 			this->fosCBKeepQPFile->AutoSize = true;
-			this->fosCBKeepQPFile->Location = System::Drawing::Point(17, 226);
+			this->fosCBKeepQPFile->Location = System::Drawing::Point(16, 159);
 			this->fosCBKeepQPFile->Name = L"fosCBKeepQPFile";
 			this->fosCBKeepQPFile->Size = System::Drawing::Size(260, 19);
 			this->fosCBKeepQPFile->TabIndex = 8;
@@ -407,7 +330,7 @@ namespace x265guiEx {
 			// fosCBRunBatMinimized
 			// 
 			this->fosCBRunBatMinimized->AutoSize = true;
-			this->fosCBRunBatMinimized->Location = System::Drawing::Point(17, 450);
+			this->fosCBRunBatMinimized->Location = System::Drawing::Point(16, 186);
 			this->fosCBRunBatMinimized->Name = L"fosCBRunBatMinimized";
 			this->fosCBRunBatMinimized->Size = System::Drawing::Size(205, 19);
 			this->fosCBRunBatMinimized->TabIndex = 16;
@@ -420,7 +343,7 @@ namespace x265guiEx {
 			this->fosLBDefaultOutExt2->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
 			this->fosLBDefaultOutExt2->ForeColor = System::Drawing::Color::OrangeRed;
-			this->fosLBDefaultOutExt2->Location = System::Drawing::Point(206, 82);
+			this->fosLBDefaultOutExt2->Location = System::Drawing::Point(205, 16);
 			this->fosLBDefaultOutExt2->Name = L"fosLBDefaultOutExt2";
 			this->fosLBDefaultOutExt2->Size = System::Drawing::Size(161, 14);
 			this->fosLBDefaultOutExt2->TabIndex = 4;
@@ -430,7 +353,7 @@ namespace x265guiEx {
 			// 
 			this->fosCXDefaultOutExt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fosCXDefaultOutExt->FormattingEnabled = true;
-			this->fosCXDefaultOutExt->Location = System::Drawing::Point(41, 103);
+			this->fosCXDefaultOutExt->Location = System::Drawing::Point(40, 37);
 			this->fosCXDefaultOutExt->Name = L"fosCXDefaultOutExt";
 			this->fosCXDefaultOutExt->Size = System::Drawing::Size(190, 23);
 			this->fosCXDefaultOutExt->TabIndex = 5;
@@ -438,21 +361,11 @@ namespace x265guiEx {
 			// fosLBDefaultOutExt
 			// 
 			this->fosLBDefaultOutExt->AutoSize = true;
-			this->fosLBDefaultOutExt->Location = System::Drawing::Point(14, 80);
+			this->fosLBDefaultOutExt->Location = System::Drawing::Point(13, 14);
 			this->fosLBDefaultOutExt->Name = L"fosLBDefaultOutExt";
 			this->fosLBDefaultOutExt->Size = System::Drawing::Size(172, 15);
 			this->fosLBDefaultOutExt->TabIndex = 3;
 			this->fosLBDefaultOutExt->Text = L"出力するファイルの種類のデフォルト";
-			// 
-			// fosCBGetRelativePath
-			// 
-			this->fosCBGetRelativePath->AutoSize = true;
-			this->fosCBGetRelativePath->Location = System::Drawing::Point(17, 422);
-			this->fosCBGetRelativePath->Name = L"fosCBGetRelativePath";
-			this->fosCBGetRelativePath->Size = System::Drawing::Size(185, 19);
-			this->fosCBGetRelativePath->TabIndex = 15;
-			this->fosCBGetRelativePath->Text = L"ダイアログから相対パスで取得する";
-			this->fosCBGetRelativePath->UseVisualStyleBackColor = true;
 			// 
 			// fostabPageAMP
 			// 
@@ -462,7 +375,7 @@ namespace x265guiEx {
 			this->fostabPageAMP->Location = System::Drawing::Point(4, 24);
 			this->fostabPageAMP->Name = L"fostabPageAMP";
 			this->fostabPageAMP->Padding = System::Windows::Forms::Padding(3);
-			this->fostabPageAMP->Size = System::Drawing::Size(384, 487);
+			this->fostabPageAMP->Size = System::Drawing::Size(384, 372);
 			this->fostabPageAMP->TabIndex = 1;
 			this->fostabPageAMP->Text = L"自動マルチパス";
 			this->fostabPageAMP->UseVisualStyleBackColor = true;
@@ -670,16 +583,141 @@ namespace x265guiEx {
 			this->fosCBAmpKeepOldFile->Text = L"自動マルチパスで、上限をオーバーしてしまい再エンコードする際に、上限オーバーの動画を削除しない";
 			this->fosCBAmpKeepOldFile->UseVisualStyleBackColor = true;
 			// 
-			// fosCBDisableX26XVersionCheck
+			// fostabPageGUI
 			// 
-			this->fosCBDisableX26XVersionCheck->AutoSize = true;
-			this->fosCBDisableX26XVersionCheck->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-			this->fosCBDisableX26XVersionCheck->Location = System::Drawing::Point(17, 477);
-			this->fosCBDisableX26XVersionCheck->Name = L"fosCBDisableX26XVersionCheck";
-			this->fosCBDisableX26XVersionCheck->Size = System::Drawing::Size(263, 19);
-			this->fosCBDisableX26XVersionCheck->TabIndex = 17;
-			this->fosCBDisableX26XVersionCheck->Text = L"エンコーダのバージョンチェックをスキップ (デバッグ用)";
-			this->fosCBDisableX26XVersionCheck->UseVisualStyleBackColor = true;
+			this->fostabPageGUI->Controls->Add(this->fosCBGetRelativePath);
+			this->fostabPageGUI->Controls->Add(this->fosBTSetFont);
+			this->fostabPageGUI->Controls->Add(this->fosCBStgEscKey);
+			this->fostabPageGUI->Controls->Add(this->fosCBDisableToolTip);
+			this->fostabPageGUI->Controls->Add(this->fosCBDisableVisualStyles);
+			this->fostabPageGUI->Controls->Add(this->fosCBLogDisableTransparency);
+			this->fostabPageGUI->Controls->Add(this->fosLBDisableVisualStyles);
+			this->fostabPageGUI->Controls->Add(this->fosCBLogStartMinimized);
+			this->fostabPageGUI->Controls->Add(this->fosLBStgDir);
+			this->fostabPageGUI->Controls->Add(this->fosBTStgDir);
+			this->fostabPageGUI->Controls->Add(this->fosTXStgDir);
+			this->fostabPageGUI->Location = System::Drawing::Point(4, 24);
+			this->fostabPageGUI->Name = L"fostabPageGUI";
+			this->fostabPageGUI->Size = System::Drawing::Size(384, 372);
+			this->fostabPageGUI->TabIndex = 2;
+			this->fostabPageGUI->Text = L"ログ・設定画面";
+			this->fostabPageGUI->UseVisualStyleBackColor = true;
+			// 
+			// fosLBStgDir
+			// 
+			this->fosLBStgDir->AutoSize = true;
+			this->fosLBStgDir->Location = System::Drawing::Point(7, 14);
+			this->fosLBStgDir->Name = L"fosLBStgDir";
+			this->fosLBStgDir->Size = System::Drawing::Size(123, 15);
+			this->fosLBStgDir->TabIndex = 3;
+			this->fosLBStgDir->Text = L"設定ファイルの保存場所";
+			// 
+			// fosBTStgDir
+			// 
+			this->fosBTStgDir->Location = System::Drawing::Point(334, 34);
+			this->fosBTStgDir->Name = L"fosBTStgDir";
+			this->fosBTStgDir->Size = System::Drawing::Size(35, 23);
+			this->fosBTStgDir->TabIndex = 5;
+			this->fosBTStgDir->Text = L"...";
+			this->fosBTStgDir->UseVisualStyleBackColor = true;
+			// 
+			// fosTXStgDir
+			// 
+			this->fosTXStgDir->Location = System::Drawing::Point(34, 34);
+			this->fosTXStgDir->Name = L"fosTXStgDir";
+			this->fosTXStgDir->Size = System::Drawing::Size(294, 23);
+			this->fosTXStgDir->TabIndex = 4;
+			// 
+			// fosCBGetRelativePath
+			// 
+			this->fosCBGetRelativePath->AutoSize = true;
+			this->fosCBGetRelativePath->Location = System::Drawing::Point(18, 239);
+			this->fosCBGetRelativePath->Name = L"fosCBGetRelativePath";
+			this->fosCBGetRelativePath->Size = System::Drawing::Size(185, 19);
+			this->fosCBGetRelativePath->TabIndex = 22;
+			this->fosCBGetRelativePath->Text = L"ダイアログから相対パスで取得する";
+			this->fosCBGetRelativePath->UseVisualStyleBackColor = true;
+			// 
+			// fosBTSetFont
+			// 
+			this->fosBTSetFont->Location = System::Drawing::Point(239, 204);
+			this->fosBTSetFont->Name = L"fosBTSetFont";
+			this->fosBTSetFont->Size = System::Drawing::Size(124, 27);
+			this->fosBTSetFont->TabIndex = 23;
+			this->fosBTSetFont->Text = L"フォントの変更...";
+			this->fosBTSetFont->UseVisualStyleBackColor = true;
+			// 
+			// fosCBStgEscKey
+			// 
+			this->fosCBStgEscKey->AutoSize = true;
+			this->fosCBStgEscKey->Location = System::Drawing::Point(18, 209);
+			this->fosCBStgEscKey->Name = L"fosCBStgEscKey";
+			this->fosCBStgEscKey->Size = System::Drawing::Size(168, 19);
+			this->fosCBStgEscKey->TabIndex = 21;
+			this->fosCBStgEscKey->Text = L"設定画面でEscキーを有効化";
+			this->fosCBStgEscKey->UseVisualStyleBackColor = true;
+			// 
+			// fosCBDisableToolTip
+			// 
+			this->fosCBDisableToolTip->AutoSize = true;
+			this->fosCBDisableToolTip->Location = System::Drawing::Point(18, 73);
+			this->fosCBDisableToolTip->Name = L"fosCBDisableToolTip";
+			this->fosCBDisableToolTip->Size = System::Drawing::Size(158, 19);
+			this->fosCBDisableToolTip->TabIndex = 16;
+			this->fosCBDisableToolTip->Text = L"ポップアップヘルプを抑制する";
+			this->fosCBDisableToolTip->UseVisualStyleBackColor = true;
+			// 
+			// fosCBDisableVisualStyles
+			// 
+			this->fosCBDisableVisualStyles->AutoSize = true;
+			this->fosCBDisableVisualStyles->Location = System::Drawing::Point(18, 103);
+			this->fosCBDisableVisualStyles->Name = L"fosCBDisableVisualStyles";
+			this->fosCBDisableVisualStyles->Size = System::Drawing::Size(128, 19);
+			this->fosCBDisableVisualStyles->TabIndex = 17;
+			this->fosCBDisableVisualStyles->Text = L"視覚効果をオフにする";
+			this->fosCBDisableVisualStyles->UseVisualStyleBackColor = true;
+			// 
+			// fosCBLogDisableTransparency
+			// 
+			this->fosCBLogDisableTransparency->AutoSize = true;
+			this->fosCBLogDisableTransparency->Location = System::Drawing::Point(18, 179);
+			this->fosCBLogDisableTransparency->Name = L"fosCBLogDisableTransparency";
+			this->fosCBLogDisableTransparency->Size = System::Drawing::Size(174, 19);
+			this->fosCBLogDisableTransparency->TabIndex = 20;
+			this->fosCBLogDisableTransparency->Text = L"ログウィンドウの透過をオフにする";
+			this->fosCBLogDisableTransparency->UseVisualStyleBackColor = true;
+			// 
+			// fosLBDisableVisualStyles
+			// 
+			this->fosLBDisableVisualStyles->AutoSize = true;
+			this->fosLBDisableVisualStyles->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(128)));
+			this->fosLBDisableVisualStyles->ForeColor = System::Drawing::Color::OrangeRed;
+			this->fosLBDisableVisualStyles->Location = System::Drawing::Point(39, 122);
+			this->fosLBDisableVisualStyles->Name = L"fosLBDisableVisualStyles";
+			this->fosLBDisableVisualStyles->Size = System::Drawing::Size(161, 14);
+			this->fosLBDisableVisualStyles->TabIndex = 18;
+			this->fosLBDisableVisualStyles->Text = L"※反映にはAviutlの再起動が必要";
+			// 
+			// fosCBLogStartMinimized
+			// 
+			this->fosCBLogStartMinimized->AutoSize = true;
+			this->fosCBLogStartMinimized->Location = System::Drawing::Point(18, 149);
+			this->fosCBLogStartMinimized->Name = L"fosCBLogStartMinimized";
+			this->fosCBLogStartMinimized->Size = System::Drawing::Size(184, 19);
+			this->fosCBLogStartMinimized->TabIndex = 19;
+			this->fosCBLogStartMinimized->Text = L"ログウィンドウを最小化で開始する";
+			this->fosCBLogStartMinimized->UseVisualStyleBackColor = true;
+			// 
+			// fosCBChapConvertToUTF8
+			// 
+			this->fosCBChapConvertToUTF8->AutoSize = true;
+			this->fosCBChapConvertToUTF8->Location = System::Drawing::Point(16, 213);
+			this->fosCBChapConvertToUTF8->Name = L"fosCBChapConvertToUTF8";
+			this->fosCBChapConvertToUTF8->Size = System::Drawing::Size(204, 19);
+			this->fosCBChapConvertToUTF8->TabIndex = 18;
+			this->fosCBChapConvertToUTF8->Text = L"チャプターmux時、UTF-8に変換する";
+			this->fosCBChapConvertToUTF8->UseVisualStyleBackColor = true;
 			// 
 			// frmOtherSettings
 			// 
@@ -687,7 +725,7 @@ namespace x265guiEx {
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Dpi;
 			this->CancelButton = this->fosCBCancel;
-			this->ClientSize = System::Drawing::Size(392, 584);
+			this->ClientSize = System::Drawing::Size(392, 446);
 			this->Controls->Add(this->fosTabControl);
 			this->Controls->Add(this->fosCBOK);
 			this->Controls->Add(this->fosCBCancel);
@@ -712,6 +750,8 @@ namespace x265guiEx {
 			this->fosGroupBoxAMPLimitMarginExample->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosNUAMPLimitMargin))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosTBAMPLimitMarginMulti))->EndInit();
+			this->fostabPageGUI->ResumeLayout(false);
+			this->fostabPageGUI->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -734,6 +774,7 @@ namespace x265guiEx {
 			fos_ex_stg->s_local.disable_tooltip_help       = fosCBDisableToolTip->Checked;
 			fos_ex_stg->s_local.disable_visual_styles      = fosCBDisableVisualStyles->Checked;
 			fos_ex_stg->s_local.enable_stg_esc_key         = fosCBStgEscKey->Checked;
+			fos_ex_stg->s_local.chap_nero_convert_to_utf8  = fosCBChapConvertToUTF8->Checked;
 			fos_ex_stg->s_log.minimized                    = fosCBLogStartMinimized->Checked;
 			fos_ex_stg->s_log.transparent                  = !fosCBLogDisableTransparency->Checked;
 			fos_ex_stg->s_local.get_relative_path          = fosCBGetRelativePath->Checked;
@@ -770,6 +811,7 @@ namespace x265guiEx {
 			fosCBDisableToolTip->Checked          = fos_ex_stg->s_local.disable_tooltip_help != 0;
 			fosCBDisableVisualStyles->Checked     = fos_ex_stg->s_local.disable_visual_styles != 0;
 			fosCBStgEscKey->Checked               = fos_ex_stg->s_local.enable_stg_esc_key != 0;
+			fosCBChapConvertToUTF8->Checked       = fos_ex_stg->s_local.chap_nero_convert_to_utf8 != 0;
 			fosCBLogStartMinimized->Checked       = fos_ex_stg->s_log.minimized != 0;
 			fosCBLogDisableTransparency->Checked  = fos_ex_stg->s_log.transparent == 0;
 			fosCBGetRelativePath->Checked         = fos_ex_stg->s_local.get_relative_path != 0;
