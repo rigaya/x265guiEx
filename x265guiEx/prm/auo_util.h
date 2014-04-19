@@ -11,6 +11,7 @@
 #define _AUO_UTIL_H_
 
 #include <Windows.h>
+#include <VersionHelpers.h>
 #include <string.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -364,10 +365,7 @@ static DWORD get_availableSIMD() {
 }
 
 static BOOL check_OS_Win7orLater() {
-	OSVERSIONINFO osvi = { 0 };
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-	return ((osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) && ((osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1) || osvi.dwMajorVersion > 6));
+	return IsWindowsVersionOrGreater(6, 1, 0);
 }
 
 static inline const char *GetFullPath(const char *path, char *buffer, size_t nSize) {
