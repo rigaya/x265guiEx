@@ -1368,14 +1368,14 @@ static void set_guiEx_auto_colormatrix(CONF_X26X *cx, int height) {
 		cx->transfer = auto_matrix;
 }
 
-static void set_guiEx_auto_vbv(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type) {
+static void set_guiEx_auto_vbv(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type, BOOL ref_limit_by_level) {
 	if (enc_type == ENC_TYPE_X265)
 		return;
 	if (cx->vbv_bufsize < 0 || cx->vbv_maxrate < 0) {
 		int profile_index = check_profile_x264((CONF_X264 *)cx);
-		int level_index   = cx->h26x_level;
+		int level_index = cx->h26x_level;
 		if (!level_index)
-			level_index = calc_auto_level(width, height, cx->ref_frames, cx->interlaced, fps_num, fps_den, cx->vbv_maxrate, cx->vbv_bufsize);
+			level_index = calc_auto_level(width, height, (ref_limit_by_level) ? 0 : cx->ref_frames, cx->interlaced, fps_num, fps_den, cx->vbv_maxrate, cx->vbv_bufsize);
 		int *vbv_buf = (cx->vbv_bufsize < 0) ? &cx->vbv_bufsize : NULL;
 		int *vbv_max = (cx->vbv_maxrate < 0) ? &cx->vbv_maxrate : NULL;
 		get_vbv_value(vbv_max, vbv_buf, level_index, profile_index, 8 < cx->bit_depth, ex_stg);
@@ -1388,11 +1388,21 @@ static void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
 	}
 }
 
-void apply_guiEx_auto_settings(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type) {
+static void set_guiEx_auto_ref_limit_by_level(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type, BOOL ref_limit_by_level) {
+	if (enc_type == ENC_TYPE_X265 || !ref_limit_by_level)
+		return;
+	int level_index = cx->h26x_level;
+	if (!level_index)
+		level_index = calc_auto_level(width, height, 0, cx->interlaced, fps_num, fps_den, cx->vbv_maxrate, cx->vbv_bufsize);
+	cx->ref_frames = max(1, min(cx->ref_frames, get_ref_limit(level_index, width, height, cx->interlaced)));
+}
+
+void apply_guiEx_auto_settings(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type, BOOL ref_limit_by_level) {
 	set_guiEx_auto_sar(cx, width, height);
 	set_guiEx_auto_colormatrix(cx, height);
 	set_guiEx_auto_keyint(&cx->keyint_max, fps_num, fps_den);
-	set_guiEx_auto_vbv(cx, width, height, fps_num, fps_den, enc_type);
+	set_guiEx_auto_vbv(cx, width, height, fps_num, fps_den, enc_type, ref_limit_by_level);
+	set_guiEx_auto_ref_limit_by_level(cx, width, height, fps_num, fps_den, enc_type, ref_limit_by_level);
 }
 
 const X26X_OPTION_STR * get_option_list_x264(const char *option_name) {
