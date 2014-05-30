@@ -307,7 +307,7 @@ void warning_amp_failed() {
 }
 
 void warning_amp_filesize_over_limit() {
-	write_log_auo_line_fmt(LOG_WARNING, "エンコード中にファイルサイズが上限を上回ってしました。");
+	write_log_auo_line_fmt(LOG_WARNING, "エンコード中にファイルサイズが上限を上回ってしまいました。");
 	write_log_auo_line_fmt(LOG_WARNING, "エンコードを中断し、設定を調整した後、再エンコードを行います。");
 }
 
