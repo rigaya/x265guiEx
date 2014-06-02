@@ -29,6 +29,7 @@ void error_log_line_cache();
 void error_no_exe_file(const char *name, const char *path);
 void warning_auto_afs_disable();
 void error_afs_setup(BOOL afs, BOOL auto_afs_disable);
+void warning_x264_mp4_output_not_supported();
 void error_run_process(const char *exe_name, int rp_ret);
 void error_video_output_thread_start();
 void warning_auto_qpfile_failed();
