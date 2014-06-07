@@ -1058,7 +1058,7 @@ BOOL check_x264_mp4_output(const char *exe_path, const char *temp_filename) {
 	PathRemoveFileSpecFixed(exe_dir);
 
 	char fullargs[8192] = { 0 };
-	sprintf_s(fullargs, _countof(fullargs), "\"%s\" --fps 1 --frames 1 --input-res %dx%d -o \"%s\" --input-csp nv12 -", exe_path, TEST_WIDTH, TEST_HEIGHT, test_path);
+	sprintf_s(fullargs, _countof(fullargs), "\"%s\" --fps 1 --frames 1 --input-depth 8 --input-res %dx%d -o \"%s\" --input-csp nv12 -", exe_path, TEST_WIDTH, TEST_HEIGHT, test_path);
 	if ((ret = RunProcess(fullargs, exe_dir, &pi, &pipes, NORMAL_PRIORITY_CLASS, TRUE, FALSE)) == RP_SUCCESS) {
 
 		while (WAIT_TIMEOUT == WaitForInputIdle(pi.hProcess, LOG_UPDATE_INTERVAL))
