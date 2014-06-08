@@ -685,3 +685,27 @@ void make_file_filter(char *filter, size_t nSize, int default_index) {
 #undef ADD_FILTER
 #undef ADD_DESC
 }
+
+int create_auoSetup(const char *exePath) {
+	int ret = AUO_RESULT_SUCCESS;
+	//リソースを取り出し
+	HRSRC hResource = NULL;
+	HGLOBAL hResourceData = NULL;
+	const char *pDataPtr = NULL;
+	DWORD resourceSize = 0;
+	FILE *fp = NULL;
+	HMODULE hModule = GetModuleHandleA(auo_name);
+	if (   NULL == (hResource = FindResource(hModule, "AUOSETUP", "EXE_DATA"))
+		|| NULL == (hResourceData = LoadResource(hModule, hResource))
+		|| NULL == (pDataPtr = (const char *)LockResource(hResourceData))
+		|| 0    == (resourceSize = SizeofResource(hModule, hResource))) {
+		ret = AUO_RESULT_ERROR;
+	} else if (fopen_s(&fp, exePath, "wb") || NULL == fp) {
+		ret = AUO_RESULT_ERROR;
+	} else if (resourceSize != fwrite(pDataPtr, 1, resourceSize, fp)) {
+		ret = AUO_RESULT_ERROR;
+	}
+	if (fp)
+		fclose(fp);
+	return ret;
+}
