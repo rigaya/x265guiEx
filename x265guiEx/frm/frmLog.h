@@ -818,6 +818,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
 				//	pause_start = NULL;
 				//}
 			}
+			Application::DoEvents(); //一時停止の色の反映
 		}
 	private: 
 		System::Void toolStripMenuItemShowStatus_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
