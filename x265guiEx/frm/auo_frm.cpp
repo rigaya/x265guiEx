@@ -92,7 +92,7 @@ void set_reconstructed_title_mes(const char *mes, int total_drop, int current_fr
 			&progress, &i_frame, &total_frame, &fps, &bitrate,
 			&remain_time[0], &remain_time[1], &remain_time[2],
 			&elapsed_time[0], &elapsed_time[1], &elapsed_time[2])) {
-		sprintf_s(buffer, _countof(buffer), "[%3.1lf%%] %d/%d frames, %.2f lfps, %.2lf kb/s, eta %d:%02d:%02d",
+		sprintf_s(buffer, _countof(buffer), "[%3.1lf%%] %d/%d frames, %.2lf fps, %.2lf kb/s, eta %d:%02d:%02d",
 			progress, i_frame, total_frame, fps, bitrate, elapsed_time[0], elapsed_time[1], elapsed_time[2]);
 	} else if (3 == sscanf_s(mes, "%d %lf %lf", &i_frame, &fps, &bitrate)) {
 		sprintf_s(buffer, _countof(buffer), "%d frames, %.2lf fps, %.2lf kb/s", i_frame, fps, bitrate);
