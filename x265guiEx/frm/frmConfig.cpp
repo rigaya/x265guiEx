@@ -1950,7 +1950,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x264.timebase.y           = (int)fcgNUTimebaseDen->Value;
 
 	//x265
-	cnf->x265.bit_depth            = fchCBUsehighbit->Checked ? 10 : 8;
+	cnf->x265.bit_depth            = fchCBUsehighbit->Checked ? 16 : 8;
 	cnf->x265.rc_mode              = cnf_fchTemp->rc_mode;
 	cnf->x265.bitrate              = cnf_fchTemp->bitrate;
 	cnf->x265.qp                   = cnf_fchTemp->qp;
