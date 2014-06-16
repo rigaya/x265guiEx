@@ -137,6 +137,34 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
 	{ CF_YC48, OUT_CSP_NV12,   BIT16, I,  1,  SSE2,                 convert_yc48_to_nv12_i_16bit_sse2 },
 	{ CF_YC48, OUT_CSP_NV12,   BIT16, I,  1,  NONE,                 convert_yc48_to_nv12_i_16bit },
 
+//YC48 -> yv12 (16bit)
+#if (_MSC_VER >= 1700)
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  AVX2|AVX,             convert_yc48_to_yv12_16bit_avx2 },
+#endif
+#if (_MSC_VER >= 1600)
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  AVX|SSE41|SSSE3|SSE2, convert_yc48_to_yv12_16bit_avx },
+#endif
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  8,  SSE41|SSSE3|SSE2,     convert_yc48_to_yv12_16bit_sse41_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  SSE41|SSSE3|SSE2,     convert_yc48_to_yv12_16bit_sse41 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  8,  SSSE3|SSE2,           convert_yc48_to_yv12_16bit_ssse3_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  SSSE3|SSE2,           convert_yc48_to_yv12_16bit_ssse3 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  8,  SSE2,                 convert_yc48_to_yv12_16bit_sse2_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  SSE2,                 convert_yc48_to_yv12_16bit_sse2 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, P,  1,  NONE,                 convert_yc48_to_yv12_16bit },
+#if (_MSC_VER >= 1700)
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  AVX2|AVX,             convert_yc48_to_yv12_i_16bit_avx2 },
+#endif
+#if (_MSC_VER >= 1600)
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  AVX|SSE41|SSSE3|SSE2, convert_yc48_to_yv12_i_16bit_avx },
+#endif
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  8,  SSE41|SSSE3|SSE2,     convert_yc48_to_yv12_i_16bit_sse41_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  SSE41|SSSE3|SSE2,     convert_yc48_to_yv12_i_16bit_sse41 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  8,  SSSE3|SSE2,           convert_yc48_to_yv12_i_16bit_ssse3_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  SSSE3|SSE2,           convert_yc48_to_yv12_i_16bit_ssse3 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  8,  SSE2,                 convert_yc48_to_yv12_i_16bit_sse2_mod8 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  SSE2,                 convert_yc48_to_yv12_i_16bit_sse2 },
+	{ CF_YC48, OUT_CSP_YV12,   BIT16, I,  1,  NONE,                 convert_yc48_to_yv12_i_16bit },
+
 	//YC48 -> yv12 (10bit)
 	{ CF_YC48, OUT_CSP_YV12,   BIT10, P,  1,  NONE,                 convert_yc48_to_yv12_10bit },
 	{ CF_YC48, OUT_CSP_YV12,   BIT10, I,  1,  NONE,                 convert_yc48_to_yv12_i_10bit },

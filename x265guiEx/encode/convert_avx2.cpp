@@ -93,17 +93,35 @@ void split_audio_16to8x2_avx2(BYTE *dst, short *src, int n) {
 }
 
 
-static __forceinline void separate_low_up(__m256i& x0_return_lower, __m256i& x1_return_upper) {
-	__m256i x4, x5;
+static __forceinline void separate_low_up(__m256i& y0_return_lower, __m256i& y1_return_upper) {
+	__m256i y4, y5;
 	const __m256i xMaskLowByte = _mm256_srli_epi16(_mm256_cmpeq_epi8(_mm256_setzero_si256(), _mm256_setzero_si256()), 8);
-	x4 = _mm256_srli_epi16(x0_return_lower, 8);
-	x5 = _mm256_srli_epi16(x1_return_upper, 8);
+	y4 = _mm256_srli_epi16(y0_return_lower, 8);
+	y5 = _mm256_srli_epi16(y1_return_upper, 8);
 
-	x0_return_lower = _mm256_and_si256(x0_return_lower, xMaskLowByte);
-	x1_return_upper = _mm256_and_si256(x1_return_upper, xMaskLowByte);
+	y0_return_lower = _mm256_and_si256(y0_return_lower, xMaskLowByte);
+	y1_return_upper = _mm256_and_si256(y1_return_upper, xMaskLowByte);
 
-	x0_return_lower = _mm256_packus_epi16(x0_return_lower, x1_return_upper);
-	x1_return_upper = _mm256_packus_epi16(x4, x5);
+	y0_return_lower = _mm256_packus_epi16(y0_return_lower, y1_return_upper);
+	y1_return_upper = _mm256_packus_epi16(y4, y5);
+}
+static __forceinline void separate_low_up_16bit(__m256i& y0_return_lower, __m256i& y1_return_upper) {
+	__m256i y4, y5;
+	const __m256i xMaskLowByte = _mm256_srli_epi32(_mm256_cmpeq_epi8(_mm256_setzero_si256(), _mm256_setzero_si256()), 16);
+
+	y4 = y0_return_lower; //128,   0
+	y5 = y1_return_upper; //384, 256
+	y0_return_lower = _mm256_permute2x128_si256(y4, y5, (2<<4)+0); //256,   0
+	y1_return_upper = _mm256_permute2x128_si256(y4, y5, (3<<4)+1); //384, 128
+
+	y4 = _mm256_srli_epi32(y0_return_lower, 16);
+	y5 = _mm256_srli_epi32(y1_return_upper, 16);
+
+	y0_return_lower = _mm256_and_si256(y0_return_lower, xMaskLowByte);
+	y1_return_upper = _mm256_and_si256(y1_return_upper, xMaskLowByte);
+
+	y0_return_lower = _mm256_packus_epi32(y0_return_lower, y1_return_upper);
+	y1_return_upper = _mm256_packus_epi32(y4, y5);
 }
 
 void convert_yuy2_to_nv12_avx2(void *frame, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
@@ -419,6 +437,7 @@ static __forceinline __m256i convert_uv_range_from_yc48_420i(__m256i y0, __m256i
 
 	return y0;
 }
+
 void convert_yc48_to_nv12_16bit_avx2(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	int x, y;
 	short *dst_Y = (short *)pixel_data->data[0];
@@ -496,6 +515,137 @@ void convert_yc48_to_nv12_i_16bit_avx2(void *pixel, CONVERT_CF_DATA *pixel_data,
 	}
 	_mm256_zeroupper();
 }
+
+void convert_yc48_to_yv12_16bit_avx2(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	int x, y;
+	short *dst_Y = (short *)pixel_data->data[0];
+	short *dst_U = (short *)pixel_data->data[1];
+	short *dst_V = (short *)pixel_data->data[2];
+	short *ycp, *ycpw;
+	short *Y = NULL, *U = NULL, *V = NULL;
+	const __m256i yC_pw_one = _mm256_set1_epi16(1);
+	const __m256i yC_YCC = _mm256_set1_epi32(1<<LSFT_YCC_16);
+	__m256i y0, y1, y2, y3, y4;
+	for (y = 0; y < height; y += 2) {
+		ycp = (short*)pixel + width * y * 3;
+		ycpw= ycp + width*3;
+		Y   = (short*)dst_Y + width * y;
+		U   = (short*)dst_U + width * y / 4;
+		V   = (short*)dst_V + width * y / 4;
+		for (x = 0; x < width; x += 32, ycp += 96, ycpw += 96) {
+			y1 = _mm256_loadu_si256((__m256i *)(ycp +  0)); // 128, 0
+			y2 = _mm256_loadu_si256((__m256i *)(ycp + 16)); // 384, 256
+			y3 = _mm256_loadu_si256((__m256i *)(ycp + 32)); // 640, 512
+
+			gather_y_uv_from_yc48(y1, y2, y3);
+			y0 = y2;
+
+			_mm256_storeu_si256((__m256i *)(Y + x), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+			y1 = _mm256_loadu_si256((__m256i *)(ycpw +  0));
+			y2 = _mm256_loadu_si256((__m256i *)(ycpw + 16));
+			y3 = _mm256_loadu_si256((__m256i *)(ycpw + 32));
+
+			gather_y_uv_from_yc48(y1, y2, y3);
+
+			_mm256_storeu_si256((__m256i *)(Y + x + width), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+			y4 = convert_uv_range_from_yc48_yuv420p(y0, y2,  _mm256_set1_epi16(UV_OFFSET_x2), yC_UV_L_MA_16_420P, UV_L_RSH_16_420P, yC_YCC, yC_pw_one);
+			
+			y1 = _mm256_loadu_si256((__m256i *)(ycp + 48)); // 128, 0
+			y2 = _mm256_loadu_si256((__m256i *)(ycp + 64)); // 384, 256
+			y3 = _mm256_loadu_si256((__m256i *)(ycp + 80)); // 640, 512
+
+			gather_y_uv_from_yc48(y1, y2, y3);
+			y0 = y2;
+
+			_mm256_storeu_si256((__m256i *)(Y + x + 16), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+			y1 = _mm256_loadu_si256((__m256i *)(ycpw + 48));
+			y2 = _mm256_loadu_si256((__m256i *)(ycpw + 64));
+			y3 = _mm256_loadu_si256((__m256i *)(ycpw + 80));
+
+			gather_y_uv_from_yc48(y1, y2, y3);
+
+			_mm256_storeu_si256((__m256i *)(Y + x + 16 + width), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+			y0 = convert_uv_range_from_yc48_yuv420p(y0, y2,  _mm256_set1_epi16(UV_OFFSET_x2), yC_UV_L_MA_16_420P, UV_L_RSH_16_420P, yC_YCC, yC_pw_one);
+
+			separate_low_up_16bit(y4, y0);
+
+			_mm256_storeu_si256((__m256i *)(U + (x>>1)), y4);
+			_mm256_storeu_si256((__m256i *)(V + (x>>1)), y0);
+		}
+	}
+	_mm256_zeroupper();
+}
+
+void convert_yc48_to_yv12_i_16bit_avx2(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	int x, y, i;
+	short *dst_Y = (short *)pixel_data->data[0];
+	short *dst_U = (short *)pixel_data->data[1];
+	short *dst_V = (short *)pixel_data->data[2];
+	short *ycp, *ycpw;
+	short *Y = NULL, *U = NULL, *V = NULL;
+	const __m256i yC_pw_one = _mm256_set1_epi16(1);
+	const __m256i yC_YCC = _mm256_set1_epi32(1<<LSFT_YCC_16);
+	__m256i y0, y1, y2, y3, y4;
+	for (y = 0; y < height; y += 4) {
+		for (i = 0; i < 2; i++) {
+			ycp = (short*)pixel + width * (y + i) * 3;
+			ycpw= ycp + width*2*3;
+			Y   = (short*)dst_Y + width * (y + i);
+			U   = (short*)dst_U + width * (y + i*2) / 4;
+			V   = (short*)dst_V + width * (y + i*2) / 4;
+			for (x = 0; x < width; x += 32, ycp += 96, ycpw += 96) {
+				y1 = _mm256_loadu_si256((__m256i *)(ycp +  0)); // 128, 0
+				y2 = _mm256_loadu_si256((__m256i *)(ycp + 16)); // 384, 256
+				y3 = _mm256_loadu_si256((__m256i *)(ycp + 32)); // 640, 512
+
+				gather_y_uv_from_yc48(y1, y2, y3);
+				y0 = y2;
+
+				_mm256_storeu_si256((__m256i *)(Y + x), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+				y1 = _mm256_loadu_si256((__m256i *)(ycpw +  0));
+				y2 = _mm256_loadu_si256((__m256i *)(ycpw + 16));
+				y3 = _mm256_loadu_si256((__m256i *)(ycpw + 32));
+
+				gather_y_uv_from_yc48(y1, y2, y3);
+
+				_mm256_storeu_si256((__m256i *)(Y + x + width*2), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+				y4 = convert_uv_range_from_yc48_420i(y0, y2, _mm256_set1_epi16(UV_OFFSET_x1), yC_UV_L_MA_16_420I(i), yC_UV_L_MA_16_420I((i+1)&0x01), UV_L_RSH_16_420I, yC_YCC, yC_pw_one);
+				
+				y1 = _mm256_loadu_si256((__m256i *)(ycp + 48)); // 128, 0
+				y2 = _mm256_loadu_si256((__m256i *)(ycp + 64)); // 384, 256
+				y3 = _mm256_loadu_si256((__m256i *)(ycp + 80)); // 640, 512
+
+				gather_y_uv_from_yc48(y1, y2, y3);
+				y0 = y2;
+
+				_mm256_storeu_si256((__m256i *)(Y + x + 16), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+				y1 = _mm256_loadu_si256((__m256i *)(ycpw + 48));
+				y2 = _mm256_loadu_si256((__m256i *)(ycpw + 64));
+				y3 = _mm256_loadu_si256((__m256i *)(ycpw + 80));
+
+				gather_y_uv_from_yc48(y1, y2, y3);
+
+				_mm256_storeu_si256((__m256i *)(Y + x + 16 + width*2), convert_y_range_from_yc48(y1, yC_Y_L_MA_16, Y_L_RSH_16, yC_YCC, yC_pw_one));
+
+				y0 = convert_uv_range_from_yc48_420i(y0, y2, _mm256_set1_epi16(UV_OFFSET_x1), yC_UV_L_MA_16_420I(i), yC_UV_L_MA_16_420I((i+1)&0x01), UV_L_RSH_16_420I, yC_YCC, yC_pw_one);
+
+				separate_low_up_16bit(y4, y0);
+
+				_mm256_storeu_si256((__m256i *)(U + (x>>1)), y4);
+				_mm256_storeu_si256((__m256i *)(V + (x>>1)), y0);
+			}
+		}
+	}
+	_mm256_zeroupper();
+}
+
 static __forceinline void gather_y_u_v_from_yc48(__m256i& y0, __m256i& y1, __m256i& y2) {
 	__m256i y3, y4, y5;
 	const int MASK_INT = 0x40 + 0x08 + 0x01;
