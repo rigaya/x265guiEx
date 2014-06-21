@@ -18,8 +18,8 @@
 
 #define BETA_EDITION_LIMITATION 1
 
-#define AUO_VERSION           0,3,33,0
-#define AUO_VERSION_STR       "3.33β"
+#define AUO_VERSION           0,3,34,0
+#define AUO_VERSION_STR       "3.34β"
 #define AUO_NAME_X264         "x264guiEx.auo"
 #define AUO_NAME_X265         "x265guiEx.auo"
 #define AUO_NAME_X264_W      L"x264guiEx.auo"
