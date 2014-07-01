@@ -336,11 +336,6 @@ int check_muxer_to_be_used(const CONF_GUIEX *conf, int video_output_type, BOOL a
 	if (!audio_output && !conf->vid.afs)
 		return MUXER_DISABLED;
 
-#if BETA_EDITION_LIMITATION
-	if (VIDEO_OUTPUT_MP4 == video_output_type && ENC_TYPE_X265 == conf->vid.enc_type)
-		return MUXER_DISABLED;
-#endif
-
 	if (video_output_type == VIDEO_OUTPUT_MP4 && !conf->mux.disable_mp4ext)
 		return (conf->vid.afs) ? MUXER_TC2MP4 : MUXER_MP4;
 	else if (video_output_type == VIDEO_OUTPUT_MKV && !conf->mux.disable_mkvext)
