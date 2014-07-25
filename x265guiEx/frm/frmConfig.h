@@ -3906,7 +3906,6 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fchPNStatusFile->Name = L"fchPNStatusFile";
 			this->fchPNStatusFile->Size = System::Drawing::Size(376, 32);
 			this->fchPNStatusFile->TabIndex = 6;
-			this->fchPNStatusFile->Visible = false;
 			// 
 			// fchLBSTATUS
 			// 
