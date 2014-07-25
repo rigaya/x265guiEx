@@ -538,6 +538,7 @@ void guiEx_settings::load_local() {
 	
 	GetFontInfo(ini_section_main, "conf_font", &s_local.conf_font, conf_fileName);
 
+	GetPrivateProfileString(ini_section_main, "last_update_check",     "", s_local.last_update_check,     _countof(s_local.last_update_check),     conf_fileName);
 	GetPrivateProfileString(ini_section_main, "custom_tmp_dir",        "", s_local.custom_tmp_dir,        _countof(s_local.custom_tmp_dir),        conf_fileName);
 	GetPrivateProfileString(ini_section_main, "custom_audio_tmp_dir",  "", s_local.custom_audio_tmp_dir,  _countof(s_local.custom_audio_tmp_dir),  conf_fileName);
 	GetPrivateProfileString(ini_section_main, "custom_mp4box_tmp_dir", "", s_local.custom_mp4box_tmp_dir, _countof(s_local.custom_mp4box_tmp_dir), conf_fileName);
@@ -627,6 +628,8 @@ void guiEx_settings::save_local() {
 	WritePrivateProfileIntWithDefault(   INI_SECTION_AMP,  "amp_keep_old_file",          s_local.amp_keep_old_file,          DEFAULT_AMP_KEEP_OLD_FILE,     conf_fileName);
 
 	WriteFontInfo(ini_section_main, "conf_font", &s_local.conf_font, conf_fileName);
+
+	WritePrivateProfileString(ini_section_main, "last_update_check",     s_local.last_update_check,     conf_fileName);
 
 	PathRemoveBlanks(s_local.custom_tmp_dir);
 	PathRemoveBackslash(s_local.custom_tmp_dir);

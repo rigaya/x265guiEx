@@ -261,6 +261,9 @@
     <ClInclude Include="encode\auo_process_parallel.h">
       <Filter>ヘッダー ファイル\encode</Filter>
     </ClInclude>
+    <ClInclude Include="frm\frmUpdate.h">
+      <Filter>フォーム</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="auo_version.rc">

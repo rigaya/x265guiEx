@@ -14,12 +14,9 @@
 
 using namespace System;
 using namespace System::ComponentModel;
-using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
-using namespace System::Diagnostics;
-using namespace System::Threading;
 
 namespace x265guiEx {
 
@@ -134,11 +131,11 @@ namespace x265guiEx {
 	private: System::Windows::Forms::TextBox^  fosTXStgDir;
 	private: System::Windows::Forms::CheckBox^  fosCBChapConvertToUTF8;
 	private: System::Windows::Forms::CheckBox^  fosCBAutoRefLimitByLevel;
-private: System::Windows::Forms::TabPage^  fostabPageUpdate;
-private: System::Windows::Forms::TextBox^  fosTXUpdate;
-private: System::Windows::Forms::Button^  fosBTUpdate;
-private: System::Windows::Forms::ProgressBar^  fosPBUpdate;
-private: System::Windows::Forms::Label^  fosLBUpdate;
+
+
+
+
+
 
 
 
@@ -221,11 +218,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 			this->fosLBAMPLimitMarginMin = (gcnew System::Windows::Forms::Label());
 			this->fosTBAMPLimitMarginMulti = (gcnew System::Windows::Forms::TrackBar());
 			this->fosCBAmpKeepOldFile = (gcnew System::Windows::Forms::CheckBox());
-			this->fostabPageUpdate = (gcnew System::Windows::Forms::TabPage());
-			this->fosTXUpdate = (gcnew System::Windows::Forms::TextBox());
-			this->fosBTUpdate = (gcnew System::Windows::Forms::Button());
-			this->fosLBUpdate = (gcnew System::Windows::Forms::Label());
-			this->fosPBUpdate = (gcnew System::Windows::Forms::ProgressBar());
 			this->fosTabControl->SuspendLayout();
 			this->fostabPageGeneral->SuspendLayout();
 			this->fostabPageGUI->SuspendLayout();
@@ -234,7 +226,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 			this->fosGroupBoxAMPLimitMarginExample->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosNUAMPLimitMargin))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosTBAMPLimitMarginMulti))->BeginInit();
-			this->fostabPageUpdate->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// fosCBCancel
@@ -297,7 +288,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 			this->fosTabControl->Controls->Add(this->fostabPageGeneral);
 			this->fosTabControl->Controls->Add(this->fostabPageGUI);
 			this->fosTabControl->Controls->Add(this->fostabPageAMP);
-			this->fosTabControl->Controls->Add(this->fostabPageUpdate);
 			this->fosTabControl->Location = System::Drawing::Point(1, 1);
 			this->fosTabControl->Name = L"fosTabControl";
 			this->fosTabControl->SelectedIndex = 0;
@@ -747,55 +737,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 			this->fosCBAmpKeepOldFile->Text = L"自動マルチパスで、上限をオーバーしてしまい再エンコードする際に、上限オーバーの動画を削除しない";
 			this->fosCBAmpKeepOldFile->UseVisualStyleBackColor = true;
 			// 
-			// fostabPageUpdate
-			// 
-			this->fostabPageUpdate->Controls->Add(this->fosPBUpdate);
-			this->fostabPageUpdate->Controls->Add(this->fosLBUpdate);
-			this->fostabPageUpdate->Controls->Add(this->fosTXUpdate);
-			this->fostabPageUpdate->Controls->Add(this->fosBTUpdate);
-			this->fostabPageUpdate->Location = System::Drawing::Point(4, 24);
-			this->fostabPageUpdate->Name = L"fostabPageUpdate";
-			this->fostabPageUpdate->Size = System::Drawing::Size(384, 372);
-			this->fostabPageUpdate->TabIndex = 3;
-			this->fostabPageUpdate->Text = L"アップデート";
-			this->fostabPageUpdate->UseVisualStyleBackColor = true;
-			// 
-			// fosTXUpdate
-			// 
-			this->fosTXUpdate->Location = System::Drawing::Point(7, 47);
-			this->fosTXUpdate->Multiline = true;
-			this->fosTXUpdate->Name = L"fosTXUpdate";
-			this->fosTXUpdate->ReadOnly = true;
-			this->fosTXUpdate->Size = System::Drawing::Size(368, 270);
-			this->fosTXUpdate->TabIndex = 25;
-			// 
-			// fosBTUpdate
-			// 
-			this->fosBTUpdate->Location = System::Drawing::Point(238, 323);
-			this->fosBTUpdate->Name = L"fosBTUpdate";
-			this->fosBTUpdate->Size = System::Drawing::Size(124, 36);
-			this->fosBTUpdate->TabIndex = 24;
-			this->fosBTUpdate->Text = L"更新";
-			this->fosBTUpdate->UseVisualStyleBackColor = true;
-			this->fosBTUpdate->Click += gcnew System::EventHandler(this, &frmOtherSettings::fosBTUpdate_Click);
-			// 
-			// fosLBUpdate
-			// 
-			this->fosLBUpdate->AutoSize = true;
-			this->fosLBUpdate->Location = System::Drawing::Point(17, 14);
-			this->fosLBUpdate->Name = L"fosLBUpdate";
-			this->fosLBUpdate->Size = System::Drawing::Size(224, 15);
-			this->fosLBUpdate->TabIndex = 26;
-			this->fosLBUpdate->Text = L"各種実行ファイルの更新を行うことができます。";
-			// 
-			// fosPBUpdate
-			// 
-			this->fosPBUpdate->Location = System::Drawing::Point(14, 329);
-			this->fosPBUpdate->Name = L"fosPBUpdate";
-			this->fosPBUpdate->Size = System::Drawing::Size(207, 23);
-			this->fosPBUpdate->TabIndex = 27;
-			this->fosPBUpdate->Visible = false;
-			// 
 			// frmOtherSettings
 			// 
 			this->AcceptButton = this->fosCBOK;
@@ -829,8 +770,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 			this->fosGroupBoxAMPLimitMarginExample->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosNUAMPLimitMargin))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fosTBAMPLimitMarginMulti))->EndInit();
-			this->fostabPageUpdate->ResumeLayout(false);
-			this->fostabPageUpdate->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -877,14 +816,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 	private: 
 		System::Void frmOtherSettings_Load(System::Object^  sender, System::EventArgs^  e) {
 			fosSetComboBox();
-			fosTXUpdate->Clear();
-			fosPBUpdate->Value = 0;
-			fosPBUpdate->Visible = true;
-#if BETA_EDITION_LIMITATION
-			for (int i = 0; i < fosTabControl->TabPages->Count; i++)
-				if (0 == String::Compare(fosTabControl->TabPages[i]->Text, L"アップデート"))
-					fosTabControl->TabPages->RemoveAt(i);
-#endif
 			this->Text = String(auo_full_name).ToString();
 			fosTXStgDir->Text = stgDir;
 			fos_ex_stg->load_encode_stg();
@@ -984,103 +915,6 @@ private: System::Windows::Forms::Label^  fosLBUpdate;
 	private:
 		System::Void fosBTAMPMarginMulti_Click(System::Object^  sender, System::EventArgs^  e) {
 			fosNUAMPLimitMargin->Value = (int)(DEFAULT_AMP_MARGIN * 100.0 + 0.5);
-		}
-	private:
-		delegate void DelegateMessage(String^ message);
-	private:
-		System::Void frmMessage(String^ message) {
-			if (this->InvokeRequired) {
-				this->Invoke(gcnew DelegateMessage(this, &frmOtherSettings::frmMessage), message);
-				return;
-			}
-			fosTXUpdate->AppendText(message);
-			fosTXUpdate->ScrollToCaret();
-		}
-	private:
-		System::Void runAuoSetup() {
-			char aviutldir[MAX_PATH_LEN] = { 0 };
-			get_aviutl_dir(aviutldir, _countof(aviutldir));
-			char ini_fileName[MAX_PATH_LEN] = { 0 };
-			char auoDir[MAX_PATH_LEN] = { 0 };
-			char auoSetupFilePath[MAX_PATH_LEN] = { 0 };
-			get_auo_path(auoDir, _countof(auoDir));
-			apply_appendix(ini_fileName, _countof(ini_fileName), auoDir, ".ini");
-			PathRemoveFileSpecFixed(auoDir);
-			//x264guiExのあるところから2階層掘って、そこにauoSetup.exeを作成
-			//2階層掘らないとauoSetup.exeの仕様上、うまく動かない
-			//zipを展開したフォルダ内のx264guiEx.auoと、インストール先のx264guiEx.auoを区別する
-			//searchFileExceptInstallDirが誤動作する
-			PathCombineLong(auoSetupFilePath, _countof(auoSetupFilePath), auoDir, "\\setup");
-			String^ auoSetupDir = String(auoSetupFilePath).ToString();
-			if (!Directory::Exists(auoSetupDir))
-				Directory::CreateDirectory(auoSetupDir);
-			strcat_s(auoSetupFilePath, _countof(auoSetupFilePath), "\\setup");
-			if (!Directory::Exists(String(auoSetupFilePath).ToString()))
-				Directory::CreateDirectory(String(auoSetupFilePath).ToString());
-			strcat_s(auoSetupFilePath, _countof(auoSetupFilePath), "\\auoSetup.exe");
-			if (AUO_RESULT_SUCCESS != create_auoSetup(auoSetupFilePath)) {
-				frmMessage(L"更新に失敗しました。\r\n");
-			} else {
-				ProcessStartInfo ^psInfo = gcnew ProcessStartInfo();
-				psInfo->FileName = String(auoSetupFilePath).ToString();
-				psInfo->Arguments = L"-nogui -update-exe-only -dir " + String(aviutldir).ToString() + L" -ini " + String(ini_fileName).ToString();
-				psInfo->WorkingDirectory = Path::GetDirectoryName(String(auoSetupFilePath).ToString());
-				psInfo->CreateNoWindow = true;
-				psInfo->UseShellExecute = false;
-				psInfo->RedirectStandardOutput = true;
-
-				//frmMessage(psInfo->FileName + L" " + psInfo->Arguments + L"\n");
-
-				Process^ processAuoSetup = nullptr;
-				try {
-					processAuoSetup = Process::Start(psInfo);
-					try {
-						while (!processAuoSetup->HasExited) {
-							frmMessage(processAuoSetup->StandardOutput->ReadLine() + L"\r\n");
-							Application::DoEvents();
-							Thread::Sleep(10);
-						}
-						processAuoSetup->WaitForExit();
-					} catch (...) {
-						//;
-					}
-					frmMessage(processAuoSetup->StandardOutput->ReadToEnd());
-					processAuoSetup->Close();
-				} catch (...) {
-					frmMessage(L"更新の実行に失敗しました。\r\n");
-				} finally {
-					delete processAuoSetup;
-				}
-				delete psInfo;
-			}
-			if (Directory::Exists(auoSetupDir))
-				Directory::Delete(auoSetupDir, true);
-		}
-	private:
-		System::Void fosBTUpdate_Click(System::Object^  sender, System::EventArgs^  e) {
-			fosTXUpdate->Clear();
-			fosPBUpdate->Minimum = 0;
-			fosPBUpdate->Maximum = 100;
-			fosPBUpdate->Value = 0;
-			fosPBUpdate->Style = ProgressBarStyle::Marquee;
-			fosPBUpdate->Visible = true;
-			Thread ^thread = nullptr;
-			try {
-				thread = gcnew Thread(gcnew ThreadStart(this, &frmOtherSettings::runAuoSetup));
-				thread->Start();
-
-				while (thread->IsAlive) {
-					Application::DoEvents();
-					Thread::Sleep(16);
-				}
-				fosTXUpdate->AppendText("更新終了\r\n");
-			} catch (...) {
-				fosTXUpdate->AppendText("エラー発生\r\n");
-			} finally {
-				delete thread;
-			}
-			fosPBUpdate->Style = ProgressBarStyle::Continuous;
-			fosPBUpdate->Value = 100;
 		}
 };
 }

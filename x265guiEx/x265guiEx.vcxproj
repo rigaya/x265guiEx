@@ -278,6 +278,9 @@
     <ClInclude Include="frm\frmSetTransparency.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="frm\frmUpdate.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="output.h" />
     <ClInclude Include="encode\afs_client.h" />
     <ClInclude Include="encode\auo_audio.h" />
@@ -332,6 +335,9 @@
     <ResourceCompile Include="auo_version.rc" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frm\frmUpdate.resx">
+      <DependentUpon>frm\frmUpdate.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm\frmAutoSaveLogSettings.resx">
       <DependentUpon>frmAutoSaveLogSettings.h</DependentUpon>
       <SubType>Designer</SubType>

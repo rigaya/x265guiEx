@@ -23,6 +23,7 @@
 #include "transparentLabel.h"
 
 #include "frmConfig_helper.h"
+#include "frmUpdate.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -67,6 +68,11 @@ namespace x265guiEx {
 		/// </summary>
 		~frmConfig()
 		{
+			//メイン設定画面を破棄する前に更新要画面を破棄する
+			if (nullptr != frmExeUpdate) {
+				delete frmExeUpdate;
+				frmExeUpdate = nullptr;
+			}
 			if (components)
 			{
 				delete components;
@@ -946,6 +952,8 @@ private: System::Windows::Forms::Label^  fchLBWeightB;
 private: System::Windows::Forms::CheckBox^  fchCBWeightB;
 private: System::Windows::Forms::NumericUpDown^  fchNUPsyRD;
 private: System::Windows::Forms::Label^  fchLBPsyRD;
+private: System::Windows::Forms::ToolStripButton^  fcgTSBUpdate;
+private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 
 
 
@@ -1271,6 +1279,8 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fchTXX265Path = (gcnew System::Windows::Forms::TextBox());
 			this->fchLBX265Path = (gcnew System::Windows::Forms::Label());
 			this->fchtabPageX265Other = (gcnew System::Windows::Forms::TabPage());
+			this->fchNUPsyRD = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBPsyRD = (gcnew System::Windows::Forms::Label());
 			this->fchgroupBoxFrame = (gcnew System::Windows::Forms::GroupBox());
 			this->fchLBWeightB = (gcnew System::Windows::Forms::Label());
 			this->fchCBWeightB = (gcnew System::Windows::Forms::CheckBox());
@@ -1383,6 +1393,8 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->toolStripSeparator5 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->fcgTSBBitrateCalc = (gcnew System::Windows::Forms::ToolStripButton());
 			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
+			this->fcgTSBUpdate = (gcnew System::Windows::Forms::ToolStripButton());
+			this->toolStripSeparator6 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->fcgTSBOtherSettings = (gcnew System::Windows::Forms::ToolStripButton());
 			this->fcgTSLSettingsNotes = (gcnew System::Windows::Forms::ToolStripLabel());
 			this->fcgTSTSettingsNotes = (gcnew System::Windows::Forms::ToolStripTextBox());
@@ -1481,8 +1493,6 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
-			this->fchNUPsyRD = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBPsyRD = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -1557,6 +1567,7 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUAutoNPass))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchpictureBoxX265))->BeginInit();
 			this->fchtabPageX265Other->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUPsyRD))->BeginInit();
 			this->fchgroupBoxFrame->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURef))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUBframes))->BeginInit();
@@ -1592,7 +1603,6 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSCQM->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUPsyRD))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -4221,6 +4231,27 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fchtabPageX265Other->Text = L"x265 (2)";
 			this->fchtabPageX265Other->UseVisualStyleBackColor = true;
 			// 
+			// fchNUPsyRD
+			// 
+			this->fchNUPsyRD->DecimalPlaces = 2;
+			this->fchNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
+			this->fchNUPsyRD->Location = System::Drawing::Point(104, 426);
+			this->fchNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+			this->fchNUPsyRD->Name = L"fchNUPsyRD";
+			this->fchNUPsyRD->Size = System::Drawing::Size(64, 21);
+			this->fchNUPsyRD->TabIndex = 104;
+			this->fchNUPsyRD->Tag = L"reCmd";
+			this->fchNUPsyRD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBPsyRD
+			// 
+			this->fchLBPsyRD->AutoSize = true;
+			this->fchLBPsyRD->Location = System::Drawing::Point(12, 428);
+			this->fchLBPsyRD->Name = L"fchLBPsyRD";
+			this->fchLBPsyRD->Size = System::Drawing::Size(42, 14);
+			this->fchLBPsyRD->TabIndex = 103;
+			this->fchLBPsyRD->Text = L"psy-rd";
+			// 
 			// fchgroupBoxFrame
 			// 
 			this->fchgroupBoxFrame->Controls->Add(this->fchLBWeightB);
@@ -5256,12 +5287,12 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			// 
 			this->fcgCSExeFiles->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fcgTSExeFileshelp });
 			this->fcgCSExeFiles->Name = L"fcgCSx264";
-			this->fcgCSExeFiles->Size = System::Drawing::Size(132, 26);
+			this->fcgCSExeFiles->Size = System::Drawing::Size(137, 26);
 			// 
 			// fcgTSExeFileshelp
 			// 
 			this->fcgTSExeFileshelp->Name = L"fcgTSExeFileshelp";
-			this->fcgTSExeFileshelp->Size = System::Drawing::Size(131, 22);
+			this->fcgTSExeFileshelp->Size = System::Drawing::Size(136, 22);
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
 			// 
@@ -5269,11 +5300,11 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			// 
 			this->fcgtoolStripSettings->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
-			this->fcgtoolStripSettings->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(15) {
+			this->fcgtoolStripSettings->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(17) {
 				this->fcgTSBSave,
 					this->fcgTSBSaveNew, this->fcgTSBDelete, this->fcgtoolStripSeparator1, this->fcgTSSettings, this->fcgTSBCMDOnly, this->toolStripSeparator3,
-					this->fcgTSBEncType, this->toolStripSeparator5, this->fcgTSBBitrateCalc, this->toolStripSeparator2, this->fcgTSBOtherSettings,
-					this->fcgTSLSettingsNotes, this->fcgTSTSettingsNotes, this->toolStripSeparator4
+					this->fcgTSBEncType, this->toolStripSeparator5, this->fcgTSBBitrateCalc, this->toolStripSeparator2, this->fcgTSBUpdate, this->toolStripSeparator6,
+					this->fcgTSBOtherSettings, this->fcgTSLSettingsNotes, this->fcgTSTSettingsNotes, this->toolStripSeparator4
 			});
 			this->fcgtoolStripSettings->Location = System::Drawing::Point(0, 0);
 			this->fcgtoolStripSettings->Name = L"fcgtoolStripSettings";
@@ -5375,6 +5406,24 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->toolStripSeparator2->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
 			this->toolStripSeparator2->Name = L"toolStripSeparator2";
 			this->toolStripSeparator2->Size = System::Drawing::Size(6, 25);
+			// 
+			// fcgTSBUpdate
+			// 
+			this->fcgTSBUpdate->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
+			this->fcgTSBUpdate->CheckOnClick = true;
+			this->fcgTSBUpdate->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Text;
+			this->fcgTSBUpdate->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBUpdate.Image")));
+			this->fcgTSBUpdate->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->fcgTSBUpdate->Name = L"fcgTSBUpdate";
+			this->fcgTSBUpdate->Size = System::Drawing::Size(35, 22);
+			this->fcgTSBUpdate->Text = L"更新";
+			this->fcgTSBUpdate->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fcgTSBUpdate_CheckedChanged);
+			// 
+			// toolStripSeparator6
+			// 
+			this->toolStripSeparator6->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
+			this->toolStripSeparator6->Name = L"toolStripSeparator6";
+			this->toolStripSeparator6->Size = System::Drawing::Size(6, 25);
 			// 
 			// fcgTSBOtherSettings
 			// 
@@ -6318,12 +6367,12 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 					this->toolStripSeparator1, this->fcgCSCqmFile
 			});
 			this->fcgCSCQM->Name = L"fcgCSCQM";
-			this->fcgCSCQM->Size = System::Drawing::Size(117, 76);
+			this->fcgCSCQM->Size = System::Drawing::Size(119, 76);
 			// 
 			// fcgCSFlat
 			// 
 			this->fcgCSFlat->Name = L"fcgCSFlat";
-			this->fcgCSFlat->Size = System::Drawing::Size(116, 22);
+			this->fcgCSFlat->Size = System::Drawing::Size(118, 22);
 			this->fcgCSFlat->Tag = L"0";
 			this->fcgCSFlat->Text = L"flat";
 			this->fcgCSFlat->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::CSCqmCheckedChanged);
@@ -6332,7 +6381,7 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			// fcgCSJvt
 			// 
 			this->fcgCSJvt->Name = L"fcgCSJvt";
-			this->fcgCSJvt->Size = System::Drawing::Size(116, 22);
+			this->fcgCSJvt->Size = System::Drawing::Size(118, 22);
 			this->fcgCSJvt->Tag = L"1";
 			this->fcgCSJvt->Text = L"jvt";
 			this->fcgCSJvt->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::CSCqmCheckedChanged);
@@ -6341,12 +6390,12 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			// toolStripSeparator1
 			// 
 			this->toolStripSeparator1->Name = L"toolStripSeparator1";
-			this->toolStripSeparator1->Size = System::Drawing::Size(113, 6);
+			this->toolStripSeparator1->Size = System::Drawing::Size(115, 6);
 			// 
 			// fcgCSCqmFile
 			// 
 			this->fcgCSCqmFile->Name = L"fcgCSCqmFile";
-			this->fcgCSCqmFile->Size = System::Drawing::Size(116, 22);
+			this->fcgCSCqmFile->Size = System::Drawing::Size(118, 22);
 			this->fcgCSCqmFile->Tag = L"2";
 			this->fcgCSCqmFile->Text = L"cqmfile";
 			this->fcgCSCqmFile->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::CSCqmCheckedChanged);
@@ -6430,27 +6479,6 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
 			// 
-			// fchNUPsyRD
-			// 
-			this->fchNUPsyRD->DecimalPlaces = 2;
-			this->fchNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fchNUPsyRD->Location = System::Drawing::Point(104, 426);
-			this->fchNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
-			this->fchNUPsyRD->Name = L"fchNUPsyRD";
-			this->fchNUPsyRD->Size = System::Drawing::Size(64, 21);
-			this->fchNUPsyRD->TabIndex = 104;
-			this->fchNUPsyRD->Tag = L"reCmd";
-			this->fchNUPsyRD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchLBPsyRD
-			// 
-			this->fchLBPsyRD->AutoSize = true;
-			this->fchLBPsyRD->Location = System::Drawing::Point(12, 428);
-			this->fchLBPsyRD->Name = L"fchLBPsyRD";
-			this->fchLBPsyRD->Size = System::Drawing::Size(42, 14);
-			this->fchLBPsyRD->TabIndex = 103;
-			this->fchLBPsyRD->Text = L"psy-rd";
-			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -6474,6 +6502,7 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->Name = L"frmConfig";
 			this->ShowIcon = false;
 			this->Text = L"Aviutl 出力 プラグイン";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &frmConfig::frmConfig_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &frmConfig::frmConfig_Load);
 			this->fcgtabControlVideo->ResumeLayout(false);
 			this->fcgtabPageX264Main->ResumeLayout(false);
@@ -6579,6 +6608,7 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchpictureBoxX265))->EndInit();
 			this->fchtabPageX265Other->ResumeLayout(false);
 			this->fchtabPageX265Other->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUPsyRD))->EndInit();
 			this->fchgroupBoxFrame->ResumeLayout(false);
 			this->fchgroupBoxFrame->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNURef))->EndInit();
@@ -6629,7 +6659,6 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSCQM->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUPsyRD))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -6652,6 +6681,7 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 		ToolStripMenuItem^ CheckedStgMenuItem;
 		CONF_GUIEX *cnf_stgSelected;
 		String^ lastQualityStr;
+		frmUpdate^ frmExeUpdate;
 	private:
 		System::Int32 GetCurrentAudioDefaultBitrate();
 		delegate System::Void qualityTimerChangeDelegate();
@@ -6741,11 +6771,16 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 		System::Void fcgCheckAMPAutoBitrateEvent(System::Object^  sender, System::EventArgs^  e);
 		System::Void fchCheckAMPAutoBitrateEvent(System::Object^  sender, System::EventArgs^  e);
 		System::Void AddCheckAMPAutoBitrateEvent();
+		System::Void initUpdater();
+		System::Void fcgTSBUpdate_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+		System::Void fcgTSBUpdate_UpdateFinished(String^ mes);
+		System::Void fcgTSBUpdate_CheckFinished(String^ mes);
 	public:
 		System::Void InitData(CONF_GUIEX *set_config, const SYSTEM_DATA *system_data);
 		System::Void SetVideoBitrate(int bitrate);
 		System::Void SetAudioBitrate(int bitrate);
 		System::Void InformfbcClosed();
+		System::Void InformfruClosed();
 	private:
 		System::Void AddfcgLBAMPAutoBitrate() {
 			//fcgLBAMPAutoBitrateには拡張した簡易透過ラベルを使用する(背景透過&マウスイベント透過)
@@ -7220,6 +7255,11 @@ private: System::Windows::Forms::Label^  fchLBPsyRD;
 	private: 
 		System::Void frmConfig_Load(System::Object^  sender, System::EventArgs^  e) {
 			InitForm();
+		}
+	private:
+		System::Void frmConfig_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+			if (frmExeUpdate->waitingForUpdateFinishes())
+				e->Cancel = true;
 		}
 	private: 
 		System::Void fcgBTOK_Click(System::Object^  sender, System::EventArgs^  e) {

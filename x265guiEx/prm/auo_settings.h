@@ -267,6 +267,7 @@ typedef struct LOCAL_SETTINGS {
 	BOOL   auto_ref_limit_by_level;             //参照フレーム数をLevelにより自動的に制限する
 	BOOL   enable_process_parallel;             //プロセス並列を有効にする
 	int    process_parallel_mode;               //プロセス並列の方式
+	char   last_update_check[64];              //更新をチェックした最後の時間
 	char   custom_tmp_dir[MAX_PATH_LEN];        //一時フォルダ
 	char   custom_audio_tmp_dir[MAX_PATH_LEN];  //音声用一時フォルダ
 	char   custom_mp4box_tmp_dir[MAX_PATH_LEN]; //mp4box用一時フォルダ

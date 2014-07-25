@@ -16,8 +16,6 @@
 #define EXTERN extern
 #endif //DEFINE_GLOBAL
 
-#define BETA_EDITION_LIMITATION 1
-
 #define AUO_VERSION           0,3,35,0
 #define AUO_VERSION_STR       "3.35"
 #define AUO_NAME_X264         "x264guiEx.auo"
@@ -31,6 +29,8 @@
 #define AUO_VERSION_INFO_X264 "拡張 x264 出力(GUI) Ex (x264guiEx) "AUO_VERSION_STR" by rigaya"
 #define AUO_VERSION_INFO_X265 "拡張 x265 出力(GUI) Ex (x265guiEx) "AUO_VERSION_STR" by rigaya"
 #define AUO_EXT_FILTER        "All Support Formats (*.*)\0*.mp4;*.mkv;*.264;*.mp4\0mp4 file (*.mp4)\0*.mp4\0mkv file (*.mkv)\0*.mkv\0raw file (*.264)\0*.264\0"
+
+#define AUOSETUP_EVENT_ABORT "AUOSETUP_EVENT_ABORT"
 
 EXTERN const char    *auo_name;
 EXTERN const wchar_t *auo_name_w;
