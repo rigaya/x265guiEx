@@ -819,7 +819,7 @@ static __forceinline void convert_lw48_to_nv12_16bit_simd(void *pixel, CONVERT_C
 }
 
 template <BOOL aligned_store>
-void convert_lw48_to_nv12_i_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+static __forceinline void convert_lw48_to_nv12_i_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	__m128i x0, x1, x2, x3;
 	USHORT *y_data = (USHORT *)pixel_data->data[0];
 	USHORT *c_data = (USHORT *)pixel_data->data[1];
@@ -860,7 +860,7 @@ void convert_lw48_to_nv12_i_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data,
 	}
 }
 template <BOOL aligned_store>
-void convert_lw48_to_nv16_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+static __forceinline void convert_lw48_to_nv16_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	__m128i x1, x2, x3;
 	USHORT *dst_Y = (USHORT *)pixel_data->data[0];
 	USHORT *dst_C = (USHORT *)pixel_data->data[1];
@@ -878,7 +878,7 @@ void convert_lw48_to_nv16_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, c
 	}
 }
 template <BOOL aligned_store>
-void convert_lw48_to_yuv444_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+static __forceinline void convert_lw48_to_yuv444_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	BYTE *dst_y = (BYTE *)pixel_data->data[0];
 	BYTE *dst_u = (BYTE *)pixel_data->data[1];
 	BYTE *dst_v = (BYTE *)pixel_data->data[2];
@@ -914,7 +914,7 @@ void convert_lw48_to_yuv444_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const
 	}
 }
 template <BOOL aligned_store>
-void convert_lw48_to_yuv444_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+static __forceinline void convert_lw48_to_yuv444_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	__m128i x1, x2, x3;
 	USHORT *dst_y = (USHORT *)pixel_data->data[0];
 	USHORT *dst_u = (USHORT *)pixel_data->data[1];
@@ -931,4 +931,23 @@ void convert_lw48_to_yuv444_16bit_simd(void *pixel, CONVERT_CF_DATA *pixel_data,
 		_mm_store_switch_si128((__m128i*)dst_v, x3);
 	}
 }
+#if USE_SSSE3
+static __forceinline void sort_to_rgb_simd(void *frame, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	static const __m128i xC_SHUF = _mm_set_epi8(16, 12, 13, 14, 9, 10,  11,  6,  7,  8,  3,  4,  5,  0,  1,  2);
+	BYTE *ptr = pixel_data->data[0];
+	BYTE *dst, *src, *src_fin;
+	int y0 = 0, y1 = height - 1;
+	const int step = (width*3 + 3) & ~3;
+	for (; y0 < height; y0++, y1--) {
+		dst = ptr          + y0*width*3;
+		src = (BYTE*)frame + y1*step;
+		src_fin = src + width*3;
+		for (; src < src_fin; src += 15, dst += 15) {
+			__m128i x0 = _mm_loadu_si128((const __m128i *)src);
+			x0 = _mm_shuffle_epi8(x0, xC_SHUF);
+			_mm_storeu_si128((__m128i *)dst, x0);
+		}
+	}
+}
+#endif
 #endif //_CONVERT_SIMD_H_

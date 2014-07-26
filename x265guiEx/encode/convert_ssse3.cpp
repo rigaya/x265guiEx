@@ -76,3 +76,7 @@ void convert_lw48_to_nv16_16bit_ssse3_mod8(void *frame, CONVERT_CF_DATA *pixel_d
 void convert_lw48_to_nv16_16bit_ssse3(void *frame, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	return convert_lw48_to_nv16_16bit_simd<FALSE>(frame, pixel_data, width, height);
 }
+
+void sort_to_rgb_ssse3(void *frame, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
+	sort_to_rgb_simd(frame, pixel_data, width, height);
+}
