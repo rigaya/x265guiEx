@@ -849,12 +849,12 @@ private: System::Windows::Forms::CheckBox^  fchCBSAO;
 private: System::Windows::Forms::Label^  fchLBSAO;
 private: System::Windows::Forms::CheckBox^  fchCBLoopFilter;
 private: System::Windows::Forms::Label^  fchLBLoopFilter;
-private: System::Windows::Forms::GroupBox^  fchgroupBoxThread;
 
-private: System::Windows::Forms::Label^  fchLBFrameThreads;
-private: System::Windows::Forms::NumericUpDown^  fchNUFrameThreads;
-private: System::Windows::Forms::Label^  fchLBThreads;
-private: System::Windows::Forms::NumericUpDown^  fchNUThreads;
+
+
+
+
+
 private: System::Windows::Forms::NumericUpDown^  fchNUVBVbuf;
 private: System::Windows::Forms::NumericUpDown^  fchNUVBVmax;
 private: System::Windows::Forms::Label^  fchLBVBVbuf;
@@ -954,6 +954,11 @@ private: System::Windows::Forms::NumericUpDown^  fchNUPsyRD;
 private: System::Windows::Forms::Label^  fchLBPsyRD;
 private: System::Windows::Forms::ToolStripButton^  fcgTSBUpdate;
 private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
+private: System::Windows::Forms::GroupBox^  fchgroupBoxThread;
+private: System::Windows::Forms::Label^  fchLBFrameThreads;
+private: System::Windows::Forms::NumericUpDown^  fchNUFrameThreads;
+private: System::Windows::Forms::Label^  fchLBThreads;
+private: System::Windows::Forms::NumericUpDown^  fchNUThreads;
 
 
 
@@ -1338,11 +1343,6 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchLBSAO = (gcnew System::Windows::Forms::Label());
 			this->fchCBLoopFilter = (gcnew System::Windows::Forms::CheckBox());
 			this->fchLBLoopFilter = (gcnew System::Windows::Forms::Label());
-			this->fchgroupBoxThread = (gcnew System::Windows::Forms::GroupBox());
-			this->fchLBFrameThreads = (gcnew System::Windows::Forms::Label());
-			this->fchNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fchLBThreads = (gcnew System::Windows::Forms::Label());
-			this->fchNUThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgtabPageExSettings = (gcnew System::Windows::Forms::TabPage());
 			this->fchPNX265Sub = (gcnew System::Windows::Forms::Panel());
 			this->fchLBX265PathSub = (gcnew System::Windows::Forms::Label());
@@ -1493,6 +1493,11 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgLBguiExBlog = (gcnew System::Windows::Forms::LinkLabel());
 			this->fchTTX265Version = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fchTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->fchgroupBoxThread = (gcnew System::Windows::Forms::GroupBox());
+			this->fchLBFrameThreads = (gcnew System::Windows::Forms::Label());
+			this->fchNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fchLBThreads = (gcnew System::Windows::Forms::Label());
+			this->fchNUThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX264Main->SuspendLayout();
 			this->fcgPNStatusFile->SuspendLayout();
@@ -1584,9 +1589,6 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->BeginInit();
-			this->fchgroupBoxThread->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->BeginInit();
 			this->fcgtabPageExSettings->SuspendLayout();
 			this->fchPNX265Sub->SuspendLayout();
 			this->fcggroupBoxCmdEx->SuspendLayout();
@@ -1603,6 +1605,9 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSCQM->SuspendLayout();
+			this->fchgroupBoxThread->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1681,7 +1686,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgTXStatusFile->Location = System::Drawing::Point(94, 7);
 			this->fcgTXStatusFile->Name = L"fcgTXStatusFile";
 			this->fcgTXStatusFile->Size = System::Drawing::Size(253, 21);
-			this->fcgTXStatusFile->TabIndex = 12;
+			this->fcgTXStatusFile->TabIndex = 16;
 			this->fcgTXStatusFile->Tag = L"reCmd";
 			this->fcgTXStatusFile->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
 			this->fcgTXStatusFile->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
@@ -1691,7 +1696,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgBTStatusFile->Location = System::Drawing::Point(347, 6);
 			this->fcgBTStatusFile->Name = L"fcgBTStatusFile";
 			this->fcgBTStatusFile->Size = System::Drawing::Size(27, 22);
-			this->fcgBTStatusFile->TabIndex = 13;
+			this->fcgBTStatusFile->TabIndex = 17;
 			this->fcgBTStatusFile->Text = L"...";
 			this->fcgBTStatusFile->UseVisualStyleBackColor = true;
 			this->fcgBTStatusFile->Click += gcnew System::EventHandler(this, &frmConfig::fcgBTStatusFile_Click);
@@ -1742,7 +1747,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgTXQuality->Location = System::Drawing::Point(290, 8);
 			this->fcgTXQuality->Name = L"fcgTXQuality";
 			this->fcgTXQuality->Size = System::Drawing::Size(76, 21);
-			this->fcgTXQuality->TabIndex = 8;
+			this->fcgTXQuality->TabIndex = 12;
 			this->fcgTXQuality->Tag = L"reCmd";
 			this->fcgTXQuality->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->fcgTXQuality->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXQuality_TextChanged);
@@ -1755,7 +1760,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgBTTBQualitySubtract->Location = System::Drawing::Point(0, 33);
 			this->fcgBTTBQualitySubtract->Name = L"fcgBTTBQualitySubtract";
 			this->fcgBTTBQualitySubtract->Size = System::Drawing::Size(21, 23);
-			this->fcgBTTBQualitySubtract->TabIndex = 9;
+			this->fcgBTTBQualitySubtract->TabIndex = 13;
 			this->fcgBTTBQualitySubtract->UseVisualStyleBackColor = true;
 			this->fcgBTTBQualitySubtract->Click += gcnew System::EventHandler(this, &frmConfig::fcgBTTBQualitySubtract_Click);
 			this->fcgBTTBQualitySubtract->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmConfig::fcgBTTBQualitySubtract_MouseDown);
@@ -1767,7 +1772,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgBTTBQualityAdd->Location = System::Drawing::Point(352, 34);
 			this->fcgBTTBQualityAdd->Name = L"fcgBTTBQualityAdd";
 			this->fcgBTTBQualityAdd->Size = System::Drawing::Size(21, 23);
-			this->fcgBTTBQualityAdd->TabIndex = 11;
+			this->fcgBTTBQualityAdd->TabIndex = 15;
 			this->fcgBTTBQualityAdd->UseVisualStyleBackColor = true;
 			this->fcgBTTBQualityAdd->Click += gcnew System::EventHandler(this, &frmConfig::fcgBTTBQualityAdd_Click);
 			this->fcgBTTBQualityAdd->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmConfig::fcgBTTBQualityAdd_MouseDown);
@@ -1781,7 +1786,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgTBQuality->Maximum = 54000;
 			this->fcgTBQuality->Name = L"fcgTBQuality";
 			this->fcgTBQuality->Size = System::Drawing::Size(339, 25);
-			this->fcgTBQuality->TabIndex = 10;
+			this->fcgTBQuality->TabIndex = 14;
 			this->fcgTBQuality->TickStyle = System::Windows::Forms::TickStyle::None;
 			this->fcgTBQuality->Scroll += gcnew System::EventHandler(this, &frmConfig::fcgTBQuality_Scroll);
 			this->fcgTBQuality->ValueChanged += gcnew System::EventHandler(this, &frmConfig::fcgTBQuality_ValueChanged);
@@ -1809,7 +1814,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgNUAMPLimitBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128000, 0, 0, 0 });
 			this->fcgNUAMPLimitBitrate->Name = L"fcgNUAMPLimitBitrate";
 			this->fcgNUAMPLimitBitrate->Size = System::Drawing::Size(78, 21);
-			this->fcgNUAMPLimitBitrate->TabIndex = 47;
+			this->fcgNUAMPLimitBitrate->TabIndex = 11;
 			this->fcgNUAMPLimitBitrate->Tag = L"chValue";
 			this->fcgNUAMPLimitBitrate->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -1820,7 +1825,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgNUAMPLimitFileSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16384, 0, 0, 0 });
 			this->fcgNUAMPLimitFileSize->Name = L"fcgNUAMPLimitFileSize";
 			this->fcgNUAMPLimitFileSize->Size = System::Drawing::Size(78, 21);
-			this->fcgNUAMPLimitFileSize->TabIndex = 46;
+			this->fcgNUAMPLimitFileSize->TabIndex = 9;
 			this->fcgNUAMPLimitFileSize->Tag = L"chValue";
 			this->fcgNUAMPLimitFileSize->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -1853,7 +1858,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCBAMPLimitBitrate->Location = System::Drawing::Point(30, 101);
 			this->fcgCBAMPLimitBitrate->Name = L"fcgCBAMPLimitBitrate";
 			this->fcgCBAMPLimitBitrate->Size = System::Drawing::Size(221, 18);
-			this->fcgCBAMPLimitBitrate->TabIndex = 45;
+			this->fcgCBAMPLimitBitrate->TabIndex = 10;
 			this->fcgCBAMPLimitBitrate->Tag = L"chValue";
 			this->fcgCBAMPLimitBitrate->Text = L"上限ファイルビットレート(映像+音声, kbps)";
 			this->fcgCBAMPLimitBitrate->UseVisualStyleBackColor = true;
@@ -1887,7 +1892,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCBAMPLimitFileSize->Location = System::Drawing::Point(30, 76);
 			this->fcgCBAMPLimitFileSize->Name = L"fcgCBAMPLimitFileSize";
 			this->fcgCBAMPLimitFileSize->Size = System::Drawing::Size(191, 18);
-			this->fcgCBAMPLimitFileSize->TabIndex = 43;
+			this->fcgCBAMPLimitFileSize->TabIndex = 8;
 			this->fcgCBAMPLimitFileSize->Tag = L"chValue";
 			this->fcgCBAMPLimitFileSize->Text = L"上限ファイルサイズ(映像+音声, MB)";
 			this->fcgCBAMPLimitFileSize->UseVisualStyleBackColor = true;
@@ -1908,7 +1913,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCXNalHrd->Location = System::Drawing::Point(495, 252);
 			this->fcgCXNalHrd->Name = L"fcgCXNalHrd";
 			this->fcgCXNalHrd->Size = System::Drawing::Size(95, 22);
-			this->fcgCXNalHrd->TabIndex = 26;
+			this->fcgCXNalHrd->TabIndex = 31;
 			this->fcgCXNalHrd->Tag = L"reCmd";
 			// 
 			// fcgLBNalHrd
@@ -1926,7 +1931,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCBPicStruct->Location = System::Drawing::Point(419, 214);
 			this->fcgCBPicStruct->Name = L"fcgCBPicStruct";
 			this->fcgCBPicStruct->Size = System::Drawing::Size(78, 18);
-			this->fcgCBPicStruct->TabIndex = 25;
+			this->fcgCBPicStruct->TabIndex = 30;
 			this->fcgCBPicStruct->Tag = L"reCmd";
 			this->fcgCBPicStruct->Text = L"pic-struct";
 			this->fcgCBPicStruct->UseVisualStyleBackColor = true;
@@ -1940,7 +1945,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcggroupBoxX264Out->Location = System::Drawing::Point(196, 411);
 			this->fcggroupBoxX264Out->Name = L"fcggroupBoxX264Out";
 			this->fcggroupBoxX264Out->Size = System::Drawing::Size(177, 77);
-			this->fcggroupBoxX264Out->TabIndex = 16;
+			this->fcggroupBoxX264Out->TabIndex = 20;
 			this->fcggroupBoxX264Out->TabStop = false;
 			// 
 			// fcgCBSSIM
@@ -1990,7 +1995,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgNUSlices->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fcgNUSlices->Name = L"fcgNUSlices";
 			this->fcgNUSlices->Size = System::Drawing::Size(54, 21);
-			this->fcgNUSlices->TabIndex = 27;
+			this->fcgNUSlices->TabIndex = 32;
 			this->fcgNUSlices->Tag = L"reCmd";
 			this->fcgNUSlices->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -2010,7 +2015,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCXOutputCsp->Location = System::Drawing::Point(494, 312);
 			this->fcgCXOutputCsp->Name = L"fcgCXOutputCsp";
 			this->fcgCXOutputCsp->Size = System::Drawing::Size(95, 22);
-			this->fcgCXOutputCsp->TabIndex = 28;
+			this->fcgCXOutputCsp->TabIndex = 33;
 			this->fcgCXOutputCsp->Tag = L"reCmd";
 			// 
 			// fcggroupBoxThreads
@@ -2023,7 +2028,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcggroupBoxThreads->Location = System::Drawing::Point(196, 305);
 			this->fcggroupBoxThreads->Name = L"fcggroupBoxThreads";
 			this->fcggroupBoxThreads->Size = System::Drawing::Size(177, 106);
-			this->fcggroupBoxThreads->TabIndex = 15;
+			this->fcggroupBoxThreads->TabIndex = 19;
 			this->fcggroupBoxThreads->TabStop = false;
 			// 
 			// fcgLBLookaheadThreads
@@ -2091,7 +2096,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCBBlurayCompat->Location = System::Drawing::Point(504, 183);
 			this->fcgCBBlurayCompat->Name = L"fcgCBBlurayCompat";
 			this->fcgCBBlurayCompat->Size = System::Drawing::Size(87, 18);
-			this->fcgCBBlurayCompat->TabIndex = 24;
+			this->fcgCBBlurayCompat->TabIndex = 29;
 			this->fcgCBBlurayCompat->Tag = L"reCmd";
 			this->fcgCBBlurayCompat->Text = L"blu-ray互換";
 			this->fcgCBBlurayCompat->UseVisualStyleBackColor = true;
@@ -2102,7 +2107,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCBAud->Location = System::Drawing::Point(419, 183);
 			this->fcgCBAud->Name = L"fcgCBAud";
 			this->fcgCBAud->Size = System::Drawing::Size(68, 18);
-			this->fcgCBAud->TabIndex = 23;
+			this->fcgCBAud->TabIndex = 28;
 			this->fcgCBAud->Tag = L"reCmd";
 			this->fcgCBAud->Text = L"aud付加";
 			this->fcgCBAud->UseVisualStyleBackColor = true;
@@ -2114,7 +2119,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCXVideoFormat->Location = System::Drawing::Point(493, 149);
 			this->fcgCXVideoFormat->Name = L"fcgCXVideoFormat";
 			this->fcgCXVideoFormat->Size = System::Drawing::Size(95, 22);
-			this->fcgCXVideoFormat->TabIndex = 22;
+			this->fcgCXVideoFormat->TabIndex = 27;
 			this->fcgCXVideoFormat->Tag = L"reCmd";
 			// 
 			// fcgLBVideoFormat
@@ -2142,7 +2147,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgCXLevel->Location = System::Drawing::Point(493, 117);
 			this->fcgCXLevel->Name = L"fcgCXLevel";
 			this->fcgCXLevel->Size = System::Drawing::Size(95, 22);
-			this->fcgCXLevel->TabIndex = 21;
+			this->fcgCXLevel->TabIndex = 26;
 			this->fcgCXLevel->Tag = L"reCmd";
 			// 
 			// fcggroupBoxColorMatrix
@@ -2158,7 +2163,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcggroupBoxColorMatrix->Location = System::Drawing::Point(392, 343);
 			this->fcggroupBoxColorMatrix->Name = L"fcggroupBoxColorMatrix";
 			this->fcggroupBoxColorMatrix->Size = System::Drawing::Size(209, 145);
-			this->fcggroupBoxColorMatrix->TabIndex = 30;
+			this->fcggroupBoxColorMatrix->TabIndex = 35;
 			this->fcggroupBoxColorMatrix->TabStop = false;
 			this->fcggroupBoxColorMatrix->Text = L"色空間";
 			// 
@@ -2247,7 +2252,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcggroupBoxAepectRatio->Location = System::Drawing::Point(396, 6);
 			this->fcggroupBoxAepectRatio->Name = L"fcggroupBoxAepectRatio";
 			this->fcggroupBoxAepectRatio->Size = System::Drawing::Size(205, 94);
-			this->fcggroupBoxAepectRatio->TabIndex = 20;
+			this->fcggroupBoxAepectRatio->TabIndex = 25;
 			this->fcggroupBoxAepectRatio->TabStop = false;
 			this->fcggroupBoxAepectRatio->Text = L"アスペクト比";
 			// 
@@ -2343,7 +2348,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcggroupBoxPreset->Location = System::Drawing::Point(7, 305);
 			this->fcggroupBoxPreset->Name = L"fcggroupBoxPreset";
 			this->fcggroupBoxPreset->Size = System::Drawing::Size(182, 183);
-			this->fcggroupBoxPreset->TabIndex = 14;
+			this->fcggroupBoxPreset->TabIndex = 18;
 			this->fcggroupBoxPreset->TabStop = false;
 			this->fcggroupBoxPreset->Text = L"プリセットのロード";
 			// 
@@ -3543,6 +3548,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchtabPageX265Main
 			// 
+			this->fchtabPageX265Main->Controls->Add(this->fchgroupBoxThread);
 			this->fchtabPageX265Main->Controls->Add(this->fchCXInterlaced);
 			this->fchtabPageX265Main->Controls->Add(this->fchLBInterlaced);
 			this->fchtabPageX265Main->Controls->Add(this->fchgroupBoxVUIColor);
@@ -3573,20 +3579,20 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXInterlaced->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXInterlaced->FormattingEnabled = true;
-			this->fchCXInterlaced->Location = System::Drawing::Point(498, 143);
+			this->fchCXInterlaced->Location = System::Drawing::Point(493, 143);
 			this->fchCXInterlaced->Name = L"fchCXInterlaced";
 			this->fchCXInterlaced->Size = System::Drawing::Size(96, 22);
-			this->fchCXInterlaced->TabIndex = 69;
+			this->fchCXInterlaced->TabIndex = 31;
 			this->fchCXInterlaced->Tag = L"reCmd";
 			// 
 			// fchLBInterlaced
 			// 
 			this->fchLBInterlaced->AutoSize = true;
-			this->fchLBInterlaced->Location = System::Drawing::Point(396, 146);
+			this->fchLBInterlaced->Location = System::Drawing::Point(412, 146);
 			this->fchLBInterlaced->Name = L"fchLBInterlaced";
-			this->fchLBInterlaced->Size = System::Drawing::Size(87, 14);
+			this->fchLBInterlaced->Size = System::Drawing::Size(61, 14);
 			this->fchLBInterlaced->TabIndex = 70;
-			this->fchLBInterlaced->Text = L"インターレース保持";
+			this->fchLBInterlaced->Text = L"インタレ保持";
 			// 
 			// fchgroupBoxVUIColor
 			// 
@@ -3598,10 +3604,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchgroupBoxVUIColor->Controls->Add(this->fchLBTransfer);
 			this->fchgroupBoxVUIColor->Controls->Add(this->fchLBColorPrim);
 			this->fchgroupBoxVUIColor->Controls->Add(this->fchLBColorMatrix);
-			this->fchgroupBoxVUIColor->Location = System::Drawing::Point(391, 306);
+			this->fchgroupBoxVUIColor->Location = System::Drawing::Point(392, 343);
 			this->fchgroupBoxVUIColor->Name = L"fchgroupBoxVUIColor";
-			this->fchgroupBoxVUIColor->Size = System::Drawing::Size(209, 154);
-			this->fchgroupBoxVUIColor->TabIndex = 68;
+			this->fchgroupBoxVUIColor->Size = System::Drawing::Size(209, 145);
+			this->fchgroupBoxVUIColor->TabIndex = 40;
 			this->fchgroupBoxVUIColor->TabStop = false;
 			this->fchgroupBoxVUIColor->Text = L"色空間";
 			// 
@@ -3685,10 +3691,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXVideoFormat->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXVideoFormat->FormattingEnabled = true;
-			this->fchCXVideoFormat->Location = System::Drawing::Point(498, 112);
+			this->fchCXVideoFormat->Location = System::Drawing::Point(493, 112);
 			this->fchCXVideoFormat->Name = L"fchCXVideoFormat";
 			this->fchCXVideoFormat->Size = System::Drawing::Size(95, 22);
-			this->fchCXVideoFormat->TabIndex = 66;
+			this->fchCXVideoFormat->TabIndex = 30;
 			this->fchCXVideoFormat->Tag = L"reCmd";
 			// 
 			// fchLBVideoFormat
@@ -3706,10 +3712,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchgroupBoxSAR->Controls->Add(this->fchLBAspectRatio);
 			this->fchgroupBoxSAR->Controls->Add(this->fchNUAspectRatioX);
 			this->fchgroupBoxSAR->Controls->Add(this->fchCXAspectRatio);
-			this->fchgroupBoxSAR->Location = System::Drawing::Point(395, 6);
+			this->fchgroupBoxSAR->Location = System::Drawing::Point(396, 6);
 			this->fchgroupBoxSAR->Name = L"fchgroupBoxSAR";
 			this->fchgroupBoxSAR->Size = System::Drawing::Size(205, 94);
-			this->fchgroupBoxSAR->TabIndex = 65;
+			this->fchgroupBoxSAR->TabIndex = 25;
 			this->fchgroupBoxSAR->TabStop = false;
 			this->fchgroupBoxSAR->Text = L"アスペクト比";
 			// 
@@ -3756,16 +3762,16 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXCSP->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXCSP->FormattingEnabled = true;
-			this->fchCXCSP->Location = System::Drawing::Point(498, 268);
+			this->fchCXCSP->Location = System::Drawing::Point(494, 312);
 			this->fchCXCSP->Name = L"fchCXCSP";
 			this->fchCXCSP->Size = System::Drawing::Size(95, 22);
-			this->fchCXCSP->TabIndex = 61;
+			this->fchCXCSP->TabIndex = 32;
 			this->fchCXCSP->Tag = L"reCmd";
 			// 
 			// fchLBCSP
 			// 
 			this->fchLBCSP->AutoSize = true;
-			this->fchLBCSP->Location = System::Drawing::Point(396, 271);
+			this->fchLBCSP->Location = System::Drawing::Point(396, 315);
 			this->fchLBCSP->Name = L"fchLBCSP";
 			this->fchLBCSP->Size = System::Drawing::Size(85, 14);
 			this->fchLBCSP->TabIndex = 60;
@@ -3777,10 +3783,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchgroupBoxVBVBuf->Controls->Add(this->fchNUVBVbuf);
 			this->fchgroupBoxVBVBuf->Controls->Add(this->fchLBVBVbuf);
 			this->fchgroupBoxVBVBuf->Controls->Add(this->fchNUVBVmax);
-			this->fchgroupBoxVBVBuf->Location = System::Drawing::Point(195, 306);
+			this->fchgroupBoxVBVBuf->Location = System::Drawing::Point(196, 403);
 			this->fchgroupBoxVBVBuf->Name = L"fchgroupBoxVBVBuf";
-			this->fchgroupBoxVBVBuf->Size = System::Drawing::Size(186, 85);
-			this->fchgroupBoxVBVBuf->TabIndex = 59;
+			this->fchgroupBoxVBVBuf->Size = System::Drawing::Size(177, 85);
+			this->fchgroupBoxVBVBuf->TabIndex = 19;
 			this->fchgroupBoxVBVBuf->TabStop = false;
 			this->fchgroupBoxVBVBuf->Text = L"VBV (ビデオバッファ制御)";
 			// 
@@ -3800,7 +3806,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUVBVbuf->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
 			this->fchNUVBVbuf->Name = L"fchNUVBVbuf";
 			this->fchNUVBVbuf->Size = System::Drawing::Size(75, 21);
-			this->fchNUVBVbuf->TabIndex = 57;
+			this->fchNUVBVbuf->TabIndex = 1;
 			this->fchNUVBVbuf->Tag = L"reCmd";
 			this->fchNUVBVbuf->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3820,7 +3826,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUVBVmax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
 			this->fchNUVBVmax->Name = L"fchNUVBVmax";
 			this->fchNUVBVmax->Size = System::Drawing::Size(75, 21);
-			this->fchNUVBVmax->TabIndex = 55;
+			this->fchNUVBVmax->TabIndex = 0;
 			this->fchNUVBVmax->Tag = L"reCmd";
 			this->fchNUVBVmax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -3836,7 +3842,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchgroupBoxPreset->Location = System::Drawing::Point(7, 305);
 			this->fchgroupBoxPreset->Name = L"fchgroupBoxPreset";
 			this->fchgroupBoxPreset->Size = System::Drawing::Size(182, 183);
-			this->fchgroupBoxPreset->TabIndex = 7;
+			this->fchgroupBoxPreset->TabIndex = 18;
 			this->fchgroupBoxPreset->TabStop = false;
 			this->fchgroupBoxPreset->Text = L"プリセットのロード";
 			// 
@@ -3931,7 +3937,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchTXStatusFile->Location = System::Drawing::Point(94, 7);
 			this->fchTXStatusFile->Name = L"fchTXStatusFile";
 			this->fchTXStatusFile->Size = System::Drawing::Size(253, 21);
-			this->fchTXStatusFile->TabIndex = 12;
+			this->fchTXStatusFile->TabIndex = 16;
 			this->fchTXStatusFile->Tag = L"reCmd";
 			this->fchTXStatusFile->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
 			this->fchTXStatusFile->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
@@ -3941,7 +3947,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchBTStatusFile->Location = System::Drawing::Point(347, 6);
 			this->fchBTStatusFile->Name = L"fchBTStatusFile";
 			this->fchBTStatusFile->Size = System::Drawing::Size(27, 22);
-			this->fchBTStatusFile->TabIndex = 13;
+			this->fchBTStatusFile->TabIndex = 17;
 			this->fchBTStatusFile->Text = L"...";
 			this->fchBTStatusFile->UseVisualStyleBackColor = true;
 			this->fchBTStatusFile->Click += gcnew System::EventHandler(this, &frmConfig::fchBTStatusFile_Click);
@@ -3992,7 +3998,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchTXQuality->Location = System::Drawing::Point(290, 8);
 			this->fchTXQuality->Name = L"fchTXQuality";
 			this->fchTXQuality->Size = System::Drawing::Size(76, 21);
-			this->fchTXQuality->TabIndex = 8;
+			this->fchTXQuality->TabIndex = 12;
 			this->fchTXQuality->Tag = L"reCmd";
 			this->fchTXQuality->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->fchTXQuality->TextChanged += gcnew System::EventHandler(this, &frmConfig::fchTXQuality_TextChanged);
@@ -4005,7 +4011,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchBTTBQualitySubtract->Location = System::Drawing::Point(0, 33);
 			this->fchBTTBQualitySubtract->Name = L"fchBTTBQualitySubtract";
 			this->fchBTTBQualitySubtract->Size = System::Drawing::Size(21, 23);
-			this->fchBTTBQualitySubtract->TabIndex = 9;
+			this->fchBTTBQualitySubtract->TabIndex = 13;
 			this->fchBTTBQualitySubtract->UseVisualStyleBackColor = true;
 			this->fchBTTBQualitySubtract->Click += gcnew System::EventHandler(this, &frmConfig::fchBTTBQualitySubtract_Click);
 			this->fchBTTBQualitySubtract->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmConfig::fchBTTBQualitySubtract_MouseDown);
@@ -4017,7 +4023,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchBTTBQualityAdd->Location = System::Drawing::Point(352, 34);
 			this->fchBTTBQualityAdd->Name = L"fchBTTBQualityAdd";
 			this->fchBTTBQualityAdd->Size = System::Drawing::Size(21, 23);
-			this->fchBTTBQualityAdd->TabIndex = 11;
+			this->fchBTTBQualityAdd->TabIndex = 15;
 			this->fchBTTBQualityAdd->UseVisualStyleBackColor = true;
 			this->fchBTTBQualityAdd->Click += gcnew System::EventHandler(this, &frmConfig::fchBTTBQualityAdd_Click);
 			this->fchBTTBQualityAdd->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frmConfig::fchBTTBQualityAdd_MouseDown);
@@ -4031,7 +4037,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchTBQuality->Maximum = 54000;
 			this->fchTBQuality->Name = L"fchTBQuality";
 			this->fchTBQuality->Size = System::Drawing::Size(339, 25);
-			this->fchTBQuality->TabIndex = 10;
+			this->fchTBQuality->TabIndex = 14;
 			this->fchTBQuality->TickStyle = System::Windows::Forms::TickStyle::None;
 			this->fchTBQuality->Scroll += gcnew System::EventHandler(this, &frmConfig::fchTBQuality_Scroll);
 			this->fchTBQuality->ValueChanged += gcnew System::EventHandler(this, &frmConfig::fchTBQuality_ValueChanged);
@@ -4059,7 +4065,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUAMPLimitBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128000, 0, 0, 0 });
 			this->fchNUAMPLimitBitrate->Name = L"fchNUAMPLimitBitrate";
 			this->fchNUAMPLimitBitrate->Size = System::Drawing::Size(78, 21);
-			this->fchNUAMPLimitBitrate->TabIndex = 47;
+			this->fchNUAMPLimitBitrate->TabIndex = 11;
 			this->fchNUAMPLimitBitrate->Tag = L"chValue";
 			this->fchNUAMPLimitBitrate->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -4070,7 +4076,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUAMPLimitFileSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16384, 0, 0, 0 });
 			this->fchNUAMPLimitFileSize->Name = L"fchNUAMPLimitFileSize";
 			this->fchNUAMPLimitFileSize->Size = System::Drawing::Size(78, 21);
-			this->fchNUAMPLimitFileSize->TabIndex = 46;
+			this->fchNUAMPLimitFileSize->TabIndex = 9;
 			this->fchNUAMPLimitFileSize->Tag = L"chValue";
 			this->fchNUAMPLimitFileSize->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -4103,7 +4109,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchCBAMPLimitBitrate->Location = System::Drawing::Point(30, 101);
 			this->fchCBAMPLimitBitrate->Name = L"fchCBAMPLimitBitrate";
 			this->fchCBAMPLimitBitrate->Size = System::Drawing::Size(221, 18);
-			this->fchCBAMPLimitBitrate->TabIndex = 45;
+			this->fchCBAMPLimitBitrate->TabIndex = 10;
 			this->fchCBAMPLimitBitrate->Tag = L"chValue";
 			this->fchCBAMPLimitBitrate->Text = L"上限ファイルビットレート(映像+音声, kbps)";
 			this->fchCBAMPLimitBitrate->UseVisualStyleBackColor = true;
@@ -4137,7 +4143,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchCBAMPLimitFileSize->Location = System::Drawing::Point(30, 76);
 			this->fchCBAMPLimitFileSize->Name = L"fchCBAMPLimitFileSize";
 			this->fchCBAMPLimitFileSize->Size = System::Drawing::Size(191, 18);
-			this->fchCBAMPLimitFileSize->TabIndex = 43;
+			this->fchCBAMPLimitFileSize->TabIndex = 8;
 			this->fchCBAMPLimitFileSize->Tag = L"chValue";
 			this->fchCBAMPLimitFileSize->Text = L"上限ファイルサイズ(映像+音声, MB)";
 			this->fchCBAMPLimitFileSize->UseVisualStyleBackColor = true;
@@ -4223,7 +4229,6 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchtabPageX265Other->Controls->Add(this->fchLBSAO);
 			this->fchtabPageX265Other->Controls->Add(this->fchCBLoopFilter);
 			this->fchtabPageX265Other->Controls->Add(this->fchLBLoopFilter);
-			this->fchtabPageX265Other->Controls->Add(this->fchgroupBoxThread);
 			this->fchtabPageX265Other->Location = System::Drawing::Point(4, 23);
 			this->fchtabPageX265Other->Name = L"fchtabPageX265Other";
 			this->fchtabPageX265Other->Size = System::Drawing::Size(608, 493);
@@ -4235,18 +4240,18 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchNUPsyRD->DecimalPlaces = 2;
 			this->fchNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fchNUPsyRD->Location = System::Drawing::Point(104, 426);
+			this->fchNUPsyRD->Location = System::Drawing::Point(104, 434);
 			this->fchNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
 			this->fchNUPsyRD->Name = L"fchNUPsyRD";
 			this->fchNUPsyRD->Size = System::Drawing::Size(64, 21);
-			this->fchNUPsyRD->TabIndex = 104;
+			this->fchNUPsyRD->TabIndex = 42;
 			this->fchNUPsyRD->Tag = L"reCmd";
 			this->fchNUPsyRD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBPsyRD
 			// 
 			this->fchLBPsyRD->AutoSize = true;
-			this->fchLBPsyRD->Location = System::Drawing::Point(12, 428);
+			this->fchLBPsyRD->Location = System::Drawing::Point(12, 436);
 			this->fchLBPsyRD->Name = L"fchLBPsyRD";
 			this->fchLBPsyRD->Size = System::Drawing::Size(42, 14);
 			this->fchLBPsyRD->TabIndex = 103;
@@ -4278,14 +4283,14 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchgroupBoxFrame->Controls->Add(this->fchCBOpenGOP);
 			this->fchgroupBoxFrame->Location = System::Drawing::Point(368, 5);
 			this->fchgroupBoxFrame->Name = L"fchgroupBoxFrame";
-			this->fchgroupBoxFrame->Size = System::Drawing::Size(230, 335);
-			this->fchgroupBoxFrame->TabIndex = 102;
+			this->fchgroupBoxFrame->Size = System::Drawing::Size(230, 343);
+			this->fchgroupBoxFrame->TabIndex = 20;
 			this->fchgroupBoxFrame->TabStop = false;
 			// 
 			// fchLBWeightB
 			// 
 			this->fchLBWeightB->AutoSize = true;
-			this->fchLBWeightB->Location = System::Drawing::Point(17, 263);
+			this->fchLBWeightB->Location = System::Drawing::Point(17, 293);
 			this->fchLBWeightB->Name = L"fchLBWeightB";
 			this->fchLBWeightB->Size = System::Drawing::Size(87, 14);
 			this->fchLBWeightB->TabIndex = 94;
@@ -4294,10 +4299,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBWeightB
 			// 
 			this->fchCBWeightB->AutoSize = true;
-			this->fchCBWeightB->Location = System::Drawing::Point(188, 264);
+			this->fchCBWeightB->Location = System::Drawing::Point(188, 294);
 			this->fchCBWeightB->Name = L"fchCBWeightB";
 			this->fchCBWeightB->Size = System::Drawing::Size(15, 14);
-			this->fchCBWeightB->TabIndex = 95;
+			this->fchCBWeightB->TabIndex = 30;
 			this->fchCBWeightB->Tag = L"reCmd";
 			this->fchCBWeightB->UseVisualStyleBackColor = true;
 			// 
@@ -4313,7 +4318,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBRef
 			// 
 			this->fchLBRef->AutoSize = true;
-			this->fchLBRef->Location = System::Drawing::Point(17, 156);
+			this->fchLBRef->Location = System::Drawing::Point(17, 186);
 			this->fchLBRef->Name = L"fchLBRef";
 			this->fchLBRef->Size = System::Drawing::Size(51, 14);
 			this->fchLBRef->TabIndex = 78;
@@ -4321,18 +4326,18 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNURef
 			// 
-			this->fchNURef->Location = System::Drawing::Point(146, 154);
+			this->fchNURef->Location = System::Drawing::Point(146, 184);
 			this->fchNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNURef->Name = L"fchNURef";
 			this->fchNURef->Size = System::Drawing::Size(65, 21);
-			this->fchNURef->TabIndex = 79;
+			this->fchNURef->TabIndex = 26;
 			this->fchNURef->Tag = L"reCmd";
 			this->fchNURef->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBBframes
 			// 
 			this->fchLBBframes->AutoSize = true;
-			this->fchLBBframes->Location = System::Drawing::Point(17, 183);
+			this->fchLBBframes->Location = System::Drawing::Point(17, 213);
 			this->fchLBBframes->Name = L"fchLBBframes";
 			this->fchLBBframes->Size = System::Drawing::Size(102, 14);
 			this->fchLBBframes->TabIndex = 80;
@@ -4340,18 +4345,18 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNUBframes
 			// 
-			this->fchNUBframes->Location = System::Drawing::Point(146, 181);
+			this->fchNUBframes->Location = System::Drawing::Point(146, 211);
 			this->fchNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNUBframes->Name = L"fchNUBframes";
 			this->fchNUBframes->Size = System::Drawing::Size(65, 21);
-			this->fchNUBframes->TabIndex = 81;
+			this->fchNUBframes->TabIndex = 27;
 			this->fchNUBframes->Tag = L"reCmd";
 			this->fchNUBframes->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBBadapt
 			// 
 			this->fchLBBadapt->AutoSize = true;
-			this->fchLBBadapt->Location = System::Drawing::Point(17, 212);
+			this->fchLBBadapt->Location = System::Drawing::Point(17, 242);
 			this->fchLBBadapt->Name = L"fchLBBadapt";
 			this->fchLBBadapt->Size = System::Drawing::Size(102, 14);
 			this->fchLBBadapt->TabIndex = 82;
@@ -4374,14 +4379,14 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUKeyintMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, System::Int32::MinValue });
 			this->fchNUKeyintMax->Name = L"fchNUKeyintMax";
 			this->fchNUKeyintMax->Size = System::Drawing::Size(65, 21);
-			this->fchNUKeyintMax->TabIndex = 75;
+			this->fchNUKeyintMax->TabIndex = 23;
 			this->fchNUKeyintMax->Tag = L"reCmd";
 			this->fchNUKeyintMax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBRcLookAhead
 			// 
 			this->fchLBRcLookAhead->AutoSize = true;
-			this->fchLBRcLookAhead->Location = System::Drawing::Point(17, 129);
+			this->fchLBRcLookAhead->Location = System::Drawing::Point(17, 143);
 			this->fchLBRcLookAhead->Name = L"fchLBRcLookAhead";
 			this->fchLBRcLookAhead->Size = System::Drawing::Size(95, 14);
 			this->fchLBRcLookAhead->TabIndex = 76;
@@ -4390,28 +4395,28 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBWeightP
 			// 
 			this->fchCBWeightP->AutoSize = true;
-			this->fchCBWeightP->Location = System::Drawing::Point(188, 288);
+			this->fchCBWeightP->Location = System::Drawing::Point(188, 318);
 			this->fchCBWeightP->Name = L"fchCBWeightP";
 			this->fchCBWeightP->Size = System::Drawing::Size(15, 14);
-			this->fchCBWeightP->TabIndex = 93;
+			this->fchCBWeightP->TabIndex = 31;
 			this->fchCBWeightP->Tag = L"reCmd";
 			this->fchCBWeightP->UseVisualStyleBackColor = true;
 			// 
 			// fchNURCLookahead
 			// 
 			this->fchNURCLookahead->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-			this->fchNURCLookahead->Location = System::Drawing::Point(146, 127);
+			this->fchNURCLookahead->Location = System::Drawing::Point(146, 141);
 			this->fchNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
 			this->fchNURCLookahead->Name = L"fchNURCLookahead";
 			this->fchNURCLookahead->Size = System::Drawing::Size(65, 21);
-			this->fchNURCLookahead->TabIndex = 77;
+			this->fchNURCLookahead->TabIndex = 25;
 			this->fchNURCLookahead->Tag = L"reCmd";
 			this->fchNURCLookahead->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBWeightP
 			// 
 			this->fchLBWeightP->AutoSize = true;
-			this->fchLBWeightP->Location = System::Drawing::Point(17, 287);
+			this->fchLBWeightP->Location = System::Drawing::Point(17, 317);
 			this->fchLBWeightP->Name = L"fchLBWeightP";
 			this->fchLBWeightP->Size = System::Drawing::Size(87, 14);
 			this->fchLBWeightP->TabIndex = 92;
@@ -4421,10 +4426,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXBadapt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXBadapt->FormattingEnabled = true;
-			this->fchCXBadapt->Location = System::Drawing::Point(125, 209);
+			this->fchCXBadapt->Location = System::Drawing::Point(125, 239);
 			this->fchCXBadapt->Name = L"fchCXBadapt";
 			this->fchCXBadapt->Size = System::Drawing::Size(88, 22);
-			this->fchCXBadapt->TabIndex = 83;
+			this->fchCXBadapt->TabIndex = 28;
 			this->fchCXBadapt->Tag = L"reCmd";
 			// 
 			// fchNUScenecut
@@ -4433,14 +4438,14 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUScenecut->Location = System::Drawing::Point(146, 19);
 			this->fchNUScenecut->Name = L"fchNUScenecut";
 			this->fchNUScenecut->Size = System::Drawing::Size(65, 21);
-			this->fchNUScenecut->TabIndex = 91;
+			this->fchNUScenecut->TabIndex = 21;
 			this->fchNUScenecut->Tag = L"reCmd";
 			this->fchNUScenecut->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBBpyramid
 			// 
 			this->fchLBBpyramid->AutoSize = true;
-			this->fchLBBpyramid->Location = System::Drawing::Point(17, 239);
+			this->fchLBBpyramid->Location = System::Drawing::Point(17, 269);
 			this->fchLBBpyramid->Name = L"fchLBBpyramid";
 			this->fchLBBpyramid->Size = System::Drawing::Size(66, 14);
 			this->fchLBBpyramid->TabIndex = 84;
@@ -4449,10 +4454,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBBpyramid
 			// 
 			this->fchCBBpyramid->AutoSize = true;
-			this->fchCBBpyramid->Location = System::Drawing::Point(188, 240);
+			this->fchCBBpyramid->Location = System::Drawing::Point(188, 270);
 			this->fchCBBpyramid->Name = L"fchCBBpyramid";
 			this->fchCBBpyramid->Size = System::Drawing::Size(15, 14);
-			this->fchCBBpyramid->TabIndex = 85;
+			this->fchCBBpyramid->TabIndex = 29;
 			this->fchCBBpyramid->Tag = L"reCmd";
 			this->fchCBBpyramid->UseVisualStyleBackColor = true;
 			// 
@@ -4463,7 +4468,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchNUKeyintMin->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
 			this->fchNUKeyintMin->Name = L"fchNUKeyintMin";
 			this->fchNUKeyintMin->Size = System::Drawing::Size(65, 21);
-			this->fchNUKeyintMin->TabIndex = 89;
+			this->fchNUKeyintMin->TabIndex = 22;
 			this->fchNUKeyintMin->Tag = L"reCmd";
 			this->fchNUKeyintMin->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -4491,24 +4496,24 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchCBOpenGOP->Location = System::Drawing::Point(188, 103);
 			this->fchCBOpenGOP->Name = L"fchCBOpenGOP";
 			this->fchCBOpenGOP->Size = System::Drawing::Size(15, 14);
-			this->fchCBOpenGOP->TabIndex = 87;
+			this->fchCBOpenGOP->TabIndex = 24;
 			this->fchCBOpenGOP->Tag = L"reCmd";
 			this->fchCBOpenGOP->UseVisualStyleBackColor = true;
 			// 
 			// fchCBCUTree
 			// 
 			this->fchCBCUTree->AutoSize = true;
-			this->fchCBCUTree->Location = System::Drawing::Point(328, 389);
+			this->fchCBCUTree->Location = System::Drawing::Point(328, 397);
 			this->fchCBCUTree->Name = L"fchCBCUTree";
 			this->fchCBCUTree->Size = System::Drawing::Size(15, 14);
-			this->fchCBCUTree->TabIndex = 101;
+			this->fchCBCUTree->TabIndex = 44;
 			this->fchCBCUTree->Tag = L"reCmd";
 			this->fchCBCUTree->UseVisualStyleBackColor = true;
 			// 
 			// fchLBCUTree
 			// 
 			this->fchLBCUTree->AutoSize = true;
-			this->fchLBCUTree->Location = System::Drawing::Point(228, 387);
+			this->fchLBCUTree->Location = System::Drawing::Point(228, 395);
 			this->fchLBCUTree->Name = L"fchLBCUTree";
 			this->fchLBCUTree->Size = System::Drawing::Size(45, 14);
 			this->fchLBCUTree->TabIndex = 100;
@@ -4516,11 +4521,11 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNURD
 			// 
-			this->fchNURD->Location = System::Drawing::Point(326, 357);
+			this->fchNURD->Location = System::Drawing::Point(326, 365);
 			this->fchNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
 			this->fchNURD->Name = L"fchNURD";
 			this->fchNURD->Size = System::Drawing::Size(50, 21);
-			this->fchNURD->TabIndex = 99;
+			this->fchNURD->TabIndex = 43;
 			this->fchNURD->Tag = L"reCmd";
 			this->fchNURD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -4528,18 +4533,18 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchNUAQStrength->DecimalPlaces = 2;
 			this->fchNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fchNUAQStrength->Location = System::Drawing::Point(105, 387);
+			this->fchNUAQStrength->Location = System::Drawing::Point(105, 395);
 			this->fchNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fchNUAQStrength->Name = L"fchNUAQStrength";
 			this->fchNUAQStrength->Size = System::Drawing::Size(64, 21);
-			this->fchNUAQStrength->TabIndex = 98;
+			this->fchNUAQStrength->TabIndex = 41;
 			this->fchNUAQStrength->Tag = L"reCmd";
 			this->fchNUAQStrength->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fchLBAQStrength
 			// 
 			this->fchLBAQStrength->AutoSize = true;
-			this->fchLBAQStrength->Location = System::Drawing::Point(13, 389);
+			this->fchLBAQStrength->Location = System::Drawing::Point(13, 397);
 			this->fchLBAQStrength->Name = L"fchLBAQStrength";
 			this->fchLBAQStrength->Size = System::Drawing::Size(41, 14);
 			this->fchLBAQStrength->TabIndex = 97;
@@ -4549,16 +4554,16 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXAQMode->FormattingEnabled = true;
-			this->fchCXAQMode->Location = System::Drawing::Point(101, 356);
+			this->fchCXAQMode->Location = System::Drawing::Point(101, 364);
 			this->fchCXAQMode->Name = L"fchCXAQMode";
 			this->fchCXAQMode->Size = System::Drawing::Size(82, 22);
-			this->fchCXAQMode->TabIndex = 96;
+			this->fchCXAQMode->TabIndex = 40;
 			this->fchCXAQMode->Tag = L"reCmd";
 			// 
 			// fchLBAQMode
 			// 
 			this->fchLBAQMode->AutoSize = true;
-			this->fchLBAQMode->Location = System::Drawing::Point(12, 359);
+			this->fchLBAQMode->Location = System::Drawing::Point(12, 367);
 			this->fchLBAQMode->Name = L"fchLBAQMode";
 			this->fchLBAQMode->Size = System::Drawing::Size(80, 14);
 			this->fchLBAQMode->TabIndex = 95;
@@ -4567,7 +4572,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBRD
 			// 
 			this->fchLBRD->AutoSize = true;
-			this->fchLBRD->Location = System::Drawing::Point(227, 359);
+			this->fchLBRD->Location = System::Drawing::Point(227, 367);
 			this->fchLBRD->Name = L"fchLBRD";
 			this->fchLBRD->Size = System::Drawing::Size(86, 14);
 			this->fchLBRD->TabIndex = 94;
@@ -4587,16 +4592,16 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchGroupBoxME->Controls->Add(this->fchCXME);
 			this->fchGroupBoxME->Controls->Add(this->fchNUMERange);
 			this->fchGroupBoxME->Controls->Add(this->fchCXSubME);
-			this->fchGroupBoxME->Location = System::Drawing::Point(8, 148);
+			this->fchGroupBoxME->Location = System::Drawing::Point(8, 152);
 			this->fchGroupBoxME->Name = L"fchGroupBoxME";
-			this->fchGroupBoxME->Size = System::Drawing::Size(345, 192);
-			this->fchGroupBoxME->TabIndex = 73;
+			this->fchGroupBoxME->Size = System::Drawing::Size(345, 196);
+			this->fchGroupBoxME->TabIndex = 10;
 			this->fchGroupBoxME->TabStop = false;
 			// 
 			// fchLBAsymmetricMP
 			// 
 			this->fchLBAsymmetricMP->AutoSize = true;
-			this->fchLBAsymmetricMP->Location = System::Drawing::Point(14, 167);
+			this->fchLBAsymmetricMP->Location = System::Drawing::Point(14, 168);
 			this->fchLBAsymmetricMP->Name = L"fchLBAsymmetricMP";
 			this->fchLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
 			this->fchLBAsymmetricMP->TabIndex = 74;
@@ -4605,17 +4610,17 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBAsymmetricMP
 			// 
 			this->fchCBAsymmetricMP->AutoSize = true;
-			this->fchCBAsymmetricMP->Location = System::Drawing::Point(189, 168);
+			this->fchCBAsymmetricMP->Location = System::Drawing::Point(189, 169);
 			this->fchCBAsymmetricMP->Name = L"fchCBAsymmetricMP";
 			this->fchCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
-			this->fchCBAsymmetricMP->TabIndex = 75;
+			this->fchCBAsymmetricMP->TabIndex = 16;
 			this->fchCBAsymmetricMP->Tag = L"reCmd";
 			this->fchCBAsymmetricMP->UseVisualStyleBackColor = true;
 			// 
 			// fchLBRectMP
 			// 
 			this->fchLBRectMP->AutoSize = true;
-			this->fchLBRectMP->Location = System::Drawing::Point(14, 140);
+			this->fchLBRectMP->Location = System::Drawing::Point(14, 141);
 			this->fchLBRectMP->Name = L"fchLBRectMP";
 			this->fchLBRectMP->Size = System::Drawing::Size(92, 14);
 			this->fchLBRectMP->TabIndex = 72;
@@ -4624,17 +4629,17 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBRectMP
 			// 
 			this->fchCBRectMP->AutoSize = true;
-			this->fchCBRectMP->Location = System::Drawing::Point(189, 141);
+			this->fchCBRectMP->Location = System::Drawing::Point(189, 142);
 			this->fchCBRectMP->Name = L"fchCBRectMP";
 			this->fchCBRectMP->Size = System::Drawing::Size(15, 14);
-			this->fchCBRectMP->TabIndex = 73;
+			this->fchCBRectMP->TabIndex = 15;
 			this->fchCBRectMP->Tag = L"reCmd";
 			this->fchCBRectMP->UseVisualStyleBackColor = true;
 			// 
 			// fchLBME
 			// 
 			this->fchLBME->AutoSize = true;
-			this->fchLBME->Location = System::Drawing::Point(14, 23);
+			this->fchLBME->Location = System::Drawing::Point(14, 24);
 			this->fchLBME->Name = L"fchLBME";
 			this->fchLBME->Size = System::Drawing::Size(97, 14);
 			this->fchLBME->TabIndex = 57;
@@ -4643,7 +4648,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBSubME
 			// 
 			this->fchLBSubME->AutoSize = true;
-			this->fchLBSubME->Location = System::Drawing::Point(14, 54);
+			this->fchLBSubME->Location = System::Drawing::Point(14, 55);
 			this->fchLBSubME->Name = L"fchLBSubME";
 			this->fchLBSubME->Size = System::Drawing::Size(99, 14);
 			this->fchLBSubME->TabIndex = 59;
@@ -4651,18 +4656,20 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNUMaxMerge
 			// 
-			this->fchNUMaxMerge->Location = System::Drawing::Point(153, 110);
-			this->fchNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20, 0, 0, 0 });
+			this->fchNUMaxMerge->Location = System::Drawing::Point(153, 111);
+			this->fchNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			this->fchNUMaxMerge->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fchNUMaxMerge->Name = L"fchNUMaxMerge";
 			this->fchNUMaxMerge->Size = System::Drawing::Size(65, 21);
-			this->fchNUMaxMerge->TabIndex = 64;
+			this->fchNUMaxMerge->TabIndex = 14;
 			this->fchNUMaxMerge->Tag = L"reCmd";
 			this->fchNUMaxMerge->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fchNUMaxMerge->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// fchLBMERange
 			// 
 			this->fchLBMERange->AutoSize = true;
-			this->fchLBMERange->Location = System::Drawing::Point(14, 85);
+			this->fchLBMERange->Location = System::Drawing::Point(14, 86);
 			this->fchLBMERange->Name = L"fchLBMERange";
 			this->fchLBMERange->Size = System::Drawing::Size(70, 14);
 			this->fchLBMERange->TabIndex = 61;
@@ -4671,7 +4678,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBMaxMerge
 			// 
 			this->fchLBMaxMerge->AutoSize = true;
-			this->fchLBMaxMerge->Location = System::Drawing::Point(14, 112);
+			this->fchLBMaxMerge->Location = System::Drawing::Point(14, 113);
 			this->fchLBMaxMerge->Name = L"fchLBMaxMerge";
 			this->fchLBMaxMerge->Size = System::Drawing::Size(103, 14);
 			this->fchLBMaxMerge->TabIndex = 63;
@@ -4681,19 +4688,19 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXME->FormattingEnabled = true;
-			this->fchCXME->Location = System::Drawing::Point(153, 20);
+			this->fchCXME->Location = System::Drawing::Point(153, 21);
 			this->fchCXME->Name = L"fchCXME";
 			this->fchCXME->Size = System::Drawing::Size(176, 22);
-			this->fchCXME->TabIndex = 58;
+			this->fchCXME->TabIndex = 11;
 			this->fchCXME->Tag = L"reCmd";
 			// 
 			// fchNUMERange
 			// 
-			this->fchNUMERange->Location = System::Drawing::Point(153, 83);
+			this->fchNUMERange->Location = System::Drawing::Point(153, 84);
 			this->fchNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32768, 0, 0, 0 });
 			this->fchNUMERange->Name = L"fchNUMERange";
 			this->fchNUMERange->Size = System::Drawing::Size(65, 21);
-			this->fchNUMERange->TabIndex = 62;
+			this->fchNUMERange->TabIndex = 13;
 			this->fchNUMERange->Tag = L"reCmd";
 			this->fchNUMERange->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -4701,10 +4708,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			this->fchCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fchCXSubME->FormattingEnabled = true;
-			this->fchCXSubME->Location = System::Drawing::Point(153, 51);
+			this->fchCXSubME->Location = System::Drawing::Point(153, 52);
 			this->fchCXSubME->Name = L"fchCXSubME";
 			this->fchCXSubME->Size = System::Drawing::Size(176, 22);
-			this->fchCXSubME->TabIndex = 60;
+			this->fchCXSubME->TabIndex = 12;
 			this->fchCXSubME->Tag = L"reCmd";
 			// 
 			// fchGroupBoxCTU
@@ -4719,14 +4726,14 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchGroupBoxCTU->Controls->Add(this->fchNUTuIntraDepth);
 			this->fchGroupBoxCTU->Location = System::Drawing::Point(8, 5);
 			this->fchGroupBoxCTU->Name = L"fchGroupBoxCTU";
-			this->fchGroupBoxCTU->Size = System::Drawing::Size(345, 137);
-			this->fchGroupBoxCTU->TabIndex = 72;
+			this->fchGroupBoxCTU->Size = System::Drawing::Size(345, 141);
+			this->fchGroupBoxCTU->TabIndex = 0;
 			this->fchGroupBoxCTU->TabStop = false;
 			// 
 			// fchLBWpp
 			// 
 			this->fchLBWpp->AutoSize = true;
-			this->fchLBWpp->Location = System::Drawing::Point(14, 105);
+			this->fchLBWpp->Location = System::Drawing::Point(14, 107);
 			this->fchLBWpp->Name = L"fchLBWpp";
 			this->fchLBWpp->Size = System::Drawing::Size(123, 14);
 			this->fchLBWpp->TabIndex = 71;
@@ -4735,17 +4742,17 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBWpp
 			// 
 			this->fchCBWpp->AutoSize = true;
-			this->fchCBWpp->Location = System::Drawing::Point(189, 106);
+			this->fchCBWpp->Location = System::Drawing::Point(189, 108);
 			this->fchCBWpp->Name = L"fchCBWpp";
 			this->fchCBWpp->Size = System::Drawing::Size(15, 14);
-			this->fchCBWpp->TabIndex = 71;
+			this->fchCBWpp->TabIndex = 4;
 			this->fchCBWpp->Tag = L"reCmd";
 			this->fchCBWpp->UseVisualStyleBackColor = true;
 			// 
 			// fchLBCtu
 			// 
 			this->fchLBCtu->AutoSize = true;
-			this->fchLBCtu->Location = System::Drawing::Point(14, 21);
+			this->fchLBCtu->Location = System::Drawing::Point(14, 23);
 			this->fchLBCtu->Name = L"fchLBCtu";
 			this->fchLBCtu->Size = System::Drawing::Size(96, 14);
 			this->fchLBCtu->TabIndex = 65;
@@ -4754,7 +4761,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBTuInterDepth
 			// 
 			this->fchLBTuInterDepth->AutoSize = true;
-			this->fchLBTuInterDepth->Location = System::Drawing::Point(14, 75);
+			this->fchLBTuInterDepth->Location = System::Drawing::Point(14, 77);
 			this->fchLBTuInterDepth->Name = L"fchLBTuInterDepth";
 			this->fchLBTuInterDepth->Size = System::Drawing::Size(114, 14);
 			this->fchLBTuInterDepth->TabIndex = 69;
@@ -4762,12 +4769,12 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNUCtu
 			// 
-			this->fchNUCtu->Location = System::Drawing::Point(153, 19);
+			this->fchNUCtu->Location = System::Drawing::Point(153, 21);
 			this->fchNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
 			this->fchNUCtu->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fchNUCtu->Name = L"fchNUCtu";
 			this->fchNUCtu->Size = System::Drawing::Size(64, 21);
-			this->fchNUCtu->TabIndex = 66;
+			this->fchNUCtu->TabIndex = 1;
 			this->fchNUCtu->Tag = L"reCmd";
 			this->fchNUCtu->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->fchNUCtu->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
@@ -4776,7 +4783,7 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchLBTuIntraDepth
 			// 
 			this->fchLBTuIntraDepth->AutoSize = true;
-			this->fchLBTuIntraDepth->Location = System::Drawing::Point(14, 48);
+			this->fchLBTuIntraDepth->Location = System::Drawing::Point(14, 50);
 			this->fchLBTuIntraDepth->Name = L"fchLBTuIntraDepth";
 			this->fchLBTuIntraDepth->Size = System::Drawing::Size(113, 14);
 			this->fchLBTuIntraDepth->TabIndex = 67;
@@ -4784,38 +4791,42 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// 
 			// fchNUTuInterDepth
 			// 
-			this->fchNUTuInterDepth->Location = System::Drawing::Point(153, 73);
+			this->fchNUTuInterDepth->Location = System::Drawing::Point(153, 75);
 			this->fchNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
+			this->fchNUTuInterDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fchNUTuInterDepth->Name = L"fchNUTuInterDepth";
 			this->fchNUTuInterDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuInterDepth->TabIndex = 70;
+			this->fchNUTuInterDepth->TabIndex = 3;
 			this->fchNUTuInterDepth->Tag = L"reCmd";
 			this->fchNUTuInterDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fchNUTuInterDepth->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// fchNUTuIntraDepth
 			// 
-			this->fchNUTuIntraDepth->Location = System::Drawing::Point(153, 46);
+			this->fchNUTuIntraDepth->Location = System::Drawing::Point(153, 48);
 			this->fchNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
+			this->fchNUTuIntraDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fchNUTuIntraDepth->Name = L"fchNUTuIntraDepth";
 			this->fchNUTuIntraDepth->Size = System::Drawing::Size(64, 21);
-			this->fchNUTuIntraDepth->TabIndex = 68;
+			this->fchNUTuIntraDepth->TabIndex = 2;
 			this->fchNUTuIntraDepth->Tag = L"reCmd";
 			this->fchNUTuIntraDepth->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fchNUTuIntraDepth->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// fchCBSAO
 			// 
 			this->fchCBSAO->AutoSize = true;
-			this->fchCBSAO->Location = System::Drawing::Point(573, 384);
+			this->fchCBSAO->Location = System::Drawing::Point(573, 392);
 			this->fchCBSAO->Name = L"fchCBSAO";
 			this->fchCBSAO->Size = System::Drawing::Size(15, 14);
-			this->fchCBSAO->TabIndex = 40;
+			this->fchCBSAO->TabIndex = 46;
 			this->fchCBSAO->Tag = L"reCmd";
 			this->fchCBSAO->UseVisualStyleBackColor = true;
 			// 
 			// fchLBSAO
 			// 
 			this->fchLBSAO->AutoSize = true;
-			this->fchLBSAO->Location = System::Drawing::Point(437, 383);
+			this->fchLBSAO->Location = System::Drawing::Point(437, 391);
 			this->fchLBSAO->Name = L"fchLBSAO";
 			this->fchLBSAO->Size = System::Drawing::Size(121, 14);
 			this->fchLBSAO->TabIndex = 39;
@@ -4824,69 +4835,21 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			// fchCBLoopFilter
 			// 
 			this->fchCBLoopFilter->AutoSize = true;
-			this->fchCBLoopFilter->Location = System::Drawing::Point(573, 359);
+			this->fchCBLoopFilter->Location = System::Drawing::Point(573, 367);
 			this->fchCBLoopFilter->Name = L"fchCBLoopFilter";
 			this->fchCBLoopFilter->Size = System::Drawing::Size(15, 14);
-			this->fchCBLoopFilter->TabIndex = 38;
+			this->fchCBLoopFilter->TabIndex = 45;
 			this->fchCBLoopFilter->Tag = L"reCmd";
 			this->fchCBLoopFilter->UseVisualStyleBackColor = true;
 			// 
 			// fchLBLoopFilter
 			// 
 			this->fchLBLoopFilter->AutoSize = true;
-			this->fchLBLoopFilter->Location = System::Drawing::Point(437, 358);
+			this->fchLBLoopFilter->Location = System::Drawing::Point(437, 366);
 			this->fchLBLoopFilter->Name = L"fchLBLoopFilter";
 			this->fchLBLoopFilter->Size = System::Drawing::Size(63, 14);
 			this->fchLBLoopFilter->TabIndex = 37;
 			this->fchLBLoopFilter->Text = L"ループフィルタ";
-			// 
-			// fchgroupBoxThread
-			// 
-			this->fchgroupBoxThread->Controls->Add(this->fchLBFrameThreads);
-			this->fchgroupBoxThread->Controls->Add(this->fchNUFrameThreads);
-			this->fchgroupBoxThread->Controls->Add(this->fchLBThreads);
-			this->fchgroupBoxThread->Controls->Add(this->fchNUThreads);
-			this->fchgroupBoxThread->Location = System::Drawing::Point(419, 404);
-			this->fchgroupBoxThread->Name = L"fchgroupBoxThread";
-			this->fchgroupBoxThread->Size = System::Drawing::Size(180, 77);
-			this->fchgroupBoxThread->TabIndex = 21;
-			this->fchgroupBoxThread->TabStop = false;
-			// 
-			// fchLBFrameThreads
-			// 
-			this->fchLBFrameThreads->AutoSize = true;
-			this->fchLBFrameThreads->Location = System::Drawing::Point(13, 47);
-			this->fchLBFrameThreads->Name = L"fchLBFrameThreads";
-			this->fchLBFrameThreads->Size = System::Drawing::Size(73, 14);
-			this->fchLBFrameThreads->TabIndex = 2;
-			this->fchLBFrameThreads->Text = L"フレーム並列数";
-			// 
-			// fchNUFrameThreads
-			// 
-			this->fchNUFrameThreads->Location = System::Drawing::Point(104, 45);
-			this->fchNUFrameThreads->Name = L"fchNUFrameThreads";
-			this->fchNUFrameThreads->Size = System::Drawing::Size(64, 21);
-			this->fchNUFrameThreads->TabIndex = 3;
-			this->fchNUFrameThreads->Tag = L"reCmd";
-			this->fchNUFrameThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fchLBThreads
-			// 
-			this->fchLBThreads->AutoSize = true;
-			this->fchLBThreads->Location = System::Drawing::Point(13, 19);
-			this->fchLBThreads->Name = L"fchLBThreads";
-			this->fchLBThreads->Size = System::Drawing::Size(48, 14);
-			this->fchLBThreads->TabIndex = 0;
-			this->fchLBThreads->Text = L"スレッド数";
-			// 
-			// fchNUThreads
-			// 
-			this->fchNUThreads->Location = System::Drawing::Point(104, 17);
-			this->fchNUThreads->Name = L"fchNUThreads";
-			this->fchNUThreads->Size = System::Drawing::Size(64, 21);
-			this->fchNUThreads->TabIndex = 1;
-			this->fchNUThreads->Tag = L"reCmd";
-			this->fchNUThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fcgtabPageExSettings
 			// 
@@ -6479,6 +6442,54 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fchTTX265->UseAnimation = false;
 			this->fchTTX265->UseFading = false;
 			// 
+			// fchgroupBoxThread
+			// 
+			this->fchgroupBoxThread->Controls->Add(this->fchLBFrameThreads);
+			this->fchgroupBoxThread->Controls->Add(this->fchNUFrameThreads);
+			this->fchgroupBoxThread->Controls->Add(this->fchLBThreads);
+			this->fchgroupBoxThread->Controls->Add(this->fchNUThreads);
+			this->fchgroupBoxThread->Location = System::Drawing::Point(196, 305);
+			this->fchgroupBoxThread->Name = L"fchgroupBoxThread";
+			this->fchgroupBoxThread->Size = System::Drawing::Size(177, 85);
+			this->fchgroupBoxThread->TabIndex = 71;
+			this->fchgroupBoxThread->TabStop = false;
+			// 
+			// fchLBFrameThreads
+			// 
+			this->fchLBFrameThreads->AutoSize = true;
+			this->fchLBFrameThreads->Location = System::Drawing::Point(8, 51);
+			this->fchLBFrameThreads->Name = L"fchLBFrameThreads";
+			this->fchLBFrameThreads->Size = System::Drawing::Size(73, 14);
+			this->fchLBFrameThreads->TabIndex = 2;
+			this->fchLBFrameThreads->Text = L"フレーム並列数";
+			// 
+			// fchNUFrameThreads
+			// 
+			this->fchNUFrameThreads->Location = System::Drawing::Point(95, 49);
+			this->fchNUFrameThreads->Name = L"fchNUFrameThreads";
+			this->fchNUFrameThreads->Size = System::Drawing::Size(64, 21);
+			this->fchNUFrameThreads->TabIndex = 52;
+			this->fchNUFrameThreads->Tag = L"reCmd";
+			this->fchNUFrameThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fchLBThreads
+			// 
+			this->fchLBThreads->AutoSize = true;
+			this->fchLBThreads->Location = System::Drawing::Point(33, 21);
+			this->fchLBThreads->Name = L"fchLBThreads";
+			this->fchLBThreads->Size = System::Drawing::Size(48, 14);
+			this->fchLBThreads->TabIndex = 0;
+			this->fchLBThreads->Text = L"スレッド数";
+			// 
+			// fchNUThreads
+			// 
+			this->fchNUThreads->Location = System::Drawing::Point(95, 19);
+			this->fchNUThreads->Name = L"fchNUThreads";
+			this->fchNUThreads->Size = System::Drawing::Size(64, 21);
+			this->fchNUThreads->TabIndex = 51;
+			this->fchNUThreads->Tag = L"reCmd";
+			this->fchNUThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -6628,10 +6639,6 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUCtu))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuInterDepth))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUTuIntraDepth))->EndInit();
-			this->fchgroupBoxThread->ResumeLayout(false);
-			this->fchgroupBoxThread->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->EndInit();
 			this->fcgtabPageExSettings->ResumeLayout(false);
 			this->fcgtabPageExSettings->PerformLayout();
 			this->fchPNX265Sub->ResumeLayout(false);
@@ -6659,6 +6666,10 @@ private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator6;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSCQM->ResumeLayout(false);
+			this->fchgroupBoxThread->ResumeLayout(false);
+			this->fchgroupBoxThread->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUFrameThreads))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fchNUThreads))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
