@@ -529,6 +529,7 @@ void guiEx_settings::load_local() {
 	s_local.auto_ref_limit_by_level    = GetPrivateProfileInt(   ini_section_main, "auto_ref_limit_by_level", DEFAULT_AUTO_REFLIMIT_BYLEVEL, conf_fileName);
 	s_local.enable_process_parallel    = GetPrivateProfileInt(   ini_section_main, "enable_process_parallel",    DEFAULT_USE_PROCESS_PARALLEL,  conf_fileName);
 	s_local.process_parallel_mode      = GetPrivateProfileInt(   ini_section_main, "process_parallel_mode",      DEFAULT_PROCESS_PARALLEL_MODE, conf_fileName);
+	s_local.default_audio_encoder      = GetPrivateProfileInt(   ini_section_main, "default_audio_encoder",      DEFAULT_AUDIO_ENCODER,         conf_fileName);
 
 	s_local.amp_retry_limit            = GetPrivateProfileInt(   INI_SECTION_AMP,  "amp_retry_limit",            DEFAULT_AMP_RETRY_LIMIT,       conf_fileName);
 	s_local.amp_bitrate_margin_multi   = GetPrivateProfileDouble(INI_SECTION_AMP,  "amp_bitrate_margin_multi",   DEFAULT_AMP_MARGIN,            conf_fileName);
@@ -621,6 +622,7 @@ void guiEx_settings::save_local() {
 	WritePrivateProfileIntWithDefault(   ini_section_main, "auto_ref_limit_by_level",    s_local.auto_ref_limit_by_level,    DEFAULT_AUTO_REFLIMIT_BYLEVEL, conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "enable_process_parallel",    s_local.enable_process_parallel,    DEFAULT_USE_PROCESS_PARALLEL,  conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "process_parallel_mode",      s_local.process_parallel_mode,      DEFAULT_PROCESS_PARALLEL_MODE, conf_fileName);
+	WritePrivateProfileIntWithDefault(   ini_section_main, "default_audio_encoder",      s_local.default_audio_encoder,      DEFAULT_AUDIO_ENCODER,         conf_fileName);
 
 	WritePrivateProfileIntWithDefault(   INI_SECTION_AMP,  "amp_retry_limit",            s_local.amp_retry_limit,            DEFAULT_AMP_RETRY_LIMIT,       conf_fileName);
 	WritePrivateProfileDoubleWithDefault(INI_SECTION_AMP,  "amp_bitrate_margin_multi",   s_local.amp_bitrate_margin_multi,   DEFAULT_AMP_MARGIN,            conf_fileName);

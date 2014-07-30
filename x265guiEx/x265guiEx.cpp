@@ -291,6 +291,7 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
 	for (int i_enctype = 0; i_enctype < 2; i_enctype++)
 		get_default_conf(&conf->x26x[i_enctype], use_highbit, i_enctype);
 	conf->vid.enc_type = default_enc_type;
+	conf->aud.encoder = sys_dat.exstg->s_local.default_audio_encoder;
 	conf->size_all = CONF_INITIALIZED;
 }
 //最後に"\"なしで戻る
