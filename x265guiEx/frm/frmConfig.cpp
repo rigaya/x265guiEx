@@ -497,7 +497,8 @@ System::Void frmConfig::fcgTSBOtherSettings_Click(System::Object^  sender, Syste
 
 System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	//CLIモードとの切り替え
-	fcgtabControlVideo->SuspendLayout();
+	//一度ウィンドウの再描画を完全に抑止する
+	SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 0, 0);
 	int tabPageCount = fcgtabControlVideo->TabPages->Count;
 	for (int i = 0; i < tabPageCount - 1; i++)
 		fcgtabControlVideo->TabPages->RemoveAt(0);
@@ -512,7 +513,9 @@ System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sende
 		}
 	}
 	fcgtabControlVideo->SelectedIndex = 0;
-	fcgtabControlVideo->ResumeLayout();
+	//一度ウィンドウの再描画を再開し、強制的に再描画させる
+	SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 1, 0);
+	this->Refresh();
 
 	fchPNX265Sub->Visible = fcgTSBEncType->Checked;
 
