@@ -248,8 +248,9 @@ BOOL func_config(HWND hwnd, HINSTANCE dll_hinst)
 int func_config_get(void *data, int size)
 {
 	if (data && size == sizeof(CONF_GUIEX)) {
-		if (sys_dat.exstg->s_local.enable_process_parallel)
+		if (sys_dat.exstg->s_local.enable_process_parallel) {
 			parallel_task_set_unused_parallel_info(conf.vid.parallel_div_info, _countof(conf.vid.parallel_div_info));
+		}
 		memcpy(data, &conf, sizeof(conf));
 	}
 	return sizeof(conf);
