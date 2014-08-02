@@ -451,7 +451,7 @@ private:
 		return ret;
 	}
 	void task_delete(int id) {
-		foreach (std::vector<TASK_INFO>, it_task, &task_list) {
+		foreach (it_task, task_list) {
 			if (id == it_task->id) {
 				EnterCriticalSection(&critical_section);
 				task_list.erase(it_task);

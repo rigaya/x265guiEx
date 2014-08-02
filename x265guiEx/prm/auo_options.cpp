@@ -920,7 +920,7 @@ static void parse_arg(char *cmd, size_t cmd_len, std::vector<CMD_ARG> &cmd_arg_l
 		cmd_arg_list.push_back(cmd_arg);
 
 	//最初と最後の'"'を落とす
-	foreach(std::vector<CMD_ARG>, it_arg, &cmd_arg_list) {
+	foreach (it_arg, cmd_arg_list) {
 		if (it_arg->value == NULL)
 			continue;
 		size_t value_len = strlen(it_arg->value);
@@ -985,7 +985,7 @@ static inline BOOL option_has_no_value(DWORD type) {
 }
 
 static void set_conf_x265(std::vector<CMD_ARG> &cmd_arg_list, CONF_X265 *conf_set) {
-	foreach(std::vector<CMD_ARG>, it_arg, &cmd_arg_list) {
+	foreach (it_arg, cmd_arg_list) {
 		int i;
 		for (i = 0; i < _countof(x265_options_table); i++) {
 			if (NULL == x265_options_table[i].long_name) //書き出しの終了条件
