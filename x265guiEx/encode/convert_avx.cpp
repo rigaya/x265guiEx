@@ -7,8 +7,6 @@
 //   以上に了解して頂ける場合、本ソースコードの使用、複製、改変、再頒布を行って頂いて構いません。
 //  -----------------------------------------------------------------------------------------
 
-#if (_MSC_VER >= 1600)
-
 #define USE_SSE2  1
 #define USE_SSSE3 1
 #define USE_SSE41 1
@@ -73,5 +71,3 @@ void convert_lw48_to_yuv444_avx(void *frame, CONVERT_CF_DATA *pixel_data, const 
 void convert_lw48_to_yuv444_16bit_avx(void *frame, CONVERT_CF_DATA *pixel_data, const int width, const int height) {
 	return convert_lw48_to_yuv444_16bit_simd<FALSE>(frame, pixel_data, width, height);
 }
-
-#endif

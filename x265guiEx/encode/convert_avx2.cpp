@@ -7,8 +7,6 @@
 //   以上に了解して頂ける場合、本ソースコードの使用、複製、改変、再頒布を行って頂いて構いません。
 //  -----------------------------------------------------------------------------------------
 
-//AVX2はVC++2012から
-#if (_MSC_VER >= 1700)
 //AVX2用コード
 #include <immintrin.h> //イントリンシック命令 AVX / AVX2
 
@@ -939,4 +937,3 @@ void convert_lw48_to_yuv444_16bit_avx2(void *pixel, CONVERT_CF_DATA *pixel_data,
 	}
 	_mm256_zeroupper();
 }
-#endif
