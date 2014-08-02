@@ -952,12 +952,13 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 		//エンコーダ終了待機
 		while (WaitForSingleObject(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
-			ReadLogEnc(&pipes, pe->drop_count, i);
+			read_log_enc_stderr(&pipes, pe->drop_count, i);
 
 		DWORD tm_vid_enc_fin = timeGetTime();
 
 		//最後にメッセージを取得
-		while (ReadLogEnc(&pipes, pe->drop_count, i) > 0);
+		while (read_log_enc_stderr(&pipes, pe->drop_count, i) > 0);
+		while (read_log_enc_stdout(&pipes, pe->drop_count, i) > 0);
 
 		if (!(ret & AUO_RESULT_ERROR) && afs)
 			write_log_auo_line_fmt(LOG_INFO, "drop %d / %d frames", pe->drop_count, i);
