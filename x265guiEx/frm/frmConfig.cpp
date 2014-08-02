@@ -169,13 +169,16 @@ System::Void frmConfig::InformfbcClosed() {
 ///     frmUpdate 関数
 /// -------------------------------------------------
 System::Void frmConfig::fcgTSBUpdate_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+#if ENABLE_AUOSETUP
 	if (fcgTSBUpdate->Checked)
 		frmExeUpdate->Show();
 	else
 		frmExeUpdate->Visible = false; //Close()してしまうとfrmExeUpdateがDisposeされてしまう
+#endif
 }
 
 System::Void frmConfig::fcgTSBUpdate_CheckFinished(String^ mes) {
+#if ENABLE_AUOSETUP
 	//更新をチェックした時間を保存する
 	guiEx_settings stg;
 	stg.load_encode_stg();
@@ -190,9 +193,11 @@ System::Void frmConfig::fcgTSBUpdate_CheckFinished(String^ mes) {
 		fcgTSBUpdate->Text = L"更新*";
 		fcgTSBUpdate->ForeColor = Color::MediumSlateBlue;
 	}
+#endif
 }
 
 System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
+#if ENABLE_AUOSETUP
 	if (this->InvokeRequired) {
 		this->Invoke(gcnew x265guiEx::DelegateProcessFin(this, &frmConfig::fcgTSBUpdate_UpdateFinished), mes);
 		return;
@@ -211,12 +216,14 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
 	LocalStg.MP4RawPath      = String(stg.s_mux[MUXER_MP4_RAW].fullpath).ToString();
 
 	SetLocalStg();
+#endif
 }
 
 System::Void frmConfig::InformfruClosed() {
 	fcgTSBUpdate->Checked = false;
 }
 
+#if ENABLE_AUOSETUP
 System::Void frmUpdate::frmUpdate_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 	e->Cancel = true;
 	this->Visible = false; //Close()してしまうとfrmExeUpdateがDisposeされてしまう
@@ -224,6 +231,7 @@ System::Void frmUpdate::frmUpdate_FormClosing(System::Object^  sender, System::W
 	if (fcg != nullptr)
 		fcg->InformfruClosed();
 }
+#endif
 
 /// -------------------------------------------------
 ///     frmConfig 関数
@@ -1224,6 +1232,7 @@ System::Void frmConfig::AdjustLocation() {
 }
 
 System::Void frmConfig::initUpdater() {
+#if ENABLE_AUOSETUP
 	frmExeUpdate = gcnew frmUpdate();
 	frmExeUpdate->Owner = this;
 	frmExeUpdate->init(gcnew x265guiEx::DelegateProcessFin(this, &frmConfig::fcgTSBUpdate_CheckFinished),
@@ -1241,6 +1250,9 @@ System::Void frmConfig::initUpdater() {
 		}
 	}
 	frmExeUpdate->startCheck();
+#else
+	fcgTSBUpdate->Enabled = false;
+#endif
 }
 
 System::Void frmConfig::InitForm() {

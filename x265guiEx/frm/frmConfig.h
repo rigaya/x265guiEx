@@ -23,8 +23,9 @@
 #include "transparentLabel.h"
 
 #include "frmConfig_helper.h"
+#if ENABLE_AUOSETUP
 #include "frmUpdate.h"
-
+#endif
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
@@ -67,9 +68,11 @@ namespace x265guiEx {
 		~frmConfig()
 		{
 			//メイン設定画面を破棄する前に更新要画面を破棄する
+#if ENABLE_AUOSETUP
 			if (nullptr != frmExeUpdate) {
 				delete frmExeUpdate;
 			}
+#endif
 			if (components)
 			{
 				delete components;
@@ -4086,7 +4089,9 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 		ToolStripMenuItem^ CheckedStgMenuItem;
 		CONF_GUIEX *cnf_stgSelected;
 		String^ lastQualityStr;
+#if ENABLE_AUOSETUP
 		frmUpdate^ frmExeUpdate;
+#endif
 	private:
 		System::Int32 GetCurrentAudioDefaultBitrate();
 		delegate System::Void qualityTimerChangeDelegate();
@@ -4506,8 +4511,10 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 		}
 	private:
 		System::Void frmConfig_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+#if ENABLE_AUOSETUP
 			if (frmExeUpdate->waitingForUpdateFinishes())
 				e->Cancel = true;
+#endif
 		}
 	private: 
 		System::Void fcgBTOK_Click(System::Object^  sender, System::EventArgs^  e) {
