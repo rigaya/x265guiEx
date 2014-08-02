@@ -96,7 +96,7 @@ BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL 
 	if (pe->afs_init || pe->video_out_type == VIDEO_OUTPUT_DISABLED || !conf->vid.afs)
 		return TRUE;
 
-	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
+	const int color_format = get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48);
 	const int frame_size = calc_input_frame_size(oip->w, oip->h, color_format);
 	//Aviutl(自動フィールドシフト)からの映像入力
 	if (afs_vbuf_setup((OUTPUT_INFO *)oip, conf->vid.afs, frame_size, COLORFORMATS[color_format].FOURCC)) {
@@ -126,13 +126,13 @@ void close_afsvideo(PRM_ENC *pe) {
 
 static AUO_RESULT check_cmdex(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	DWORD ret = AUO_RESULT_SUCCESS;
-	const int color_format = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48); //現在の色形式を保存
+	const int color_format = get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48); //現在の色形式を保存
 	if (conf->oth.disable_guicmd) 
-		get_default_conf(&conf->x26x[conf->vid.enc_type], FALSE, conf->vid.enc_type); //CLIモード時はとりあえず、デフォルトを呼んでおく
+		get_default_conf(&conf->x265, FALSE); //CLIモード時はとりあえず、デフォルトを呼んでおく
 	//cmdexを適用
-	set_cmd_to_conf(conf->vid.cmdex, &conf->x26x[conf->vid.enc_type], conf->vid.enc_type);
+	set_cmd_to_conf(conf->vid.cmdex, &conf->x265);
 
-	if (color_format != get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)) {
+	if (color_format != get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48)) {
 		//cmdexで入力色形式が変更になる場合、再初期化
 		close_afsvideo(pe);
 		if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
@@ -366,56 +366,6 @@ static AUO_RESULT set_keyframe(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, c
 	return ret;
 }
 
-static AUO_RESULT write_log_x264_version(const char *x264fullpath) {
-	AUO_RESULT ret = AUO_RESULT_WARNING;
-	static const int REQUIRED_X264_CORE = 104;
-	static const int REQUIRED_X264_REV = 1673;
-	char buffer[2048] = { 0 };
-	if (get_exe_message(x264fullpath, "--version", buffer, _countof(buffer), AUO_PIPE_MUXED) == RP_SUCCESS) {
-		char print_line[512] = { 0 };
-		const char *LINE_HEADER = "x264 version: ";
-		const char *LINE_CONFIGURATION = "configuration:";
-		BOOL line_configuration = FALSE;
-		sprintf_s(print_line, _countof(print_line), LINE_HEADER);
-		int a = -1, b = -1, c = -1;
-		for (char *ptr = buffer, *qtr = NULL; NULL != (ptr = strtok_s(ptr, "\r\n", &qtr)); ) {
-			if (ptr == buffer) {
-				strcat_s(print_line, _countof(print_line), ptr + strlen("x264 ") * (NULL == strncmp(ptr, "x264 ", strlen("x264 "))));
-				if (3 != sscanf_s(ptr, "x264 %d.%d.%d", &a, &b, &c))
-					a = b = c = -1;
-			} else if (strstr(ptr, LINE_CONFIGURATION)) {
-				strcat_s(print_line, _countof(print_line), ptr + strlen(LINE_CONFIGURATION));
-				line_configuration = TRUE;
-			} else if (line_configuration) {
-				const char *rtr = ptr;
-				while (*rtr == ' ') rtr++;
-				if ((size_t)(rtr - ptr) == strlen(LINE_CONFIGURATION) + 1) {
-					strcat_s(print_line, _countof(print_line), ptr + strlen(LINE_CONFIGURATION));
-				} else {
-					line_configuration = FALSE;
-				}
-			} else {
-				line_configuration = FALSE;
-			}
-			ptr = NULL;
-		}
-		if (strlen(print_line) > strlen(LINE_HEADER)) {
-			write_log_auo_line(LOG_INFO, print_line);
-		}
-		if (a >= 0 && b >= 0 && c >= 0) {
-			ret = (b >= REQUIRED_X264_CORE || c >= REQUIRED_X264_REV) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
-		}
-		if (ret & AUO_RESULT_ERROR) {
-			char required_ver[128] = { 0 };
-			char current_ver[128] = { 0 };
-			sprintf_s(required_ver, _countof(required_ver), "Core:%4d, Rev: %4d", REQUIRED_X264_CORE, REQUIRED_X264_REV);
-			sprintf_s(current_ver,  _countof(current_ver),  "Core:%4d, Rev: %4d", b, c);
-			error_x26x_version(ENC_TYPE_X264, required_ver, current_ver);
-		}
-	}
-	return ret;
-}
-
 static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
 	int len = sprintf_s(str, nSize, "%d", version[0]);
 	for (int i = 1; i < 4; i++) {
@@ -477,14 +427,11 @@ static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 			char current_ver[128] = { 0 };
 			create_x265_ver_string(required_ver, _countof(required_ver), REQUIRED_X265_VER);
 			create_x265_ver_string(current_ver,  _countof(current_ver),  v);
-			error_x26x_version(ENC_TYPE_X265, required_ver, current_ver);
+			error_x265_version(required_ver, current_ver);
 		}
 	}
 	return ret;
 }
-
-typedef AUO_RESULT (*func_write_log_encoder_version)(const char *exe_fullpath);
-static const func_write_log_encoder_version write_encoder_version[] = { write_log_x264_version, write_log_x265_version };
 
 //auo_pipe.cppのread_from_pipeの特別版
 template <bool for_stderr>
@@ -548,7 +495,7 @@ static void append_cmdex(char *cmd, size_t nSize, const char *cmdex, BOOL disble
 	} else {
 		CONF_GUIEX cnf = *conf;
 		//confに読み込ませ、読み取られなかった部分のみを得る
-		set_cmd_to_conf(cmd + cmd_len + 1, &cnf.x26x[conf->vid.enc_type], cmdex_len, TRUE, conf->vid.enc_type);
+		set_cmd_to_conf(cmd + cmd_len + 1, &cnf.x265, cmdex_len, TRUE);
 	}
 }
 
@@ -564,23 +511,24 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
 	if (!prm.oth.disable_guicmd) {
 		//cliモードでない
 		//自動設定の適用
-		apply_guiEx_auto_settings(&prm.x26x[conf->vid.enc_type], oip->w, oip->h, oip->rate, oip->scale, conf->vid.enc_type, sys_dat->exstg->s_local.auto_ref_limit_by_level);
+		apply_guiEx_auto_settings(&prm.x265, oip->w, oip->h, oip->rate, oip->scale, sys_dat->exstg->s_local.auto_ref_limit_by_level);
 		//GUI部のコマンドライン生成
-		build_cmd_from_conf(cmd, nSize, &prm.x26x[conf->vid.enc_type], &prm.vid, FALSE, conf->vid.enc_type);
+		build_cmd_from_conf(cmd, nSize, &prm.x265, &prm.vid, FALSE);
 	}
 	//cmdexのうち、読み取られなかったコマンドを追加する
 	if (str_has_char(prm.vid.cmdex))
 		append_cmdex(cmd, nSize, prm.vid.cmdex, prm.oth.disable_guicmd, conf);
 	//メッセージの発行
-	if ((conf->x26x[conf->vid.enc_type].vbv_bufsize != 0 || conf->x26x[conf->vid.enc_type].vbv_maxrate != 0) && prm.vid.afs)
+	if ((conf->x265.vbv_bufsize != 0 || conf->x265.vbv_maxrate != 0) && prm.vid.afs)
 		write_log_auo_line(LOG_INFO, "自動フィールドシフト使用時はvbv設定は正確に反映されません。");
 	//キーフレーム検出を行い、そのQPファイルが存在し、かつ--qpfileの指定がなければ、それをqpfileで読み込む
 	char auoqpfile[MAX_PATH_LEN];
 	apply_appendix(auoqpfile, _countof(auoqpfile), pe->temp_filename, pe->append.qp);
-	BOOL disable_keyframe_afs = conf->vid.afs && !sys_dat->exstg->s_local.set_keyframe_as_afs_24fps;
-	if (prm.vid.check_keyframe && !disable_keyframe_afs && PathFileExists(auoqpfile) && strstr(cmd, "--qpfile") == NULL)
-		if (conf->vid.enc_type == ENC_TYPE_X264)
-			sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
+	//x264用のコード
+	//BOOL disable_keyframe_afs = conf->vid.afs && !sys_dat->exstg->s_local.set_keyframe_as_afs_24fps;
+	//if (prm.vid.check_keyframe && !disable_keyframe_afs && PathFileExists(auoqpfile) && strstr(cmd, "--qpfile") == NULL)
+	//	if (conf->vid.enc_type == ENC_TYPE_X264)
+	//		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
 	//1pass目でafsでない、--framesがなければ--framesを指定
 	if ((!prm.vid.afs || pe->current_pass > 1) && strstr(cmd, "--frames") == NULL)
 		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --frames %d", get_frame_num_to_encode(oip->n, pe) - pe->drop_count);
@@ -588,24 +536,25 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
 	if (strcmp(input, PIPE_FN) == NULL)
 		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input-res %dx%d", oip->w, oip->h);
 	//rawの形式情報追加
-	if (conf->vid.enc_type == ENC_TYPE_X264)
-		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input-csp %s", specify_input_csp(prm.x26x[conf->vid.enc_type].output_csp));
+	//x264用のコード
+	//if (conf->vid.enc_type == ENC_TYPE_X264)
+	//	sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input-csp %s", specify_input_csp(prm.x264.output_csp));
 	//fps//tcfile-inが指定されていた場合、fpsの自動付加を停止
-	if (!prm.x26x[conf->vid.enc_type].use_tcfilein && strstr(cmd, "--tcfile-in") == NULL) {
+	if (!prm.x265.use_tcfilein && strstr(cmd, "--tcfile-in") == NULL) {
 		int gcd = get_gcd(oip->rate, oip->scale);
 		sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --fps %d/%d", oip->rate / gcd, oip->scale / gcd);
 	}
 	//出力ファイル
-	const char * const outfile = (prm.x26x[conf->vid.enc_type].nul_out) ? "nul" : pe->temp_filename;
+	const char * const outfile = (prm.x265.nul_out) ? "nul" : pe->temp_filename;
 	sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " -o \"%s\"", outfile);
 	//入力
 	sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " \"%s\"", input);
 }
 
 static void set_pixel_data(CONVERT_CF_DATA *pixel_data, const CONF_GUIEX *conf, int w, int h) {
-	const int byte_per_pixel = (8 < conf->x26x[conf->vid.enc_type].bit_depth) ? sizeof(short) : sizeof(BYTE);
+	const int byte_per_pixel = (8 < conf->x265.bit_depth) ? sizeof(short) : sizeof(BYTE);
 	ZeroMemory(pixel_data, sizeof(CONVERT_CF_DATA));
-	switch (conf->x26x[conf->vid.enc_type].output_csp) {
+	switch (conf->x265.output_csp) {
 		case OUT_CSP_NV16: //nv16 (YUV422)
 			pixel_data->count = 2;
 			pixel_data->size[0] = w * h * byte_per_pixel;
@@ -721,7 +670,7 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
 		}
 		flush_audio_log();
 		if (wait_for_audio_count > 10)
-			set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
+			set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
 
 		DWORD exit_code = 0;
 		//GetExitCodeThreadの返り値がNULLならエラー
@@ -735,15 +684,15 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
 
 static UINT64 get_amp_filesize_limit(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	UINT64 filesize_limit = MAXUINT64;
-	if (conf->x264.use_auto_npass) {
+	if (conf->x265.use_auto_npass) {
 		//上限ファイルサイズのチェック
-		if (conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_FILE_SIZE) {
-			filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp[conf->vid.enc_type].limit_file_size*1024*1024));
+		if (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) {
+			filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp_limit_file_size*1024*1024));
 		}
 		//上限ビットレートのチェック
-		if (conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_BITRATE) {
+		if (conf->vid.amp_check & AMPLIMIT_BITRATE) {
 			const double duration = get_duration(conf, sys_dat, pe, oip);
-			filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp[conf->vid.enc_type].limit_bitrate * 1000 / 8 * duration));
+			filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp_limit_bitrate * 1000 / 8 * duration));
 		}
 	}
 	//音声のサイズはここでは考慮しない
@@ -797,15 +746,15 @@ static void video_output_close_thread(video_output_thread_t *thread_data, AUO_RE
 	memset(thread_data, 0, sizeof(thread_data[0]));
 }
 
-static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
+static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
 	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	PIPE_SET pipes = { 0 };
 	PROCESS_INFORMATION pi_enc = { 0 };
 
-	char x26xcmd[MAX_CMD_LEN]  = { 0 };
-	char x26xargs[MAX_CMD_LEN] = { 0 };
-	char x26xdir[MAX_PATH_LEN] = { 0 };
-	char *x26xfullpath = (8 < conf->x26x[conf->vid.enc_type].bit_depth) ? sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath_highbit : sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath;
+	char x265cmd[MAX_CMD_LEN]  = { 0 };
+	char x265args[MAX_CMD_LEN] = { 0 };
+	char x265dir[MAX_PATH_LEN] = { 0 };
+	char *x265fullpath = (8 < conf->x265.bit_depth) ? sys_dat->exstg->s_x265.fullpath_highbit : sys_dat->exstg->s_x265.fullpath;
 	
 	const BOOL afs = conf->vid.afs != 0;
 	CONVERT_CF_DATA pixel_data = { 0 };
@@ -820,21 +769,21 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	DWORD set_priority = (pe->h_p_aviutl || conf->vid.priority != AVIUTLSYNC_PRIORITY_CLASS) ? priority_table[conf->vid.priority].value : NORMAL_PRIORITY_CLASS;
 
 	//プロセス用情報準備
-	if (!PathFileExists(x26xfullpath)) {
-		ret |= AUO_RESULT_ERROR; error_no_exe_file(X26X_NAME[conf->vid.enc_type], x26xfullpath);
+	if (!PathFileExists(x265fullpath)) {
+		ret |= AUO_RESULT_ERROR; error_no_exe_file("x265", x265fullpath);
 		return ret;
 	}
-	PathGetDirectory(x26xdir, _countof(x26xdir), x26xfullpath);
+	PathGetDirectory(x265dir, _countof(x265dir), x265fullpath);
 
     //YUY2/YC48->NV12/YUV444, RGBコピー用関数
-	const int input_csp_idx = get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48);
-	const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
+	const int input_csp_idx = get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48);
+	const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x265.bit_depth, conf->x265.interlaced, conf->x265.output_csp);
 	if (convert_frame == NULL) {
-		ret |= AUO_RESULT_ERROR; error_select_convert_func(oip->w, oip->h, conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].interlaced, conf->x26x[conf->vid.enc_type].output_csp);
+		ret |= AUO_RESULT_ERROR; error_select_convert_func(oip->w, oip->h, conf->x265.bit_depth, conf->x265.interlaced, conf->x265.output_csp);
 		return ret;
 	}
 	//映像バッファ用メモリ確保
-	if (!malloc_pixel_data(&pixel_data, oip->w, oip->h, conf->x26x[conf->vid.enc_type].output_csp, conf->x26x[conf->vid.enc_type].bit_depth)) {
+	if (!malloc_pixel_data(&pixel_data, oip->w, oip->h, conf->x265.output_csp, conf->x265.bit_depth)) {
 		ret |= AUO_RESULT_ERROR; error_malloc_pixel_data();
 		return ret;
 	}
@@ -842,27 +791,27 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	//パイプの設定
 	pipes.stdIn.mode = AUO_PIPE_ENABLE;
 	pipes.stdErr.mode = AUO_PIPE_ENABLE;
-	pipes.stdOut.mode = (ENC_TYPE_X265 == conf->vid.enc_type) ? AUO_PIPE_ENABLE : AUO_PIPE_DISABLE;
+	pipes.stdOut.mode = AUO_PIPE_ENABLE;
 	pipes.stdIn.bufferSize = pixel_data.total_size * 2;
 	const func_read_log_enc ReadLogEnc = read_log_enc_list[((!!pipes.stdErr.mode)<<1) + !!pipes.stdOut.mode];
 
 	//x264/x265のバージョン情報表示・チェック
-	if (!sys_dat->exstg->s_local.disable_x26x_version_check
-		&& AUO_RESULT_ERROR == write_encoder_version[conf->vid.enc_type](x26xfullpath)) {
+	if (!sys_dat->exstg->s_local.disable_x265_version_check
+		&& AUO_RESULT_ERROR == write_log_x265_version(x265fullpath)) {
 		return (ret | AUO_RESULT_ERROR);
 	}
 
 	//コマンドライン生成
-	build_full_cmd(x26xcmd, _countof(x26xcmd), conf, oip, pe, sys_dat, PIPE_FN);
-	write_log_auo_line_fmt(LOG_INFO, "%s options...", X26X_NAME[conf->vid.enc_type]);
-	write_args(x26xcmd);
-	sprintf_s(x26xargs, _countof(x26xargs), "\"%s\" %s", x26xfullpath, x26xcmd);
+	build_full_cmd(x265cmd, _countof(x265cmd), conf, oip, pe, sys_dat, PIPE_FN);
+	write_log_auo_line_fmt(LOG_INFO, "%s options...", "x265");
+	write_args(x265cmd);
+	sprintf_s(x265args, _countof(x265args), "\"%s\" %s", x265fullpath, x265cmd);
 	remove(pe->temp_filename); //ファイルサイズチェックの時に旧ファイルを参照してしまうのを回避
 
 	//エンコードするフレーム数
 	const int frames_to_enc = get_frame_num_to_encode(oip->n, pe);
 	
-	if (conf->vid.afs && conf->x26x[conf->vid.enc_type].interlaced) {
+	if (conf->vid.afs && conf->x265.interlaced) {
 		ret |= AUO_RESULT_ERROR; error_afs_interlace_stg();
 	//jitter用領域確保
 	} else if ((jitter = (int *)calloc(frames_to_enc + 1, sizeof(int))) == NULL) {
@@ -870,9 +819,9 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	//Aviutl(afs)からのフレーム読み込み
 	} else if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
 		ret |= AUO_RESULT_ERROR; //Aviutl(afs)からのフレーム読み込みに失敗
-	//x26xプロセス開始
-	} else if ((rp_ret = RunProcess(x26xargs, x26xdir, &pi_enc, &pipes, (set_priority == AVIUTLSYNC_PRIORITY_CLASS) ? GetPriorityClass(pe->h_p_aviutl) : set_priority, TRUE, FALSE)) != RP_SUCCESS) {
-		ret |= AUO_RESULT_ERROR; error_run_process(X26X_NAME[conf->vid.enc_type], rp_ret);
+	//x265プロセス開始
+	} else if ((rp_ret = RunProcess(x265args, x265dir, &pi_enc, &pipes, (set_priority == AVIUTLSYNC_PRIORITY_CLASS) ? GetPriorityClass(pe->h_p_aviutl) : set_priority, TRUE, FALSE)) != RP_SUCCESS) {
+		ret |= AUO_RESULT_ERROR; error_run_process("x265", rp_ret);
 	//書き込みスレッドを開始
 	} else if (video_output_create_thread(&thread_data, &pixel_data, pipes.f_stdin)) {
 		ret |= AUO_RESULT_ERROR; error_video_output_thread_start();
@@ -884,7 +833,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		int *next_jitter = NULL;
 		UINT64 amp_filesize_limit = (UINT64)(1.02 * get_amp_filesize_limit(conf, oip, pe, sys_dat));
 		BOOL enc_pause = FALSE, copy_frame = FALSE, drop = FALSE;
-		const DWORD aviutl_color_fmt = COLORFORMATS[get_aviutl_color_format(conf->x26x[conf->vid.enc_type].bit_depth, conf->x26x[conf->vid.enc_type].output_csp, conf->vid.input_as_lw48)].FOURCC;
+		const DWORD aviutl_color_fmt = COLORFORMATS[get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48)].FOURCC;
 
 		//x26xが待機に入るまでこちらも待機
 		while (WaitForInputIdle(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
@@ -906,7 +855,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 			//x26xが実行中なら、メッセージを取得・ログウィンドウに表示
 			if (ReadLogEnc(&pipes, pe->drop_count, i) < 0) {
 				//勝手に死んだ...
-				ret |= AUO_RESULT_ERROR; error_x26x_dead(conf->vid.enc_type);
+				ret |= AUO_RESULT_ERROR; error_x265_dead();
 				break;
 			}
 
@@ -1013,7 +962,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		if (!(ret & AUO_RESULT_ERROR) && afs)
 			write_log_auo_line_fmt(LOG_INFO, "drop %d / %d frames", pe->drop_count, i);
 
-		write_log_auo_enc_time((conf->vid.enc_type == ENC_TYPE_X264) ? "x264エンコード時間" : "x265エンコード時間", tm_vid_enc_fin - tm_vid_enc_start);
+		write_log_auo_enc_time("x265エンコード時間", tm_vid_enc_fin - tm_vid_enc_start);
 	}
 
 	//解放処理
@@ -1030,7 +979,7 @@ static AUO_RESULT x26x_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	return ret;
 }
 
-BOOL check_x264_mp4_output(const char *exe_path, const char *temp_filename) {
+BOOL check_x265_mp4_output(const char *exe_path, const char *temp_filename) {
 	BOOL ret = FALSE;
 	std::string exe_message;
 	PROCESS_INFORMATION pi = { 0 };
@@ -1110,9 +1059,9 @@ BOOL check_x264_mp4_output(const char *exe_path, const char *temp_filename) {
 }
 
 
-static void set_window_title_x26x(const PRM_ENC *pe, BOOL enc_type) {
+static void set_window_title_x265(const PRM_ENC *pe) {
 	char mes[256] = { 0 };
-	strcpy_s(mes, _countof(mes), (enc_type == ENC_TYPE_X264) ? "x264エンコード" : "x265エンコード");
+	strcpy_s(mes, _countof(mes), "x265エンコード");
 	if (pe->total_pass > 1)
 		sprintf_s(mes + strlen(mes), _countof(mes) - strlen(mes), "   %d / %d pass", pe->current_pass, pe->total_pass);
 	if (pe->aud_parallel.th_aud)
@@ -1121,10 +1070,10 @@ static void set_window_title_x26x(const PRM_ENC *pe, BOOL enc_type) {
 }
 
 static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
-	if (!conf->vid.amp[conf->vid.enc_type].check)
+	if (!conf->vid.amp_check)
 		return AUO_RESULT_SUCCESS;
 
-	if ((!(conf->x26x[conf->vid.enc_type].use_auto_npass && conf->x26x[conf->vid.enc_type].rc_mode == X26X_RC_BITRATE)))
+	if ((!(conf->x265.use_auto_npass && conf->x265.rc_mode == X265_RC_BITRATE)))
 		return AUO_RESULT_SUCCESS;
 
 	//音声ファイルサイズ取得
@@ -1133,7 +1082,7 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
 	UINT64 aud_filesize = 0;
 	if (oip->flag & OUTPUT_INFO_FLAG_AUDIO) {
 		if (!str_has_char(pe->append.aud[0])) { //音声エンコがまだ終了していない
-			info_amp_do_aud_enc_first(conf->vid.amp[conf->vid.enc_type].check);
+			info_amp_do_aud_enc_first(conf->vid.amp_check);
 			return AUO_RESULT_ABORT; //音声エンコを先にやるべく、動画エンコを終了する
 		}
 		for (int i_aud = 0; i_aud < pe->aud_count; i_aud++) {
@@ -1150,14 +1099,14 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
 			}
 			aud_filesize += filesize_tmp;
 		}
-		if ((conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_FILE_SIZE) && 
-			aud_filesize >= conf->vid.amp[conf->vid.enc_type].limit_file_size * 1024 * 1024) {
+		if ((conf->vid.amp_check & AMPLIMIT_FILE_SIZE) && 
+			aud_filesize >= conf->vid.amp_limit_file_size * 1024 * 1024) {
 			error_amp_aud_too_big(AMPLIMIT_FILE_SIZE);
 			return AUO_RESULT_ERROR;
 		}
 		aud_bitrate = aud_filesize * 8.0 / 1000.0 / duration;
-		if ((conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_BITRATE) &&
-			aud_bitrate >= conf->vid.amp[conf->vid.enc_type].limit_bitrate) {
+		if ((conf->vid.amp_check & AMPLIMIT_BITRATE) &&
+			aud_bitrate >= conf->vid.amp_limit_bitrate) {
 			error_amp_aud_too_big(AMPLIMIT_BITRATE);
 			return AUO_RESULT_ERROR;
 		}
@@ -1166,14 +1115,14 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
 	DWORD target_limit = NULL; //上限ファイルサイズと上限ビットレートどちらによる制限か
 	double required_file_bitrate = DBL_MAX;
 	//上限ファイルサイズのチェック
-	if (conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_FILE_SIZE) {
-		required_file_bitrate = conf->vid.amp[conf->vid.enc_type].limit_file_size*1024*1024 * 8.0/1000.0 / duration; //動画に割り振ることのできる最大ビットレート
+	if (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) {
+		required_file_bitrate = conf->vid.amp_limit_file_size*1024*1024 * 8.0/1000.0 / duration; //動画に割り振ることのできる最大ビットレート
 		target_limit = AMPLIMIT_FILE_SIZE;
 	}
 	//上限ビットレートのチェック
-	if ((conf->vid.amp[conf->vid.enc_type].check & AMPLIMIT_BITRATE) &&
-		required_file_bitrate > conf->vid.amp[conf->vid.enc_type].limit_bitrate) {
-		required_file_bitrate = conf->vid.amp[conf->vid.enc_type].limit_bitrate;
+	if ((conf->vid.amp_check & AMPLIMIT_BITRATE) &&
+		required_file_bitrate > conf->vid.amp_limit_bitrate) {
+		required_file_bitrate = conf->vid.amp_limit_bitrate;
 		target_limit = AMPLIMIT_BITRATE;
 	}
 	double required_vid_bitrate = get_amp_margin_bitrate(required_file_bitrate - aud_bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi);
@@ -1183,11 +1132,11 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
 		return AUO_RESULT_ERROR;
 	}
 	//計算されたビットレートが目標ビットレートを上回っていたら、目標ビットレートを変更する
-	//conf->x26x[conf->vid.enc_type].bitrate = -1は自動であるが、
+	//conf->x265.bitrate = -1は自動であるが、
 	//これをDWORDとして扱うことでUINT_MAX扱いとし、自動的に反映する
-	if (required_vid_bitrate < (double)((DWORD)conf->x26x[conf->vid.enc_type].bitrate)) {
-		warning_amp_change_bitrate(conf->x26x[conf->vid.enc_type].bitrate, (int)(required_vid_bitrate + 0.5), target_limit);
-		conf->x26x[conf->vid.enc_type].bitrate = (int)(required_vid_bitrate + 0.5);
+	if (required_vid_bitrate < (double)((DWORD)conf->x265.bitrate)) {
+		warning_amp_change_bitrate(conf->x265.bitrate, (int)(required_vid_bitrate + 0.5), target_limit);
+		conf->x265.bitrate = (int)(required_vid_bitrate + 0.5);
 	}
 	return AUO_RESULT_SUCCESS;
 }
@@ -1212,46 +1161,46 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
 		if (!ret && conf->vid.check_keyframe && strstr(conf->vid.cmdex, "--qpfile") == NULL)
 			set_keyframe(conf, oip, pe, sys_dat);
 
-		if (ENC_TYPE_X265 == conf->vid.enc_type) {
+#if 1
+		//一時ファイルの拡張子を変更
+		change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
+		//まだNV12には非対応
+		if (conf->x265.output_csp == OUT_CSP_NV12) conf->x265.output_csp = OUT_CSP_YV12;
+		if (conf->x265.output_csp == OUT_CSP_NV16) conf->x265.output_csp = OUT_CSP_YUV422;
+#else
+		const char *x265fullpath = (8 < conf->x265.bit_depth) ? sys_dat->exstg->s_x265.fullpath_highbit : sys_dat->exstg->s_x265.fullpath;
+		if (!check_x265_mp4_output(x265fullpath, pe->temp_filename)) {
 			//一時ファイルの拡張子を変更
 			change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
-			//まだNV12には非対応
-			if (conf->x265.output_csp == OUT_CSP_NV12) conf->x265.output_csp = OUT_CSP_YV12;
-			if (conf->x265.output_csp == OUT_CSP_NV16) conf->x265.output_csp = OUT_CSP_YUV422;
-		} else {
-			char *x26xfullpath = (8 < conf->x26x[conf->vid.enc_type].bit_depth) ? sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath_highbit : sys_dat->exstg->s_x26x[conf->vid.enc_type].fullpath;
-			if (!check_x264_mp4_output(x26xfullpath, pe->temp_filename)) {
-				//一時ファイルの拡張子を変更
-				change_ext(pe->temp_filename, _countof(pe->temp_filename), ".264");
-				warning_x264_mp4_output_not_supported();
-			}
+			warning_x265_mp4_output_not_supported();
 		}
+#endif
 	}
 
 	for (; !ret && pe->current_pass <= pe->total_pass; pe->current_pass++) {
-		if (conf->x26x[conf->vid.enc_type].use_auto_npass) {
+		if (conf->x265.use_auto_npass) {
 			//自動npass出力
 			switch (pe->current_pass) {
 				case 1:
-					conf->x26x[conf->vid.enc_type].pass = 1;
+					conf->x265.pass = 1;
 					break;
 				case 2:
 					if (conf->vid.afs && conf->vid.afs_bitrate_correction)
-						conf->x26x[conf->vid.enc_type].bitrate = (conf->x26x[conf->vid.enc_type].bitrate * oip->n) / (oip->n - pe->drop_count);
+						conf->x265.bitrate = (conf->x265.bitrate * oip->n) / (oip->n - pe->drop_count);
 					//下へフォールスルー
 				default:
 					open_log_window(oip->savefile, pe->current_pass, pe->total_pass);
 					if (pe->current_pass == pe->total_pass)
-						conf->x26x[conf->vid.enc_type].nul_out = FALSE;
-					conf->x26x[conf->vid.enc_type].pass = 3;
+						conf->x265.nul_out = FALSE;
+					conf->x265.pass = 3;
 					break;
 			}
 		}
-		set_window_title_x26x(pe, conf->vid.enc_type);
-		ret |= x26x_out(conf, oip, pe, sys_dat);
+		set_window_title_x265(pe);
+		ret |= x265_out(conf, oip, pe, sys_dat);
 	}
 
-	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
+	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
 	return ret;
 }
 

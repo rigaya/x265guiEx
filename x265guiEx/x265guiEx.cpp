@@ -48,16 +48,15 @@ static CONF_GUIEX conf;
 static SYSTEM_DATA sys_dat = { 0 };
 static char auo_filefilter[1024] = { 0 };
 static char auo_path[MAX_PATH_LEN] = { 0 };
-static int default_enc_type = ENC_TYPE_X264; //auoのファイル名からどちらがデフォルトかを決定
 
 //---------------------------------------------------------------------
 //		出力プラグイン構造体定義
 //---------------------------------------------------------------------
 OUTPUT_PLUGIN_TABLE output_plugin_table = {
 	NULL,                         // フラグ
-	AUO_FULL_NAME_X264,           // プラグインの名前
+	AUO_FULL_NAME,                // プラグインの名前
 	AUO_EXT_FILTER,               // 出力ファイルのフィルタ
-	AUO_VERSION_INFO_X264,        // プラグインの情報
+	AUO_VERSION_INFO,             // プラグインの情報
 	func_init,                    // DLL開始時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 	func_exit,                    // DLL終了時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 	func_output,                  // 出力時に呼ばれる関数へのポインタ
@@ -65,30 +64,6 @@ OUTPUT_PLUGIN_TABLE output_plugin_table = {
 	func_config_get,              // 出力設定データを取得する時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 	func_config_set,              // 出力設定データを設定する時に呼ばれる関数へのポインタ (NULLなら呼ばれません)
 };
-
-//---------------------------------------------------------------------
-//		エントリポイント
-//---------------------------------------------------------------------
-#pragma warning( push )
-#pragma warning( disable: 4100 ) //C4100 : 引数は関数の本体部で 1 度も参照されません。
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
-{
-	if (fdwReason == DLL_PROCESS_ATTACH) {
-		//auoファイル名からx264モードか、x265モードかを決定する
-		GetModuleFileName(hinstDLL, auo_path, _countof(auo_path));
-		const char *dll_name = PathFindFileName(auo_path);
-		default_enc_type = (NULL != stristr(dll_name, "x264guiEx")) ? ENC_TYPE_X264 : ENC_TYPE_X265;
-		auo_name         = (default_enc_type == ENC_TYPE_X264) ? AUO_NAME_X264         : AUO_NAME_X265;
-		auo_name_w       = (default_enc_type == ENC_TYPE_X264) ? AUO_NAME_X264_W       : AUO_NAME_X265_W;
-		auo_full_name    = (default_enc_type == ENC_TYPE_X264) ? AUO_FULL_NAME_X264    : AUO_FULL_NAME_X265;
-		auo_version_name = (default_enc_type == ENC_TYPE_X264) ? AUO_VERSION_NAME_X264 : AUO_VERSION_NAME_X265;
-		auo_version_info = (default_enc_type == ENC_TYPE_X264) ? AUO_VERSION_INFO_X264 : AUO_VERSION_INFO_X265;
-		output_plugin_table.name        = (char *)auo_full_name;
-		output_plugin_table.information = (char *)auo_version_info;
-	}
-	return TRUE;
-}
-#pragma warning( pop )
 
 //---------------------------------------------------------------------
 //		出力プラグイン構造体のポインタを渡す関数
@@ -289,9 +264,7 @@ void delete_SYSTEM_DATA(SYSTEM_DATA *_sys_dat) {
 void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
 	ZeroMemory(conf, sizeof(CONF_GUIEX));
 	guiEx_config::write_conf_header(conf);
-	for (int i_enctype = 0; i_enctype < 2; i_enctype++)
-		get_default_conf(&conf->x26x[i_enctype], use_highbit, i_enctype);
-	conf->vid.enc_type = default_enc_type;
+	get_default_conf(&conf->x265, use_highbit);
 	conf->aud.encoder = sys_dat.exstg->s_local.default_audio_encoder;
 	conf->size_all = CONF_INITIALIZED;
 }
@@ -305,10 +278,10 @@ void get_aviutl_dir(WCHAR *aviutl_dir, size_t nSize) {
 	PathRemoveFileSpecFixed(aviutl_dir);
 }
 void get_auo_path(char *auo_path, size_t nSize) {
-	GetModuleFileNameA(GetModuleHandleA(auo_name), auo_path, (DWORD)nSize);
+	GetModuleFileNameA(GetModuleHandleA(AUO_NAME), auo_path, (DWORD)nSize);
 }
 void get_auo_path(WCHAR *auo_path, size_t nSize) {
-	GetModuleFileNameW(GetModuleHandleW(auo_name_w), auo_path, (DWORD)nSize);
+	GetModuleFileNameW(GetModuleHandleW(AUO_NAME_W), auo_path, (DWORD)nSize);
 }
 void write_log_line_fmt(int log_type_index, const char *format, ...) {
 	va_list args;
@@ -389,21 +362,21 @@ static BOOL check_muxer_matched_with_ini() {
 
 static BOOL check_amp() {
 	BOOL check = TRUE;
-	if (!conf.x26x[conf.vid.enc_type].use_auto_npass)
+	if (!conf.x265.use_auto_npass)
 		return check;
-	if (conf.vid.amp[conf.vid.enc_type].check & AMPLIMIT_BITRATE) {
-		//if (conf.x264.bitrate > conf.vid.amp[conf.vid.enc_type].limit_bitrate) {
+	if (conf.vid.amp_check & AMPLIMIT_BITRATE) {
+		//if (conf.x264.bitrate > conf.vid.amp_limit_bitrate) {
 		//	check = FALSE; error_amp_bitrate_confliction();
-		//} else if (conf.vid.amp[conf.vid.enc_type].limit_bitrate <= 0.0)
+		//} else if (conf.vid.amp_limit_bitrate <= 0.0)
 		//	conf.vid.amp_check &= ~AMPLIMIT_BITRATE; //フラグを折る
-		if (conf.vid.amp[conf.vid.enc_type].limit_bitrate <= 0.0)
-			conf.vid.amp[conf.vid.enc_type].check &= ~AMPLIMIT_BITRATE; //フラグを折る
+		if (conf.vid.amp_limit_bitrate <= 0.0)
+			conf.vid.amp_check &= ~AMPLIMIT_BITRATE; //フラグを折る
 	}
-	if (conf.vid.amp[conf.vid.enc_type].check & AMPLIMIT_FILE_SIZE) {
-		if (conf.vid.amp[conf.vid.enc_type].limit_file_size <= 0.0)
-			conf.vid.amp[conf.vid.enc_type].check &= ~AMPLIMIT_FILE_SIZE; //フラグを折る
+	if (conf.vid.amp_check & AMPLIMIT_FILE_SIZE) {
+		if (conf.vid.amp_limit_file_size <= 0.0)
+			conf.vid.amp_check &= ~AMPLIMIT_FILE_SIZE; //フラグを折る
 	}
-	if (conf.vid.amp[conf.vid.enc_type].check && conf.vid.afs && AUDIO_DELAY_CUT_ADD_VIDEO == conf.aud.delay_cut) {
+	if (conf.vid.amp_check && conf.vid.afs && AUDIO_DELAY_CUT_ADD_VIDEO == conf.aud.delay_cut) {
 		check = FALSE; error_amp_afs_audio_delay_confliction();
 	}
 	return check;
@@ -420,7 +393,7 @@ static BOOL check_output(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
 
 	//解像度
 	int w_mul = 1, h_mul = 1;
-	switch (conf.x26x[conf.vid.enc_type].output_csp) {
+	switch (conf.x265.output_csp) {
 		case OUT_CSP_YUV444:
 		case OUT_CSP_RGB:
 			w_mul = 1, h_mul = 1; break;
@@ -431,7 +404,7 @@ static BOOL check_output(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
 		default:
 			w_mul = 2; h_mul = 2; break;
 	}
-	if (conf.x26x[conf.vid.enc_type].interlaced) h_mul *= 2;
+	if (conf.x265.interlaced) h_mul *= 2;
 	if (oip->w % w_mul) {
 		error_invalid_resolution(TRUE,  w_mul, oip->w, oip->h);
 		check = FALSE;
@@ -452,9 +425,9 @@ static BOOL check_output(const OUTPUT_INFO *oip, const PRM_ENC *pe) {
 
 	//必要な実行ファイル
 	if (!conf.oth.disable_guicmd) {
-		const char *x26xfullpath = (8 < conf.x26x[conf.vid.enc_type].bit_depth) ? sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath_highbit : sys_dat.exstg->s_x26x[conf.vid.enc_type].fullpath;
-		if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(x26xfullpath)) {
-			error_no_exe_file((conf.vid.enc_type == ENC_TYPE_X264) ? "x264.exe" : "x265.exe", x26xfullpath);
+		const char *x265fullpath = (8 < conf.x265.bit_depth) ? sys_dat.exstg->s_x265.fullpath_highbit : sys_dat.exstg->s_x265.fullpath;
+		if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(x265fullpath)) {
+			error_no_exe_file("x265.exe", x265fullpath);
 			check = FALSE;
 		}
 	}
@@ -543,10 +516,10 @@ static void set_tmpdir(PRM_ENC *pe, int tmp_dir_index, const char *savefile) {
 }
 
 static int get_total_path() {
-	return (conf.x26x[conf.vid.enc_type].use_auto_npass
-		 && conf.x26x[conf.vid.enc_type].rc_mode == X26X_RC_BITRATE
+	return (conf.x265.use_auto_npass
+		 && conf.x265.rc_mode == X265_RC_BITRATE
 		 && !conf.oth.disable_guicmd)
-		 ? conf.x26x[conf.vid.enc_type].auto_npass : 1;
+		 ? conf.x265.auto_npass : 1;
 }
 
 static void set_aud_delay_cut(PRM_ENC *pe, const OUTPUT_INFO *oip) {
@@ -641,7 +614,7 @@ void overwrite_aviutl_ini_file_filter(int idx) {
 	
 	char filefilter_ini[1024] = { 0 };
 	make_file_filter(filefilter_ini, _countof(filefilter_ini), idx);
-	WritePrivateProfileString(auo_name, "filefilter", filefilter_ini, ini_file);
+	WritePrivateProfileString(AUO_NAME, "filefilter", filefilter_ini, ini_file);
 }
 
 void make_file_filter(char *filter, size_t nSize, int default_index) {
@@ -696,7 +669,7 @@ int create_auoSetup(const char *exePath) {
 	const char *pDataPtr = NULL;
 	DWORD resourceSize = 0;
 	FILE *fp = NULL;
-	HMODULE hModule = GetModuleHandleA(auo_name);
+	HMODULE hModule = GetModuleHandleA(AUO_NAME);
 	if (   NULL == (hResource = FindResource(hModule, "AUOSETUP", "EXE_DATA"))
 		|| NULL == (hResourceData = LoadResource(hModule, hResource))
 		|| NULL == (pDataPtr = (const char *)LockResource(hResourceData))

@@ -109,7 +109,7 @@ AUO_RESULT run_bat_file(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PR
 		while (WaitForSingleObject(pi_bat.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
 			log_process_events();
 
-	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
+	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
 
 	return ret;
 }

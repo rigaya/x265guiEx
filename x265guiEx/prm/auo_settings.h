@@ -35,7 +35,7 @@ static const double DEFAULT_AMP_REENC_AUDIO_MULTI = 0.10;
 static const BOOL   DEFAULT_AMP_KEEP_OLD_FILE     = 0;
 static const BOOL   DEFAULT_RUN_BAT_MINIMIZED     = 0;
 static const BOOL   DEFAULT_SET_KEYFRAME_AFS24FPS = 0;
-static const BOOL   DEFAULT_DISABLE_X26X_VERCHECK = 0;
+static const BOOL   DEFAULT_DISABLE_X265_VERCHECK = 0;
 static const BOOL   DEFAULT_AUTO_REFLIMIT_BYLEVEL = 0;
 static const BOOL   DEFAULT_USE_PROCESS_PARALLEL  = 0;
 static const int    DEFAULT_PROCESS_PARALLEL_MODE = 0;
@@ -65,10 +65,10 @@ static const double DEFAULT_FBC_LAST_FPS             = 29.970;
 static const int    DEFAULT_FBC_LAST_TIME_IN_SEC     = 0;
 static const double DEFAULT_FBC_INITIAL_SIZE         = 39.8;
 
-typedef struct X26X_OPTION_STR {
+typedef struct X265_OPTION_STR {
 	char *name; //x26xでのオプション名
 	WCHAR *desc; //GUIでの表示用
-} X26X_OPTION_STR;
+} X265_OPTION_STR;
 
 const int FAW_INDEX_ERROR = -1;
 
@@ -188,12 +188,12 @@ typedef struct MUXER_SETTINGS {
 	int post_mux;                 //muxerを実行したあとに別のmuxerを実行する
 } MUXER_SETTINGS;
 
-typedef struct X26X_CMD {
-	X26X_OPTION_STR *name;  //各種設定用x264コマンドの名前(配列、最後はnull)
+typedef struct X265_CMD {
+	X265_OPTION_STR *name;  //各種設定用x264コマンドの名前(配列、最後はnull)
 	char **cmd;   //各種設定用x264コマンド(配列、最後はnull)
-} X26X_CMD;
+} X265_CMD;
 
-typedef struct X26X_SETTINGS {
+typedef struct X265_SETTINGS {
 	char *filename;                      //x264のファイル名
 	char fullpath[MAX_PATH_LEN];         //x264の場所(フルパス)
 	char fullpath_highbit[MAX_PATH_LEN]; //x264の場所(フルパス) highbit用
@@ -206,11 +206,11 @@ typedef struct X26X_SETTINGS {
 	int default_preset;                  //デフォルトpresetのインデックス
 	int default_tune;                    //デフォルトtuneのインデックス
 	int default_profile;                 //デフォルトprofileのインデックス
-	X26X_CMD preset;                     //presetコマンドライン集
-	X26X_CMD tune;                       //tuneコマンドライン集
-	X26X_CMD profile;                    //profileコマンドライン集
+	X265_CMD preset;                     //presetコマンドライン集
+	X265_CMD tune;                       //tuneコマンドライン集
+	X265_CMD profile;                    //profileコマンドライン集
 	float *profile_vbv_multi;            //profileによるvbv倍率
-} X26X_SETTINGS;
+} X265_SETTINGS;
 
 typedef struct FILENAME_REPLACE {
 	char *from; //置換元文字列
@@ -265,7 +265,7 @@ typedef struct LOCAL_SETTINGS {
 	BOOL   get_relative_path;                   //相対パスで保存する
 	BOOL   run_bat_minimized;                   //エンコ前後バッチ処理を最小化で実行
 	BOOL   set_keyframe_as_afs_24fps;           //自動フィールドシフト使用時にも24fps化としてキーフレーム設定を強制的に行う
-	BOOL   disable_x26x_version_check;          //x264/x265実行ファイルのバージョンチェックを行わない
+	BOOL   disable_x265_version_check;          //x264/x265実行ファイルのバージョンチェックを行わない
 	BOOL   auto_ref_limit_by_level;             //参照フレーム数をLevelにより自動的に制限する
 	BOOL   enable_process_parallel;             //プロセス並列を有効にする
 	int    process_parallel_mode;               //プロセス並列の方式
@@ -289,7 +289,7 @@ typedef struct FILE_APPENDIX {
 
 class guiEx_settings {
 private:
-	mem_cutter s_x26x_mc;
+	mem_cutter s_x265_mc;
 	mem_cutter fn_rep_mc;
 	mem_cutter s_aud_mc;
 	mem_cutter s_mux_mc;
@@ -301,19 +301,20 @@ private:
 	static char  conf_fileName[MAX_PATH_LEN]; //configファイル(読み書き用)の場所
 	static DWORD ini_filesize;                //iniファイル(読み込み用)のサイズ
 
-	void load_x26x_cmd(X26X_CMD *x264cmd, int *count, int *default_index, const char *section);  //x264コマンドライン設定の読み込み
-	void clear_x26x_cmd(X26X_CMD *x264cmd, int count);                                           //x264コマンドライン設定の消去
+	void load_x265_cmd(X265_CMD *x265cmd, int *count, int *default_index, const char *section);  //x264コマンドライン設定の読み込み
+	void clear_x265_cmd(X265_CMD *x265cmd, int count);                                           //x264コマンドライン設定の消去
 
 	void load_aud();          //音声エンコーダ関連の設定の読み込み・更新
 	void load_mux();          //muxerの設定の読み込み・更新
-	void load_x26x();         //x264/x265関連の設定の読み込み・更新
+	void load_x265();         //x265関連の設定の読み込み・更新
 	void load_local();        //ファイルの場所等の設定の読み込み・更新
 
 	int get_faw_index();             //FAWのインデックスを取得する
-	BOOL s_x26x_refresh;             //x26x設定の再ロード
+	BOOL s_x265_refresh;             //x26x設定の再ロード
 
 	void make_default_stg_dir(char *default_stg_dir, DWORD nSize); //プロファイル設定ファイルの保存場所の作成
-	BOOL check_inifile();            //iniファイルが読めるかテスト
+	BOOL check_inifile();             //iniファイルが読めるかテスト
+	void convert_conf_if_necessary(); //x265guiExβのconfファイルからx265guiExのconfファイルに変換
 
 public:
 	static char blog_url[MAX_PATH_LEN];      //ブログページのurl
@@ -321,13 +322,7 @@ public:
 	int s_mux_count;                 //muxerの数 (基本3固定)
 	AUDIO_SETTINGS *s_aud;           //音声エンコーダの設定
 	MUXER_SETTINGS *s_mux;           //muxerの設定
-	union {
-		X26X_SETTINGS s_x26x[2];     //配列としてもアクセス可能に
-		struct {
-			X26X_SETTINGS  s_x264;   //x264関連の設定
-			X26X_SETTINGS  s_x265;   //x265関連の設定
-		};
-	};
+	X265_SETTINGS  s_x265;           //x265関連の設定
 	LOCAL_SETTINGS s_local;          //ファイルの場所等
 	std::vector<FILENAME_REPLACE> fn_rep;  //一時ファイル名置換
 	LOG_WINDOW_SETTINGS s_log;       //ログウィンドウ関連の設定
@@ -355,7 +350,7 @@ public:
 
 	void apply_fn_replace(char *target_filename, DWORD nSize);  //一時ファイル名置換の適用
 
-	BOOL get_reset_s_x26x_referesh(); //s_x264が更新されたか
+	BOOL get_reset_s_x265_referesh(); //s_x265が更新されたか
 
 private:
 	void initialize(BOOL disable_loading);
@@ -363,7 +358,7 @@ private:
 
 	void clear_aud();         //音声エンコーダ関連の設定の消去
 	void clear_mux();         //muxerの設定の消去
-	void clear_x26x();        //x264/x265関連の設定の消去
+	void clear_x265();        //x265関連の設定の消去
 	void clear_local();       //ファイルの場所等の設定の消去
 	void clear_fn_replace();  //一時ファイル名置換等の消去
 	void clear_log_win();     //ログウィンドウ等の設定の消去

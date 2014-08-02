@@ -28,12 +28,12 @@ enum {
 	RUN_BAT_BEFORE = 0x02,
 };
 
-static const char *const CONF_NAME_OLD_X264 = "x264guiEx ConfigFile";
-static const char *const CONF_NAME_OLD_X265 = "x265guiEx ConfigFile";
-static const char *const CONF_NAME     = "x264/x265guiEx ConfigFile";
+static const char *const CONF_NAME_OLD1 = "x265guiEx ConfigFile";
+static const char *const CONF_NAME_OLD2 = "x264/x265guiEx ConfigFile";
+static const char *const CONF_NAME     = "x265guiEx ConfigFile v2";
 const int CONF_NAME_BLOCK_LEN          = 32;
 const int CONF_BLOCK_MAX               = 32;
-const int CONF_BLOCK_COUNT             = 6; //最大 CONF_BLOCK_MAXまで
+const int CONF_BLOCK_COUNT             = 5; //最大 CONF_BLOCK_MAXまで
 const int CONF_HEAD_SIZE               = (3 + CONF_BLOCK_MAX) * sizeof(int) + CONF_BLOCK_MAX * sizeof(size_t) + CONF_NAME_BLOCK_LEN;
 
 enum {
@@ -63,13 +63,6 @@ enum {
 };
 
 typedef struct {
-	DWORD check;            //チェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
-	double limit_file_size; //ファイルサイズ制限(MB)
-	double limit_bitrate;   //ビットレート制限(kbps)
-} CONF_AMP;
-
-typedef struct {
-	int    enc_type;                 //x264/x265の選択 ENC_TYPE_X264 or ENC_TYPE_X265
 	BOOL   afs;                      //自動フィールドシフトの使用
 	BOOL   afs_bitrate_correction;   //afs & 2pass時、ドロップ数に応じてビットレートを補正
 	BOOL   auo_tcfile_out;           //auo側でタイムコードを出力する
@@ -79,15 +72,9 @@ typedef struct {
 	char   tcfile_in[MAX_PATH_LEN];  //x264 tcfile-in用タイムコードファイルの場所
 	char   cqmfile[MAX_PATH_LEN];    //x264 cqmfileの場所
 	char   cmdex[CMDEX_MAX_LEN];     //追加コマンドライン
-
-	//配列としてもアクセスできるようにする
-	union {
-		CONF_AMP amp[2];
-		struct {
-			CONF_AMP amp_x264;       //自動マルチパス時
-			CONF_AMP amp_x265;       //自動マルチパス時
-		};
-	};
+	DWORD  amp_check;                //自動マルチパス時のチェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
+	double amp_limit_file_size;      //自動マルチパス時のファイルサイズ制限(MB)
+	double amp_limit_bitrate;        //自動マルチパス時のビットレート制限(kbps)
 	BOOL   input_as_lw48;            //LW48モード
 	char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
 } CONF_VIDEO; //動画用設定(x264以外)
@@ -138,13 +125,7 @@ typedef struct CONF_GUIEX {
 	int         block_size[CONF_BLOCK_MAX];      //各ブロックのサイズ
 	size_t      block_head_p[CONF_BLOCK_MAX];    //各ブロックのポインタ位置
 	CONF_VIDEO  vid;                             //その他動画についての設定
-	union {
-		CONF_X26X x26x[2];                       //配列によるアクセス (sizeof(CONF_X26X) == sizeof(CONF_X264))
-		struct {
-			CONF_X264 x264;                      //x264の設定
-			CONF_X265 x265;                      //x265の設定
-		};
-	};
+	CONF_X265   x265;                            //x265の設定
 	CONF_AUDIO  aud;                             //音声についての設定
 	CONF_MUX    mux;                             //muxについての設定
 	CONF_OTHER  oth;                             //その他の設定
@@ -154,7 +135,7 @@ class guiEx_config {
 private:
 	static const size_t conf_block_pointer[CONF_BLOCK_COUNT];
 	static const int conf_block_data[CONF_BLOCK_COUNT];
-	static void convert_x264stg_to_x265stg(CONF_GUIEX *conf, const BYTE *dat);
+	static void convert_x26xstg_to_x265stg(CONF_GUIEX *conf, const void *dat);
 public:
 	guiEx_config();
 	static void write_conf_header(CONF_GUIEX *conf);

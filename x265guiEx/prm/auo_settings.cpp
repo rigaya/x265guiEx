@@ -32,15 +32,10 @@ static const char * const STG_DEFAULT_DIRECTORY_APPENDIX = "_stg";
 
 //----    セクション名    ---------------------------------------------------
 
-static const char * const INI_SECTION_MAIN_X264    = "X264GUIEX";
-static const char * const INI_SECTION_MAIN_X26X    = "X26XGUIEX";
+static const char * const INI_SECTION_MAIN         = "X265GUIEX"; //CONF_VER
+static const char * const INI_SECTION_MAIN_OLD     = "X26XGUIEX"; //CONF_VER_OLD
 static const char * const INI_SECTION_APPENDIX     = "APPENDIX";
 static const char * const INI_SECTION_AUD          = "AUDIO";
-static const char * const INI_SECTION_X264         = "X264";
-static const char * const INI_SECTION_X264_DEFAULT = "X264_DEFAULT";
-static const char * const INI_SECTION_X264_PRESET  = "X264_PRESET";
-static const char * const INI_SECTION_X264_TUNE    = "X264_TUNE";
-static const char * const INI_SECTION_X264_PROFILE = "X264_PROFILE";
 static const char * const INI_SECTION_X265         = "X265";
 static const char * const INI_SECTION_X265_DEFAULT = "X265_DEFAULT";
 static const char * const INI_SECTION_X265_PRESET  = "X265_PRESET";
@@ -52,11 +47,6 @@ static const char * const INI_SECTION_PREFIX       = "SETTING_";
 static const char * const INI_SECTION_MODE         = "MODE_";
 static const char * const INI_SECTION_FBC          = "BITRATE_CALC";
 static const char * const INI_SECTION_AMP          = "AUTO_MULTI_PASS";
-
-static const char *INI_SECTION_X26X_DEFAULT[2] = { INI_SECTION_X264_DEFAULT, INI_SECTION_X265_DEFAULT };
-static const char *INI_SECTION_X26X_PRESET[2]  = { INI_SECTION_X264_PRESET,  INI_SECTION_X265_PRESET  };
-static const char *INI_SECTION_X26X_TUNE[2]    = { INI_SECTION_X264_TUNE,    INI_SECTION_X265_TUNE    };
-static const char *INI_SECTION_X26X_PROFILE[2] = { INI_SECTION_X264_PROFILE, INI_SECTION_X265_PROFILE };
 
 static inline double GetPrivateProfileDouble(const char *section, const char *keyname, double defaultValue, const char *ini_file) {
 	char buf[INI_KEY_MAX_LEN], str_default[64], *eptr;
@@ -169,12 +159,22 @@ void guiEx_settings::initialize(BOOL disable_loading) {
 	initialize(disable_loading, NULL, NULL);
 }
 
+void guiEx_settings::convert_conf_if_necessary() {
+	if (0 == strcmp(ini_section_main, INI_SECTION_MAIN)) {
+		char buffer[32 * 1024] = { 0 };
+		if (   0 == GetPrivateProfileSection(INI_SECTION_MAIN,     buffer, sizeof(buffer), conf_fileName)
+			&& 0 != GetPrivateProfileSection(INI_SECTION_MAIN_OLD, buffer, sizeof(buffer), conf_fileName)) {
+			WritePrivateProfileSection(INI_SECTION_MAIN,   buffer, conf_fileName);
+			WritePrivateProfileSection(INI_SECTION_MAIN_OLD, NULL, conf_fileName);
+		}
+	}
+}
+
 void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, const char *main_section) {
 	s_aud_count = 0;
 	s_mux_count = 0;
 	s_aud = NULL;
 	s_mux = NULL;
-	ZeroMemory(&s_x264, sizeof(s_x264));
 	ZeroMemory(&s_x265, sizeof(s_x265));
 	ZeroMemory(&s_local, sizeof(s_local));
 	ZeroMemory(&s_log, sizeof(s_log));
@@ -185,13 +185,13 @@ void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, con
 			get_auo_path(auo_path, _countof(auo_path));
 		else
 			strcpy_s(auo_path, _countof(auo_path), _auo_path);
-
-		const char *INI_SECTION_MAIN = (0 == strcmp(auo_name, AUO_NAME_X264)) ? INI_SECTION_MAIN_X264 : INI_SECTION_MAIN_X26X;
-		strcpy_s(ini_section_main, _countof(ini_section_main), (main_section == NULL) ? INI_SECTION_MAIN : main_section);
+		
+		strcpy_s(ini_section_main, _countof(ini_section_main), (nullptr != main_section) ? main_section : INI_SECTION_MAIN);
 		apply_appendix(ini_fileName,  _countof(ini_fileName),  auo_path, INI_APPENDIX);
 		apply_appendix(conf_fileName, _countof(conf_fileName), auo_path, CONF_APPENDIX);
 		init = check_inifile() && !disable_loading;
 		GetPrivateProfileString(ini_section_main, "blog_url", "", blog_url, _countof(blog_url), ini_fileName);
+		convert_conf_if_necessary();
 		if (init) {
 			load_encode_stg();
 			load_fn_replace();
@@ -204,7 +204,7 @@ void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, con
 guiEx_settings::~guiEx_settings() {
 	clear_aud();
 	clear_mux();
-	clear_x26x();
+	clear_x265();
 	clear_local();
 	clear_fn_replace();
 	clear_log_win();
@@ -227,12 +227,12 @@ BOOL guiEx_settings::get_init_success(BOOL no_message) {
 	if (!init && !no_message) {
 		char mes[1024];
 		char title[256];
-		strcpy_s(mes, _countof(mes), auo_name);
+		strcpy_s(mes, _countof(mes), AUO_NAME);
 		sprintf_s(PathFindExtension(mes), _countof(mes) - strlen(mes), 
 			".iniが存在しないか、iniファイルが古いです。\n%s を開始できません。\n"
 			"iniファイルを更新してみてください。",
-			auo_full_name);
-		sprintf_s(title, _countof(title), "%s - エラー", auo_full_name);
+			AUO_FULL_NAME);
+		sprintf_s(title, _countof(title), "%s - エラー", AUO_FULL_NAME);
 		MessageBox(NULL, mes, title, MB_ICONERROR);
 	}
 	return init;
@@ -248,7 +248,7 @@ int guiEx_settings::get_faw_index() {
 void guiEx_settings::load_encode_stg() {
 	load_aud();
 	load_mux();
-	load_x26x();
+	load_x265();
 	load_local(); //fullpathの情報がきちんと格納されるよう、最後に呼ぶ
 }
 
@@ -432,68 +432,65 @@ void guiEx_settings::load_fn_replace() {
 	}
 }
 
-void guiEx_settings::load_x26x_cmd(X26X_CMD *x26xcmd, int *count, int *default_index, const char *section) {
+void guiEx_settings::load_x265_cmd(X265_CMD *x265cmd, int *count, int *default_index, const char *section) {
 	int i;
 	char *p, *q;
 	char key[INI_KEY_MAX_LEN];
-	char *name = s_x26x_mc.SetPrivateProfileString(section, "name", "", ini_fileName);
-	s_x26x_mc.CutMem(sizeof(key[0]));
+	char *name = s_x265_mc.SetPrivateProfileString(section, "name", "", ini_fileName);
+	s_x265_mc.CutMem(sizeof(key[0]));
 	*count = countchr(name, ',') + 1;
-	x26xcmd->name = (X26X_OPTION_STR *)s_x26x_mc.CutMem(sizeof(X26X_OPTION_STR) * (*count + 1));
-	ZeroMemory(x26xcmd->name, sizeof(X26X_OPTION_STR) * (*count + 1));
-	x26xcmd->cmd = (char **)s_x26x_mc.CutMem(sizeof(char *) * (*count + 1));
+	x265cmd->name = (X265_OPTION_STR *)s_x265_mc.CutMem(sizeof(X265_OPTION_STR) * (*count + 1));
+	ZeroMemory(x265cmd->name, sizeof(X265_OPTION_STR) * (*count + 1));
+	x265cmd->cmd = (char **)s_x265_mc.CutMem(sizeof(char *) * (*count + 1));
 
-	x26xcmd->name[0].name = name;
-	for (i = 0, p = x26xcmd->name[0].name; (x26xcmd->name[i].name = strtok_s(p, ",", &q)) != NULL; i++)
+	x265cmd->name[0].name = name;
+	for (i = 0, p = x265cmd->name[0].name; (x265cmd->name[i].name = strtok_s(p, ",", &q)) != NULL; i++)
 		p = NULL;
 
 	setlocale(LC_ALL, "japanese");
-	for (int i = 0; x26xcmd->name[i].name; i++) {
+	for (int i = 0; x265cmd->name[i].name; i++) {
 		size_t w_len = 0;
-		x26xcmd->name[i].desc = (WCHAR *)s_x26x_mc.GetPtr();
-		mbstowcs_s(&w_len, x26xcmd->name[i].desc, s_x26x_mc.GetRemain() / sizeof(WCHAR), x26xcmd->name[i].name, _TRUNCATE);
-		s_x26x_mc.CutMem((w_len + 1) * sizeof(WCHAR));
+		x265cmd->name[i].desc = (WCHAR *)s_x265_mc.GetPtr();
+		mbstowcs_s(&w_len, x265cmd->name[i].desc, s_x265_mc.GetRemain() / sizeof(WCHAR), x265cmd->name[i].name, _TRUNCATE);
+		s_x265_mc.CutMem((w_len + 1) * sizeof(WCHAR));
 	}
 
 	*default_index = 0;
-	char *def = s_x26x_mc.SetPrivateProfileString(section, "disp", "", ini_fileName);
+	char *def = s_x265_mc.SetPrivateProfileString(section, "disp", "", ini_fileName);
 	sprintf_s(key,  sizeof(key), "cmd_");
 	size_t keybase_len = strlen(key);
-	for (i = 0; x26xcmd->name[i].name; i++) {
-		strcpy_s(key + keybase_len, sizeof(key) - keybase_len, x26xcmd->name[i].name);
-		x26xcmd->cmd[i] = s_x26x_mc.SetPrivateProfileString(section, key, "", ini_fileName);
-		if (_stricmp(x26xcmd->name[i].name, def) == NULL)
+	for (i = 0; x265cmd->name[i].name; i++) {
+		strcpy_s(key + keybase_len, sizeof(key) - keybase_len, x265cmd->name[i].name);
+		x265cmd->cmd[i] = s_x265_mc.SetPrivateProfileString(section, key, "", ini_fileName);
+		if (_stricmp(x265cmd->name[i].name, def) == NULL)
 			*default_index = i;
 	}
 }
 
-void guiEx_settings::load_x26x() {
+void guiEx_settings::load_x265() {
 	char key[INI_KEY_MAX_LEN];
 
-	clear_x26x();
+	clear_x265();
 
-	s_x26x_mc.init(ini_filesize);
+	s_x265_mc.init(ini_filesize);
 
-	for (int i_enctype = 0; i_enctype < 2; i_enctype++) {
-	  
-		s_x26x[i_enctype].filename            = s_x26x_mc.SetPrivateProfileString(INI_SECTION_X26X_DEFAULT[i_enctype], "filename", (i_enctype) ? "x265" : "x264", ini_fileName);
-		s_x26x[i_enctype].default_cmd         = s_x26x_mc.SetPrivateProfileString(INI_SECTION_X26X_DEFAULT[i_enctype], "cmd_default",       "", ini_fileName);
-		s_x26x[i_enctype].default_cmd_highbit = s_x26x_mc.SetPrivateProfileString(INI_SECTION_X26X_DEFAULT[i_enctype], "cmd_default_10bit", "", ini_fileName);
-		s_x26x[i_enctype].help_cmd            = s_x26x_mc.SetPrivateProfileString(INI_SECTION_X26X_DEFAULT[i_enctype], "cmd_help",          "", ini_fileName);
+	s_x265.filename            = s_x265_mc.SetPrivateProfileString(INI_SECTION_X265_DEFAULT, "filename",      "x265", ini_fileName);
+	s_x265.default_cmd         = s_x265_mc.SetPrivateProfileString(INI_SECTION_X265_DEFAULT, "cmd_default",       "", ini_fileName);
+	s_x265.default_cmd_highbit = s_x265_mc.SetPrivateProfileString(INI_SECTION_X265_DEFAULT, "cmd_default_10bit", "", ini_fileName);
+	s_x265.help_cmd            = s_x265_mc.SetPrivateProfileString(INI_SECTION_X265_DEFAULT, "cmd_help",          "", ini_fileName);
 
-		load_x26x_cmd(&s_x26x[i_enctype].preset,  &s_x26x[i_enctype].preset_count,  &s_x26x[i_enctype].default_preset,  INI_SECTION_X26X_PRESET[i_enctype]);
-		load_x26x_cmd(&s_x26x[i_enctype].tune,    &s_x26x[i_enctype].tune_count,    &s_x26x[i_enctype].default_tune,    INI_SECTION_X26X_TUNE[i_enctype]);
-		load_x26x_cmd(&s_x26x[i_enctype].profile, &s_x26x[i_enctype].profile_count, &s_x26x[i_enctype].default_profile, INI_SECTION_X26X_PROFILE[i_enctype]);
+	load_x265_cmd(&s_x265.preset,  &s_x265.preset_count,  &s_x265.default_preset,  INI_SECTION_X265_PRESET);
+	load_x265_cmd(&s_x265.tune,    &s_x265.tune_count,    &s_x265.default_tune,    INI_SECTION_X265_TUNE);
+	load_x265_cmd(&s_x265.profile, &s_x265.profile_count, &s_x265.default_profile, INI_SECTION_X265_PROFILE);
 
-		s_x26x[i_enctype].profile_vbv_multi = (float *)s_x26x_mc.CutMem(sizeof(float) * s_x26x[i_enctype].profile_count);
-		for (int i = 0; i < s_x26x[i_enctype].profile_count; i++) {
-			sprintf_s(key, _countof(key), "vbv_multi_%s", s_x26x[i_enctype].profile.name[i]);
-			s_x26x[i_enctype].profile_vbv_multi[i] = (float)GetPrivateProfileDouble(INI_SECTION_X26X_PROFILE[i_enctype], key, 1.0, ini_fileName);
-		}
-
+	s_x265.profile_vbv_multi = (float *)s_x265_mc.CutMem(sizeof(float) * s_x265.profile_count);
+	for (int i = 0; i < s_x265.profile_count; i++) {
+		sprintf_s(key, _countof(key), "vbv_multi_%s", s_x265.profile.name[i]);
+		s_x265.profile_vbv_multi[i] = (float)GetPrivateProfileDouble(INI_SECTION_X265_PROFILE, key, 1.0, ini_fileName);
 	}
 
-	s_x26x_refresh = TRUE;
+
+	s_x265_refresh = TRUE;
 }
 
 void guiEx_settings::make_default_stg_dir(char *default_stg_dir, DWORD nSize) {
@@ -511,7 +508,7 @@ void guiEx_settings::load_local() {
 	make_default_stg_dir(default_stg_dir, _countof(default_stg_dir));
 
 	clear_local();
-
+	
 	s_local.large_cmdbox               = GetPrivateProfileInt(   ini_section_main, "large_cmdbox",               DEFAULT_LARGE_CMD_BOX,         conf_fileName);
 	s_local.auto_afs_disable           = GetPrivateProfileInt(   ini_section_main, "auto_afs_disable",           DEFAULT_AUTO_AFS_DISABLE,      conf_fileName);
 	s_local.default_output_ext         = GetPrivateProfileInt(   ini_section_main, "default_output_ext",         DEFAULT_OUTPUT_EXT,            conf_fileName);
@@ -525,8 +522,8 @@ void guiEx_settings::load_local() {
 	s_local.get_relative_path          = GetPrivateProfileInt(   ini_section_main, "get_relative_path",          DEFAULT_SAVE_RELATIVE_PATH,    conf_fileName);
 	s_local.run_bat_minimized          = GetPrivateProfileInt(   ini_section_main, "run_bat_minimized",          DEFAULT_RUN_BAT_MINIMIZED,     conf_fileName);
 	s_local.set_keyframe_as_afs_24fps  = GetPrivateProfileInt(   ini_section_main, "set_keyframe_as_afs_24fps",  DEFAULT_SET_KEYFRAME_AFS24FPS, conf_fileName);
-	s_local.disable_x26x_version_check = GetPrivateProfileInt(   ini_section_main, "disable_x26x_version_check", DEFAULT_DISABLE_X26X_VERCHECK, conf_fileName);
-	s_local.auto_ref_limit_by_level    = GetPrivateProfileInt(   ini_section_main, "auto_ref_limit_by_level", DEFAULT_AUTO_REFLIMIT_BYLEVEL, conf_fileName);
+	s_local.disable_x265_version_check = GetPrivateProfileInt(   ini_section_main, "disable_x265_version_check", DEFAULT_DISABLE_X265_VERCHECK, conf_fileName);
+	s_local.auto_ref_limit_by_level    = GetPrivateProfileInt(   ini_section_main, "auto_ref_limit_by_level",    DEFAULT_AUTO_REFLIMIT_BYLEVEL, conf_fileName);
 	s_local.enable_process_parallel    = GetPrivateProfileInt(   ini_section_main, "enable_process_parallel",    DEFAULT_USE_PROCESS_PARALLEL,  conf_fileName);
 	s_local.process_parallel_mode      = GetPrivateProfileInt(   ini_section_main, "process_parallel_mode",      DEFAULT_PROCESS_PARALLEL_MODE, conf_fileName);
 	s_local.default_audio_encoder      = GetPrivateProfileInt(   ini_section_main, "default_audio_encoder",      DEFAULT_AUDIO_ENCODER,         conf_fileName);
@@ -553,8 +550,6 @@ void guiEx_settings::load_local() {
 
 	s_local.audio_buffer_size   = min(GetPrivateProfileInt(ini_section_main, "audio_buffer",        AUDIO_BUFFER_DEFAULT, conf_fileName), AUDIO_BUFFER_MAX);
 
-	GetPrivateProfileString(INI_SECTION_X264,    "X264",           "", s_x264.fullpath,         _countof(s_x264.fullpath),         conf_fileName);
-	GetPrivateProfileString(INI_SECTION_X264,    "X264_10bit",     "", s_x264.fullpath_highbit, _countof(s_x264.fullpath_highbit), conf_fileName);
 	GetPrivateProfileString(INI_SECTION_X265,    "X265",           "", s_x265.fullpath,         _countof(s_x265.fullpath),         conf_fileName);
 	GetPrivateProfileString(INI_SECTION_X265,    "X265_10bit",     "", s_x265.fullpath_highbit, _countof(s_x265.fullpath_highbit), conf_fileName);
 	for (int i = 0; i < s_aud_count; i++)
@@ -618,7 +613,7 @@ void guiEx_settings::save_local() {
 	WritePrivateProfileIntWithDefault(   ini_section_main, "get_relative_path",          s_local.get_relative_path,          DEFAULT_SAVE_RELATIVE_PATH,    conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "run_bat_minimized",          s_local.run_bat_minimized,          DEFAULT_RUN_BAT_MINIMIZED,     conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "set_keyframe_as_afs_24fps",  s_local.set_keyframe_as_afs_24fps,  DEFAULT_SET_KEYFRAME_AFS24FPS, conf_fileName);
-	WritePrivateProfileIntWithDefault(   ini_section_main, "disable_x26x_version_check", s_local.disable_x26x_version_check, DEFAULT_DISABLE_X26X_VERCHECK, conf_fileName);
+	WritePrivateProfileIntWithDefault(   ini_section_main, "disable_x265_version_check", s_local.disable_x265_version_check, DEFAULT_DISABLE_X265_VERCHECK, conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "auto_ref_limit_by_level",    s_local.auto_ref_limit_by_level,    DEFAULT_AUTO_REFLIMIT_BYLEVEL, conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "enable_process_parallel",    s_local.enable_process_parallel,    DEFAULT_USE_PROCESS_PARALLEL,  conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "process_parallel_mode",      s_local.process_parallel_mode,      DEFAULT_PROCESS_PARALLEL_MODE, conf_fileName);
@@ -657,11 +652,6 @@ void guiEx_settings::save_local() {
 	PathRemoveBackslash(s_local.bat_dir);
 	WritePrivateProfileString(ini_section_main, "last_bat_dir",          s_local.bat_dir,               conf_fileName);
 
-	PathRemoveBlanks(s_x264.fullpath);
-	PathRemoveBlanks(s_x264.fullpath_highbit);
-	WritePrivateProfileString(INI_SECTION_X264,    "X264",           s_x264.fullpath,         conf_fileName);
-	WritePrivateProfileString(INI_SECTION_X264,    "X264_10bit",     s_x264.fullpath_highbit, conf_fileName);
-
 	PathRemoveBlanks(s_x265.fullpath);
 	PathRemoveBlanks(s_x265.fullpath_highbit);
 	WritePrivateProfileString(INI_SECTION_X265,    "X265",           s_x265.fullpath,         conf_fileName);
@@ -683,7 +673,7 @@ void guiEx_settings::save_log_win() {
 	WritePrivateProfileIntWithDefault(   ini_section_main, "log_transparency",      s_log.transparency,       DEFAULT_LOG_TRANSPARENCY,     conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "log_auto_save",         s_log.auto_save_log,      DEFAULT_LOG_AUTO_SAVE,        conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "log_auto_save_mode",    s_log.auto_save_log_mode, DEFAULT_LOG_AUTO_SAVE_MODE,   conf_fileName);
-	WritePrivateProfileString(ini_section_main, "log_auto_save_path",    s_log.auto_save_log_path, conf_fileName);
+	WritePrivateProfileString(           ini_section_main, "log_auto_save_path",    s_log.auto_save_log_path,                               conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "log_show_status_bar",   s_log.show_status_bar,    DEFAULT_LOG_SHOW_STATUS_BAR,  conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "log_taskbar_progress",  s_log.taskbar_progress,   DEFAULT_LOG_TASKBAR_PROGRESS, conf_fileName);
 	WritePrivateProfileIntWithDefault(   ini_section_main, "save_log_size",         s_log.save_log_size,      DEFAULT_LOG_SAVE_SIZE,        conf_fileName);
@@ -707,9 +697,9 @@ void guiEx_settings::save_fbc() {
 	WritePrivateProfileDoubleWithDefault(INI_SECTION_FBC, "initial_size",         s_fbc.initial_size,         DEFAULT_FBC_INITIAL_SIZE,         conf_fileName);
 }
 
-BOOL guiEx_settings::get_reset_s_x26x_referesh() {
-	BOOL refresh = s_x26x_refresh;
-	s_x26x_refresh = FALSE;
+BOOL guiEx_settings::get_reset_s_x265_referesh() {
+	BOOL refresh = s_x265_refresh;
+	s_x265_refresh = FALSE;
 	return refresh;
 }
 
@@ -724,9 +714,9 @@ void guiEx_settings::clear_mux() {
 	s_mux_count = 0;
 }
 
-void guiEx_settings::clear_x26x() {
-	s_x26x_mc.clear();
-	s_x26x_refresh = TRUE;
+void guiEx_settings::clear_x265() {
+	s_x265_mc.clear();
+	s_x265_refresh = TRUE;
 }
 
 void guiEx_settings::clear_local() {

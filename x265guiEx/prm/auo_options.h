@@ -18,9 +18,9 @@
 
 //エンコードモード
 enum {
-	X26X_RC_CRF = 0,
-	X26X_RC_BITRATE,
-	X26X_RC_QP,
+	X265_RC_CRF = 0,
+	X265_RC_BITRATE,
+	X265_RC_QP,
 };
 
 //QPの最大値
@@ -76,14 +76,14 @@ static const char * const specify_csp[] = {
 };
 //文字列を引数にとるオプションの引数リスト
 //OUT_CSP_NV12, OUT_CSP_YUV444, OUT_CSP_RGB に合わせる
-const X26X_OPTION_STR list_output_csp_x264[] = {
+const X265_OPTION_STR list_output_csp_x264[] = {
 	{ "i420", L"i420" },
 	{ "i422", L"i422" },
 	{ "i444", L"i444" },
 	{ "rgb",  L"rgb"  },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_output_csp_x265[] = {
+const X265_OPTION_STR list_output_csp_x265[] = {
 	{ "i420", L"i420" },
 	{ "----", L"----" },
 	{ "i444", L"i444" },
@@ -93,31 +93,31 @@ const X26X_OPTION_STR list_output_csp_x265[] = {
 	{ "i422", L"i422" },
 	{ NULL, NULL },
 };
-const X26X_OPTION_STR list_aq[] = { 
+const X265_OPTION_STR list_aq[] = { 
 	{ NULL, L"none"    }, 
 	{ NULL, L"VAQ"     }, 
 	{ NULL, L"AutoVAQ" }, 
 	{ NULL, NULL } 
 };
-const X26X_OPTION_STR list_weightp[] = { 
+const X265_OPTION_STR list_weightp[] = { 
 	{ NULL, L"Disabled" }, 
 	{ NULL, L"Simple"   }, 
 	{ NULL, L"Smart"    }, 
 	{ NULL, NULL } 
 };
-const X26X_OPTION_STR list_b_adpat[] = {
+const X265_OPTION_STR list_b_adpat[] = {
 	{ NULL, L"無効" },
 	{ NULL, L"簡易" },
 	{ NULL, L"完全" },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_trellis[] = {
+const X265_OPTION_STR list_trellis[] = {
 	{ NULL, L"Disabled"        },
 	{ NULL, L"Final MB encode" },
 	{ NULL, L"All"             },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_me_x264[] = {
+const X265_OPTION_STR list_me_x264[] = {
 	{ "dia",  L"Diamond Search (高速)" },
 	{ "hex",  L"Hexagonal Search"      },
 	{ "umh",  L"Uneven Multi-Hexagon"  },
@@ -125,7 +125,7 @@ const X26X_OPTION_STR list_me_x264[] = {
 	{ "tesa", L"Hadamard ESA (低速)"   },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_subme[] = {
+const X265_OPTION_STR list_subme[] = {
 	{ NULL, L" 0 (fullpell only)"                },
 	{ NULL, L" 1 (高速)"                         },
 	{ NULL, L" 2"                                },
@@ -140,31 +140,31 @@ const X26X_OPTION_STR list_subme[] = {
 	{ NULL, L"11 (Full RD)"                      },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_direct[] = {
+const X265_OPTION_STR list_direct[] = {
 	{ "none",     L"none"     },
 	{ "spatial",  L"spatial"  },
 	{ "temporal", L"temporal" },
 	{ "auto",     L"auto"     },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_cqm[] = {
+const X265_OPTION_STR list_cqm[] = {
 	{ "flat", NULL },
 	{ "jvt",  NULL },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_input_range[] = {
+const X265_OPTION_STR list_input_range[] = {
 	{ "auto", L"auto" },
 	{ "pc",   L"pc" },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_interlace_x265[] = {
+const X265_OPTION_STR list_interlace_x265[] = {
 	{ "prog", L"progressive" },
 	{ "tff",  L"tff" },
 	{ "bff",  L"bff" },
 	{ NULL, NULL }
 };
 
-const X26X_OPTION_STR list_colorprim[] = {
+const X265_OPTION_STR list_colorprim[] = {
 	{ "undef",     L"指定なし"  },
 	{ "auto",      L"自動"      },
 	{ "bt709",     L"bt709"     },
@@ -176,7 +176,7 @@ const X26X_OPTION_STR list_colorprim[] = {
 	{ "bt2020",    L"bt2020"    },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_transfer[] = {
+const X265_OPTION_STR list_transfer[] = {
 	{ "undef",        L"指定なし"     },
 	{ "auto",         L"自動"         },
 	{ "bt709",        L"bt709"        },
@@ -194,7 +194,7 @@ const X26X_OPTION_STR list_transfer[] = {
 	{ "bt2020-12",    L"bt2020-12"    },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_colormatrix[] = {
+const X265_OPTION_STR list_colormatrix[] = {
 	{ "undef",     L"指定なし"  },
 	{ "auto",      L"自動"      },
 	{ "bt709",     L"bt709"     },
@@ -208,7 +208,7 @@ const X26X_OPTION_STR list_colormatrix[] = {
 	{ "bt2020c",   L"bt2020c"   },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_videoformat[] = {
+const X265_OPTION_STR list_videoformat[] = {
 	{ "undef",     L"指定なし"  },
 	{ "ntsc",      L"ntsc"      },
 	{ "component", L"component" },
@@ -217,7 +217,7 @@ const X26X_OPTION_STR list_videoformat[] = {
 	{ "mac",       L"mac"       },
 	{ NULL, NULL } 
 };
-const X26X_OPTION_STR list_sar_x265[] = {
+const X265_OPTION_STR list_sar_x265[] = {
 	{ "undef",     L"undef"     },
 	{ "1:1",       L"1:1"       },
 	{ "12:11",     L"12:11"     },
@@ -237,7 +237,7 @@ const X26X_OPTION_STR list_sar_x265[] = {
 	{ "2:1",       L"2:1"       },
 	{ NULL, NULL } 
 };
-const X26X_OPTION_STR list_log_type[] = {
+const X265_OPTION_STR list_log_type[] = {
 	{ "none",    L"none"    },
 	{ "error",   L"error"   },
 	{ "warning", L"warning" },
@@ -245,26 +245,26 @@ const X26X_OPTION_STR list_log_type[] = {
 	{ "debug",   L"debug"   },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_b_pyramid[] = {
+const X265_OPTION_STR list_b_pyramid[] = {
 	{ "none",   L"none"   },
 	{ "strict", L"strict" },
 	{ "normal", L"normal" },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_nal_hrd[] = {
+const X265_OPTION_STR list_nal_hrd[] = {
 	{ "none",   L"使用しない" },
 	{ "vbr",    L"vbr"        },
 	{ "cbr",    L"cbr"        },
 	{ NULL, NULL }
 };
 
-const X26X_OPTION_STR list_rd[] = {
+const X265_OPTION_STR list_rd[] = {
 	{ NULL, L" 0 - least" },
 	{ NULL, L" 1" },
 	{ NULL, L" 2 - full"  },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_me_x265[] = {
+const X265_OPTION_STR list_me_x265[] = {
 	{ "dia",  L"Diamond Search (高速)" },
 	{ "hex",  L"Hexagonal Search"      },
 	{ "umh",  L"Uneven Multi-Hexagon"  },
@@ -272,7 +272,7 @@ const X26X_OPTION_STR list_me_x265[] = {
 	{ "full", L"Full Search (低速)"    },
 	{ NULL, NULL }
 };
-const X26X_OPTION_STR list_subme_x265[] = {
+const X265_OPTION_STR list_subme_x265[] = {
 	{ NULL, L" 0 (高速)"   },
 	{ NULL, L" 1"          },
 	{ NULL, L" 2"          },
@@ -305,166 +305,93 @@ typedef struct FLOAT2 {
 	float y;
 } FLOAT2;
 
-//コード共通化のためいろいろ小細工をする
-// CONF_X264 と CONF_X265 の共通部分を構造体の先頭に設置し、
-// CONF_X26Xによりアクセスできるようにする
-// 最終的にパラメータがx265で実装されなかったとしても気にしない
-// この際、階層を深く掘らずにアクセスできるようにする
-// また、面倒なことを避けるため、
-// sizeof(CONF_X26X) == sizeof(CONF_X264) == sizeof(CONF_X265) になるようにする
-// これも、コンパイラの自動計算によりそうなるよう細工する (手動でのパディングはしない)
-#define VALUE_OF_STRUCT_COMMON \
-	int     bit_depth; \
-	int     output_csp; \
-	int     pass; \
-	BOOL    slow_first_pass; \
-	BOOL    use_auto_npass; \
-	int		auto_npass; \
-	BOOL    nul_out; \
-	int     preset; \
-	int     tune; \
-	int     profile; \
-	int     rc_mode; \
-	int     bitrate; \
-	int     crf; \
-	int     qp; \
-	float   ip_ratio; \
-	float   pb_ratio; \
-	int     qp_min; \
-	int     qp_max; \
-	int     qp_step; \
-	float   qp_compress; \
-	int     interlaced; \
-	BOOL    tff; \
-	BOOL    mbtree; \
-	int     rc_lookahead; \
-	int     vbv_bufsize; \
-	int     vbv_maxrate; \
-	int     aq_mode; \
-	float   aq_strength; \
-	FLOAT2  psy_rd; \
-	int     scenecut; \
-	int     keyint_min; \
-	int     keyint_max; \
-	BOOL    open_gop; \
-	int     bframes; \
-	int     b_adapt; \
-	int     b_bias; \
-	int     b_pyramid; \
-	BOOL    weight_b; \
-	int     weight_p; \
-	int     me; \
-	int     subme; \
-	int     me_range; \
-	int     ref_frames; \
-	int     colormatrix; \
-	int     colorprim; \
-	int     transfer; \
-	int     input_range; \
-	int     videoformat; \
-	int     h26x_level; \
-	INT2    sar; \
-	int     log_mode; \
-	BOOL    psnr; \
-	BOOL    ssim; \
-	BOOL    use_tcfilein; \
-	BOOL    use_timebase; \
-	INT2    timebase; \
-	int     threads;
-
-//x264専用のオプション
-#define VALUE_OF_STRUCT_X264 \
-	int     chroma_qp_offset; \
-	BOOL    cabac; \
-	int     slice_n; \
-	BOOL    use_deblock; \
-	INT2    deblock; \
-	DWORD   mb_partition; \
-	BOOL	dct8x8; \
-	BOOL    chroma_me; \
-	int     direct_mv; \
-	BOOL    mixed_ref; \
-	int     noise_reduction; \
-	BOOL    no_fast_pskip; \
-	BOOL    no_dct_decimate; \
-	int     trellis; \
-	int     cqm; \
-	BOOL    aud; \
-	BOOL    pic_struct; \
-	int     nal_hrd; \
-	BOOL    bluray_compat; \
-	int     sliced_threading; \
-	BOOL    disable_progress; \
-	int     lookahead_threads;
-
-//x265専用のオプション
-#define VALUE_OF_STRUCT_X265 \
-	int     frame_threads; \
-	BOOL    wpp; \
-	int     ctu; \
-	int     tu_intra_depth; \
-	int     tu_inter_depth; \
-	int     cbqpoffs; \
-	int     crqpoffs; \
-	BOOL    rect_mp; \
-	BOOL    asymmnteric_mp; \
-	int     max_merge; \
-	BOOL    early_skip; \
-	BOOL    fast_cbf; \
-	int     rdpenalty; \
-	BOOL    tskip; \
-	BOOL    tskip_fast; \
-	BOOL    strong_intra_smooth; \
-	int     rd; \
-	BOOL    loop_filter; \
-	BOOL    sao; \
-	BOOL    cutree;
-
-//サイズ計算用
-typedef struct CONF_X26x_dummy {
-	VALUE_OF_STRUCT_COMMON;
-} CONF_X26x_dummy;
-
-//サイズ計算用
-typedef struct CONF_X264_dummy {
-	VALUE_OF_STRUCT_COMMON;
-	VALUE_OF_STRUCT_X264;
-} CONF_X264_dummy;
-
-//サイズ計算用
-typedef struct CONF_X265_dummy {
-	VALUE_OF_STRUCT_COMMON;
-	VALUE_OF_STRUCT_X265;
-} CONF_X265_dummy;
-
-typedef struct CONF_X264 {
-	VALUE_OF_STRUCT_COMMON;
-	VALUE_OF_STRUCT_X264;
-	BYTE dummy[4 + max(sizeof(CONF_X264_dummy), sizeof(CONF_X265_dummy)) - sizeof(CONF_X264_dummy)]; // sizeof(CONF_X264) == sizeof(CONF_X265) とするため / 4足すのはサイズ"0"の配列となるのを避けるため
-} CONF_X264;
-
 typedef struct CONF_X265 {
-	VALUE_OF_STRUCT_COMMON;
-	VALUE_OF_STRUCT_X265;
-	BYTE dummy[4 + max(sizeof(CONF_X264_dummy), sizeof(CONF_X265_dummy)) - sizeof(CONF_X265_dummy)]; // sizeof(CONF_X264) == sizeof(CONF_X265) とするため / 4足すのはサイズ"0"の配列となるのを避けるため
+	int     bit_depth;
+	int     output_csp;
+	int     pass;
+	BOOL    slow_first_pass;
+	BOOL    use_auto_npass;
+	int		auto_npass;
+	BOOL    nul_out;
+	int     preset;
+	int     tune;
+	int     profile;
+	int     rc_mode;
+	int     bitrate;
+	int     crf;
+	int     qp;
+	float   ip_ratio;
+	float   pb_ratio;
+	int     qp_min;
+	int     qp_max;
+	int     qp_step;
+	float   qp_compress;
+	int     interlaced;
+	BOOL    tff;
+	BOOL    mbtree;
+	int     rc_lookahead;
+	int     vbv_bufsize;
+	int     vbv_maxrate;
+	int     aq_mode;
+	float   aq_strength;
+	FLOAT2  psy_rd;
+	int     scenecut;
+	int     keyint_min;
+	int     keyint_max;
+	BOOL    open_gop;
+	int     bframes;
+	int     b_adapt;
+	int     b_bias;
+	int     b_pyramid;
+	BOOL    weight_b;
+	int     weight_p;
+	int     me;
+	int     subme;
+	int     me_range;
+	int     ref_frames;
+	int     colormatrix;
+	int     colorprim;
+	int     transfer;
+	int     input_range;
+	int     videoformat;
+	int     h26x_level;
+	INT2    sar;
+	int     log_mode;
+	BOOL    psnr;
+	BOOL    ssim;
+	BOOL    use_tcfilein;
+	BOOL    use_timebase;
+	INT2    timebase;
+	int     threads;
+	int     frame_threads;
+	BOOL    wpp;
+	int     ctu;
+	int     tu_intra_depth;
+	int     tu_inter_depth;
+	int     cbqpoffs;
+	int     crqpoffs;
+	BOOL    rect_mp;
+	BOOL    asymmnteric_mp;
+	int     max_merge;
+	BOOL    early_skip;
+	BOOL    fast_cbf;
+	int     rdpenalty;
+	BOOL    tskip;
+	BOOL    tskip_fast;
+	BOOL    strong_intra_smooth;
+	int     rd;
+	BOOL    loop_filter;
+	BOOL    sao;
+	BOOL    cutree;
 } CONF_X265;
 
-typedef struct CONF_X26X {
-	VALUE_OF_STRUCT_COMMON;
-	BYTE dummy[sizeof(CONF_X264) - sizeof(CONF_X26x_dummy)]; //これにより最終的に sizeof(CONF_X26X) == sizeof(CONF_X264) == sizeof(CONF_X265) とする
-} CONF_X26X;
-
-#undef VALUE_OF_STRUCT_COMMON
-#undef VALUE_OF_STRUCT_X264
-#undef VALUE_OF_STRUCT_X265
-
-typedef struct X26X_OPTIONS {
+typedef struct X265_OPTIONS {
 	char *long_name;
 	char *short_name;
 	DWORD type;
-	const X26X_OPTION_STR *list;
+	const X265_OPTION_STR *list;
 	size_t p_offset;
-} X26X_OPTIONS;
+} X265_OPTIONS;
 
 enum {
 	ARG_TYPE_UNKNOWN = 0,
@@ -482,21 +409,19 @@ typedef struct CMD_ARG {
 } CMD_ARG;
 
 //コマンドラインの解析・生成
-void set_cmd_to_conf(const char *cmd_src, CONF_X26X *conf_set, int enc_mode);
-void set_cmd_to_conf(char *cmd, CONF_X26X *conf_set, size_t cmd_len, BOOL build_not_imported_cmd, int enc_mode);
-void get_default_conf(CONF_X26X *conf_set, BOOL use_highbit, int enc_type);
-//void set_preset_to_conf(CONF_X26X *conf_set, int preset_index, int enc_type);
-//void set_tune_to_conf(CONF_X26X *conf_set, int tune_index, int enc_type);
-void set_profile_to_conf(CONF_X26X *conf_set, int profile_index, int enc_type);
-void apply_presets(CONF_X26X *conf_set, int enc_type);
-int check_profile_x264(const CONF_X264 *conf_set);
-void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_X26X *conf, const void *_vid, BOOL write_all, int enc_type);
+void set_cmd_to_conf(const char *cmd_src, CONF_X265 *conf_set);
+void set_cmd_to_conf(char *cmd, CONF_X265 *conf_set, size_t cmd_len, BOOL build_not_imported_cmd);
+void get_default_conf(CONF_X265 *conf_set, BOOL use_highbit);
+//void set_preset_to_conf(CONF_X265 *conf_set, int preset_indexe);
+//void set_tune_to_conf(CONF_X265 *conf_set, int tune_index);
+void set_profile_to_conf(CONF_X265 *conf_set, int profile_index);
+void apply_presets(CONF_X265 *conf_set);
+void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void build_cmd_from_conf_x264(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void set_guiEx_auto_sar(int *sar_x, int *sar_y, int width, int height);
-void apply_guiEx_auto_settings(CONF_X26X *cx, int width, int height, int fps_num, int fps_den, int enc_type, BOOL ref_limit_by_level);
-const X26X_OPTION_STR * get_option_list_x264(const char *option_name);
-const X26X_OPTION_STR * get_option_list_x265(const char *option_name);
+void apply_guiEx_auto_settings(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level);
+const X265_OPTION_STR * get_option_list_x265(const char *option_name);
 void set_ex_stg_ptr(guiEx_settings *_ex_stg);
 int get_option_value(const char *cmd_src, const char *target_option_name, char *buffer, size_t nSize);
 

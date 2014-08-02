@@ -14,7 +14,7 @@
 #include "auo_settings.h"
 #include "auo_options.h"
 
-const X26X_OPTION_STR list_x264guiEx_level[] = { 
+const X265_OPTION_STR list_x264guiEx_level[] = { 
 	{ "auto", L"自動" },
 	{ "1",    L"1"    },
 	{ "1b",   L"1b"   },
@@ -36,8 +36,12 @@ const X26X_OPTION_STR list_x264guiEx_level[] = {
 	{ NULL, NULL }
 };
 
+#if 0
+
 int calc_auto_level(int width, int height, int ref, BOOL interlaced, int fps_num, int fps_den, int vbv_max, int vbv_buf);
 void get_vbv_value(int *vbv_max, int *vbv_buf, int level, int profile_index, int use_highbit, guiEx_settings *ex_stg);
 int get_ref_limit(int level, int width, int height, BOOL interlaced);
+
+#endif
 
 #endif //_H264_LEVEL_H_

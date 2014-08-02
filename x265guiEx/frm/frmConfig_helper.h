@@ -77,9 +77,6 @@ namespace x265guiEx {
 	ref class LocalSettings 
 	{
 	public:
-		String^ x264ExeName;
-		String^ x264Path;
-		String^ x264Pathhighbit;
 		String^ x265ExeName;
 		String^ x265Path;
 		String^ x265Pathhighbit;
@@ -639,18 +636,18 @@ const WCHAR * const x265_encodemode_desc[] = {
 
 #define STR_BITRATE_AUTO (L"-1: 自動 ")
 
-const int x26x_encmode_to_RCint[] = {
-	X26X_RC_BITRATE,
-	X26X_RC_QP,
-	X26X_RC_CRF,
-	X26X_RC_BITRATE,
-	X26X_RC_BITRATE,
-	X26X_RC_BITRATE,
-	X26X_RC_CRF,
+const int x265_encmode_to_RCint[] = {
+	X265_RC_BITRATE,
+	X265_RC_QP,
+	X265_RC_CRF,
+	X265_RC_BITRATE,
+	X265_RC_BITRATE,
+	X265_RC_BITRATE,
+	X265_RC_CRF,
 	NULL
 };
 
-const int x26x_encmode_to_passint[] = {
+const int x265_encmode_to_passint[] = {
 	0,
 	0,
 	0,

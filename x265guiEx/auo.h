@@ -21,13 +21,6 @@ const DWORD AUDIO_BUFFER_DEFAULT  = 48000;
 const DWORD AUDIO_BUFFER_MAX      = AUDIO_BUFFER_DEFAULT * 30;
 
 enum {
-	ENC_TYPE_X264 = 0,
-	ENC_TYPE_X265 = 1,
-};
-
-static const char *const X26X_NAME[] = { "x264", "x265" };
-
-enum {
 	VIDEO_OUTPUT_DISABLED = -2,
 	VIDEO_OUTPUT_RAW      = -1,
 	VIDEO_OUTPUT_MP4      = 0,

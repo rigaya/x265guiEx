@@ -796,7 +796,7 @@ static bool check_parallel_process_compatible(const CONF_GUIEX *conf, const PRM_
 	bool result = true;
 	if (1 != pe->total_pass) {
 		result = false; write_log_auo_line(LOG_INFO, "マルチパスエンコードでは、分割エンコードは利用できません。");
-	} else if (conf->x26x[conf->vid.enc_type].use_tcfilein) {
+	} else if (conf->x265.use_tcfilein) {
 		result = false; write_log_auo_line(LOG_INFO, "分割エンコードとtcfile-inは併用できません。");
 	}
 	return result;
@@ -909,7 +909,7 @@ AUO_RESULT parallel_task_check(CONF_GUIEX *conf, OUTPUT_INFO *oip, PRM_ENC *pe, 
 			conf->oth.run_bat &= ~RUN_BAT_AFTER;
 			pe->muxer_to_be_used = MUXER_DISABLED;
 			//raw出力後にバイナリ結合し、それをmuxする
-			change_ext(pe->temp_filename, _countof(pe->temp_filename), (conf->vid.enc_type == ENC_TYPE_X264) ? ".264" : ".265");
+			change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
 			//pe->div_num == pe->div_max 以外では音声出力を行わない
 			if (pe->div_num+1 < pe->div_max) {
 				oip->flag &= ~OUTPUT_INFO_FLAG_AUDIO;
@@ -970,11 +970,11 @@ AUO_RESULT parallel_task_close() {
 		"Aviutlを終了しますか ?";
 
 	char message[1024] = { 0 };
-	strcpy_s(message, _countof(message), auo_name);
+	strcpy_s(message, _countof(message), AUO_NAME);
 	strcat_s(message, _countof(message), MES_BASE);
 
 	if (   0 == g_controller->get_current_task_waiting()
-		|| IDOK == MessageBox(NULL, message, auo_full_name, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING)) {
+		|| IDOK == MessageBox(NULL, message, AUO_FULL_NAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING)) {
 		delete g_controller;
 		g_controller = NULL;
 		return AUO_RESULT_SUCCESS;

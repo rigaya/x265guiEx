@@ -130,7 +130,7 @@ System::Void frmConfig::CloseBitrateCalc() {
 System::Void frmConfig::fcgTSBBitrateCalc_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	if (fcgTSBBitrateCalc->Checked) {
 		int videoBitrate = 0;
-		bool videoBitrateMode = (x26x_encmode_to_RCint[(fcgTSBEncType->Checked) ? fchCXX265Mode->SelectedIndex : fcgCXX264Mode->SelectedIndex] == X26X_RC_BITRATE);
+		bool videoBitrateMode = fcgCXX265Mode->SelectedIndex == X265_RC_BITRATE;
 		videoBitrateMode &= Int32::TryParse(fcgTXQuality->Text, videoBitrate);
 
 		frmBitrateCalculator::Instance::get()->Init(
@@ -154,11 +154,8 @@ System::Void frmConfig::SetfbcBTVBEnable(bool enable) {
 }
 
 System::Void frmConfig::SetVideoBitrate(int bitrate) {
-	if (x26x_encmode_to_RCint[(fcgTSBEncType->Checked) ? fchCXX265Mode->SelectedIndex : fcgCXX264Mode->SelectedIndex] == X26X_RC_BITRATE)
-		if (fcgTSBEncType->Checked)
-			fchTXQuality->Text = bitrate.ToString();
-		else
-			fcgTXQuality->Text = bitrate.ToString();
+	if (x265_encmode_to_RCint[fcgCXX265Mode->SelectedIndex] == X265_RC_BITRATE)
+		fcgTXQuality->Text = bitrate.ToString();
 }
 
 System::Void frmConfig::SetAudioBitrate(int bitrate) {
@@ -207,8 +204,6 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
 	//更新にしたがって表示を更新する
 	guiEx_settings stg;
 	stg.load_encode_stg();
-	LocalStg.x264Path        = String(stg.s_x264.fullpath).ToString();
-	LocalStg.x264Pathhighbit = String(stg.s_x264.fullpath_highbit).ToString();
 	LocalStg.x265Path        = String(stg.s_x265.fullpath).ToString();
 	LocalStg.x265Pathhighbit = String(stg.s_x265.fullpath_highbit).ToString();
 	LocalStg.MP4MuxerPath    = String(stg.s_mux[MUXER_MP4].fullpath).ToString();
@@ -237,9 +232,6 @@ System::Void frmUpdate::frmUpdate_FormClosing(System::Object^  sender, System::W
 System::Void frmConfig::LoadLocalStg() {
 	guiEx_settings *_ex_stg = sys_dat->exstg;
 	_ex_stg->load_encode_stg();
-	LocalStg.x264ExeName     = String(_ex_stg->s_x264.filename).ToString();
-	LocalStg.x264Path        = String(_ex_stg->s_x264.fullpath).ToString();
-	LocalStg.x264Pathhighbit = String(_ex_stg->s_x264.fullpath_highbit).ToString();
 	LocalStg.x265ExeName     = String(_ex_stg->s_x265.filename).ToString();
 	LocalStg.x265Path        = String(_ex_stg->s_x265.fullpath).ToString();
 	LocalStg.x265Pathhighbit = String(_ex_stg->s_x265.fullpath_highbit).ToString();
@@ -274,50 +266,26 @@ System::Void frmConfig::LoadLocalStg() {
 System::Boolean frmConfig::CheckLocalStg() {
 	bool error = false;
 	String^ err = "";
-	if (fcgTSBEncType->Checked) {
-		//x265のチェック
-		bool CheckX265highbit;
-		if (fcgTSBCMDOnly->Checked) {
-			//CLIモードの時はコマンドラインを解析してhighbitかどうか判定
-			CONF_GUIEX cnf;
-			init_CONF_GUIEX(&cnf, FALSE);
-			char cmdex[2048] = { 0 };
-			GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
-			set_cmd_to_conf(cmdex, (CONF_X26X *)&cnf.x265, ENC_TYPE_X265);
-			CheckX265highbit = 8 < cnf.x265.bit_depth;
-		} else {
-			CheckX265highbit = fchCBUsehighbit->Checked;
-		}
-		if (!CheckX265highbit && !File::Exists(LocalStg.x265Path)) {
-			error = true;
-			err += L"指定された x265 は存在しません。\n [ " + LocalStg.x265Path + L" ]\n";
-		}
-		if (CheckX265highbit && !File::Exists(LocalStg.x265Pathhighbit)) {
-			error = true;
-			err += L"指定された x265 (highbit用) は存在しません。\n [ " + LocalStg.x265Pathhighbit + L" ]\n";
-		}
+	//x265のチェック
+	bool CheckX265highbit;
+	if (fcgTSBCMDOnly->Checked) {
+		//CLIモードの時はコマンドラインを解析してhighbitかどうか判定
+		CONF_GUIEX cnf;
+		init_CONF_GUIEX(&cnf, FALSE);
+		char cmdex[2048] = { 0 };
+		GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
+		set_cmd_to_conf(cmdex, &cnf.x265);
+		CheckX265highbit = 8 < cnf.x265.bit_depth;
 	} else {
-		//x264のチェック
-		bool CheckX264highbit;
-		if (fcgTSBCMDOnly->Checked) {
-			//CLIモードの時はコマンドラインを解析してhighbitかどうか判定
-			CONF_GUIEX cnf;
-			init_CONF_GUIEX(&cnf, FALSE);
-			char cmdex[2048] = { 0 };
-			GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
-			set_cmd_to_conf(cmdex, (CONF_X26X *)&cnf.x264, ENC_TYPE_X264);
-			CheckX264highbit = 8 < cnf.x264.bit_depth;
-		} else {
-			CheckX264highbit = fcgCBUsehighbit->Checked;
-		}
-		if (!CheckX264highbit && !File::Exists(LocalStg.x264Path)) {
-			error = true;
-			err += L"指定された x264 は存在しません。\n [ " + LocalStg.x264Path + L" ]\n";
-		}
-		if (CheckX264highbit && !File::Exists(LocalStg.x264Pathhighbit)) {
-			error = true;
-			err += L"指定された x264 (highbit用) は存在しません。\n [ " + LocalStg.x264Pathhighbit + L" ]\n";
-		}
+		CheckX265highbit = fcgCBUsehighbit->Checked;
+	}
+	if (!CheckX265highbit && !File::Exists(LocalStg.x265Path)) {
+		error = true;
+		err += L"指定された x265 は存在しません。\n [ " + LocalStg.x265Path + L" ]\n";
+	}
+	if (CheckX265highbit && !File::Exists(LocalStg.x265Pathhighbit)) {
+		error = true;
+		err += L"指定された x265 (highbit用) は存在しません。\n [ " + LocalStg.x265Pathhighbit + L" ]\n";
 	}
 	//音声エンコーダのチェック (実行ファイル名がない場合はチェックしない)
 	if (LocalStg.audEncExeName[fcgCXAudioEncoder->SelectedIndex]->Length) {
@@ -367,8 +335,6 @@ System::Void frmConfig::SaveLocalStg() {
 	guiEx_settings *_ex_stg = sys_dat->exstg;
 	_ex_stg->load_encode_stg();
 	_ex_stg->s_local.large_cmdbox = fcgTXCmd->Multiline;
-	GetCHARfromString(_ex_stg->s_x264.fullpath,               sizeof(_ex_stg->s_x264.fullpath),               LocalStg.x264Path);
-	GetCHARfromString(_ex_stg->s_x264.fullpath_highbit,       sizeof(_ex_stg->s_x264.fullpath_highbit),       LocalStg.x264Pathhighbit);
 	GetCHARfromString(_ex_stg->s_x265.fullpath,               sizeof(_ex_stg->s_x265.fullpath),               LocalStg.x265Path);
 	GetCHARfromString(_ex_stg->s_x265.fullpath_highbit,       sizeof(_ex_stg->s_x265.fullpath_highbit),       LocalStg.x265Pathhighbit);
 	GetCHARfromString(_ex_stg->s_local.custom_tmp_dir,        sizeof(_ex_stg->s_local.custom_tmp_dir),        LocalStg.CustomTmpDir);
@@ -387,17 +353,11 @@ System::Void frmConfig::SaveLocalStg() {
 }
 
 System::Void frmConfig::SetLocalStg() {
-	fcgLBX264Path->Text           = L"x264.exe の指定";
-	fcgLBX264PathSub->Text        = L"x264.exe の指定";
-	fcgTXX264Path->Text           = (fcgCBUsehighbit->Checked) ? LocalStg.x264Pathhighbit : LocalStg.x264Path;
-	fcgTXX264PathSub->Text        = LocalStg.x264Path;
-	fcgTXX264PathSubhighbit->Text = LocalStg.x264Pathhighbit;
-
-	fchLBX265Path->Text           = L"x265.exe の指定";
-	fchLBX265PathSub->Text        = L"x265.exe の指定";
-	fchTXX265Path->Text           = (fchCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
-	fchTXX265PathSub->Text        = LocalStg.x265Path;
-	fchTXX265PathSubhighbit->Text = LocalStg.x265Pathhighbit;
+	fcgLBX265Path->Text           = L"x265.exe の指定";
+	fcgLBX265PathSub->Text        = L"x265.exe の指定";
+	fcgTXX265Path->Text           = (fcgCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
+	fcgTXX265PathSub->Text        = LocalStg.x265Path;
+	fcgTXX265PathSubhighbit->Text = LocalStg.x265Pathhighbit;
 
 	fcgTXMP4MuxerPath->Text       = LocalStg.MP4MuxerPath;
 	fcgTXMKVMuxerPath->Text       = LocalStg.MKVMuxerPath;
@@ -413,12 +373,9 @@ System::Void frmConfig::SetLocalStg() {
 	fcgLBMPGMuxerPath->Text       = LocalStg.MPGMuxerExeName + L" の指定";
 	fcgLBMP4RawPath->Text         = LocalStg.MP4RawExeName + L" の指定";
 
-	fcgTXX264Path->SelectionStart           = fcgTXX264Path->Text->Length;
-	fcgTXX264PathSub->SelectionStart        = fcgTXX264PathSub->Text->Length;
-	fcgTXX264PathSubhighbit->SelectionStart = fcgTXX264PathSubhighbit->Text->Length;
-	fchTXX265Path->SelectionStart           = fchTXX265Path->Text->Length;
-	fchTXX265PathSub->SelectionStart        = fchTXX265PathSub->Text->Length;
-	fchTXX265PathSubhighbit->SelectionStart = fchTXX265PathSubhighbit->Text->Length;
+	fcgTXX265Path->SelectionStart           = fcgTXX265Path->Text->Length;
+	fcgTXX265PathSub->SelectionStart        = fcgTXX265PathSub->Text->Length;
+	fcgTXX265PathSubhighbit->SelectionStart = fcgTXX265PathSubhighbit->Text->Length;
 	fcgTXMP4MuxerPath->SelectionStart       = fcgTXMP4MuxerPath->Text->Length;
 	fcgTXTC2MP4Path->SelectionStart         = fcgTXTC2MP4Path->Text->Length;
 	fcgTXMKVMuxerPath->SelectionStart       = fcgTXMKVMuxerPath->Text->Length;
@@ -427,9 +384,6 @@ System::Void frmConfig::SetLocalStg() {
 }
 
 //////////////   TrackBar用タイマー関連     /////////////////////////
-System::Void frmConfig::qualityTimerChangeX264(Object^ state) {
-	this->Invoke(gcnew qualityTimerChangeDelegate(this, &frmConfig::fcgTBQualityChange));
-}
 System::Void frmConfig::qualityTimerChangeX265(Object^ state) {
 	this->Invoke(gcnew qualityTimerChangeDelegate(this, &frmConfig::fcgTBQualityChange));
 }
@@ -442,19 +396,8 @@ System::Void frmConfig::fcgTBQualityChange() {
 	if (i != j)
 		fcgTBQuality_Scroll(nullptr, nullptr);
 }
-System::Void frmConfig::fchTBQualityChange() {
-	int j = fchTBQuality->Value;
-	int i = j + timerChangeValue;
-	i = clamp(i, fchTBQuality->Minimum, fchTBQuality->Maximum);
-	fchTBQuality->Value = i;
-	if (i != j)
-		fchTBQuality_Scroll(nullptr, nullptr);
-}
 
 System::Void frmConfig::InitTimer() {
-	qualityTimerX264 = gcnew System::Threading::Timer(
-		gcnew System::Threading::TimerCallback(this, &frmConfig::qualityTimerChangeX264),
-		nullptr, System::Threading::Timeout::Infinite, fcgTBQualityTimerPeriod);
 	qualityTimerX265 = gcnew System::Threading::Timer(
 		gcnew System::Threading::TimerCallback(this, &frmConfig::qualityTimerChangeX265),
 		nullptr, System::Threading::Timeout::Infinite, fcgTBQualityTimerPeriod);
@@ -465,10 +408,8 @@ System::Void frmConfig::InitTimer() {
 //////////////       その他イベント処理   ////////////////////////
 System::Void frmConfig::ActivateToolTip(bool Enable) {
 	fcgTTEx->Active = Enable;
-	fcgTTX264->Active = Enable;
-	fcgTTX264Version->Active = Enable;
-	fchTTX265->Active = Enable;
-	fchTTX265Version->Active = Enable;
+	fcgTTX265->Active = Enable;
+	fcgTTX265Version->Active = Enable;
 }
 
 System::Void frmConfig::fcgTSBOtherSettings_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -500,24 +441,17 @@ System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sende
 	//一度ウィンドウの再描画を完全に抑止する
 	SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 0, 0);
 	int tabPageCount = fcgtabControlVideo->TabPages->Count;
-	for (int i = 0; i < tabPageCount - 1; i++)
+	for (int i = 0; i < tabPageCount - 1; i++) {
 		fcgtabControlVideo->TabPages->RemoveAt(0);
+	}
 	if (!fcgTSBCMDOnly->Checked) {
-		if (fcgTSBEncType->Checked) {
-			fcgtabControlVideo->TabPages->Insert(0, fchtabPageX265Main);
-			fcgtabControlVideo->TabPages->Insert(1, fchtabPageX265Other);
-		} else {
-			fcgtabControlVideo->TabPages->Insert(0, fcgtabPageX264Main);
-			fcgtabControlVideo->TabPages->Insert(1, fcgtabPageX264RC);
-			fcgtabControlVideo->TabPages->Insert(2, fcgtabPageX264Frame);
-		}
+		fcgtabControlVideo->TabPages->Insert(0, fcgtabPageX265Main);
+		fcgtabControlVideo->TabPages->Insert(1, fcgtabPageX265Other);
 	}
 	fcgtabControlVideo->SelectedIndex = 0;
 	//一度ウィンドウの再描画を再開し、強制的に再描画させる
 	SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 1, 0);
 	this->Refresh();
-
-	fchPNX265Sub->Visible = fcgTSBEncType->Checked;
 
 	if (fcgTSBCMDOnly->Checked) {
 		fcgtabPageExSettings->Text = L"映像";
@@ -532,34 +466,16 @@ System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sende
 }
 
 System::Void frmConfig::fcgCBUsehighbit_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-	//8bit/highbitで異なるQPの最大最小を管理する
-	int old_max = (int)fcgNUQpmax->Maximum;
-	fcgNUQpmax->Maximum = (fcgCBUsehighbit->Checked) ? X264_QP_MAX_10BIT : X264_QP_MAX_8BIT;
-	fcgNUQpmin->Maximum = fcgNUQpmax->Maximum;
-	fcgNUQpstep->Maximum = fcgNUQpmax->Maximum;
-	fcgNUChromaQp->Minimum = -1 * fcgNUQpmax->Maximum;
-	fcgNUChromaQp->Maximum = fcgNUQpmax->Maximum;
-	if ((int)fcgNUQpmax->Value == old_max)
-		fcgNUQpmax->Value = fcgNUQpmax->Maximum;
-	fcgCXX264Mode_SelectedIndexChanged(sender, e);
-	fcgTXX264Path->Text = (fcgCBUsehighbit->Checked) ? LocalStg.x264Pathhighbit : LocalStg.x264Path;
-	fcgTXX264Path->SelectionStart = fcgTXX264Path->Text->Length;
-	fcgLBX264Path->Text = (fcgCBUsehighbit->Checked) ? L"x264.exe(highbit) の指定" : L"x264.exe の指定";
-	SetX264VersionToolTip(fcgTXX264Path->Text, fcgCBUsehighbit->Checked);
-	SetTBValueToTextBoxX264();
-}
-System::Void frmConfig::fchCBUsehighbit_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-	fchCXX265Mode_SelectedIndexChanged(sender, e);
-	fchTXX265Path->Text = (fchCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
-	fchTXX265Path->SelectionStart = fchTXX265Path->Text->Length;
-	fchLBX265Path->Text = (fchCBUsehighbit->Checked) ? L"x265.exe(highbit) の指定" : L"x265.exe の指定";
-	SetX264VersionToolTip(fchTXX265Path->Text, fchCBUsehighbit->Checked);
+	fcgCXX265Mode_SelectedIndexChanged(sender, e);
+	fcgTXX265Path->Text = (fcgCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
+	fcgTXX265Path->SelectionStart = fcgTXX265Path->Text->Length;
+	fcgLBX265Path->Text = (fcgCBUsehighbit->Checked) ? L"x265.exe(highbit) の指定" : L"x265.exe の指定";
+	SetX265VersionToolTip(fcgTXX265Path->Text, fcgCBUsehighbit->Checked);
 	SetTBValueToTextBoxX265();
 }
 
 System::Void frmConfig::fcgCBAFS_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	fcgCBAFSBitrateCorrection->Enabled = fcgCBAFS->Checked;
-	fcgLBVBVafsWarning->Visible        = fcgCBAFS->Checked;
 	if (fcgCBAFS->Checked) {
 		//fcgCBMP4MuxerExt->Checked      = true;
 		//fcgCBMKVMuxerExt->Checked      = true;
@@ -576,56 +492,33 @@ System::Void frmConfig::fcgCBAFS_CheckedChanged(System::Object^  sender, System:
 	setMuxerCmdExNames(fcgCXMP4CmdEx, (fcgCBAFS->Checked) ? MUXER_TC2MP4 : MUXER_MP4);
 	fcgCXMP4CmdEx->SelectedIndex = muxer_cmdex;
 }
-
 System::Void frmConfig::fcgArrangeForAutoMultiPass(bool enable) {
-	const int PNX264ModeOffset = +7;
+	const int PNX265ModeOffset = +7;
 	const int PNBitrateOffset  = -39;
 	const int PNStatusFileOffset = -17;
-	if (fcgLastX264ModeAsAMP == enable)
+	if (fcgLastX265ModeAsAMP == enable)
 		return;
-	Point NewPoint = fcgPNX264Mode->Location;
-	NewPoint.Y += PNX264ModeOffset * ((enable) ? -1 : 1);
-	fcgPNX264Mode->Location = NewPoint;
-	fcgPNX264Mode->Height += (PNBitrateOffset - PNX264ModeOffset*2) * ((enable) ? -1 : 1);
+	Point NewPoint = fcgPNX265Mode->Location;
+	NewPoint.Y += PNX265ModeOffset * ((enable) ? -1 : 1);
+	fcgPNX265Mode->Location = NewPoint;
+	fcgPNX265Mode->Height += (PNBitrateOffset - PNX265ModeOffset*2) * ((enable) ? -1 : 1);
 	NewPoint = fcgPNBitrate->Location;
 	NewPoint.Y += PNBitrateOffset * ((enable) ? -1 : 1);
 	fcgPNBitrate->Location = NewPoint;
 	NewPoint = fcgPNStatusFile->Location;
 	NewPoint.Y += PNStatusFileOffset * ((enable) ? -1 : 1);
 	fcgPNStatusFile->Location = NewPoint;
-	fcgLastX264ModeAsAMP = enable;
+	fcgLastX265ModeAsAMP = enable;
 	fcgCBAMPLimitBitrate->Visible = enable;
 	fcgCBAMPLimitFileSize->Visible = enable;
 	fcgNUAMPLimitBitrate->Visible = enable;
 	fcgNUAMPLimitFileSize->Visible = enable;
 }
-System::Void frmConfig::fchArrangeForAutoMultiPass(bool enable) {
-	const int PNX265ModeOffset = +7;
-	const int PNBitrateOffset  = -39;
-	const int PNStatusFileOffset = -17;
-	if (fchLastX265ModeAsAMP == enable)
-		return;
-	Point NewPoint = fchPNX265Mode->Location;
-	NewPoint.Y += PNX265ModeOffset * ((enable) ? -1 : 1);
-	fchPNX265Mode->Location = NewPoint;
-	fchPNX265Mode->Height += (PNBitrateOffset - PNX265ModeOffset*2) * ((enable) ? -1 : 1);
-	NewPoint = fchPNBitrate->Location;
-	NewPoint.Y += PNBitrateOffset * ((enable) ? -1 : 1);
-	fchPNBitrate->Location = NewPoint;
-	NewPoint = fchPNStatusFile->Location;
-	NewPoint.Y += PNStatusFileOffset * ((enable) ? -1 : 1);
-	fchPNStatusFile->Location = NewPoint;
-	fchLastX265ModeAsAMP = enable;
-	fchCBAMPLimitBitrate->Visible = enable;
-	fchCBAMPLimitFileSize->Visible = enable;
-	fchNUAMPLimitBitrate->Visible = enable;
-	fchNUAMPLimitFileSize->Visible = enable;
-}
 
 System::Void frmConfig::fcgCheckAMPAutoBitrateEvent(System::Object^  sender, System::EventArgs^  e) {
 	if (fcgLBAMPAutoBitrate == nullptr)
 		return;
-	if (fcgCXX264Mode->SelectedIndex == 5) {
+	if (fcgCXX265Mode->SelectedIndex == 5) {
 		if (   0 == String::Compare(fcgTXQuality->Text, STR_BITRATE_AUTO)
 			|| 0 == String::Compare(fcgTXQuality->Text, L"-1")) {
 				if (!fcgCBAMPLimitBitrate->Checked && !fcgCBAMPLimitFileSize->Checked) {
@@ -636,49 +529,30 @@ System::Void frmConfig::fcgCheckAMPAutoBitrateEvent(System::Object^  sender, Sys
 	}
 	fcgLBAMPAutoBitrate->Visible = false;
 }
-System::Void frmConfig::fchCheckAMPAutoBitrateEvent(System::Object^  sender, System::EventArgs^  e) {
-	if (fchLBAMPAutoBitrate == nullptr)
-		return;
-	if (fchCXX265Mode->SelectedIndex == 5) {
-		if (   0 == String::Compare(fchTXQuality->Text, STR_BITRATE_AUTO)
-			|| 0 == String::Compare(fchTXQuality->Text, L"-1")) {
-				if (!fchCBAMPLimitBitrate->Checked && !fchCBAMPLimitFileSize->Checked) {
-				fchLBAMPAutoBitrate->Visible = true;
-				return;
-				}
-		}
-	}
-	fchLBAMPAutoBitrate->Visible = false;
-}
 
 System::Void frmConfig::AddCheckAMPAutoBitrateEvent() {
 	fcgCBAMPLimitBitrate->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fcgCheckAMPAutoBitrateEvent);
 	fcgCBAMPLimitFileSize->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fcgCheckAMPAutoBitrateEvent);
-	fcgCXX264Mode->SelectedIndexChanged += gcnew System::EventHandler(this, &frmConfig::fcgCheckAMPAutoBitrateEvent);
+	fcgCXX265Mode->SelectedIndexChanged += gcnew System::EventHandler(this, &frmConfig::fcgCheckAMPAutoBitrateEvent);
 	fcgTXQuality->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgCheckAMPAutoBitrateEvent);
-
-	fchCBAMPLimitBitrate->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fchCheckAMPAutoBitrateEvent);
-	fchCBAMPLimitFileSize->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fchCheckAMPAutoBitrateEvent);
-	fchCXX265Mode->SelectedIndexChanged += gcnew System::EventHandler(this, &frmConfig::fchCheckAMPAutoBitrateEvent);
-	fchTXQuality->TextChanged += gcnew System::EventHandler(this, &frmConfig::fchCheckAMPAutoBitrateEvent);
 }
 
-System::Void frmConfig::fcgCXX264Mode_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-	int index = fcgCXX264Mode->SelectedIndex;
-	cnf_fcgTemp->rc_mode = x26x_encmode_to_RCint[index];
-	cnf_fcgTemp->use_auto_npass = (fcgCXX264Mode->SelectedIndex == 5 || fcgCXX264Mode->SelectedIndex == 6);
+System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+	int index = fcgCXX265Mode->SelectedIndex;
+	cnf_fcgTemp->rc_mode = x265_encmode_to_RCint[index];
+	cnf_fcgTemp->use_auto_npass = (fcgCXX265Mode->SelectedIndex == 5 || fcgCXX265Mode->SelectedIndex == 6);
 	switch (cnf_fcgTemp->rc_mode) {
-		case X26X_RC_BITRATE:
-			fcgLBQuality->Text = (fcgCXX264Mode->SelectedIndex == 5) ? L"目標映像ビットレート(kbps, \"-1\"で自動)" : L"ビットレート(kbps)";
+		case X265_RC_BITRATE:
+			fcgLBQuality->Text = (fcgCXX265Mode->SelectedIndex == 5) ? L"目標映像ビットレート(kbps, \"-1\"で自動)" : L"ビットレート(kbps)";
 			fcgLBQualityLeft->Text = L"低品質";
 			fcgLBQualityRight->Text = L"高品質";
 			fcgTBQuality->Minimum = 0;
 			fcgTBQuality->Maximum = TBBConvert.getMaxCount();
-			cnf_fcgTemp->pass = x26x_encmode_to_passint[index];
-			if (fcgCXX264Mode->SelectedIndex >= 3) {
+			cnf_fcgTemp->pass = x265_encmode_to_passint[index];
+			if (fcgCXX265Mode->SelectedIndex >= 3) {
 				fcgCBNulOut->Enabled = true;
 				fcgCBNulOut->Checked = cnf_fcgTemp->nul_out != 0;
-				if (fcgCXX264Mode->SelectedIndex == 4) {
+				if (fcgCXX265Mode->SelectedIndex == 4) {
 					fcgCBFastFirstPass->Enabled = false; //Enabledの変更が先
 					fcgCBFastFirstPass->Checked = false;
 				} else {
@@ -692,16 +566,16 @@ System::Void frmConfig::fcgCXX264Mode_SelectedIndexChanged(System::Object^  send
 				fcgCBFastFirstPass->Checked = false;
 			}
 			//自動(-1)から変更されたときの処置 → 1000に戻す
-			if ((cnf_fcgTemp->bitrate == -1) && (fcgCXX264Mode->SelectedIndex != 5))
+			if ((cnf_fcgTemp->bitrate == -1) && (fcgCXX265Mode->SelectedIndex != 5))
 				cnf_fcgTemp->bitrate = 1000;
 			//文字列を更新
-			if ((cnf_fcgTemp->bitrate == -1) && (fcgCXX264Mode->SelectedIndex == 5))
+			if ((cnf_fcgTemp->bitrate == -1) && (fcgCXX265Mode->SelectedIndex == 5))
 				fcgTXQuality->Text = STR_BITRATE_AUTO; //-1の特例処置(-1: 自動)
 			else
 				fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
 			SetfbcBTVBEnable(true);
 			break;
-		case X26X_RC_QP:
+		case X265_RC_QP:
 			fcgLBQuality->Text = L"量子化量(Quantizer)";
 			fcgLBQualityLeft->Text = L"高品質";
 			fcgLBQualityRight->Text = L"低品質";
@@ -714,7 +588,7 @@ System::Void frmConfig::fcgCXX264Mode_SelectedIndexChanged(System::Object^  send
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
 			SetfbcBTVBEnable(false);
 			break;
-		case X26X_RC_CRF:
+		case X265_RC_CRF:
 		default:
 			fcgLBQuality->Text = L"品質(Quality)";
 			fcgLBQualityLeft->Text = L"高品質";
@@ -729,90 +603,14 @@ System::Void frmConfig::fcgCXX264Mode_SelectedIndexChanged(System::Object^  send
 			SetfbcBTVBEnable(false);
 			break;
 	}
-	fcgNUAutoNPass->Enabled = (fcgCXX264Mode->SelectedIndex == 5);
+	fcgNUAutoNPass->Enabled = (fcgCXX265Mode->SelectedIndex == 5);
 	fcgArrangeForAutoMultiPass(cnf_fcgTemp->use_auto_npass != 0);
-}
-System::Void frmConfig::fchCXX265Mode_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-	int index = fchCXX265Mode->SelectedIndex;
-	cnf_fchTemp->rc_mode = x26x_encmode_to_RCint[index];
-	cnf_fchTemp->use_auto_npass = (fchCXX265Mode->SelectedIndex == 5 || fchCXX265Mode->SelectedIndex == 6);
-	switch (cnf_fchTemp->rc_mode) {
-		case X26X_RC_BITRATE:
-			fchLBQuality->Text = (fchCXX265Mode->SelectedIndex == 5) ? L"目標映像ビットレート(kbps, \"-1\"で自動)" : L"ビットレート(kbps)";
-			fchLBQualityLeft->Text = L"低品質";
-			fchLBQualityRight->Text = L"高品質";
-			fchTBQuality->Minimum = 0;
-			fchTBQuality->Maximum = TBBConvert.getMaxCount();
-			cnf_fchTemp->pass = x26x_encmode_to_passint[index];
-			if (fchCXX265Mode->SelectedIndex >= 3) {
-				fchCBNulOut->Enabled = true;
-				fchCBNulOut->Checked = cnf_fchTemp->nul_out != 0;
-				if (fchCXX265Mode->SelectedIndex == 4) {
-					fchCBFastFirstPass->Enabled = false; //Enabledの変更が先
-					fchCBFastFirstPass->Checked = false;
-				} else {
-					fchCBFastFirstPass->Enabled = true; //Enabledの変更が先
-					fchCBFastFirstPass->Checked = !cnf_fchTemp->slow_first_pass;
-				}
-			} else {
-				fchCBNulOut->Enabled = false; //Enabledの変更が先
-				fchCBNulOut->Checked = false;
-				fchCBFastFirstPass->Enabled = false; //Enabledの変更が先
-				fchCBFastFirstPass->Checked = false;
-			}
-			//自動(-1)から変更されたときの処置 → 1000に戻す
-			if ((cnf_fchTemp->bitrate == -1) && (fchCXX265Mode->SelectedIndex != 5))
-				cnf_fchTemp->bitrate = 1000;
-			//文字列を更新
-			if ((cnf_fchTemp->bitrate == -1) && (fchCXX265Mode->SelectedIndex == 5))
-				fchTXQuality->Text = STR_BITRATE_AUTO; //-1の特例処置(-1: 自動)
-			else
-				fchTXQuality->Text = Convert::ToString(cnf_fchTemp->bitrate);
-			SetfbcBTVBEnable(true);
-			break;
-		case X26X_RC_QP:
-			fchLBQuality->Text = L"量子化量(Quantizer)";
-			fchLBQualityLeft->Text = L"高品質";
-			fchLBQualityRight->Text = L"低品質";
-			fchTBQuality->Minimum = 0;
-			fchTBQuality->Maximum = 69;
-			fchCBNulOut->Enabled = false; //Enabledの変更が先
-			fchCBNulOut->Checked = false;
-			fchCBFastFirstPass->Enabled = false; //Enabledの変更が先
-			fchCBFastFirstPass->Checked = false;
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->qp);
-			SetfbcBTVBEnable(false);
-			break;
-		case X26X_RC_CRF:
-		default:
-			fchLBQuality->Text = L"品質(Quality)";
-			fchLBQualityLeft->Text = L"高品質";
-			fchLBQualityRight->Text = L"低品質";
-			fchTBQuality->Minimum = (fchCBUsehighbit->Checked) ? -12*2 : 0;
-			fchTBQuality->Maximum = 51*2;
-			fchCBNulOut->Enabled = false; //Enabledの変更が先
-			fchCBNulOut->Checked = false;
-			fchCBFastFirstPass->Enabled = false; //Enabledの変更が先
-			fchCBFastFirstPass->Checked = false;
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->crf / 100.0);
-			SetfbcBTVBEnable(false);
-			break;
-	}
-	fchNUAutoNPass->Enabled = (fchCXX265Mode->SelectedIndex == 5);
-	fchArrangeForAutoMultiPass(cnf_fchTemp->use_auto_npass != 0);
 }
 
 System::Void frmConfig::fcgTXQuality_Enter(System::Object^  sender, System::EventArgs^  e) {
 	if (0 == String::Compare(fcgTXQuality->Text, STR_BITRATE_AUTO)) {
 		fcgTXQuality->Text = L"-1";
 		fcgTXQuality->Select(0, fcgTXQuality->Text->Length);
-	}
-}
-
-System::Void frmConfig::fchTXQuality_Enter(System::Object^  sender, System::EventArgs^  e) {
-	if (0 == String::Compare(fchTXQuality->Text, STR_BITRATE_AUTO)) {
-		fchTXQuality->Text = L"-1";
-		fchTXQuality->Select(0, fchTXQuality->Text->Length);
 	}
 }
 
@@ -830,7 +628,7 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
 		return;
 	}
 	int c = fcgTXQuality->SelectionStart;
-	int index = fcgCXX264Mode->SelectedIndex;
+	int index = fcgCXX265Mode->SelectedIndex;
 	bool restore = false;
 	int i;
 	double d;
@@ -838,10 +636,10 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
 		fcgTXQuality->Text = lastQualityStr;
 		restore = true;
 	} else {
-		switch (x26x_encmode_to_RCint[index]) {
-		case X26X_RC_BITRATE:
+		switch (x265_encmode_to_RCint[index]) {
+		case X265_RC_BITRATE:
 			//自動マルチパス時は-1(自動)もあり得る
-			if (Int32::TryParse(fcgTXQuality->Text, i) && i >= ((fcgCXX264Mode->SelectedIndex == 5) ? -1 : 0)) {
+			if (Int32::TryParse(fcgTXQuality->Text, i) && i >= ((fcgCXX265Mode->SelectedIndex == 5) ? -1 : 0)) {
 				cnf_fcgTemp->bitrate = i;
 				fcgTXQuality->Text = i.ToString();
 				fcgTBQuality->Value = TBBConvert.BitrateToTB(cnf_fcgTemp->bitrate);
@@ -850,14 +648,14 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
 				restore = true;
 			}
 			break;
-		case X26X_RC_QP:
+		case X265_RC_QP:
 			if (Int32::TryParse(fcgTXQuality->Text, i)) {
 				i = SetTBValue(fcgTBQuality, i);
 				cnf_fcgTemp->qp = i;
 				fcgTXQuality->Text = Convert::ToString(i);
 			}
 			break;
-		case X26X_RC_CRF:
+		case X265_RC_CRF:
 		default:
 			if (Double::TryParse(fcgTXQuality->Text, d)) {
 				int TBmin = fcgTBQuality->Minimum * 50;
@@ -878,139 +676,40 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
 	lastQualityStr = fcgTXQuality->Text;
 }
 
-System::Void frmConfig::fchTXQuality_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	if (fchTXQuality->Text->Length == 0 || String::Compare(fchTXQuality->Text, L"-") == 0)
-		return;
-	//自動モードの文字列に変更されたときの処理
-	if (0 == String::Compare(fchTXQuality->Text, STR_BITRATE_AUTO)) {
-		fchTXQuality->Text = STR_BITRATE_AUTO;
-		cnf_fchTemp->bitrate = -1;
-		fchTBQuality->Value = TBBConvert.BitrateToTB(cnf_fchTemp->bitrate);
-		lastQualityStr = fchTXQuality->Text;
-		fchTXQuality->SelectionStart = fchTXQuality->Text->Length;
-		fchTXQuality->SelectionLength = 0;
-		return;
-	}
-	int c = fchTXQuality->SelectionStart;
-	int index = fchCXX265Mode->SelectedIndex;
-	bool restore = false;
-	int i;
-	double d;
-	if (!Double::TryParse(fchTXQuality->Text, d)) {
-		fchTXQuality->Text = lastQualityStr;
-		restore = true;
-	} else {
-		switch (x26x_encmode_to_RCint[index]) {
-		case X26X_RC_BITRATE:
-			//自動マルチパス時は-1(自動)もあり得る
-			if (Int32::TryParse(fchTXQuality->Text, i) && i >= ((fchCXX265Mode->SelectedIndex == 5) ? -1 : 0)) {
-				cnf_fchTemp->bitrate = i;
-				fchTXQuality->Text = i.ToString();
-				fchTBQuality->Value = TBBConvert.BitrateToTB(cnf_fchTemp->bitrate);
-			} else {
-				fchTXQuality->Text = lastQualityStr;
-				restore = true;
-			}
-			break;
-		case X26X_RC_QP:
-			if (Int32::TryParse(fchTXQuality->Text, i)) {
-				i = SetTBValue(fchTBQuality, i);
-				cnf_fchTemp->qp = i;
-				fchTXQuality->Text = Convert::ToString(i);
-			}
-			break;
-		case X26X_RC_CRF:
-		default:
-			if (Double::TryParse(fchTXQuality->Text, d)) {
-				int TBmin = fchTBQuality->Minimum * 50;
-				int TBmax = fchTBQuality->Maximum * 50;
-				i = clamp((int)Math::Round(d * 100), TBmin, TBmax);
-				cnf_fchTemp->crf = i;
-				//小数点以下3桁目カットを考慮
-				if (d*1000 != cnf_fchTemp->crf * 10)
-					fchTXQuality->Text = Convert::ToString(i / 100.0);
-			}
-			fchTBQuality->Value = (int)Math::Round(cnf_fchTemp->crf / 50);
-			break;
-		}
-	}
-	//カーソルの位置を動かさないように   復元したのなら、直前の入力は無効のハズ
-	fchTXQuality->SelectionStart = clamp(c - Convert::ToInt32(restore), 0, fchTXQuality->Text->Length);
-	fchTXQuality->SelectionLength = 0;
-	lastQualityStr = fchTXQuality->Text;
-}
-
 System::Void frmConfig::fcgTXQuality_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	switch (x26x_encmode_to_RCint[fcgCXX264Mode->SelectedIndex]) {
-		case X26X_RC_BITRATE:
+	switch (x265_encmode_to_RCint[fcgCXX265Mode->SelectedIndex]) {
+		case X265_RC_BITRATE:
 			//自動モードの場合は除く
-			if (fcgCXX264Mode->SelectedIndex == 5 && cnf_fcgTemp->bitrate == -1) {
+			if (fcgCXX265Mode->SelectedIndex == 5 && cnf_fcgTemp->bitrate == -1) {
 				fcgTXQuality->Text = STR_BITRATE_AUTO;
 			} else
 				fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
 			break;
-		case X26X_RC_QP:
+		case X265_RC_QP:
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
 			break;
-		case X26X_RC_CRF:
+		case X265_RC_CRF:
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->crf / 100.0);
 		default:
 			break;
 	}
 }
-System::Void frmConfig::fchTXQuality_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	switch (x26x_encmode_to_RCint[fchCXX265Mode->SelectedIndex]) {
-		case X26X_RC_BITRATE:
-			//自動モードの場合は除く
-			if (fchCXX265Mode->SelectedIndex == 5 && cnf_fchTemp->bitrate == -1) {
-				fchTXQuality->Text = STR_BITRATE_AUTO;
-			} else
-				fchTXQuality->Text = Convert::ToString(cnf_fchTemp->bitrate);
-			break;
-		case X26X_RC_QP:
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->qp);
-			break;
-		case X26X_RC_CRF:
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->crf / 100.0);
-		default:
-			break;
-	}
-}
 
-
-System::Void frmConfig::SetTBValueToTextBoxX264() {
-	int index = fcgCXX264Mode->SelectedIndex;
-	switch (x26x_encmode_to_RCint[index]) {
-		case X26X_RC_BITRATE:
+System::Void frmConfig::SetTBValueToTextBoxX265() {
+	int index = fcgCXX265Mode->SelectedIndex;
+	switch (x265_encmode_to_RCint[index]) {
+		case X265_RC_BITRATE:
 			cnf_fcgTemp->bitrate = TBBConvert.TBToBitrate(fcgTBQuality->Value);
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
 			break;
-		case X26X_RC_QP:
+		case X265_RC_QP:
 			cnf_fcgTemp->qp = fcgTBQuality->Value;
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
 			break;
-		case X26X_RC_CRF:
+		case X265_RC_CRF:
 		default:
 			cnf_fcgTemp->crf = fcgTBQuality->Value * 50;
 			fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->crf / 100.0);
-			break;
-	}
-}
-System::Void frmConfig::SetTBValueToTextBoxX265() {
-	int index = fchCXX265Mode->SelectedIndex;
-	switch (x26x_encmode_to_RCint[index]) {
-		case X26X_RC_BITRATE:
-			cnf_fchTemp->bitrate = TBBConvert.TBToBitrate(fchTBQuality->Value);
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->bitrate);
-			break;
-		case X26X_RC_QP:
-			cnf_fchTemp->qp = fchTBQuality->Value;
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->qp);
-			break;
-		case X26X_RC_CRF:
-		default:
-			cnf_fchTemp->crf = fchTBQuality->Value * 50;
-			fchTXQuality->Text = Convert::ToString(cnf_fchTemp->crf / 100.0);
 			break;
 	}
 }
@@ -1378,50 +1077,26 @@ System::Void frmConfig::InitData(CONF_GUIEX *set_config, const SYSTEM_DATA *syst
 
 System::Void frmConfig::InitComboBox() {
 	//コンボボックスに値を設定する
-	//x264
-	setComboBox(fcgCXAQMode,         list_aq);
-	setComboBox(fcgCXAspectRatio,    aspect_desc);
 	setComboBox(fcgCXAudioTempDir,   audtempdir_desc);
-	setComboBox(fcgCXBAdpapt,        list_b_adpat);
-	setComboBox(fcgCXBpyramid,       list_b_pyramid);
-	setComboBox(fcgCXColorMatrix,    list_colormatrix);
-	setComboBox(fcgCXColorPrim,      list_colorprim);
-	setComboBox(fcgCXInputRange,     list_input_range);
-	setComboBox(fcgCXDirectME,       list_direct);
-	setComboBox(fcgCXLevel,          list_x264guiEx_level);
-	setComboBox(fcgCXLogLevel,       list_log_type);
-	setComboBox(fcgCXME,             list_me_x264);
 	setComboBox(fcgCXMP4BoxTempDir,  mp4boxtempdir_desc);
-	setComboBox(fcgCXNalHrd,         list_nal_hrd);
-	setComboBox(fcgCXOutputCsp,      list_output_csp_x264);
-	setComboBox(fcgCXPreset,         sys_dat->exstg->s_x264.preset.name);
-	setComboBox(fcgCXProfile,        sys_dat->exstg->s_x264.profile.name);
-	setComboBox(fcgCXTune,		     sys_dat->exstg->s_x264.tune.name);
-	setComboBox(fcgCXSubME,          list_subme);
 	setComboBox(fcgCXTempDir,        tempdir_desc);
-	setComboBox(fcgCXTransfer,       list_transfer);
-	setComboBox(fcgCXTrellis,        list_trellis);
-	setComboBox(fcgCXVideoFormat,    list_videoformat);
-	setComboBox(fcgCXX264Mode,       x264_encodemode_desc);
-	setComboBox(fcgCXWeightP,        list_weightp);   
-	setComboBox(fcgCXInterlaced,     interlaced_desc);
 	
 	//x265
-	setComboBox(fchCXCSP,            list_output_csp_x265);
-	setComboBox(fchCXAQMode,         list_aq);
-	setComboBox(fchCXAspectRatio,    aspect_desc);
-	setComboBox(fchCXX265Mode,       x265_encodemode_desc);
-	setComboBox(fchCXME,             list_me_x265);
-	setComboBox(fchCXSubME,          list_subme_x265);
-	setComboBox(fchCXBadapt,         list_b_adpat);
-	setComboBox(fchCXPreset,         sys_dat->exstg->s_x265.preset.name);
-	setComboBox(fchCXProfile,        sys_dat->exstg->s_x265.profile.name);
-	setComboBox(fchCXTune,		     sys_dat->exstg->s_x265.tune.name);
-	setComboBox(fchCXInterlaced,     interlaced_desc);
-	setComboBox(fchCXTransfer,       list_transfer);
-	setComboBox(fchCXColorMatrix,    list_colormatrix);
-	setComboBox(fchCXColorPrim,      list_colorprim);
-	setComboBox(fchCXVideoFormat,    list_videoformat);
+	setComboBox(fcgCXCSP,            list_output_csp_x265);
+	setComboBox(fcgCXAQMode,         list_aq);
+	setComboBox(fcgCXAspectRatio,    aspect_desc);
+	setComboBox(fcgCXX265Mode,       x265_encodemode_desc);
+	setComboBox(fcgCXME,             list_me_x265);
+	setComboBox(fcgCXSubME,          list_subme_x265);
+	setComboBox(fcgCXBadapt,         list_b_adpat);
+	setComboBox(fcgCXPreset,         sys_dat->exstg->s_x265.preset.name);
+	setComboBox(fcgCXProfile,        sys_dat->exstg->s_x265.profile.name);
+	setComboBox(fcgCXTune,		     sys_dat->exstg->s_x265.tune.name);
+	setComboBox(fcgCXInterlaced,     interlaced_desc);
+	setComboBox(fcgCXTransfer,       list_transfer);
+	setComboBox(fcgCXColorMatrix,    list_colormatrix);
+	setComboBox(fcgCXColorPrim,      list_colorprim);
+	setComboBox(fcgCXVideoFormat,    list_videoformat);
 
 	setComboBox(fcgCXAudioEncTiming, audio_enc_timing_desc);
 	setComboBox(fcgCXAudioDelayCut,  audio_delay_cut_desc);
@@ -1447,12 +1122,9 @@ System::Void frmConfig::SetTXMaxLen(TextBox^ TX, int max_len) {
 System::Void frmConfig::SetTXMaxLenAll() {
 	//MaxLengthに最大文字数をセットし、それをもとにバイト数計算を行うイベントをセットする。
 	SetTXMaxLen(fcgTXCmdEx,                sizeof(conf->vid.cmdex) - 1);
-	SetTXMaxLen(fcgTXX264Path,             sizeof(sys_dat->exstg->s_x264.fullpath) - 1);
-	SetTXMaxLen(fcgTXX264PathSub,          sizeof(sys_dat->exstg->s_x264.fullpath) - 1);
-	SetTXMaxLen(fcgTXX264PathSubhighbit,   sizeof(sys_dat->exstg->s_x264.fullpath_highbit) - 1);
-	SetTXMaxLen(fchTXX265Path,             sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
-	SetTXMaxLen(fchTXX265PathSub,          sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
-	SetTXMaxLen(fchTXX265PathSubhighbit,   sizeof(sys_dat->exstg->s_x265.fullpath_highbit) - 1);
+	SetTXMaxLen(fcgTXX265Path,             sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
+	SetTXMaxLen(fcgTXX265PathSub,          sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
+	SetTXMaxLen(fcgTXX265PathSubhighbit,   sizeof(sys_dat->exstg->s_x265.fullpath_highbit) - 1);
 	SetTXMaxLen(fcgTXAudioEncoderPath,     sizeof(sys_dat->exstg->s_aud[0].fullpath) - 1);
 	SetTXMaxLen(fcgTXMP4MuxerPath,         sizeof(sys_dat->exstg->s_mux[MUXER_MP4].fullpath) - 1);
 	SetTXMaxLen(fcgTXMKVMuxerPath,         sizeof(sys_dat->exstg->s_mux[MUXER_MKV].fullpath) - 1);
@@ -1463,9 +1135,6 @@ System::Void frmConfig::SetTXMaxLenAll() {
 	SetTXMaxLen(fcgTXCustomAudioTempDir,   sizeof(sys_dat->exstg->s_local.custom_audio_tmp_dir) - 1);
 	SetTXMaxLen(fcgTXMP4BoxTempDir,        sizeof(sys_dat->exstg->s_local.custom_mp4box_tmp_dir) - 1);
 	SetTXMaxLen(fcgTXStatusFile,           sizeof(conf->vid.stats) - 1);
-	SetTXMaxLen(fchTXStatusFile,           sizeof(conf->vid.stats) - 1);
-	SetTXMaxLen(fcgTXTCIN,                 sizeof(conf->vid.tcfile_in) - 1);
-	SetTXMaxLen(fcgTXCQM,                  sizeof(conf->vid.cqmfile) - 1);
 	SetTXMaxLen(fcgTXBatBeforePath,        sizeof(conf->oth.batfile_before) - 1);
 	SetTXMaxLen(fcgTXBatAfterPath,         sizeof(conf->oth.batfile_after) - 1);
 
@@ -1479,27 +1148,13 @@ System::Void frmConfig::InitStgFileList() {
 }
 
 System::Void frmConfig::fcgChangeEnabled(System::Object^  sender, System::EventArgs^  e) {
-	fcgLBX264PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fcgLBX264PathSub8bit->Visible = fcgTSBCMDOnly->Checked;
-	fcgLBX264PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-	fcgTXX264PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fcgBTX264PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fcgTXX264PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-	fcgBTX264PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-
-	fchLBX265PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fchLBX265PathSub8bit->Visible = fcgTSBCMDOnly->Checked;
-	fchLBX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-	fchTXX265PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fchBTX265PathSub->Visible = fcgTSBCMDOnly->Checked;
-	fchTXX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-	fchBTX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-
-	fcggroupBoxDeblock->Enabled = fcgCBDeblock->Checked;
-	fcgTXTCIN->Enabled = fcgCBTCIN->Checked;
-	fcgBTTCIN->Enabled = fcgCBTCIN->Checked;
-	fcgNUTimebaseDen->Enabled = fcgCBTimeBase->Checked;
-	fcgNUTimebaseNum->Enabled = fcgCBTimeBase->Checked;
+	fcgLBX265PathSub->Visible = fcgTSBCMDOnly->Checked;
+	fcgLBX265PathSub8bit->Visible = fcgTSBCMDOnly->Checked;
+	fcgLBX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
+	fcgTXX265PathSub->Visible = fcgTSBCMDOnly->Checked;
+	fcgBTX265PathSub->Visible = fcgTSBCMDOnly->Checked;
+	fcgTXX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
+	fcgBTX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
 	fcgBTCmdEx->Visible = !fcgTSBCMDOnly->Checked;
 	fcgCBNulOutCLI->Visible = fcgTSBCMDOnly->Checked;
 }
@@ -1603,20 +1258,14 @@ System::Void frmConfig::InitForm() {
 	//タイムコードのappendix(後付修飾子)を反映
 	fcgCBAuoTcfileout->Text = L"タイムコード出力 (" + String(sys_dat->exstg->s_append.tc).ToString() + L")";
 	//タイトル表示
-	this->Text = String(auo_full_name).ToString();
+	this->Text = String(AUO_FULL_NAME).ToString();
 	//バージョン情報,コンパイル日時
-	fcgLBVersion->Text     = String(auo_version_name).ToString();
+	fcgLBVersion->Text     = String(AUO_VERSION_NAME).ToString();
 	fcgLBVersionDate->Text = L"build " + String(__DATE__).ToString() + L" " + String(__TIME__).ToString();
-	//スレッド数上限
-	int max_threads_set = (int)(cpu_core_count() * 1.5 + 0.51);
-	fcgNUThreads->Maximum = max_threads_set;
-	fcgNULookaheadThreads->Maximum = max_threads_set;
 	//タイマーの初期化
 	InitTimer();
 	//ツールチップ
 	SetHelpToolTips();
-	SetX264VersionToolTip(LocalStg.x264Path, false);
-	SetX264VersionToolTip(LocalStg.x264Pathhighbit, true);
 	SetX265VersionToolTip(LocalStg.x265Path, false);
 	SetX265VersionToolTip(LocalStg.x265Pathhighbit, true);
 	ActivateToolTip(sys_dat->exstg->s_local.disable_tooltip_help == FALSE);
@@ -1640,7 +1289,6 @@ System::Void frmConfig::InitForm() {
 	AddfcgLBAMPAutoBitrate();
 	AddCheckAMPAutoBitrateEvent();
 	this->fcgTSBCMDOnly->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fcgTSBRearrageTabs_CheckedChanged);
-	this->fcgTSBEncType->CheckedChanged += gcnew System::EventHandler(this, &frmConfig::fcgTSBRearrageTabs_CheckedChanged);
 	fcgTSBRearrageTabs_CheckedChanged(nullptr, nullptr);
 	//キー設定
 	SetStgEscKey(sys_dat->exstg->s_local.enable_stg_esc_key != 0);
@@ -1651,230 +1299,101 @@ System::Void frmConfig::InitForm() {
 
 /////////////         データ <-> GUI     /////////////
 System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
-	//ひたすら書くだけ。めんどい
-	fcgTSBEncType->Checked = cnf->vid.enc_type != 0;
-
-	//x264
-	{
-	CONF_X264 *cx264 = &cnf->x264;
-	memcpy(cnf_fcgTemp, cx264, sizeof(CONF_X264)); //一時保存用
-	this->SuspendLayout();
-	fcgCBUsehighbit->Checked = 8 < cx264->bit_depth;
-	switch (cx264->rc_mode) {
-		case X26X_RC_QP:
-			fcgCXX264Mode->SelectedIndex = 1;
-			break;
-		case X26X_RC_BITRATE:
-			if (cx264->use_auto_npass)
-				fcgCXX264Mode->SelectedIndex = 5;
-			else {
-				switch (cx264->pass) {
-					case 0:  fcgCXX264Mode->SelectedIndex = 0; break;
-					case 1:  fcgCXX264Mode->SelectedIndex = 3; break;
-					default: fcgCXX264Mode->SelectedIndex = 4; break;
-				}
-			}
-			break;
-		case X26X_RC_CRF:
-		default:
-			fcgCXX264Mode->SelectedIndex = (cx264->use_auto_npass) ? 6 : 2;
-			break;
-	}
-	fcgCXX264Mode_SelectedIndexChanged(nullptr, nullptr); //こいつをやっとかないと更新されないこともある
-
-	SetNUValue(fcgNUAutoNPass,        cx264->auto_npass);
-	SetCXIndex(fcgCXPreset,           cx264->preset);
-	SetCXIndex(fcgCXTune,             cx264->tune);
-	SetCXIndex(fcgCXProfile,          cx264->profile);
-	fcgCBAMPLimitBitrate->Checked  = (cnf->vid.amp_x264.check & AMPLIMIT_BITRATE) != 0;
-	fcgCBAMPLimitFileSize->Checked = (cnf->vid.amp_x264.check & AMPLIMIT_FILE_SIZE) != 0;
-	SetNUValue(fcgNUAMPLimitFileSize, cnf->vid.amp_x264.limit_file_size);
-	SetNUValue(fcgNUAMPLimitBitrate,  cnf->vid.amp_x264.limit_bitrate);
-	SetCXIndex(fcgCXLevel,            cx264->h26x_level);
-	SetCXIndex(fcgCXVideoFormat,      cx264->videoformat);
-	fcgCBAud->Checked               = cx264->aud != 0;
-	fcgCBPicStruct->Checked         = cx264->pic_struct != 0;
-	SetCXIndex(fcgCXNalHrd,           cx264->nal_hrd);
-	SetCXIndex(fcgCXOutputCsp,        cx264->output_csp);
-	fcgCBBlurayCompat->Checked      = cx264->bluray_compat != 0;
-	SetCXIndex(fcgCXColorMatrix,      cx264->colormatrix);
-	SetCXIndex(fcgCXColorPrim,        cx264->colorprim);
-	SetCXIndex(fcgCXTransfer,         cx264->transfer);
-	SetCXIndex(fcgCXInputRange,       cx264->input_range);
-
-	if (cx264->sar.x * cx264->sar.y < 0)
-		cx264->sar.x = cx264->sar.y = 0;
-	fcgCXAspectRatio->SelectedIndex= (cx264->sar.x < 0);
-	SetNUValue(fcgNUAspectRatioX, abs(cx264->sar.x));
-	SetNUValue(fcgNUAspectRatioY, abs(cx264->sar.y));
-
-	SetNUValue(fcgNUThreads,          cx264->threads);
-	SetNUValue(fcgNULookaheadThreads, cx264->lookahead_threads);
-	fcgCBSlicedThreads->Checked     = cx264->sliced_threading != 0;
-
-	SetCXIndex(fcgCXLogLevel,         cx264->log_mode);
-	fcgCBPSNR->Checked              = cx264->psnr != 0;
-	fcgCBSSIM->Checked              = cx264->ssim != 0;
-
-	SetNUValue(fcgNUIPRatio,   ((int)(cx264->ip_ratio * 100 + 0.5) - 100));
-	SetNUValue(fcgNUPBRatio,   ((int)(cx264->pb_ratio * 100 + 0.5) - 100));
-	SetNUValue(fcgNUQcomp,      (int)(cx264->qp_compress * 100 + 0.5));
-	SetNUValue(fcgNUQpmin,            cx264->qp_min);
-	SetNUValue(fcgNUQpmax,            cx264->qp_max);
-	SetNUValue(fcgNUQpstep,           cx264->qp_step);
-	SetNUValue(fcgNUChromaQp,         cx264->chroma_qp_offset);
-	SetCXIndex(fcgCXAQMode,           cx264->aq_mode);
-	SetNUValue(fcgNUAQStrength,       cx264->aq_strength);
-	SetNUValue(fcgNUPsyRDO,           cx264->psy_rd.x);
-	SetNUValue(fcgNUPsyTrellis,       cx264->psy_rd.y);
-	fcgCBMBTree->Checked            = cx264->mbtree != 0;
-	SetNUValue(fcgNURCLookahead,      cx264->rc_lookahead);
-	SetNUValue(fcgNUVBVmax,           cx264->vbv_maxrate);
-	SetNUValue(fcgNUVBVbuf,           cx264->vbv_bufsize);
-
-	SetNUValue(fcgNUScenecut,         cx264->scenecut);
-	SetNUValue(fcgNUKeyint,           cx264->keyint_max);
-	SetNUValue(fcgNUMinKeyint,        cx264->keyint_min);
-	fcgCBOpenGOP->Checked           = cx264->open_gop != 0;
-
-	fcgCBDeblock->Checked           = cx264->use_deblock != 0;
-	SetNUValue(fcgNUDeblockStrength,  cx264->deblock.x);
-	SetNUValue(fcgNUDeblockThreshold, cx264->deblock.y);
-
-	fcgCBCABAC->Checked = cx264->cabac != 0;
-	SetNUValue(fcgNUSlices,           cx264->slice_n);
-	SetCXIndex(fcgCXWeightP,          cx264->weight_p);
-	
-	fcgCXInterlaced->SelectedIndex  = (!cx264->interlaced) ? 0 : ((cx264->tff) ? 1 : 2);
-
-	SetNUValue(fcgNUBframes,          cx264->bframes);
-	SetCXIndex(fcgCXBAdpapt,          cx264->b_adapt);
-	SetNUValue(fcgNUBBias,            cx264->b_bias);
-	SetCXIndex(fcgCXBpyramid,         cx264->b_pyramid);
-	fcgCBWeightB->Checked           = cx264->weight_b != 0;
-
-	fcgCB8x8dct->Checked            = cx264->dct8x8 != 0;
-	fcgCBp8x8->Checked             = (cx264->mb_partition & MB_PARTITION_P8x8) != 0;
-	fcgCBb8x8->Checked             = (cx264->mb_partition & MB_PARTITION_B8x8) != 0;
-	fcgCBp4x4->Checked             = (cx264->mb_partition & MB_PARTITION_P4x4) != 0;
-	fcgCBi8x8->Checked             = (cx264->mb_partition & MB_PARTITION_I8x8) != 0;
-	fcgCBi4x4->Checked             = (cx264->mb_partition & MB_PARTITION_I4x4) != 0;
-
-	fcgCBfastpskip->Checked         = cx264->no_fast_pskip == 0;
-	fcgCBDctDecimate->Checked       = cx264->no_dct_decimate == 0;
-	SetCXIndex(fcgCXTrellis,          cx264->trellis);
-	SetCQM(cx264->cqm,                cnf->vid.cqmfile);
-
-	SetCXIndex(fcgCXME,               cx264->me);
-	SetCXIndex(fcgCXSubME,            cx264->subme);
-	SetNUValue(fcgNUMERange,          cx264->me_range);
-	fcgCBChromaME->Checked          = cx264->chroma_me != 0;
-	SetCXIndex(fcgCXDirectME,         cx264->direct_mv);
-	SetNUValue(fcgNURef,              cx264->ref_frames);
-	fcgCBMixedRef->Checked          = cx264->mixed_ref != 0;
-
-	fcgCBTCIN->Checked              = cx264->use_tcfilein != 0;
-	fcgCBTimeBase->Checked          = cx264->use_timebase != 0;
-	SetNUValue(fcgNUTimebaseNum,      cx264->timebase.x);
-	SetNUValue(fcgNUTimebaseDen,      cx264->timebase.y);
-	}
 	{
 	//x265
 	CONF_X265 *cx265 = &cnf->x265;
-	memcpy(cnf_fchTemp, cx265, sizeof(CONF_X265)); //一時保存用
-	fchCBUsehighbit->Checked = 8 < cx265->bit_depth;
+	memcpy(cnf_fcgTemp, cx265, sizeof(CONF_X265)); //一時保存用
+	fcgCBUsehighbit->Checked = 8 < cx265->bit_depth;
 	switch (cx265->rc_mode) {
-		case X26X_RC_QP:
-			fchCXX265Mode->SelectedIndex = 1;
+		case X265_RC_QP:
+			fcgCXX265Mode->SelectedIndex = 1;
 			break;
-		case X26X_RC_BITRATE:
+		case X265_RC_BITRATE:
 			if (cx265->use_auto_npass)
-				fchCXX265Mode->SelectedIndex = 5;
+				fcgCXX265Mode->SelectedIndex = 5;
 			else {
 				switch (cx265->pass) {
-					case 0:  fchCXX265Mode->SelectedIndex = 0; break;
-					case 1:  fchCXX265Mode->SelectedIndex = 3; break;
-					default: fchCXX265Mode->SelectedIndex = 4; break;
+					case 0:  fcgCXX265Mode->SelectedIndex = 0; break;
+					case 1:  fcgCXX265Mode->SelectedIndex = 3; break;
+					default: fcgCXX265Mode->SelectedIndex = 4; break;
 				}
 			}
 			break;
-		case X26X_RC_CRF:
+		case X265_RC_CRF:
 		default:
-			fchCXX265Mode->SelectedIndex = (cx265->use_auto_npass) ? 6 : 2;
+			fcgCXX265Mode->SelectedIndex = (cx265->use_auto_npass) ? 6 : 2;
 			break;
 	}
-	fchCXX265Mode_SelectedIndexChanged(nullptr, nullptr); //こいつをやっとかないと更新されないこともある
-	fchCBAMPLimitBitrate->Checked  = (cnf->vid.amp_x265.check & AMPLIMIT_BITRATE) != 0;
-	fchCBAMPLimitFileSize->Checked = (cnf->vid.amp_x265.check & AMPLIMIT_FILE_SIZE) != 0;
-	SetNUValue(fchNUAMPLimitFileSize, cnf->vid.amp_x265.limit_file_size);
-	SetNUValue(fchNUAMPLimitBitrate,  cnf->vid.amp_x265.limit_bitrate);
+	fcgCXX265Mode_SelectedIndexChanged(nullptr, nullptr); //こいつをやっとかないと更新されないこともある
+	fcgCBAMPLimitBitrate->Checked  = (cnf->vid.amp_check & AMPLIMIT_BITRATE) != 0;
+	fcgCBAMPLimitFileSize->Checked = (cnf->vid.amp_check & AMPLIMIT_FILE_SIZE) != 0;
+	SetNUValue(fcgNUAMPLimitFileSize, cnf->vid.amp_limit_file_size);
+	SetNUValue(fcgNUAMPLimitBitrate,  cnf->vid.amp_limit_bitrate);
 
-	SetCXIndex(fchCXPreset,           cx265->preset);
-	SetCXIndex(fchCXTune,             cx265->tune);
-	SetCXIndex(fchCXProfile,          cx265->profile);
+	SetCXIndex(fcgCXPreset,           cx265->preset);
+	SetCXIndex(fcgCXTune,             cx265->tune);
+	SetCXIndex(fcgCXProfile,          cx265->profile);
 	
 	if (cx265->sar.x * cx265->sar.y < 0)
 		cx265->sar.x = cx265->sar.y = 0;
-	fchCXAspectRatio->SelectedIndex= (cx265->sar.x < 0);
-	SetNUValue(fchNUAspectRatioX, abs(cx265->sar.x));
-	SetNUValue(fchNUAspectRatioY, abs(cx265->sar.y));
+	fcgCXAspectRatio->SelectedIndex= (cx265->sar.x < 0);
+	SetNUValue(fcgNUAspectRatioX, abs(cx265->sar.x));
+	SetNUValue(fcgNUAspectRatioY, abs(cx265->sar.y));
 
-	SetCXIndex(fchCXInterlaced,       cx265->interlaced);
+	SetCXIndex(fcgCXInterlaced,       cx265->interlaced);
 	
-	SetCXIndex(fchCXVideoFormat,      cx265->videoformat);
-	SetCXIndex(fchCXCSP,              cx265->output_csp);
+	SetCXIndex(fcgCXVideoFormat,      cx265->videoformat);
+	SetCXIndex(fcgCXCSP,              cx265->output_csp);
 	
-	SetCXIndex(fchCXColorMatrix,      cx265->colormatrix);
-	SetCXIndex(fchCXColorPrim,        cx265->colorprim);
-	SetCXIndex(fchCXTransfer,         cx265->transfer);
-	fchCBFullRange->Checked         = cx265->input_range != 0;
+	SetCXIndex(fcgCXColorMatrix,      cx265->colormatrix);
+	SetCXIndex(fcgCXColorPrim,        cx265->colorprim);
+	SetCXIndex(fcgCXTransfer,         cx265->transfer);
+	fcgCBFullRange->Checked         = cx265->input_range != 0;
 
-	SetNUValue(fchNUScenecut,         cx265->scenecut);
-	SetNUValue(fchNUKeyintMin,        cx265->keyint_min);
-	SetNUValue(fchNUKeyintMax,        cx265->keyint_max);
-	fchCBOpenGOP->Checked           = cx265->open_gop != 0;
-	SetNUValue(fchNURCLookahead,      cx265->rc_lookahead);
-	SetNUValue(fchNURef,              cx265->ref_frames);
-	SetNUValue(fchNUBframes,          cx265->bframes);
-	SetCXIndex(fchCXBadapt,           cx265->b_adapt);
-	fchCBBpyramid->Checked          = cx265->b_pyramid != 0;
-	fchCBWeightB->Checked           = cx265->weight_b != 0;
-	fchCBWeightP->Checked           = cx265->weight_p != 0;
+	SetNUValue(fcgNUScenecut,         cx265->scenecut);
+	SetNUValue(fcgNUKeyintMin,        cx265->keyint_min);
+	SetNUValue(fcgNUKeyintMax,        cx265->keyint_max);
+	fcgCBOpenGOP->Checked           = cx265->open_gop != 0;
+	SetNUValue(fcgNURCLookahead,      cx265->rc_lookahead);
+	SetNUValue(fcgNURef,              cx265->ref_frames);
+	SetNUValue(fcgNUBframes,          cx265->bframes);
+	SetCXIndex(fcgCXBadapt,           cx265->b_adapt);
+	fcgCBBpyramid->Checked          = cx265->b_pyramid != 0;
+	fcgCBWeightB->Checked           = cx265->weight_b != 0;
+	fcgCBWeightP->Checked           = cx265->weight_p != 0;
 	
-	SetNUValue(fchNUVBVbuf,           cx265->vbv_bufsize);
-	SetNUValue(fchNUVBVmax,           cx265->vbv_maxrate);
+	SetNUValue(fcgNUVBVbuf,           cx265->vbv_bufsize);
+	SetNUValue(fcgNUVBVmax,           cx265->vbv_maxrate);
 
-	SetNUValue(fchNURD,               cx265->rd);
-	SetCXIndex(fchCXAQMode,           cx265->aq_mode);
-	SetNUValue(fchNUAQStrength,       cx265->aq_strength);
-	SetNUValue(fchNUPsyRD,            cx265->psy_rd.x);
-	fchCBCUTree->Checked            = cx265->cutree != 0;
+	SetNUValue(fcgNURD,               cx265->rd);
+	SetCXIndex(fcgCXAQMode,           cx265->aq_mode);
+	SetNUValue(fcgNUAQStrength,       cx265->aq_strength);
+	SetNUValue(fcgNUPsyRD,            cx265->psy_rd.x);
+	fcgCBCUTree->Checked            = cx265->cutree != 0;
 
-	SetNUValue(fchNUCtu,              cx265->ctu);
-	SetNUValue(fchNUTuIntraDepth,     cx265->tu_intra_depth);
-	SetNUValue(fchNUTuInterDepth,     cx265->tu_inter_depth);
-	fchCBWpp->Checked               = cx265->wpp != 0;
+	SetNUValue(fcgNUCtu,              cx265->ctu);
+	SetNUValue(fcgNUTuIntraDepth,     cx265->tu_intra_depth);
+	SetNUValue(fcgNUTuInterDepth,     cx265->tu_inter_depth);
+	fcgCBWpp->Checked               = cx265->wpp != 0;
 	
-	SetCXIndex(fchCXME,               cx265->me);
-	SetCXIndex(fchCXSubME,            cx265->subme);
-	SetNUValue(fchNUMERange,          cx265->me_range);
-	SetNUValue(fchNUMaxMerge,         cx265->max_merge);
-	fchCBRectMP->Checked            = cx265->rect_mp != 0;
-	fchCBAsymmetricMP->Checked      = cx265->asymmnteric_mp != 0;
+	SetCXIndex(fcgCXME,               cx265->me);
+	SetCXIndex(fcgCXSubME,            cx265->subme);
+	SetNUValue(fcgNUMERange,          cx265->me_range);
+	SetNUValue(fcgNUMaxMerge,         cx265->max_merge);
+	fcgCBRectMP->Checked            = cx265->rect_mp != 0;
+	fcgCBAsymmetricMP->Checked      = cx265->asymmnteric_mp != 0;
 
-	SetNUValue(fchNUThreads,          cx265->threads);
-	SetNUValue(fchNUFrameThreads,     cx265->frame_threads);
+	SetNUValue(fcgNUThreads,          cx265->threads);
+	SetNUValue(fcgNUFrameThreads,     cx265->frame_threads);
 
-	fchCBLoopFilter->Checked        = cx265->loop_filter != 0;
-	fchCBSAO->Checked               = cx265->sao != 0;
+	fcgCBLoopFilter->Checked        = cx265->loop_filter != 0;
+	fcgCBSAO->Checked               = cx265->sao != 0;
 	}
 
 	 
 	if (all) {
 		//動画部
 		fcgTXStatusFile->Text = (str_has_char(cnf->vid.stats))     ? String(cnf->vid.stats).ToString() : String(DefaultStatusFilePath).ToString();
-		fchTXStatusFile->Text = (str_has_char(cnf->vid.stats))     ? String(cnf->vid.stats).ToString() : String(DefaultStatusFilePath).ToString();
-		fcgTXTCIN->Text       = (str_has_char(cnf->vid.tcfile_in)) ? String(cnf->vid.tcfile_in).ToString() : String(DefaultTcFilePath).ToString();
 
 		fcgCBAFS->Checked                  = cnf->vid.afs != 0;
 		fcgCBAFSBitrateCorrection->Checked = cnf->vid.afs_bitrate_correction != 0;
@@ -1889,7 +1408,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 
 		fcgTXCmdEx->Text            = String(cnf->vid.cmdex).ToString();
 		if (cnf->oth.disable_guicmd)
-			fcgCBNulOutCLI->Checked        = cnf->x264.nul_out != 0;
+			fcgCBNulOutCLI->Checked        = cnf->x265.nul_out != 0;
 
 		//音声
 		fcgCBAudioOnly->Checked            = cnf->oth.out_audio_only != 0;
@@ -1934,181 +1453,78 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 
 System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	//これもひたすら書くだけ。めんどい
-	//x264/x265
-	cnf->vid.enc_type              = fcgTSBEncType->Checked;
-	
-	//x264部
-	cnf->x264.bit_depth            = fcgCBUsehighbit->Checked ? 16 : 8;
-	cnf->x264.rc_mode              = cnf_fcgTemp->rc_mode;
-	cnf->x264.bitrate              = cnf_fcgTemp->bitrate;
-	cnf->x264.qp                   = cnf_fcgTemp->qp;
-	cnf->x264.crf                  = cnf_fcgTemp->crf;
-	cnf->x264.nul_out              = fcgCBNulOut->Checked;
-	cnf->x264.pass                 = cnf_fcgTemp->pass;
-	cnf->x264.slow_first_pass      = cnf_fcgTemp->slow_first_pass;
-	cnf->x264.use_auto_npass       = cnf_fcgTemp->use_auto_npass;
-	cnf->x264.auto_npass           = (int)fcgNUAutoNPass->Value;
-	cnf->vid.amp_x264.check        = NULL;
-	cnf->vid.amp_x264.check       |= fcgCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE : NULL;
-	cnf->vid.amp_x264.check       |= fcgCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
-	cnf->vid.amp_x264.limit_bitrate = (double)fcgNUAMPLimitBitrate->Value;
-	cnf->vid.amp_x264.limit_file_size = (double)fcgNUAMPLimitFileSize->Value;
-	cnf->x264.preset               = fcgCXPreset->SelectedIndex;
-	cnf->x264.tune                 = fcgCXTune->SelectedIndex;
-	cnf->x264.profile              = fcgCXProfile->SelectedIndex;
-	cnf->x264.h26x_level           = fcgCXLevel->SelectedIndex;
-	cnf->x264.videoformat          = fcgCXVideoFormat->SelectedIndex;
-	cnf->x264.aud                  = fcgCBAud->Checked;
-	cnf->x264.pic_struct           = fcgCBPicStruct->Checked;
-	cnf->x264.nal_hrd              = fcgCXNalHrd->SelectedIndex;
-	cnf->x264.output_csp           = fcgCXOutputCsp->SelectedIndex;
-	cnf->x264.bluray_compat        = fcgCBBlurayCompat->Checked;
-	cnf->x264.colormatrix          = fcgCXColorMatrix->SelectedIndex;
-	cnf->x264.colorprim            = fcgCXColorPrim->SelectedIndex;
-	cnf->x264.transfer             = fcgCXTransfer->SelectedIndex;
-	cnf->x264.input_range          = fcgCXInputRange->SelectedIndex;
-	cnf->x264.sar.x                = (int)fcgNUAspectRatioX->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-	cnf->x264.sar.y                = (int)fcgNUAspectRatioY->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-	cnf->x264.threads              = (int)fcgNUThreads->Value;
-	cnf->x264.lookahead_threads    = (int)fcgNULookaheadThreads->Value;
-	cnf->x264.sliced_threading     = fcgCBSlicedThreads->Checked;
-	cnf->x264.log_mode             = fcgCXLogLevel->SelectedIndex;
-	cnf->x264.psnr                 = fcgCBPSNR->Checked;
-	cnf->x264.ssim                 = fcgCBSSIM->Checked;
-
-	cnf->x264.ip_ratio             = (float)((int)fcgNUIPRatio->Value + 100) / 100.0f;
-	cnf->x264.pb_ratio             = (float)((int)fcgNUPBRatio->Value + 100) / 100.0f;
-	cnf->x264.qp_compress          = (float)((int)fcgNUQcomp->Value / 100.0f);
-	cnf->x264.qp_min               = (int)fcgNUQpmin->Value;
-	cnf->x264.qp_max               = (int)fcgNUQpmax->Value;
-	cnf->x264.qp_step              = (int)fcgNUQpstep->Value;
-	cnf->x264.chroma_qp_offset     = (int)fcgNUChromaQp->Value;
-	cnf->x264.aq_mode              = fcgCXAQMode->SelectedIndex;
-	cnf->x264.aq_strength          = (float)fcgNUAQStrength->Value;
-	cnf->x264.psy_rd.x             = (float)fcgNUPsyRDO->Value;
-	cnf->x264.psy_rd.y             = (float)fcgNUPsyTrellis->Value;
-	cnf->x264.vbv_maxrate          = (int)fcgNUVBVmax->Value;
-	cnf->x264.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
-	cnf->x264.mbtree               = fcgCBMBTree->Checked;
-	cnf->x264.rc_lookahead         = (int)fcgNURCLookahead->Value;
-
-	cnf->x264.scenecut             = (int)fcgNUScenecut->Value;
-	cnf->x264.keyint_min           = (int)fcgNUMinKeyint->Value;
-	cnf->x264.keyint_max           = (int)fcgNUKeyint->Value;
-	cnf->x264.open_gop             = fcgCBOpenGOP->Checked;
-	cnf->x264.use_deblock          = fcgCBDeblock->Checked;
-	cnf->x264.deblock.x            = (int)fcgNUDeblockStrength->Value;
-	cnf->x264.deblock.y            = (int)fcgNUDeblockThreshold->Value;
-	cnf->x264.cabac                = fcgCBCABAC->Checked;
-	cnf->x264.slice_n              = (int)fcgNUSlices->Value;
-	cnf->x264.weight_p             = fcgCXWeightP->SelectedIndex;
-	cnf->x264.interlaced           = fcgCXInterlaced->SelectedIndex != 0;
-	cnf->x264.tff                  = fcgCXInterlaced->SelectedIndex != 2;
-	cnf->x264.bframes              = (int)fcgNUBframes->Value;
-	cnf->x264.b_adapt              = fcgCXBAdpapt->SelectedIndex;
-	cnf->x264.b_bias               = (int)fcgNUBBias->Value;
-	cnf->x264.b_pyramid            = fcgCXBpyramid->SelectedIndex;
-	cnf->x264.weight_b             = fcgCBWeightB->Checked;
-
-	cnf->x264.dct8x8               = fcgCB8x8dct->Checked;
-	cnf->x264.mb_partition         = MB_PARTITION_NONE;
-	cnf->x264.mb_partition        |= (fcgCBb8x8->Checked) ? MB_PARTITION_B8x8 : MB_PARTITION_NONE;
-	cnf->x264.mb_partition        |= (fcgCBp8x8->Checked) ? MB_PARTITION_P8x8 : MB_PARTITION_NONE;
-	cnf->x264.mb_partition        |= (fcgCBp4x4->Checked) ? MB_PARTITION_P4x4 : MB_PARTITION_NONE;
-	cnf->x264.mb_partition        |= (fcgCBi8x8->Checked) ? MB_PARTITION_I8x8 : MB_PARTITION_NONE;
-	cnf->x264.mb_partition        |= (fcgCBi4x4->Checked) ? MB_PARTITION_I4x4 : MB_PARTITION_NONE;
-
-	cnf->x264.no_fast_pskip        = !fcgCBfastpskip->Checked;
-	cnf->x264.no_dct_decimate      = !fcgCBDctDecimate->Checked;
-	cnf->x264.trellis              = fcgCXTrellis->SelectedIndex;
-	cnf->x264.cqm                  = GetCQMIndex(cnf->vid.cqmfile, sizeof(cnf->vid.cqmfile));
-
-	cnf->x264.me                   = fcgCXME->SelectedIndex;
-	cnf->x264.subme                = fcgCXSubME->SelectedIndex;
-	cnf->x264.me_range             = (int)fcgNUMERange->Value;
-	cnf->x264.chroma_me            = fcgCBChromaME->Checked;
-	cnf->x264.direct_mv            = fcgCXDirectME->SelectedIndex;
-	cnf->x264.ref_frames           = (int)fcgNURef->Value;
-	cnf->x264.mixed_ref            = fcgCBMixedRef->Checked;
-
-	cnf->x264.use_tcfilein         = fcgCBTCIN->Checked;
-	cnf->x264.use_timebase         = fcgCBTimeBase->Checked;
-	cnf->x264.timebase.x           = (int)fcgNUTimebaseNum->Value;
-	cnf->x264.timebase.y           = (int)fcgNUTimebaseDen->Value;
-
 	//x265
-	cnf->x265.bit_depth            = fchCBUsehighbit->Checked ? 16 : 8;
-	cnf->x265.rc_mode              = cnf_fchTemp->rc_mode;
-	cnf->x265.bitrate              = cnf_fchTemp->bitrate;
-	cnf->x265.qp                   = cnf_fchTemp->qp;
-	cnf->x265.crf                  = cnf_fchTemp->crf;
-	cnf->x265.nul_out              = fchCBNulOut->Checked;
-	cnf->x265.pass                 = cnf_fchTemp->pass;
-	cnf->x265.slow_first_pass      = cnf_fchTemp->slow_first_pass;
-	cnf->x265.use_auto_npass       = cnf_fchTemp->use_auto_npass;
-	cnf->x265.auto_npass           = (int)fchNUAutoNPass->Value;
-	cnf->vid.amp_x265.check        = NULL;
-	cnf->vid.amp_x265.check       |= fchCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE : NULL;
-	cnf->vid.amp_x265.check       |= fchCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
-	cnf->vid.amp_x265.limit_bitrate = (double)fchNUAMPLimitBitrate->Value;
-	cnf->vid.amp_x265.limit_file_size = (double)fchNUAMPLimitFileSize->Value;
-	cnf->x265.preset               = fchCXPreset->SelectedIndex;
-	cnf->x265.tune                 = fchCXTune->SelectedIndex;
-	cnf->x265.profile              = fchCXProfile->SelectedIndex;
+	cnf->x265.bit_depth            = fcgCBUsehighbit->Checked ? 16 : 8;
+	cnf->x265.rc_mode              = cnf_fcgTemp->rc_mode;
+	cnf->x265.bitrate              = cnf_fcgTemp->bitrate;
+	cnf->x265.qp                   = cnf_fcgTemp->qp;
+	cnf->x265.crf                  = cnf_fcgTemp->crf;
+	cnf->x265.nul_out              = fcgCBNulOut->Checked;
+	cnf->x265.pass                 = cnf_fcgTemp->pass;
+	cnf->x265.slow_first_pass      = cnf_fcgTemp->slow_first_pass;
+	cnf->x265.use_auto_npass       = cnf_fcgTemp->use_auto_npass;
+	cnf->x265.auto_npass           = (int)fcgNUAutoNPass->Value;
+	cnf->vid.amp_check             = NULL;
+	cnf->vid.amp_check            |= fcgCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE : NULL;
+	cnf->vid.amp_check            |= fcgCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
+	cnf->vid.amp_limit_bitrate     = (double)fcgNUAMPLimitBitrate->Value;
+	cnf->vid.amp_limit_file_size   = (double)fcgNUAMPLimitFileSize->Value;
+	cnf->x265.preset               = fcgCXPreset->SelectedIndex;
+	cnf->x265.tune                 = fcgCXTune->SelectedIndex;
+	cnf->x265.profile              = fcgCXProfile->SelectedIndex;
 
-	cnf->x265.sar.x                = (int)fchNUAspectRatioX->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-	cnf->x265.sar.y                = (int)fchNUAspectRatioY->Value * ((fchCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-	cnf->x265.interlaced           = fchCXInterlaced->SelectedIndex;
+	cnf->x265.sar.x                = (int)fcgNUAspectRatioX->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+	cnf->x265.sar.y                = (int)fcgNUAspectRatioY->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+	cnf->x265.interlaced           = fcgCXInterlaced->SelectedIndex;
 	
-	cnf->x265.videoformat          = fchCXVideoFormat->SelectedIndex;
-	cnf->x265.output_csp           = fchCXCSP->SelectedIndex;
+	cnf->x265.videoformat          = fcgCXVideoFormat->SelectedIndex;
+	cnf->x265.output_csp           = fcgCXCSP->SelectedIndex;
 
-	cnf->x265.colormatrix          = fchCXColorMatrix->SelectedIndex;
-	cnf->x265.colorprim            = fchCXColorPrim->SelectedIndex;
-	cnf->x265.transfer             = fchCXTransfer->SelectedIndex;
-	cnf->x265.input_range          = fchCBFullRange->Checked;
+	cnf->x265.colormatrix          = fcgCXColorMatrix->SelectedIndex;
+	cnf->x265.colorprim            = fcgCXColorPrim->SelectedIndex;
+	cnf->x265.transfer             = fcgCXTransfer->SelectedIndex;
+	cnf->x265.input_range          = fcgCBFullRange->Checked;
 
-	cnf->x265.scenecut             = (int)fchNUScenecut->Value;
-	cnf->x265.keyint_min           = (int)fchNUKeyintMin->Value;
-	cnf->x265.keyint_max           = (int)fchNUKeyintMax->Value;
-	cnf->x265.open_gop             = fchCBOpenGOP->Checked;
-	cnf->x265.rc_lookahead         = (int)fchNURCLookahead->Value;
-	cnf->x265.ref_frames           = (int)fchNURef->Value;
-	cnf->x265.bframes              = (int)fchNUBframes->Value;
-	cnf->x265.b_adapt              = fchCXBadapt->SelectedIndex;
-	cnf->x265.b_pyramid            = fchCBBpyramid->Checked;
-	cnf->x265.weight_b             = fchCBWeightB->Checked;
-	cnf->x265.weight_p             = fchCBWeightP->Checked;
+	cnf->x265.scenecut             = (int)fcgNUScenecut->Value;
+	cnf->x265.keyint_min           = (int)fcgNUKeyintMin->Value;
+	cnf->x265.keyint_max           = (int)fcgNUKeyintMax->Value;
+	cnf->x265.open_gop             = fcgCBOpenGOP->Checked;
+	cnf->x265.rc_lookahead         = (int)fcgNURCLookahead->Value;
+	cnf->x265.ref_frames           = (int)fcgNURef->Value;
+	cnf->x265.bframes              = (int)fcgNUBframes->Value;
+	cnf->x265.b_adapt              = fcgCXBadapt->SelectedIndex;
+	cnf->x265.b_pyramid            = fcgCBBpyramid->Checked;
+	cnf->x265.weight_b             = fcgCBWeightB->Checked;
+	cnf->x265.weight_p             = fcgCBWeightP->Checked;
 
-	cnf->x265.vbv_bufsize          = (int)fchNUVBVbuf->Value;
-	cnf->x265.vbv_maxrate          = (int)fchNUVBVmax->Value;
+	cnf->x265.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
+	cnf->x265.vbv_maxrate          = (int)fcgNUVBVmax->Value;
 	
-	cnf->x265.rd                   = (int)fchNURD->Value;
-	cnf->x265.aq_mode              = fchCXAQMode->SelectedIndex;
-	cnf->x265.aq_strength          = (float)fchNUAQStrength->Value;
-	cnf->x265.psy_rd.x             = (float)fchNUPsyRD->Value;
-	cnf->x265.cutree               = fchCBCUTree->Checked;
+	cnf->x265.rd                   = (int)fcgNURD->Value;
+	cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
+	cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
+	cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
+	cnf->x265.cutree               = fcgCBCUTree->Checked;
 
-	cnf->x265.ctu                  = (int)fchNUCtu->Value;
-	cnf->x265.tu_intra_depth       = (int)fchNUTuIntraDepth->Value;
-	cnf->x265.tu_inter_depth       = (int)fchNUTuInterDepth->Value;
-	cnf->x265.wpp                  = fchCBWpp->Checked;
+	cnf->x265.ctu                  = (int)fcgNUCtu->Value;
+	cnf->x265.tu_intra_depth       = (int)fcgNUTuIntraDepth->Value;
+	cnf->x265.tu_inter_depth       = (int)fcgNUTuInterDepth->Value;
+	cnf->x265.wpp                  = fcgCBWpp->Checked;
 
-	cnf->x265.me                   = fchCXME->SelectedIndex;
-	cnf->x265.subme                = fchCXSubME->SelectedIndex;
-	cnf->x265.me_range             = (int)fchNUMERange->Value;
-	cnf->x265.max_merge            = (int)fchNUMaxMerge->Value;
-	cnf->x265.rect_mp              = fchCBRectMP->Checked;
-	cnf->x265.asymmnteric_mp       = fchCBAsymmetricMP->Checked;
+	cnf->x265.me                   = fcgCXME->SelectedIndex;
+	cnf->x265.subme                = fcgCXSubME->SelectedIndex;
+	cnf->x265.me_range             = (int)fcgNUMERange->Value;
+	cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
+	cnf->x265.rect_mp              = fcgCBRectMP->Checked;
+	cnf->x265.asymmnteric_mp       = fcgCBAsymmetricMP->Checked;
 	
-	cnf->x265.threads              = (int)fchNUThreads->Value;
-	cnf->x265.frame_threads        = (int)fchNUFrameThreads->Value;
+	cnf->x265.threads              = (int)fcgNUThreads->Value;
+	cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
 
-	cnf->x265.loop_filter          = fchCBLoopFilter->Checked;
-	cnf->x265.sao                  = fchCBSAO->Checked;
+	cnf->x265.loop_filter          = fcgCBLoopFilter->Checked;
+	cnf->x265.sao                  = fcgCBSAO->Checked;
 
-	GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats),     (fcgTSBEncType->Checked) ? fchTXStatusFile->Text : fcgTXStatusFile->Text);
-	GetCHARfromString(cnf->vid.tcfile_in, sizeof(cnf->vid.tcfile_in), fcgTXTCIN->Text);
+	GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats), fcgTXStatusFile->Text);
 
 	//拡張部
 	cnf->vid.afs                    = fcgCBAFS->Checked;
@@ -2161,12 +1577,11 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	//cli mode
 	cnf->oth.disable_guicmd         = fcgTSBCMDOnly->Checked;
 	if (cnf->oth.disable_guicmd) {
-		cnf->x264.nul_out           = fcgCBNulOutCLI->Checked;
 		cnf->x265.nul_out           = fcgCBNulOutCLI->Checked;
 	}
 
 	//制約条件として適用
-	set_profile_to_conf((CONF_X26X *)&cnf->x264, cnf->x264.profile, ENC_TYPE_X264);
+	set_profile_to_conf(&cnf->x265, cnf->x265.profile);
 }
 
 System::Void frmConfig::GetfcgTSLSettingsNotes(char *notes, int nSize) {
@@ -2236,20 +1651,9 @@ System::Void frmConfig::SetAllCheckChangedEvents(Control ^top) {
 	}
 }
 
-System::Void frmConfig::SetHelpToolTipsColorMatrixX264(Control^ control, const char *type) {
-	const X26X_OPTION_STR *list = get_option_list_x264(type);
-	fcgTTX264->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
-		+ L"auto とするとAviutlの色空間「自動」に合わせ\n"
-		+ L"以下のように設定します。\n"
-		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"以上 … " + String(list[COLOR_MATRIX_HD].desc).ToString() + L"\n"
-		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"未満 … " + String(list[COLOR_MATRIX_SD].desc).ToString() + L"\n"
-		+ L"よくわからない場合は 指定なし が無難です。"
-		);
-}
-
 System::Void frmConfig::SetHelpToolTipsColorMatrixX265(Control^ control, const char *type) {
-	const X26X_OPTION_STR *list = get_option_list_x265(type);
-	fchTTX265->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
+	const X265_OPTION_STR *list = get_option_list_x265(type);
+	fcgTTX265->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
 		+ L"auto とするとAviutlの色空間「自動」に合わせ\n"
 		+ L"以下のように設定します。\n"
 		+ L"縦解像度" + COLOR_MATRIX_THRESHOLD + L"以上 … " + String(list[COLOR_MATRIX_HD].desc).ToString() + L"\n"
@@ -2259,60 +1663,69 @@ System::Void frmConfig::SetHelpToolTipsColorMatrixX265(Control^ control, const c
 }
 
 System::Void frmConfig::SetHelpToolTips() {
-	//x264基本
-	fcgTTX264->SetToolTip(fcgCBUsehighbit, L"" 
+	//x265
+	fcgTTX265->SetToolTip(fcgCBUsehighbit, L"" 
 		+ L"--input-depth 16\n"
 		+ L"\n"
 		+ L"high bit-depthでエンコードを行います。\n"
-		+ L"x264も10bit版など、high bit depthのものを使用してください。\n"
+		+ L"x265もhigh bit depthのものを使用してください。\n"
 		+ L"通常のプレーヤーでは再生できないこともあるため、\n"
 		+ L"high bit depthエンコードがなにかを理解している場合にのみ、\n"
 		+ L"使用してください。\n"
 		+ L"\n"
-		+ L"8bit用x264.exeとhigh bit depth用x264.exeは別々に設定でき、\n"
+		+ L"8bit用x265.exeとhigh bit depth用x265.exeは別々に設定でき、\n"
 		+ L"このチェックボックスによって切り替わります。"
 		);
-	fcgTTX264->SetToolTip(fcgBTX264Path, L""
-		+ L"x264.exeの場所を指定します。\n"
+	fcgTTX265->SetToolTip(fcgBTX265Path, L""
+		+ L"x265.exeの場所を指定します。\n"
 		+ L"\n"
 		+ L"この設定はx265guiEx.confに保存され、\n"
 		+ L"バッチ処理ごとの変更はできません。"
 		);
-	fcgTTX264->SetToolTip(fcgBTX264PathSub, L""
-		+ L"x264.exeの場所を指定します。\n"
+	fcgTTX265->SetToolTip(fcgBTX265PathSub, L""
+		+ L"x265.exeの場所を指定します。\n"
 		+ L"\n"
 		+ L"この設定はx265guiEx.confに保存され、\n"
 		+ L"バッチ処理ごとの変更はできません。"
 		);
-	fcgTTX264->SetToolTip(fcgBTX264PathSubhighbit, L""
-		+ L"x264.exe(high bit depth用)の場所を指定します。\n"
+	fcgTTX265->SetToolTip(fcgBTX265PathSubhighbit, L""
+		+ L"x265.exe(high bit depth用)の場所を指定します。\n"
 		+ L"\n"
 		+ L"この設定はx265guiEx.confに保存され、\n"
 		+ L"バッチ処理ごとの変更はできません。"
 		);
-	fcgTTX264->SetToolTip(fcgCXX264Mode, L""
+	fcgTTX265->SetToolTip(fcgCXX265Mode, L""
 		+ L"【シングルパス】\n"
-		+ L"   " + String(x264_encodemode_desc[2]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --crf\n"
-		+ L"   " + String(x264_encodemode_desc[1]).ToString()->Replace(L"シングルパス - ", L"") + L"\t\t … --qp\n"
-		+ L"   " + String(x264_encodemode_desc[0]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --bitrate\n"
+		+ L"   " + String(x265_encodemode_desc[2]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --crf\n"
+		+ L"   " + String(x265_encodemode_desc[1]).ToString()->Replace(L"シングルパス - ", L"") + L"\t\t … --qp\n"
+		+ L"   " + String(x265_encodemode_desc[0]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --bitrate\n"
 		+ L"\n"
 		+ L"【マルチパス】\n"
-		+ L"   " + String(x264_encodemode_desc[3]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 1 --bitrate\n"
-		+ L"   " + String(x264_encodemode_desc[4]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 3 --bitrate\n"
+		+ L"   " + String(x265_encodemode_desc[3]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 1 --bitrate\n"
+		+ L"   " + String(x265_encodemode_desc[4]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 3 --bitrate\n"
 		+ L"\n"
-		+ L"【" + String(x264_encodemode_desc[5]).ToString() + L"】\n"
+		+ L"【" + String(x265_encodemode_desc[5]).ToString() + L"】\n"
 		+ L"    マルチパス出力(1pass → npass)を自動で行います。\n"
 		+ L"    --pass 1/3 --bitrate\n"
 		+ L"\n"
-		+ L"【" + String(x264_encodemode_desc[6]).ToString() + L"】\n"
+		+ L"【" + String(x265_encodemode_desc[6]).ToString() + L"】\n"
 		+ L"    品質基準VBR (crf)でのエンコード後、ファイルサイズ・ビットレートを確認します。\n"
 		+ L"    --crf"
 		);
-	fcgTTX264->SetToolTip(fcgCBNulOut,            L"-o nul");
-	fcgTTX264->SetToolTip(fcgCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
-	fcgTTX264->SetToolTip(fcgTXQuality,           L"--crf / --bitrate / --qp");
-	fcgTTX264->SetToolTip(fcgTXStatusFile,        L"--stats");
-	fcgTTX264->SetToolTip(fcgCXProfile,           L"--profile\n"
+	fcgTTX265->SetToolTip(fcgCBNulOut,            L"-o nul");
+	fcgTTX265->SetToolTip(fcgCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
+	fcgTTX265->SetToolTip(fcgTXQuality,           L"--crf / --bitrate / --qp");
+	fcgTTX265->SetToolTip(fcgTXStatusFile,        L"--stats");
+	fcgTTX265->SetToolTip(fcgCXProfile,           L"--profile\n"
+		+ L"\n"
+		+ L"最終的にこの設定による制約が課されます。"
+		);
+	
+	fcgTTX265->SetToolTip(fcgCBNulOut,            L"-o nul");
+	fcgTTX265->SetToolTip(fcgCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
+	fcgTTX265->SetToolTip(fcgTXQuality,           L"--crf / --bitrate / --qp");
+	fcgTTX265->SetToolTip(fcgTXStatusFile,        L"--stats");
+	fcgTTX265->SetToolTip(fcgCXProfile,           L"--profile\n"
 		+ L"\n"
 		+ L"最終的にこの設定による制約が課されます。"
 		);
@@ -2338,10 +1751,10 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"上限設定はチェックボックスによりオン/オフできます。";
 	fcgTTEx->SetToolTip(fcgCBAMPLimitFileSize,     AMP_LimitFileSize);
 	fcgTTEx->SetToolTip(fcgNUAMPLimitFileSize,     AMP_LimitFileSize);
-
+	
 	//プロファイルとか
-	fcgTTX264->SetToolTip(fcgCXTune,              L"--tune");
-	fcgTTX264->SetToolTip(fcgCXPreset,            L"--preset");
+	fcgTTX265->SetToolTip(fcgCXTune,              L"--tune");
+	fcgTTX265->SetToolTip(fcgCXPreset,            L"--preset");
 	fcgTTEx->SetToolTip(fcgBTApplyPreset,         L""
 		+ L"ボックス内で指定した\n"
 		+ L"\n"
@@ -2351,307 +1764,67 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"\n"
 		+ L"をGUIに適用します。"
 		);
-
-	//出力・フォーマット
-	fcgTTX264->SetToolTip(fcgCXLevel,            L"--level");
-	fcgTTX264->SetToolTip(fcgCXVideoFormat,      L"--videoformat");
-	fcgTTX264->SetToolTip(fcgCBAud,              L"--aud");
-	fcgTTX264->SetToolTip(fcgCBPicStruct,        L"--pic-struct");
-	fcgTTX264->SetToolTip(fcgCXNalHrd,           L"--nal-hrd\n"
-		+ L" vbr 時は ビデオバッファ制御(VBV)の設定を行う必要があります。"
-		);
-	fcgTTX264->SetToolTip(fcgCBBlurayCompat,     L"--bluray-compat");
-	fcgTTX264->SetToolTip(fcgCXOutputCsp,        L"--output-csp\n"
-		+ L"通常は i420 を使用します。"
-		);
-
-	//色空間
-	SetHelpToolTipsColorMatrixX264(fcgCXColorMatrix, "colormatrix");
-	SetHelpToolTipsColorMatrixX264(fcgCXColorPrim,   "colorprim");
-	SetHelpToolTipsColorMatrixX264(fcgCXTransfer,    "transfer");
-	fcgTTX264->SetToolTip(fcgCXInputRange,      L"--input-range\n"
-		+ L"\n"
-		+ L"\"" + String(list_input_range[0].desc).ToString() + L"\"  [デフォルト]\n"
-		+ L"  output-csp yuv系 … tv色調 (圧縮レンジ)\n"
-		+ L"  output-csp rgb系 … pc色調\n"
-		+ L"\n"
-		+ L"\"" + String(list_input_range[1].desc).ToString() + L"\"\n"
-		+ L"  pc色調 (フルレンジ)"
-		);
-
-	fcgTTX264->SetToolTip(fcgCXAspectRatio,      L""
+	
+	fcgTTX265->SetToolTip(fcgCXAspectRatio,      L""
 		+ String(aspect_desc[0]).ToString() + L"\n"
 		+ L"   --sar を直接指定します。\n"
 		+ L"\n"
 		+ String(aspect_desc[1]).ToString() + L"\n"
 		+ L"   エンコード時に 解像度から --sarを自動計算します。"
 		);
-	fcgTTX264->SetToolTip(fcgNUAspectRatioX,     L"アスペクト比 横 (幅)");
-	fcgTTX264->SetToolTip(fcgNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
-	fcgTTX264->SetToolTip(fcgNUThreads,          L"--threads\n"
-		+ L"\"0\" で自動です。"
-		);
-	fcgTTX264->SetToolTip(fcgNULookaheadThreads, L"--lookahead-threads\n"
-		+ L"\"0\" で自動です。"
-		);
-	fcgTTX264->SetToolTip(fcgCBSlicedThreads,    L"--sliced-threads");
-	fcgTTX264->SetToolTip(fcgCXLogLevel,         L"--log-level");
-	fcgTTX264->SetToolTip(fcgCBPSNR,             L"--psnr");
-	fcgTTX264->SetToolTip(fcgCBSSIM,             L"--ssim");
-
-	//量子化
-	fcgTTX264->SetToolTip(fcgNUIPRatio,          L"--ipratio 1.00 + (設定値)%");
-	fcgTTX264->SetToolTip(fcgNUPBRatio,          L"--pbratio 1.00 + (設定値)%");
-	fcgTTX264->SetToolTip(fcgNUQcomp,            L"--qcomp (設定値)%");
-	fcgTTX264->SetToolTip(fcgNUQpmin,            L"--qpmin");
-	fcgTTX264->SetToolTip(fcgNUQpmax,            L"--qpmax");
-	fcgTTX264->SetToolTip(fcgNUQpstep,           L"--qpstep");
-	fcgTTX264->SetToolTip(fcgNUChromaQp,         L"--chroma-qp-offset");
-
-	//AQ
-	fcgTTX264->SetToolTip(fcgCXAQMode,           L"--aq-mode");
-	fcgTTX264->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
-
-	//PsyRD
-	fcgTTX264->SetToolTip(fcgNUPsyRDO,           L"--psy-rd <RDO>:<trellis>");
-	fcgTTX264->SetToolTip(fcgNUPsyTrellis,       L"--psy-rd <RDO>:<trellis>");
-	fcgTTX264->SetToolTip(fcgCBMBTree,           L""
-		+ L"--mbtree\n"
-		+ L"チェックオフ時 --no-mbtree"
-		);
-	fcgTTX264->SetToolTip(fcgNURCLookahead,      L"--rc-lookahead");
-	fcgTTX264->SetToolTip(fcgNUVBVmax,           L""
-		+ L"--vbv-maxrate\n"
-		+ L"\"-1\" とするとエンコード時に自動で設定します。"
-		);
-	fcgTTX264->SetToolTip(fcgNUVBVbuf,           L""
-		+ L"--vbv-bufsize\n"
-		+ L"\"-1\" とするとエンコード時に自動で設定します。"
-		);
-	fcgTTX264->SetToolTip(fcgNUScenecut,         L"--scenecut");
-	fcgTTX264->SetToolTip(fcgNUKeyint,           L""
-		+ L"--keyint\n"
-		+ L"\"0\" で inifinite(無限大) を指定します。\n"
-		+ L"\"-1\"で エンコ時に自動的にfps×10を設定します。");
-	fcgTTX264->SetToolTip(fcgNUMinKeyint,        L""
-		 + L"--min-keyint\n"
-		 + L"\"0\" で 自動となります。"
-		 );
-	fcgTTX264->SetToolTip(fcgCBOpenGOP,          L"--open-gop");
-	fcgTTX264->SetToolTip(fcgCBCABAC,            L""
-		+ L"--cabac\n"
-		+ L"チェックオフ時 --no-cabac");
-	fcgTTX264->SetToolTip(fcgNUSlices,           L"--slices");
-	fcgTTX264->SetToolTip(fcgCXWeightP,          L"--weightp");
-
-	//インタレ
-	String^ InterlacedEncodingToolTip = L"   インターレース保持エンコードを行います。";
-	fcgTTX264->SetToolTip(fcgCXInterlaced,       L""
-		+ L"[" + String(interlaced_desc[0]).ToString() + L"]\n"
-		+ L"   プログレッシブ(非インタレ)としてエンコードします。\n"
-		+ L"\n"
-		+ L"[" + String(interlaced_desc[1]).ToString() + L"] … --tff\n"
-		+ L"   TFF(トップフィールド -> ボトムフィールド) で\n" + InterlacedEncodingToolTip + L"\n"
-		+ L"\n"
-		+ L"[" + String(interlaced_desc[2]).ToString() + L"] … --bff\n"
-		+ L"   BFF(ボトムフィールド -> トップフィールド) で\n" + InterlacedEncodingToolTip
-		);
-
-	fcgTTX264->SetToolTip(fcgCBDeblock,          L"--deblock <Strength>:<Threshold>\n"
-		+ L"チェックオフ時 --no-deblock"
-		);
-	fcgTTX264->SetToolTip(fcgNUDeblockStrength,  L"--deblock <Strength>:<Threshold>"
-		);
-	fcgTTX264->SetToolTip(fcgNUDeblockThreshold, L"--deblock <Strength>:<Threshold>"
-		);
-
-	//Bフレーム
-	fcgTTX264->SetToolTip(fcgNUBframes,          L"--bframes");
-	fcgTTX264->SetToolTip(fcgCXBAdpapt,          L"--b-adapt");
-	fcgTTX264->SetToolTip(fcgNUBBias,            L"--b-bias");
-	fcgTTX264->SetToolTip(fcgCXBpyramid,         L"--b-pyramid");
-	fcgTTX264->SetToolTip(fcgCBWeightB,          L"--weightb");
-
-	//マクロブロックタイプ
-	fcgTTX264->SetToolTip(fcgCB8x8dct,           L"--8x8dct");
-	fcgTTX264->SetToolTip(fcgCBp8x8,             L"--partitions p8x8");
-	fcgTTX264->SetToolTip(fcgCBb8x8,             L"--partitions b8x8");
-	fcgTTX264->SetToolTip(fcgCBp4x4,             L"--partitions p4x4");
-	fcgTTX264->SetToolTip(fcgCBi8x8,             L"--partitions i8x8");
-	fcgTTX264->SetToolTip(fcgCBi4x4,             L"--partitions i4x4");
-
-	//その他
-	fcgTTX264->SetToolTip(fcgCBfastpskip,        L"チェックオフ時 --no-fast-pskip");
-	fcgTTX264->SetToolTip(fcgCBDctDecimate,      L"チェックオフ時 --no-dct-decimate");
-	fcgTTX264->SetToolTip(fcgCXTrellis,          L"--trellis");
-	fcgTTX264->SetToolTip(fcgTXCQM,              L"--cqm / --cqmfile");
-	fcgTTX264->SetToolTip(fcgBTMatrix,           L"--cqm / --cqmfile");
-
-	//動き予測
-	fcgTTX264->SetToolTip(fcgCXME,               L"--me");
-	fcgTTX264->SetToolTip(fcgCXSubME,            L"--subme");
-	fcgTTX264->SetToolTip(fcgNUMERange,          L"--merange");
-	fcgTTX264->SetToolTip(fcgCBChromaME,         L""
-		+ L"--chroma-me\n"
-		+ L"チェックオフ時 --no-chroma-me"
-		);
-	fcgTTX264->SetToolTip(fcgCXDirectME,         L"--direct");
-	fcgTTX264->SetToolTip(fcgNURef,              L"--ref");
-	fcgTTX264->SetToolTip(fcgCBMixedRef,         L"--mixed-ref");
-
-	//時間
-	String^ TCINToolTip = L""
-		+ L"--tcfile-in\n"
-		+ L"x265guiExによる --fpsの自動付加が無効になり、\n"
-		+ L"入力したタイムコードファイルに基づいてフレーム速度が決定されます。\n"
-		+ L"\n"
-		+ L"--tcfile-in 指定時は同時に時間精度を指定する\n"
-		+ L"(--timebaseを使用する)ことをお勧めします。";
-	fcgTTX264->SetToolTip(fcgCBTCIN,             TCINToolTip);
-	fcgTTX264->SetToolTip(fcgTXTCIN,             TCINToolTip);
-	fcgTTX264->SetToolTip(fcgCBTimeBase,         L"--timebase");
-	fcgTTX264->SetToolTip(fcgNUTimebaseDen,      L"--timebase");
-	fcgTTX264->SetToolTip(fcgNUTimebaseNum,      L"--timebase");
-
-	//x265
-	fchTTX265->SetToolTip(fchCBUsehighbit, L"" 
-		+ L"--input-depth 10\n"
-		+ L"\n"
-		+ L"high bit-depthでエンコードを行います。\n"
-		+ L"x265もhigh bit depthのものを使用してください。\n"
-		+ L"通常のプレーヤーでは再生できないこともあるため、\n"
-		+ L"high bit depthエンコードがなにかを理解している場合にのみ、\n"
-		+ L"使用してください。\n"
-		+ L"\n"
-		+ L"現在high bit-depthは10bitのみ可能です。\n"
-		+ L"\n"
-		+ L"8bit用x265.exeとhigh bit depth用x265.exeは別々に設定でき、\n"
-		+ L"このチェックボックスによって切り替わります。"
-		);
-	fchTTX265->SetToolTip(fchBTX265Path, L""
-		+ L"x265.exeの場所を指定します。\n"
-		+ L"\n"
-		+ L"この設定はx265guiEx.confに保存され、\n"
-		+ L"バッチ処理ごとの変更はできません。"
-		);
-	fchTTX265->SetToolTip(fchBTX265PathSub, L""
-		+ L"x265.exeの場所を指定します。\n"
-		+ L"\n"
-		+ L"この設定はx265guiEx.confに保存され、\n"
-		+ L"バッチ処理ごとの変更はできません。"
-		);
-	fchTTX265->SetToolTip(fchBTX265PathSubhighbit, L""
-		+ L"x265.exe(high bit depth用)の場所を指定します。\n"
-		+ L"\n"
-		+ L"この設定はx265guiEx.confに保存され、\n"
-		+ L"バッチ処理ごとの変更はできません。"
-		);
-	fchTTX265->SetToolTip(fchCXX265Mode, L""
-		+ L"【シングルパス】\n"
-		+ L"   " + String(x265_encodemode_desc[2]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --crf\n"
-		+ L"   " + String(x265_encodemode_desc[1]).ToString()->Replace(L"シングルパス - ", L"") + L"\t\t … --qp\n"
-		+ L"   " + String(x265_encodemode_desc[0]).ToString()->Replace(L"シングルパス - ", L"") + L"\t … --bitrate\n"
-		+ L"\n"
-		//+ L"【マルチパス】\n"
-		//+ L"   " + String(x265_encodemode_desc[3]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 1 --bitrate\n"
-		//+ L"   " + String(x265_encodemode_desc[4]).ToString()->Replace(L"マルチパス - ", L"") + L"\t … --pass 3 --bitrate\n"
-		//+ L"\n"
-		//+ L"【" + String(x265_encodemode_desc[5]).ToString() + L"】\n"
-		//+ L"    マルチパス出力(1pass → npass)を自動で行います。\n"
-		//+ L"    --pass 1/3 --bitrate\n"
-		//+ L"\n"
-		//+ L"【" + String(x265_encodemode_desc[6]).ToString() + L"】\n"
-		//+ L"    品質基準VBR (crf)でのエンコード後、ファイルサイズ・ビットレートを確認します。\n"
-		//+ L"    --crf"
-		);
-	fchTTX265->SetToolTip(fchCBNulOut,            L"-o nul");
-	fchTTX265->SetToolTip(fchCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
-	fchTTX265->SetToolTip(fchTXQuality,           L"--crf / --bitrate / --qp");
-	fchTTX265->SetToolTip(fchTXStatusFile,        L"--stats");
-	fchTTX265->SetToolTip(fchCXProfile,           L"--profile\n"
-		+ L"\n"
-		+ L"最終的にこの設定による制約が課されます。"
-		);
-
-	//自動マルチパス 上限設定
-	fcgTTEx->SetToolTip(fchCBAMPLimitBitrate,      AMP_LimitBitrate);
-	fcgTTEx->SetToolTip(fchNUAMPLimitBitrate,      AMP_LimitBitrate);
-	fcgTTEx->SetToolTip(fchCBAMPLimitFileSize,     AMP_LimitFileSize);
-	fcgTTEx->SetToolTip(fchNUAMPLimitFileSize,     AMP_LimitFileSize);
+	fcgTTX265->SetToolTip(fcgNUAspectRatioX,     L"アスペクト比 横 (幅)");
+	fcgTTX265->SetToolTip(fcgNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
 	
-	//プロファイルとか
-	fchTTX265->SetToolTip(fchCXTune,              L"--tune");
-	fchTTX265->SetToolTip(fchCXPreset,            L"--preset");
-	fcgTTEx->SetToolTip(fchBTApplyPreset,         L""
-		+ L"ボックス内で指定した\n"
-		+ L"\n"
-		+ L"・速度 (Preset)\n"
-		+ L"・チューニング (tune)\n"
-		+ L"・プロファイル (Profile)\n"
-		+ L"\n"
-		+ L"をGUIに適用します。"
-		);
-	
-	fchTTX265->SetToolTip(fchCXAspectRatio,      L""
-		+ String(aspect_desc[0]).ToString() + L"\n"
-		+ L"   --sar を直接指定します。\n"
-		+ L"\n"
-		+ String(aspect_desc[1]).ToString() + L"\n"
-		+ L"   エンコード時に 解像度から --sarを自動計算します。"
-		);
-	fchTTX265->SetToolTip(fchNUAspectRatioX,     L"アスペクト比 横 (幅)");
-	fchTTX265->SetToolTip(fchNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
-	
-	fchTTX265->SetToolTip(fchCXInterlaced,       L"--interlace");
-	fchTTX265->SetToolTip(fchCXVideoFormat,      L"--videoformat");
+	fcgTTX265->SetToolTip(fcgCXInterlaced,       L"--interlace");
+	fcgTTX265->SetToolTip(fcgCXVideoFormat,      L"--videoformat");
 
-	fchTTX265->SetToolTip(fcgCXOutputCsp,        L"--input-csp\n"
+	fcgTTX265->SetToolTip(fcgCXCSP,              L"--input-csp\n"
 		+ L"通常は i420 を使用します。"
 		);
-	SetHelpToolTipsColorMatrixX265(fchCXColorMatrix, "colormatrix");
-	SetHelpToolTipsColorMatrixX265(fchCXColorPrim,   "colorprim");
-	SetHelpToolTipsColorMatrixX265(fchCXTransfer,    "transfer");
-	fchTTX265->SetToolTip(fchCBFullRange,        L"--range");
+	SetHelpToolTipsColorMatrixX265(fcgCXColorMatrix, "colormatrix");
+	SetHelpToolTipsColorMatrixX265(fcgCXColorPrim,   "colorprim");
+	SetHelpToolTipsColorMatrixX265(fcgCXTransfer,    "transfer");
+	fcgTTX265->SetToolTip(fcgCBFullRange,        L"--range");
 	
-	fchTTX265->SetToolTip(fchNUVBVbuf,           L"--vbv-bufsize");
-	fchTTX265->SetToolTip(fchNUVBVmax,           L"--vbv-maxrate");
-	fchTTX265->SetToolTip(fchNUScenecut,         L"--scenecut");
-	fchTTX265->SetToolTip(fchNUKeyintMin,        L"--min-keyint");
-	fchTTX265->SetToolTip(fchNUKeyintMax,        L"--keyint");
-	fchTTX265->SetToolTip(fchCBOpenGOP,          L"--open-gop");
-	fchTTX265->SetToolTip(fchNURCLookahead,      L"--rc-lookahead");
-	fchTTX265->SetToolTip(fchNURef,              L"--ref");
-	fchTTX265->SetToolTip(fchNUBframes,          L"--bframes");
-	fchTTX265->SetToolTip(fchCXBadapt,           L"--b-adapt");
-	fchTTX265->SetToolTip(fchCBBpyramid,         L"--b-pyramid");
-	fchTTX265->SetToolTip(fchCBWeightB,          L"--weightb");
-	fchTTX265->SetToolTip(fchCBWeightP,          L"--weightp");
+	fcgTTX265->SetToolTip(fcgNUVBVbuf,           L"--vbv-bufsize");
+	fcgTTX265->SetToolTip(fcgNUVBVmax,           L"--vbv-maxrate");
+	fcgTTX265->SetToolTip(fcgNUScenecut,         L"--scenecut");
+	fcgTTX265->SetToolTip(fcgNUKeyintMin,        L"--min-keyint");
+	fcgTTX265->SetToolTip(fcgNUKeyintMax,        L"--keyint");
+	fcgTTX265->SetToolTip(fcgCBOpenGOP,          L"--open-gop");
+	fcgTTX265->SetToolTip(fcgNURCLookahead,      L"--rc-lookahead");
+	fcgTTX265->SetToolTip(fcgNURef,              L"--ref");
+	fcgTTX265->SetToolTip(fcgNUBframes,          L"--bframes");
+	fcgTTX265->SetToolTip(fcgCXBadapt,           L"--b-adapt");
+	fcgTTX265->SetToolTip(fcgCBBpyramid,         L"--b-pyramid");
+	fcgTTX265->SetToolTip(fcgCBWeightB,          L"--weightb");
+	fcgTTX265->SetToolTip(fcgCBWeightP,          L"--weightp");
 
-	fchTTX265->SetToolTip(fchNURD,               L"--rd");
-	fchTTX265->SetToolTip(fchCXAQMode,           L"--aq-mode");
-	fchTTX265->SetToolTip(fchNUAQStrength,       L"--aq-strength");
-	fchTTX265->SetToolTip(fchNUPsyRD,            L"--psy-rd");
-	fchTTX265->SetToolTip(fchCBCUTree,           L"--cutree");
+	fcgTTX265->SetToolTip(fcgNURD,               L"--rd");
+	fcgTTX265->SetToolTip(fcgCXAQMode,           L"--aq-mode");
+	fcgTTX265->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
+	fcgTTX265->SetToolTip(fcgNUPsyRD,            L"--psy-rd");
+	fcgTTX265->SetToolTip(fcgCBCUTree,           L"--cutree");
 
-	fchTTX265->SetToolTip(fchNUCtu,              L"--ctu");
-	fchTTX265->SetToolTip(fchNUTuIntraDepth,     L"--tu-intra-depth");
-	fchTTX265->SetToolTip(fchNUTuInterDepth,     L"--tu-inter-depth");
-	fchTTX265->SetToolTip(fchCBWpp,              L"--wpp");
+	fcgTTX265->SetToolTip(fcgNUCtu,              L"--ctu");
+	fcgTTX265->SetToolTip(fcgNUTuIntraDepth,     L"--tu-intra-depth");
+	fcgTTX265->SetToolTip(fcgNUTuInterDepth,     L"--tu-inter-depth");
+	fcgTTX265->SetToolTip(fcgCBWpp,              L"--wpp");
 
-	fchTTX265->SetToolTip(fchCXME,               L"--me");
-	fchTTX265->SetToolTip(fchCXSubME,            L"--subme");
-	fchTTX265->SetToolTip(fchNUMERange,          L"--merange");
-	fchTTX265->SetToolTip(fchNUMaxMerge,         L"--max-merge");
-	fchTTX265->SetToolTip(fchCBAsymmetricMP,     L"--amp");
-	fchTTX265->SetToolTip(fchCBRectMP,           L"--rect");
+	fcgTTX265->SetToolTip(fcgCXME,               L"--me");
+	fcgTTX265->SetToolTip(fcgCXSubME,            L"--subme");
+	fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
+	fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
+	fcgTTX265->SetToolTip(fcgCBAsymmetricMP,     L"--amp");
+	fcgTTX265->SetToolTip(fcgCBRectMP,           L"--rect");
 
-	fchTTX265->SetToolTip(fchNUThreads,          L"--threads\n"
+	fcgTTX265->SetToolTip(fcgNUThreads,          L"--threads\n"
 		+ L"\"0\" で自動です。"
 		);
-	fchTTX265->SetToolTip(fchNUFrameThreads,     L"--frame-threads");
+	fcgTTX265->SetToolTip(fcgNUFrameThreads,     L"--frame-threads");
 
-	fchTTX265->SetToolTip(fchCBLoopFilter,       L"--lft");
-	fchTTX265->SetToolTip(fchCBSAO,              L"--sao");
+	fcgTTX265->SetToolTip(fcgCBLoopFilter,       L"--lft");
+	fcgTTX265->SetToolTip(fcgCBSAO,              L"--sao");
 
 	//拡張
 	fcgTTEx->SetToolTip(fcgCBAFS,                L""
@@ -2906,24 +2079,6 @@ System::Void frmConfig::SetHelpToolTips() {
 		+ L"デフォルト設定をロードします。"
 		);
 }
-System::Void frmConfig::SetX264VersionToolTip(String^ x264Path, bool ashighbit) {
-	String^ mes;
-	if (File::Exists(x264Path)) {
-		char mes_buf[2560];
-		char exe_path[MAX_PATH_LEN];
-		GetCHARfromString(exe_path, sizeof(exe_path), x264Path);
-		if (get_exe_message(exe_path, "--version", mes_buf, _countof(mes_buf), AUO_PIPE_MUXED) == RP_SUCCESS)
-			mes = String(mes_buf).ToString();
-		else
-			mes = L"バージョン情報の取得に失敗しました。";
-	} else {
-		mes = L"指定されたx264が存在しません。";
-	}
-	if (ashighbit == fcgCBUsehighbit->Checked)
-		fcgTTX264Version->SetToolTip(fcgTXX264Path, mes);
-
-	fcgTTX264Version->SetToolTip((ashighbit) ? fcgTXX264PathSubhighbit : fcgTXX264PathSub, mes);
-}
 System::Void frmConfig::SetX265VersionToolTip(String^ x265Path, bool ashighbit) {
 	String^ mes;
 	if (File::Exists(x265Path)) {
@@ -2937,10 +2092,10 @@ System::Void frmConfig::SetX265VersionToolTip(String^ x265Path, bool ashighbit) 
 	} else {
 		mes = L"指定されたx265が存在しません。";
 	}
-	if (ashighbit == fchCBUsehighbit->Checked)
-		fchTTX265Version->SetToolTip(fchTXX265Path, mes);
+	if (ashighbit == fcgCBUsehighbit->Checked)
+		fcgTTX265Version->SetToolTip(fcgTXX265Path, mes);
 
-	fchTTX265Version->SetToolTip((ashighbit) ? fchTXX265PathSubhighbit : fchTXX265PathSub, mes);
+	fcgTTX265Version->SetToolTip((ashighbit) ? fcgTXX265PathSubhighbit : fcgTXX265PathSub, mes);
 }
 System::Void frmConfig::ShowExehelp(String^ ExePath, String^ args) {
 	if (!File::Exists(ExePath)) {

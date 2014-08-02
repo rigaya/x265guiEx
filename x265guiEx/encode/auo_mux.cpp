@@ -524,7 +524,7 @@ AUO_RESULT mux(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, cons
 	}
 
 	release_log_cache(&log_line_cache);
-	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
+	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
 
 	//さらにmuxの必要があれば、それを行う(L-SMASH系 timelineeditor のあとの remuxer を想定)
 	if (!ret && mux_stg->post_mux >= MUXER_MP4) {

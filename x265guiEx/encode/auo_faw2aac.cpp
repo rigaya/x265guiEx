@@ -258,7 +258,7 @@ AUO_RESULT audio_faw2aac(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, 
 	if (hModule)
 		FreeLibrary(hModule);
 
-	set_window_title(auo_full_name, PROGRESSBAR_DISABLED);
+	set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
 
 	return ret;
 }
