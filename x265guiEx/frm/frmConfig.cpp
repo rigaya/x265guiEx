@@ -214,6 +214,7 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
 	LocalStg.MP4MuxerPath    = String(stg.s_mux[MUXER_MP4].fullpath).ToString();
 	LocalStg.TC2MP4Path      = String(stg.s_mux[MUXER_TC2MP4].fullpath).ToString();
 	LocalStg.MP4RawPath      = String(stg.s_mux[MUXER_MP4_RAW].fullpath).ToString();
+	LocalStg.audEncPath[DEFAULT_AUDIO_ENCODER] = String(stg.s_aud[DEFAULT_AUDIO_ENCODER].fullpath).ToString();
 
 	SetLocalStg();
 #endif
