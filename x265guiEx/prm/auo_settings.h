@@ -189,14 +189,14 @@ typedef struct MUXER_SETTINGS {
 } MUXER_SETTINGS;
 
 typedef struct X265_CMD {
-	X265_OPTION_STR *name;  //各種設定用x264コマンドの名前(配列、最後はnull)
-	char **cmd;   //各種設定用x264コマンド(配列、最後はnull)
+	X265_OPTION_STR *name;  //各種設定用x265コマンドの名前(配列、最後はnull)
+	char **cmd;   //各種設定用x265コマンド(配列、最後はnull)
 } X265_CMD;
 
 typedef struct X265_SETTINGS {
-	char *filename;                      //x264のファイル名
-	char fullpath[MAX_PATH_LEN];         //x264の場所(フルパス)
-	char fullpath_highbit[MAX_PATH_LEN]; //x264の場所(フルパス) highbit用
+	char *filename;                      //x264/x265のファイル名
+	char fullpath[MAX_PATH_LEN];         //x264/x265の場所(フルパス)
+	char fullpath_highbit[MAX_PATH_LEN]; //x264/x265の場所(フルパス) highbit用
 	char *default_cmd;                   //デフォルト設定用コマンドライン
 	char *default_cmd_highbit;           //highbit depthデフォルト設定用追加コマンドライン
 	char *help_cmd;                      //ヘルプ表示用cmd
@@ -287,9 +287,13 @@ typedef struct FILE_APPENDIX {
 	char wav[MAX_APPENDIX_LEN];        //一時wavファイル名に追加する文字列
 } FILE_APPENDIX;
 
+typedef X265_SETTINGS   X264_SETTINGS;
+typedef X265_OPTION_STR X264_OPTION_STR;
+typedef X265_CMD        X264_CMD;
+
 class guiEx_settings {
 private:
-	mem_cutter s_x265_mc;
+	mem_cutter s_x26x_mc;
 	mem_cutter fn_rep_mc;
 	mem_cutter s_aud_mc;
 	mem_cutter s_mux_mc;
@@ -300,17 +304,17 @@ private:
 	static char  ini_fileName[MAX_PATH_LEN];  //iniファイル(読み込み用)の場所
 	static char  conf_fileName[MAX_PATH_LEN]; //configファイル(読み書き用)の場所
 	static DWORD ini_filesize;                //iniファイル(読み込み用)のサイズ
-
-	void load_x265_cmd(X265_CMD *x265cmd, int *count, int *default_index, const char *section);  //x264コマンドライン設定の読み込み
-	void clear_x265_cmd(X265_CMD *x265cmd, int count);                                           //x264コマンドライン設定の消去
+	
+	void load_x26x_cmd(X264_CMD *x264cmd, int *count, int *default_index, const char *section);  //x264/x265コマンドライン設定の読み込み
 
 	void load_aud();          //音声エンコーダ関連の設定の読み込み・更新
 	void load_mux();          //muxerの設定の読み込み・更新
-	void load_x265();         //x265関連の設定の読み込み・更新
+	void load_x26x();         //x264/x265関連の設定の読み込み・更新
 	void load_local();        //ファイルの場所等の設定の読み込み・更新
 
 	int get_faw_index();             //FAWのインデックスを取得する
-	BOOL s_x265_refresh;             //x26x設定の再ロード
+	BOOL s_x264_refresh;             //x265設定の再ロード
+	BOOL s_x265_refresh;             //x265設定の再ロード
 
 	void make_default_stg_dir(char *default_stg_dir, DWORD nSize); //プロファイル設定ファイルの保存場所の作成
 	BOOL check_inifile();             //iniファイルが読めるかテスト
@@ -322,6 +326,7 @@ public:
 	int s_mux_count;                 //muxerの数 (基本3固定)
 	AUDIO_SETTINGS *s_aud;           //音声エンコーダの設定
 	MUXER_SETTINGS *s_mux;           //muxerの設定
+	X264_SETTINGS  s_x264;           //x264関連の設定
 	X265_SETTINGS  s_x265;           //x265関連の設定
 	LOCAL_SETTINGS s_local;          //ファイルの場所等
 	std::vector<FILENAME_REPLACE> fn_rep;  //一時ファイル名置換
@@ -349,7 +354,8 @@ public:
 	void save_fbc();          //簡易ビットレート計算機設定の保存
 
 	void apply_fn_replace(char *target_filename, DWORD nSize);  //一時ファイル名置換の適用
-
+	
+	BOOL get_reset_s_x264_referesh(); //s_x265が更新されたか
 	BOOL get_reset_s_x265_referesh(); //s_x265が更新されたか
 
 private:
@@ -358,7 +364,7 @@ private:
 
 	void clear_aud();         //音声エンコーダ関連の設定の消去
 	void clear_mux();         //muxerの設定の消去
-	void clear_x265();        //x265関連の設定の消去
+	void clear_x26x();        //x264/x265関連の設定の消去
 	void clear_local();       //ファイルの場所等の設定の消去
 	void clear_fn_replace();  //一時ファイル名置換等の消去
 	void clear_log_win();     //ログウィンドウ等の設定の消去
