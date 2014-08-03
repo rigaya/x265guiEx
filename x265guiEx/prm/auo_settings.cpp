@@ -220,6 +220,9 @@ guiEx_settings::~guiEx_settings() {
 
 BOOL guiEx_settings::check_inifile() {
 	BOOL ret = (INI_VER == GetPrivateProfileInt(ini_section_main, "ini_ver", 0, ini_fileName));
+	//互換性維持のため
+	if (!ret && (0 == strcmp(ini_section_main, INI_SECTION_MAIN)))
+		ret = (INI_VER == GetPrivateProfileInt(INI_SECTION_MAIN_OLD, "ini_ver", 0, ini_fileName));
 	if (ret && !GetFileSizeDWORD(ini_fileName, &ini_filesize))
 		ret = FALSE;
 	return ret;
