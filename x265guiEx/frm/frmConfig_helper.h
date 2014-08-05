@@ -636,6 +636,16 @@ const WCHAR * const x265_encodemode_desc[] = {
 
 #define STR_BITRATE_AUTO (L"-1: 自動 ")
 
+const int x265_outputcsp_map[] = {
+	OUT_CSP_NV12,
+	OUT_CSP_NV16,
+	OUT_CSP_YUV444,
+	OUT_CSP_RGB,
+	OUT_CSP_NV16,
+	OUT_CSP_NV12,
+	OUT_CSP_NV16,
+};
+
 const int x265_encmode_to_RCint[] = {
 	X265_RC_BITRATE,
 	X265_RC_QP,

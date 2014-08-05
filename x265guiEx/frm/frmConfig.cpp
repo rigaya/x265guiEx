@@ -1351,7 +1351,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetCXIndex(fcgCXInterlaced,       cx265->interlaced);
 	
 	SetCXIndex(fcgCXVideoFormat,      cx265->videoformat);
-	SetCXIndex(fcgCXCSP,              cx265->output_csp);
+	SetCXIndex(fcgCXCSP,              x265_outputcsp_map[clamp(cx265->output_csp, 0, _countof(x265_outputcsp_map) - 1)]);
 	
 	SetCXIndex(fcgCXColorMatrix,      cx265->colormatrix);
 	SetCXIndex(fcgCXColorPrim,        cx265->colorprim);
