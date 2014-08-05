@@ -30,8 +30,6 @@
 #include "auo_encode.h"
 #include "auo_runbat.h"
 
-#include "auo_process_parallel.h"
-
 //---------------------------------------------------------------------
 //		関数プロトタイプ宣言
 //---------------------------------------------------------------------
@@ -140,8 +138,6 @@ BOOL func_init()
 
 BOOL func_exit() 
 {
-	if (parallel_task_close())
-		return FALSE;
 	delete_SYSTEM_DATA(&sys_dat);
 	return TRUE;
 }
@@ -163,7 +159,6 @@ BOOL func_output( OUTPUT_INFO *oip )
 	set_enc_prm(&pe, oip);
 	set_prevent_log_close(TRUE); //※1 start
 	pe.h_p_aviutl = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, GetCurrentProcessId()); //※2 start
-	ret |= parallel_task_check(&conf, oip, &pe, &sys_dat);
 
 	//チェックを行い、エンコード可能ならエンコードを開始する
 	if (!ret && check_output(oip, &pe) && setup_afsvideo(oip, &conf, &pe, sys_dat.exstg->s_local.auto_afs_disable)) { //※3 start
@@ -198,8 +193,6 @@ BOOL func_output( OUTPUT_INFO *oip )
 	if (!(ret & (AUO_RESULT_ERROR | AUO_RESULT_ABORT)))
 		ret |= run_bat_file(&conf, oip, &pe, &sys_dat, RUN_BAT_AFTER);
 
-	ret |= parallel_task_add(&conf, oip, &pe, &sys_dat, ret);
-
 	log_process_events();
 	return (ret & AUO_RESULT_ERROR) ? FALSE : TRUE;
 }
@@ -222,12 +215,8 @@ BOOL func_config(HWND hwnd, HINSTANCE dll_hinst)
 
 int func_config_get(void *data, int size)
 {
-	if (data && size == sizeof(CONF_GUIEX)) {
-		if (sys_dat.exstg->s_local.enable_process_parallel) {
-			parallel_task_set_unused_parallel_info(conf.vid.parallel_div_info, _countof(conf.vid.parallel_div_info));
-		}
+	if (data && size == sizeof(CONF_GUIEX))
 		memcpy(data, &conf, sizeof(conf));
-	}
 	return sizeof(conf);
 }
 

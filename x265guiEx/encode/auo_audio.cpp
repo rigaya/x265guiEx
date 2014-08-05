@@ -304,9 +304,6 @@ static AUO_RESULT wav_output(aud_data_t *aud_dat, const OUTPUT_INFO *oip, PRM_EN
 		//あとから音声エンコーダを回す必要が有る場合、wav出力を倍速で
 		if (!use_pipe && str_has_char(auddir))
 			bufsize *= 2;
-		//分割エンコード時には、音声は分割せずに出力するため、その分高速に処理する必要がある
-		if (pe->div_max)
-			bufsize *= pe->div_max;
 	}
 	//8bitを使用する場合のメモリ確保
 	if (wav_8bit && NULL == (buf8bit = (BYTE *)_aligned_malloc(bufsize * oip->audio_ch * sizeof(BYTE) * wav_8bit, 32))) {

@@ -85,10 +85,7 @@ static int calc_input_frame_size(int width, int height, int color_format) {
 }
 
 static int get_frame_num_to_encode(int total_frames, const PRM_ENC *pe) {
-	//開始フレームと終了フレーム
-	int i_start = total_frames *  pe->div_num      / pe->div_max;
-	int i_fin   = total_frames * (pe->div_num + 1) / pe->div_max;
-	return i_fin - i_start + ((pe->div_num > 0) ? 0 : pe->delay_cut_additional_vframe);
+	return total_frames + pe->delay_cut_additional_vframe;
 }
 
 BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL auto_afs_disable) {
@@ -845,7 +842,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 		enable_x264_control(&set_priority, &enc_pause, afs, afs && pe->current_pass == 1, tm_vid_enc_start, frames_to_enc);
 
 		//開始フレーム
-		i_frame = oip->n * pe->div_num / pe->div_max;
+		i_frame = 0;
 
 		//------------メインループ------------
 		for (i = 0, next_jitter = jitter + 1, pe->drop_count = 0; i < frames_to_enc; i++, i_frame++, next_jitter++) {
