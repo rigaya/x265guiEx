@@ -703,20 +703,7 @@ static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, 
 	INT2 *iptr = (INT2*)((BYTE*)cx + options->p_offset);
 	INT2 *defptr = (INT2*)((BYTE*)def + options->p_offset);
 	if (write_all || iptr->x != defptr->x || iptr->y != defptr->y) {
-		if (0 < iptr->x && 0 < iptr->y) {
-			int gcd = get_gcd(iptr->x, iptr->y);
-			int sar_x = iptr->x / gcd;
-			int sar_y = iptr->y / gcd;
-			for (int i = 1; list_sar_x265[i].name; i++) {
-				int list_sar_x = 0, list_sar_y = 0;
-				if (2 == sscanf_s(list_sar_x265[i].name, "%d:%d", &list_sar_x, &list_sar_y)) {
-					if (sar_x == list_sar_x && sar_y == list_sar_y) {
-						return sprintf_s(cmd, nSize, " --sar %d", i);
-					}
-				}
-			}
-		}
-		return sprintf_s(cmd, nSize, " --extended-sar %d:%d", iptr->x, iptr->y);
+		return sprintf_s(cmd, nSize, " --sar %d:%d", iptr->x, iptr->y);
 	}
 	return 0;
 }
