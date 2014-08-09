@@ -463,10 +463,12 @@ static int read_log_enc_stdout(PIPE_SET *pipes, int total_drop, int current_fram
 }
 
 static int read_log_enc_all(PIPE_SET *pipes, int total_drop, int current_frames) {
-	int pipe_read = 0;
-	pipe_read += read_log_enc<true>(pipes, total_drop, current_frames);
-	pipe_read += read_log_enc<false>(pipes, total_drop, current_frames);
-	return pipe_read;
+	int pipe_read_total = 0;
+	for (int pipe_read = 0; 0 < (pipe_read = read_log_enc_stderr(pipes, total_drop, current_frames));)
+		pipe_read_total += pipe_read;
+	for (int pipe_read = 0; 0 < (pipe_read = read_log_enc_stdout(pipes, total_drop, current_frames));)
+		pipe_read_total += pipe_read;
+	return pipe_read_total;
 }
 
 typedef int (*func_read_log_enc)(PIPE_SET *pipes, int total_drop, int current_frames);
@@ -949,13 +951,12 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
 		//エンコーダ終了待機
 		while (WaitForSingleObject(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
-			read_log_enc_stderr(&pipes, pe->drop_count, i);
+			read_log_enc_all(&pipes, pe->drop_count, i);
 
 		DWORD tm_vid_enc_fin = timeGetTime();
 
 		//最後にメッセージを取得
-		while (read_log_enc_stderr(&pipes, pe->drop_count, i) > 0);
-		while (read_log_enc_stdout(&pipes, pe->drop_count, i) > 0);
+		while (read_log_enc_all(&pipes, pe->drop_count, i) > 0);
 
 		if (!(ret & AUO_RESULT_ERROR) && afs)
 			write_log_auo_line_fmt(LOG_INFO, "drop %d / %d frames", pe->drop_count, i);
