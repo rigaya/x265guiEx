@@ -1187,7 +1187,7 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
 						conf->x265.bitrate = (conf->x265.bitrate * oip->n) / (oip->n - pe->drop_count);
 					//下へフォールスルー
 				default:
-					open_log_window(oip->savefile, pe->current_pass, pe->total_pass);
+					open_log_window(oip->savefile, sys_dat, pe->current_pass, pe->total_pass);
 					if (pe->current_pass == pe->total_pass)
 						conf->x265.nul_out = FALSE;
 					conf->x265.pass = 3;
