@@ -51,7 +51,8 @@ enum {
 	OPTION_TYPE_AQ,
 	OPTION_TYPE_INTERLACED,
 	OPTION_TYPE_PSY,
-	OPTION_TYPE_SAR_X265
+	OPTION_TYPE_SAR_X265,
+	OPTION_TYPE_LOSSLESS
 };
 
 //値を取らないオプションタイプのリスト
@@ -70,15 +71,17 @@ static guiEx_settings *ex_stg;
 static X265_OPTIONS x265_options_table[] = {
 	{ "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X265, bit_depth      ) },
 	{ "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
-	//{ "pass",             "p",  OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
-	//{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
+	{ "pass",             "",   OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
+	{ "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
+	{ "no-slow-firstpass","",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, slow_first_pass) },
 	//{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },
-	{ "preset",           "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
+	{ "preset",          "p",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
 	{ "tune",             "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
 	{ "profile",          "",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, profile        ) },
 	{ "crf",              "",   OPTION_TYPE_CRF,           NULL,                 NULL                                 },
 	{ "bitrate",           "",  OPTION_TYPE_BITRATE,       NULL,                 NULL                                 },
 	{ "qp",               "q",  OPTION_TYPE_QP,            NULL,                 NULL                                 },
+	{ "lossless",          "",  OPTION_TYPE_LOSSLESS,      NULL,                 NULL                                 },
 	//{ "ipratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, ip_ratio       ) },
 	//{ "pbratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, pb_ratio       ) },
 	//{ "qpmin",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qp_min         ) },
@@ -399,6 +402,11 @@ static BOOL set_qp(void *cx, const char *value, const X265_OPTION_STR *list) {
 	((CONF_X265 *)cx)->rc_mode = X265_RC_QP;
 	return auo_strtol(&((CONF_X265 *)cx)->qp, value, NULL);
 }
+static BOOL set_lossless(void *cx, const char *value, const X265_OPTION_STR *list) {
+	((CONF_X265 *)cx)->rc_mode = X265_RC_QP;
+	((CONF_X265 *)cx)->qp = -1;
+	return TRUE;
+}
 static BOOL set_keyint(void *i, const char *value, const X265_OPTION_STR *list) {
 	if ((*(int*)i = _stricmp(value, "infinite")) != NULL)
 		return auo_parse_int((int *)i, value, NULL);
@@ -686,8 +694,13 @@ static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, c
 	return 0;
 }
 static int write_qp(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
-	if (cx->rc_mode == X265_RC_QP)
-		return sprintf_s(cmd, nSize, " --%s %d", options->long_name, cx->qp);
+	if (cx->rc_mode == X265_RC_QP) {
+		if (cx->qp < 0) {
+			return sprintf_s(cmd, nSize, " --lossless");
+		} else {
+			return sprintf_s(cmd, nSize, " --%s %d", options->long_name, cx->qp);
+		}
+	}
 	return 0;
 }
 static int write_keyint_x264(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
@@ -750,6 +763,7 @@ const SET_VALUE set_value[] = {
 	set_interlaced,
 	set_psy,
 	set_x265_sar,
+	set_lossless,
 };
 
 //この配列に従って各関数に飛ばされる
@@ -815,6 +829,7 @@ const WRITE_CMD_x265 write_cmd_x265[] = {
 	write_do_nothing,
 	write_do_nothing,
 	write_x265_sar,
+	write_do_nothing,
 };
 
 //MediaInfoからの情報で無視するもの

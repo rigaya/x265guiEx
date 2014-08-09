@@ -587,7 +587,7 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
 			fcgLBQuality->Text = L"量子化量(Quantizer)";
 			fcgLBQualityLeft->Text = L"高品質";
 			fcgLBQualityRight->Text = L"低品質";
-			fcgTBQuality->Minimum = 0;
+			fcgTBQuality->Minimum = -1;
 			fcgTBQuality->Maximum = 69;
 			fcgCBNulOut->Enabled = false; //Enabledの変更が先
 			fcgCBNulOut->Checked = false;
