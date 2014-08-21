@@ -283,7 +283,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
 			// 
 			this->ToolStripMenuItemx264Priority->Name = L"ToolStripMenuItemx264Priority";
 			this->ToolStripMenuItemx264Priority->Size = System::Drawing::Size(244, 22);
-			this->ToolStripMenuItemx264Priority->Text = L"x264優先度";
+			this->ToolStripMenuItemx264Priority->Text = L"x265優先度";
 			this->ToolStripMenuItemx264Priority->DropDownItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &frmLog::ToolStripMenuItemx264Priority_DropDownItemClicked);
 			// 
 			// ToolStripMenuItemEncPause
