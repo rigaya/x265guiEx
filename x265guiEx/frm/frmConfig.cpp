@@ -1388,6 +1388,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetCXIndex(fcgCXAQMode,           cx265->aq_mode);
 	SetNUValue(fcgNUAQStrength,       cx265->aq_strength);
 	SetNUValue(fcgNUPsyRD,            cx265->psy_rd.x);
+	SetNUValue(fcgNUPsyRDOQ,          cx265->psy_rdoq);
 	fcgCBCUTree->Checked            = cx265->cutree != 0;
 
 	SetNUValue(fcgNUCtu,              cx265->ctu);
@@ -1522,6 +1523,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
 	cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
 	cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
+	cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
 	cnf->x265.cutree               = fcgCBCUTree->Checked;
 
 	cnf->x265.ctu                  = (int)fcgNUCtu->Value;

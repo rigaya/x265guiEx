@@ -761,6 +761,8 @@ private: System::Windows::Forms::Label^  fcgLBThreads;
 private: System::Windows::Forms::NumericUpDown^  fcgNUThreads;
 private: System::Windows::Forms::ContextMenuStrip^  fcgCSExeFiles;
 private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
+private: System::Windows::Forms::NumericUpDown^  fcgNUPsyRDOQ;
+private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 
 
 
@@ -1106,6 +1108,8 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fcgCSExeFiles = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->fcgTSExeFileshelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->fcgNUPsyRDOQ = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgLBPsyRDOQ = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
@@ -1159,6 +1163,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSExeFiles->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1888,6 +1893,8 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			// 
 			// fcgtabPageX265Other
 			// 
+			this->fcgtabPageX265Other->Controls->Add(this->fcgNUPsyRDOQ);
+			this->fcgtabPageX265Other->Controls->Add(this->fcgLBPsyRDOQ);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgNUPsyRD);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgLBPsyRD);
 			this->fcgtabPageX265Other->Controls->Add(this->fcggroupBoxFrame);
@@ -2182,7 +2189,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgCBCUTree->Location = System::Drawing::Point(328, 397);
 			this->fcgCBCUTree->Name = L"fcgCBCUTree";
 			this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
-			this->fcgCBCUTree->TabIndex = 44;
+			this->fcgCBCUTree->TabIndex = 45;
 			this->fcgCBCUTree->Tag = L"reCmd";
 			this->fcgCBCUTree->UseVisualStyleBackColor = true;
 			// 
@@ -2201,7 +2208,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
 			this->fcgNURD->Name = L"fcgNURD";
 			this->fcgNURD->Size = System::Drawing::Size(50, 21);
-			this->fcgNURD->TabIndex = 43;
+			this->fcgNURD->TabIndex = 44;
 			this->fcgNURD->Tag = L"reCmd";
 			this->fcgNURD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
@@ -2495,7 +2502,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgCBSAO->Location = System::Drawing::Point(573, 392);
 			this->fcgCBSAO->Name = L"fcgCBSAO";
 			this->fcgCBSAO->Size = System::Drawing::Size(15, 14);
-			this->fcgCBSAO->TabIndex = 46;
+			this->fcgCBSAO->TabIndex = 51;
 			this->fcgCBSAO->Tag = L"reCmd";
 			this->fcgCBSAO->UseVisualStyleBackColor = true;
 			// 
@@ -2514,7 +2521,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgCBLoopFilter->Location = System::Drawing::Point(573, 367);
 			this->fcgCBLoopFilter->Name = L"fcgCBLoopFilter";
 			this->fcgCBLoopFilter->Size = System::Drawing::Size(15, 14);
-			this->fcgCBLoopFilter->TabIndex = 45;
+			this->fcgCBLoopFilter->TabIndex = 50;
 			this->fcgCBLoopFilter->Tag = L"reCmd";
 			this->fcgCBLoopFilter->UseVisualStyleBackColor = true;
 			// 
@@ -3940,6 +3947,27 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
 			// 
+			// fcgNUPsyRDOQ
+			// 
+			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
+			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
+			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(105, 464);
+			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
+			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
+			this->fcgNUPsyRDOQ->TabIndex = 43;
+			this->fcgNUPsyRDOQ->Tag = L"reCmd";
+			this->fcgNUPsyRDOQ->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fcgLBPsyRDOQ
+			// 
+			this->fcgLBPsyRDOQ->AutoSize = true;
+			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(13, 466);
+			this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
+			this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
+			this->fcgLBPsyRDOQ->TabIndex = 105;
+			this->fcgLBPsyRDOQ->Text = L"psy-rdoq";
+			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -4042,6 +4070,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSExeFiles->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

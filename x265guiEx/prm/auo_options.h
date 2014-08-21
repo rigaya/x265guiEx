@@ -383,6 +383,7 @@ typedef struct CONF_X265 {
 	BOOL    loop_filter;
 	BOOL    sao;
 	BOOL    cutree;
+	float   psy_rdoq;
 } CONF_X265;
 
 typedef struct X265_OPTIONS {
