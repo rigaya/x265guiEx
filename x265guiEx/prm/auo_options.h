@@ -194,6 +194,11 @@ const X265_OPTION_STR list_transfer[] = {
 	{ "bt2020-12",    L"bt2020-12"    },
 	{ NULL, NULL }
 };
+const X265_OPTION_STR list_range[] = {
+	{ "limited",      L"limiteed"     },
+	{ "full",         L"full"         },
+	{ NULL, NULL }
+};
 const X265_OPTION_STR list_colormatrix[] = {
 	{ "undef",     L"指定なし"  },
 	{ "auto",      L"自動"      },
