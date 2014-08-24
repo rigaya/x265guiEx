@@ -583,7 +583,7 @@ AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const
 		strcpy_s(stats, sizeof(stats), conf->vid.stats);
 		cmd_replace(stats, sizeof(stats), pe, sys_dat, conf, oip);
 		move_temp_file(NULL, stats, NULL, ret, TRUE, "ステータス", FALSE);
-		strcat_s(stats, sizeof(stats), ".stats.cutree");
+		strcat_s(stats, sizeof(stats), ".cutree");
 		move_temp_file(NULL, stats, NULL, ret, TRUE, "mbtree ステータス", FALSE);
 	}
 	//音声ファイル(wav)
