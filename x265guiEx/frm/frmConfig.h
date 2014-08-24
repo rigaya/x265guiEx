@@ -917,6 +917,8 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgTXX265Path = (gcnew System::Windows::Forms::TextBox());
 			this->fcgLBX265Path = (gcnew System::Windows::Forms::Label());
 			this->fcgtabPageX265Other = (gcnew System::Windows::Forms::TabPage());
+			this->fcgNUPsyRDOQ = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgLBPsyRDOQ = (gcnew System::Windows::Forms::Label());
 			this->fcgNUPsyRD = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBPsyRD = (gcnew System::Windows::Forms::Label());
 			this->fcggroupBoxFrame = (gcnew System::Windows::Forms::GroupBox());
@@ -1108,8 +1110,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fcgCSExeFiles = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->fcgTSExeFileshelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->fcgNUPsyRDOQ = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fcgLBPsyRDOQ = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
@@ -1132,6 +1132,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAutoNPass))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->BeginInit();
 			this->fcgtabPageX265Other->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->BeginInit();
 			this->fcggroupBoxFrame->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURef))->BeginInit();
@@ -1163,7 +1164,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSExeFiles->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1919,6 +1919,27 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgtabPageX265Other->Text = L"x265 (2)";
 			this->fcgtabPageX265Other->UseVisualStyleBackColor = true;
 			// 
+			// fcgNUPsyRDOQ
+			// 
+			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
+			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
+			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(105, 464);
+			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
+			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
+			this->fcgNUPsyRDOQ->TabIndex = 43;
+			this->fcgNUPsyRDOQ->Tag = L"reCmd";
+			this->fcgNUPsyRDOQ->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fcgLBPsyRDOQ
+			// 
+			this->fcgLBPsyRDOQ->AutoSize = true;
+			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(13, 466);
+			this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
+			this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
+			this->fcgLBPsyRDOQ->TabIndex = 105;
+			this->fcgLBPsyRDOQ->Text = L"psy-rdoq";
+			// 
 			// fcgNUPsyRD
 			// 
 			this->fcgNUPsyRD->DecimalPlaces = 2;
@@ -2011,11 +2032,13 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			this->fcgNURef->Location = System::Drawing::Point(146, 184);
 			this->fcgNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
+			this->fcgNURef->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fcgNURef->Name = L"fcgNURef";
 			this->fcgNURef->Size = System::Drawing::Size(65, 21);
 			this->fcgNURef->TabIndex = 26;
 			this->fcgNURef->Tag = L"reCmd";
 			this->fcgNURef->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fcgNURef->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// fcgLBBframes
 			// 
@@ -3947,27 +3970,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
 			// 
-			// fcgNUPsyRDOQ
-			// 
-			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
-			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(105, 464);
-			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
-			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
-			this->fcgNUPsyRDOQ->TabIndex = 43;
-			this->fcgNUPsyRDOQ->Tag = L"reCmd";
-			this->fcgNUPsyRDOQ->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fcgLBPsyRDOQ
-			// 
-			this->fcgLBPsyRDOQ->AutoSize = true;
-			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(13, 466);
-			this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
-			this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
-			this->fcgLBPsyRDOQ->TabIndex = 105;
-			this->fcgLBPsyRDOQ->Text = L"psy-rdoq";
-			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -4025,6 +4027,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->EndInit();
 			this->fcgtabPageX265Other->ResumeLayout(false);
 			this->fcgtabPageX265Other->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->EndInit();
 			this->fcggroupBoxFrame->ResumeLayout(false);
 			this->fcggroupBoxFrame->PerformLayout();
@@ -4070,7 +4073,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSExeFiles->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
