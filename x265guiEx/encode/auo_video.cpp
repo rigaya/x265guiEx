@@ -1160,21 +1160,13 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
 		if (!ret && conf->vid.check_keyframe && strstr(conf->vid.cmdex, "--qpfile") == NULL)
 			set_keyframe(conf, oip, pe, sys_dat);
 
-#if 1
-		//一時ファイルの拡張子を変更
-		change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
 		//まだNV12には非対応
 		if (conf->x265.output_csp == OUT_CSP_NV12) conf->x265.output_csp = OUT_CSP_YV12;
 		if (conf->x265.output_csp == OUT_CSP_NV16) conf->x265.output_csp = OUT_CSP_YUV422;
-#else
-		const char *x265fullpath = (8 < conf->x265.bit_depth) ? sys_dat->exstg->s_x265.fullpath_highbit : sys_dat->exstg->s_x265.fullpath;
-		if (!check_x265_mp4_output(x265fullpath, pe->temp_filename)) {
-			//一時ファイルの拡張子を変更
-			change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
-			warning_x265_mp4_output_not_supported();
-		}
-#endif
 	}
+	
+	//一時ファイルの拡張子を変更
+	change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
 
 	for (; !ret && pe->current_pass <= pe->total_pass; pe->current_pass++) {
 		if (conf->x265.use_auto_npass) {
