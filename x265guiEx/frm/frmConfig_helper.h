@@ -184,7 +184,7 @@ namespace x265guiEx {
 		StringBuilder^ exeMesBuffer;      //auoSetupの出力を更新チェック時に受け取るバッファ
 		HANDLE hEventAbort;               //auoSetupを停止するためのイベント
 		
-		static initonly array<String^>^ TARGET_LIST = { L"x264", L"x265", L"qaac", L"L-SMASH" };
+		static initonly array<String^>^ TARGET_LIST = { L"x264", L"x265", L"qaac", L"l-smash" };
 		static initonly String^ VERSION_SAME_AS_CURRENT = L" ⇐";
 		static initonly array<String^>^ RESULT_MES = {
 			L"更新は必要ありません。", L"更新することができます。", L"エラーが発生しました。", L"中止しました。"
