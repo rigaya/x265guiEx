@@ -465,6 +465,7 @@ namespace x265guiEx {
 					} catch (...) {
 						;//なぜここに来た?
 					}
+					CloseHandle(hEventAbort);
 					hEventAbort = NULL;
 					processAuoSetup->Close();
 					result = true;
