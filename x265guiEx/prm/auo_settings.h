@@ -38,6 +38,7 @@ static const BOOL   DEFAULT_SET_KEYFRAME_AFS24FPS = 0;
 static const BOOL   DEFAULT_DISABLE_X265_VERCHECK = 0;
 static const BOOL   DEFAULT_AUTO_REFLIMIT_BYLEVEL = 0;
 
+static const int    DEFAULT_LOG_LEVEL            = 0;
 static const BOOL   DEFAULT_LOG_WINE_COMPAT      = 0;
 static const BOOL   DEFAULT_LOG_START_MINIMIZED  = 0;
 static const BOOL   DEFAULT_LOG_TRANSPARENT      = 1;
@@ -222,6 +223,7 @@ typedef struct FILENAME_REPLACE {
 typedef struct LOG_WINDOW_SETTINGS {
 	BOOL minimized;                        //最小化で起動
 	BOOL wine_compat;                      //wine互換モード
+	int  log_level;                        //ログ出力のレベル
 	BOOL transparent;                      //半透明で表示
 	int  transparency;                     //透過度
 	BOOL auto_save_log;                    //ログ自動保存を行うかどうか
