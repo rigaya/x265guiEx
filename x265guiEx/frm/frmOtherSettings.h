@@ -133,6 +133,7 @@ namespace x265guiEx {
 	private: System::Windows::Forms::CheckBox^  fosCBAutoRefLimitByLevel;
 private: System::Windows::Forms::ComboBox^  fosCXDefaultAudioEncoder;
 private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
+private: System::Windows::Forms::CheckBox^  fosCBWineCompat;
 
 
 
@@ -222,6 +223,7 @@ private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
 			this->fosLBAMPLimitMarginMin = (gcnew System::Windows::Forms::Label());
 			this->fosTBAMPLimitMarginMulti = (gcnew System::Windows::Forms::TrackBar());
 			this->fosCBAmpKeepOldFile = (gcnew System::Windows::Forms::CheckBox());
+			this->fosCBWineCompat = (gcnew System::Windows::Forms::CheckBox());
 			this->fosTabControl->SuspendLayout();
 			this->fostabPageGeneral->SuspendLayout();
 			this->fostabPageGUI->SuspendLayout();
@@ -421,6 +423,7 @@ private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
 			// 
 			// fostabPageGUI
 			// 
+			this->fostabPageGUI->Controls->Add(this->fosCBWineCompat);
 			this->fostabPageGUI->Controls->Add(this->fosCBGetRelativePath);
 			this->fostabPageGUI->Controls->Add(this->fosBTSetFont);
 			this->fostabPageGUI->Controls->Add(this->fosCBStgEscKey);
@@ -763,6 +766,16 @@ private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
 			this->fosCBAmpKeepOldFile->Text = L"自動マルチパスで、上限をオーバーしてしまい再エンコードする際に、上限オーバーの動画を削除しない";
 			this->fosCBAmpKeepOldFile->UseVisualStyleBackColor = true;
 			// 
+			// fosCBWineCompat
+			// 
+			this->fosCBWineCompat->AutoSize = true;
+			this->fosCBWineCompat->Location = System::Drawing::Point(18, 267);
+			this->fosCBWineCompat->Name = L"fosCBWineCompat";
+			this->fosCBWineCompat->Size = System::Drawing::Size(104, 19);
+			this->fosCBWineCompat->TabIndex = 26;
+			this->fosCBWineCompat->Text = L"wine互換モード";
+			this->fosCBWineCompat->UseVisualStyleBackColor = true;
+			// 
 			// frmOtherSettings
 			// 
 			this->AcceptButton = this->fosCBOK;
@@ -822,6 +835,7 @@ private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
 			fos_ex_stg->s_local.auto_ref_limit_by_level    = fosCBAutoRefLimitByLevel->Checked;
 			fos_ex_stg->s_log.minimized                    = fosCBLogStartMinimized->Checked;
 			fos_ex_stg->s_log.transparent                  = !fosCBLogDisableTransparency->Checked;
+			fos_ex_stg->s_log.wine_compat                  = fosCBWineCompat->Checked;
 			fos_ex_stg->s_local.get_relative_path          = fosCBGetRelativePath->Checked;
 			fos_ex_stg->s_local.default_output_ext         = fosCXDefaultOutExt->SelectedIndex;
 			fos_ex_stg->s_local.run_bat_minimized          = fosCBRunBatMinimized->Checked;
@@ -866,6 +880,7 @@ private: System::Windows::Forms::Label^  fosLBDefaultAudioEncoder;
 			fosCBAutoRefLimitByLevel->Checked       = fos_ex_stg->s_local.auto_ref_limit_by_level != 0;
 			fosCBLogStartMinimized->Checked         = fos_ex_stg->s_log.minimized != 0;
 			fosCBLogDisableTransparency->Checked    = fos_ex_stg->s_log.transparent == 0;
+			fosCBWineCompat->Checked                = fos_ex_stg->s_log.wine_compat != 0;
 			fosCBGetRelativePath->Checked           = fos_ex_stg->s_local.get_relative_path != 0;
 			fosCXDefaultOutExt->SelectedIndex       = fos_ex_stg->s_local.default_output_ext;
 			fosCBRunBatMinimized->Checked           = fos_ex_stg->s_local.run_bat_minimized != 0;
