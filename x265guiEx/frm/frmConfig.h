@@ -531,7 +531,7 @@ private: System::Windows::Forms::Label^  fcgLBX265Preset;
 
 
 private: System::Windows::Forms::TabPage^  fcgtabPageX265Other;
-private: System::Windows::Forms::CheckBox^  fcgCBWpp;
+
 
 
 
@@ -593,8 +593,6 @@ private: System::Windows::Forms::Label^  fcgLBVBVmax;
 
 private: System::Windows::Forms::GroupBox^  fcggroupBoxVBVBuf;
 private: System::Windows::Forms::GroupBox^  fcgGroupBoxME;
-private: System::Windows::Forms::Label^  fcgLBAsymmetricMP;
-private: System::Windows::Forms::CheckBox^  fcgCBAsymmetricMP;
 
 
 
@@ -605,14 +603,16 @@ private: System::Windows::Forms::CheckBox^  fcgCBAsymmetricMP;
 
 
 
-private: System::Windows::Forms::Label^  fcgLBRectMP;
-private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
+
+
+
+
 
 
 
 
 private: System::Windows::Forms::GroupBox^  fcgGroupBoxCTU;
-private: System::Windows::Forms::Label^  fcgLBWpp;
+
 
 
 
@@ -763,6 +763,18 @@ private: System::Windows::Forms::ContextMenuStrip^  fcgCSExeFiles;
 private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 private: System::Windows::Forms::NumericUpDown^  fcgNUPsyRDOQ;
 private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
+private: System::Windows::Forms::Label^  fcgLBPME;
+
+private: System::Windows::Forms::Label^  fcgLBPMode;
+private: System::Windows::Forms::CheckBox^  fcgCBPME;
+
+private: System::Windows::Forms::CheckBox^  fcgCBPMode;
+private: System::Windows::Forms::Label^  fcgLBWpp;
+private: System::Windows::Forms::CheckBox^  fcgCBWpp;
+private: System::Windows::Forms::Label^  fcgLBAsymmetricMP;
+private: System::Windows::Forms::CheckBox^  fcgCBAsymmetricMP;
+private: System::Windows::Forms::Label^  fcgLBRectMP;
+private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 
 
 
@@ -953,10 +965,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgLBAQMode = (gcnew System::Windows::Forms::Label());
 			this->fcgLBRD = (gcnew System::Windows::Forms::Label());
 			this->fcgGroupBoxME = (gcnew System::Windows::Forms::GroupBox());
-			this->fcgLBAsymmetricMP = (gcnew System::Windows::Forms::Label());
-			this->fcgCBAsymmetricMP = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgLBRectMP = (gcnew System::Windows::Forms::Label());
-			this->fcgCBRectMP = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgLBME = (gcnew System::Windows::Forms::Label());
 			this->fcgLBSubME = (gcnew System::Windows::Forms::Label());
 			this->fcgNUMaxMerge = (gcnew System::Windows::Forms::NumericUpDown());
@@ -966,8 +974,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgNUMERange = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgCXSubME = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgGroupBoxCTU = (gcnew System::Windows::Forms::GroupBox());
-			this->fcgLBWpp = (gcnew System::Windows::Forms::Label());
-			this->fcgCBWpp = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgLBCtu = (gcnew System::Windows::Forms::Label());
 			this->fcgLBTuInterDepth = (gcnew System::Windows::Forms::Label());
 			this->fcgNUCtu = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1110,6 +1116,16 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fcgCSExeFiles = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->fcgTSExeFileshelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->fcgLBWpp = (gcnew System::Windows::Forms::Label());
+			this->fcgCBWpp = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgCBPMode = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgCBPME = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgLBPMode = (gcnew System::Windows::Forms::Label());
+			this->fcgLBPME = (gcnew System::Windows::Forms::Label());
+			this->fcgLBAsymmetricMP = (gcnew System::Windows::Forms::Label());
+			this->fcgCBAsymmetricMP = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgLBRectMP = (gcnew System::Windows::Forms::Label());
+			this->fcgCBRectMP = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
@@ -1210,13 +1226,19 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			// fcggroupBoxThread
 			// 
+			this->fcggroupBoxThread->Controls->Add(this->fcgLBPME);
+			this->fcggroupBoxThread->Controls->Add(this->fcgLBPMode);
+			this->fcggroupBoxThread->Controls->Add(this->fcgCBPME);
+			this->fcggroupBoxThread->Controls->Add(this->fcgCBPMode);
+			this->fcggroupBoxThread->Controls->Add(this->fcgLBWpp);
+			this->fcggroupBoxThread->Controls->Add(this->fcgCBWpp);
 			this->fcggroupBoxThread->Controls->Add(this->fcgLBFrameThreads);
 			this->fcggroupBoxThread->Controls->Add(this->fcgNUFrameThreads);
 			this->fcggroupBoxThread->Controls->Add(this->fcgLBThreads);
 			this->fcggroupBoxThread->Controls->Add(this->fcgNUThreads);
 			this->fcggroupBoxThread->Location = System::Drawing::Point(196, 305);
 			this->fcggroupBoxThread->Name = L"fcggroupBoxThread";
-			this->fcggroupBoxThread->Size = System::Drawing::Size(177, 85);
+			this->fcggroupBoxThread->Size = System::Drawing::Size(177, 182);
 			this->fcggroupBoxThread->TabIndex = 71;
 			this->fcggroupBoxThread->TabStop = false;
 			// 
@@ -1464,9 +1486,9 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgNUVBVbuf);
 			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgLBVBVbuf);
 			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgNUVBVmax);
-			this->fcggroupBoxVBVBuf->Location = System::Drawing::Point(196, 403);
+			this->fcggroupBoxVBVBuf->Location = System::Drawing::Point(396, 183);
 			this->fcggroupBoxVBVBuf->Name = L"fcggroupBoxVBVBuf";
-			this->fcggroupBoxVBVBuf->Size = System::Drawing::Size(177, 85);
+			this->fcggroupBoxVBVBuf->Size = System::Drawing::Size(205, 85);
 			this->fcggroupBoxVBVBuf->TabIndex = 19;
 			this->fcggroupBoxVBVBuf->TabStop = false;
 			this->fcggroupBoxVBVBuf->Text = L"VBV (ビデオバッファ制御)";
@@ -1483,10 +1505,10 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// fcgNUVBVbuf
 			// 
 			this->fcgNUVBVbuf->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
-			this->fcgNUVBVbuf->Location = System::Drawing::Point(89, 53);
+			this->fcgNUVBVbuf->Location = System::Drawing::Point(97, 53);
 			this->fcgNUVBVbuf->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
 			this->fcgNUVBVbuf->Name = L"fcgNUVBVbuf";
-			this->fcgNUVBVbuf->Size = System::Drawing::Size(75, 21);
+			this->fcgNUVBVbuf->Size = System::Drawing::Size(96, 21);
 			this->fcgNUVBVbuf->TabIndex = 1;
 			this->fcgNUVBVbuf->Tag = L"reCmd";
 			this->fcgNUVBVbuf->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -1503,10 +1525,10 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// fcgNUVBVmax
 			// 
 			this->fcgNUVBVmax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
-			this->fcgNUVBVmax->Location = System::Drawing::Point(89, 23);
+			this->fcgNUVBVmax->Location = System::Drawing::Point(97, 23);
 			this->fcgNUVBVmax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
 			this->fcgNUVBVmax->Name = L"fcgNUVBVmax";
-			this->fcgNUVBVmax->Size = System::Drawing::Size(75, 21);
+			this->fcgNUVBVmax->Size = System::Drawing::Size(95, 21);
 			this->fcgNUVBVmax->TabIndex = 0;
 			this->fcgNUVBVmax->Tag = L"reCmd";
 			this->fcgNUVBVmax->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2286,10 +2308,6 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			// fcgGroupBoxME
 			// 
-			this->fcgGroupBoxME->Controls->Add(this->fcgLBAsymmetricMP);
-			this->fcgGroupBoxME->Controls->Add(this->fcgCBAsymmetricMP);
-			this->fcgGroupBoxME->Controls->Add(this->fcgLBRectMP);
-			this->fcgGroupBoxME->Controls->Add(this->fcgCBRectMP);
 			this->fcgGroupBoxME->Controls->Add(this->fcgLBME);
 			this->fcgGroupBoxME->Controls->Add(this->fcgLBSubME);
 			this->fcgGroupBoxME->Controls->Add(this->fcgNUMaxMerge);
@@ -2298,54 +2316,16 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgGroupBoxME->Controls->Add(this->fcgCXME);
 			this->fcgGroupBoxME->Controls->Add(this->fcgNUMERange);
 			this->fcgGroupBoxME->Controls->Add(this->fcgCXSubME);
-			this->fcgGroupBoxME->Location = System::Drawing::Point(8, 152);
+			this->fcgGroupBoxME->Location = System::Drawing::Point(8, 187);
 			this->fcgGroupBoxME->Name = L"fcgGroupBoxME";
-			this->fcgGroupBoxME->Size = System::Drawing::Size(345, 196);
+			this->fcgGroupBoxME->Size = System::Drawing::Size(345, 161);
 			this->fcgGroupBoxME->TabIndex = 10;
 			this->fcgGroupBoxME->TabStop = false;
-			// 
-			// fcgLBAsymmetricMP
-			// 
-			this->fcgLBAsymmetricMP->AutoSize = true;
-			this->fcgLBAsymmetricMP->Location = System::Drawing::Point(14, 168);
-			this->fcgLBAsymmetricMP->Name = L"fcgLBAsymmetricMP";
-			this->fcgLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
-			this->fcgLBAsymmetricMP->TabIndex = 74;
-			this->fcgLBAsymmetricMP->Text = L"非対称予測ブロック";
-			// 
-			// fcgCBAsymmetricMP
-			// 
-			this->fcgCBAsymmetricMP->AutoSize = true;
-			this->fcgCBAsymmetricMP->Location = System::Drawing::Point(189, 169);
-			this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
-			this->fcgCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
-			this->fcgCBAsymmetricMP->TabIndex = 16;
-			this->fcgCBAsymmetricMP->Tag = L"reCmd";
-			this->fcgCBAsymmetricMP->UseVisualStyleBackColor = true;
-			// 
-			// fcgLBRectMP
-			// 
-			this->fcgLBRectMP->AutoSize = true;
-			this->fcgLBRectMP->Location = System::Drawing::Point(14, 141);
-			this->fcgLBRectMP->Name = L"fcgLBRectMP";
-			this->fcgLBRectMP->Size = System::Drawing::Size(92, 14);
-			this->fcgLBRectMP->TabIndex = 72;
-			this->fcgLBRectMP->Text = L"非正方予測ブロック";
-			// 
-			// fcgCBRectMP
-			// 
-			this->fcgCBRectMP->AutoSize = true;
-			this->fcgCBRectMP->Location = System::Drawing::Point(189, 142);
-			this->fcgCBRectMP->Name = L"fcgCBRectMP";
-			this->fcgCBRectMP->Size = System::Drawing::Size(15, 14);
-			this->fcgCBRectMP->TabIndex = 15;
-			this->fcgCBRectMP->Tag = L"reCmd";
-			this->fcgCBRectMP->UseVisualStyleBackColor = true;
 			// 
 			// fcgLBME
 			// 
 			this->fcgLBME->AutoSize = true;
-			this->fcgLBME->Location = System::Drawing::Point(14, 24);
+			this->fcgLBME->Location = System::Drawing::Point(14, 28);
 			this->fcgLBME->Name = L"fcgLBME";
 			this->fcgLBME->Size = System::Drawing::Size(97, 14);
 			this->fcgLBME->TabIndex = 57;
@@ -2354,7 +2334,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// fcgLBSubME
 			// 
 			this->fcgLBSubME->AutoSize = true;
-			this->fcgLBSubME->Location = System::Drawing::Point(14, 55);
+			this->fcgLBSubME->Location = System::Drawing::Point(14, 59);
 			this->fcgLBSubME->Name = L"fcgLBSubME";
 			this->fcgLBSubME->Size = System::Drawing::Size(99, 14);
 			this->fcgLBSubME->TabIndex = 59;
@@ -2362,7 +2342,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			// fcgNUMaxMerge
 			// 
-			this->fcgNUMaxMerge->Location = System::Drawing::Point(153, 111);
+			this->fcgNUMaxMerge->Location = System::Drawing::Point(153, 115);
 			this->fcgNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
 			this->fcgNUMaxMerge->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fcgNUMaxMerge->Name = L"fcgNUMaxMerge";
@@ -2375,7 +2355,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// fcgLBMERange
 			// 
 			this->fcgLBMERange->AutoSize = true;
-			this->fcgLBMERange->Location = System::Drawing::Point(14, 86);
+			this->fcgLBMERange->Location = System::Drawing::Point(14, 90);
 			this->fcgLBMERange->Name = L"fcgLBMERange";
 			this->fcgLBMERange->Size = System::Drawing::Size(70, 14);
 			this->fcgLBMERange->TabIndex = 61;
@@ -2384,7 +2364,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// fcgLBMaxMerge
 			// 
 			this->fcgLBMaxMerge->AutoSize = true;
-			this->fcgLBMaxMerge->Location = System::Drawing::Point(14, 113);
+			this->fcgLBMaxMerge->Location = System::Drawing::Point(14, 117);
 			this->fcgLBMaxMerge->Name = L"fcgLBMaxMerge";
 			this->fcgLBMaxMerge->Size = System::Drawing::Size(103, 14);
 			this->fcgLBMaxMerge->TabIndex = 63;
@@ -2394,7 +2374,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			this->fcgCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fcgCXME->FormattingEnabled = true;
-			this->fcgCXME->Location = System::Drawing::Point(153, 21);
+			this->fcgCXME->Location = System::Drawing::Point(153, 25);
 			this->fcgCXME->Name = L"fcgCXME";
 			this->fcgCXME->Size = System::Drawing::Size(176, 22);
 			this->fcgCXME->TabIndex = 11;
@@ -2402,7 +2382,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			// fcgNUMERange
 			// 
-			this->fcgNUMERange->Location = System::Drawing::Point(153, 84);
+			this->fcgNUMERange->Location = System::Drawing::Point(153, 88);
 			this->fcgNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32768, 0, 0, 0 });
 			this->fcgNUMERange->Name = L"fcgNUMERange";
 			this->fcgNUMERange->Size = System::Drawing::Size(65, 21);
@@ -2414,7 +2394,7 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			this->fcgCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fcgCXSubME->FormattingEnabled = true;
-			this->fcgCXSubME->Location = System::Drawing::Point(153, 52);
+			this->fcgCXSubME->Location = System::Drawing::Point(153, 56);
 			this->fcgCXSubME->Name = L"fcgCXSubME";
 			this->fcgCXSubME->Size = System::Drawing::Size(176, 22);
 			this->fcgCXSubME->TabIndex = 12;
@@ -2422,8 +2402,10 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			// fcgGroupBoxCTU
 			// 
-			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBWpp);
-			this->fcgGroupBoxCTU->Controls->Add(this->fcgCBWpp);
+			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBAsymmetricMP);
+			this->fcgGroupBoxCTU->Controls->Add(this->fcgCBAsymmetricMP);
+			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBRectMP);
+			this->fcgGroupBoxCTU->Controls->Add(this->fcgCBRectMP);
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBCtu);
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBTuInterDepth);
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgNUCtu);
@@ -2432,28 +2414,9 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgNUTuIntraDepth);
 			this->fcgGroupBoxCTU->Location = System::Drawing::Point(8, 5);
 			this->fcgGroupBoxCTU->Name = L"fcgGroupBoxCTU";
-			this->fcgGroupBoxCTU->Size = System::Drawing::Size(345, 141);
+			this->fcgGroupBoxCTU->Size = System::Drawing::Size(345, 162);
 			this->fcgGroupBoxCTU->TabIndex = 0;
 			this->fcgGroupBoxCTU->TabStop = false;
-			// 
-			// fcgLBWpp
-			// 
-			this->fcgLBWpp->AutoSize = true;
-			this->fcgLBWpp->Location = System::Drawing::Point(14, 107);
-			this->fcgLBWpp->Name = L"fcgLBWpp";
-			this->fcgLBWpp->Size = System::Drawing::Size(123, 14);
-			this->fcgLBWpp->TabIndex = 71;
-			this->fcgLBWpp->Text = L"波面状並列処理 (WPP)";
-			// 
-			// fcgCBWpp
-			// 
-			this->fcgCBWpp->AutoSize = true;
-			this->fcgCBWpp->Location = System::Drawing::Point(189, 108);
-			this->fcgCBWpp->Name = L"fcgCBWpp";
-			this->fcgCBWpp->Size = System::Drawing::Size(15, 14);
-			this->fcgCBWpp->TabIndex = 4;
-			this->fcgCBWpp->Tag = L"reCmd";
-			this->fcgCBWpp->UseVisualStyleBackColor = true;
 			// 
 			// fcgLBCtu
 			// 
@@ -3961,14 +3924,109 @@ private: System::Windows::Forms::Label^  fcgLBPsyRDOQ;
 			// 
 			this->fcgCSExeFiles->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fcgTSExeFileshelp });
 			this->fcgCSExeFiles->Name = L"fcgCSx264";
-			this->fcgCSExeFiles->Size = System::Drawing::Size(137, 26);
+			this->fcgCSExeFiles->Size = System::Drawing::Size(132, 26);
 			// 
 			// fcgTSExeFileshelp
 			// 
 			this->fcgTSExeFileshelp->Name = L"fcgTSExeFileshelp";
-			this->fcgTSExeFileshelp->Size = System::Drawing::Size(136, 22);
+			this->fcgTSExeFileshelp->Size = System::Drawing::Size(131, 22);
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
+			// 
+			// fcgLBWpp
+			// 
+			this->fcgLBWpp->AutoSize = true;
+			this->fcgLBWpp->Location = System::Drawing::Point(10, 85);
+			this->fcgLBWpp->Name = L"fcgLBWpp";
+			this->fcgLBWpp->Size = System::Drawing::Size(123, 14);
+			this->fcgLBWpp->TabIndex = 73;
+			this->fcgLBWpp->Text = L"波面状並列処理 (WPP)";
+			// 
+			// fcgCBWpp
+			// 
+			this->fcgCBWpp->AutoSize = true;
+			this->fcgCBWpp->Location = System::Drawing::Point(145, 87);
+			this->fcgCBWpp->Name = L"fcgCBWpp";
+			this->fcgCBWpp->Size = System::Drawing::Size(15, 14);
+			this->fcgCBWpp->TabIndex = 72;
+			this->fcgCBWpp->Tag = L"reCmd";
+			this->fcgCBWpp->UseVisualStyleBackColor = true;
+			// 
+			// fcgCBPMode
+			// 
+			this->fcgCBPMode->AutoSize = true;
+			this->fcgCBPMode->Location = System::Drawing::Point(145, 116);
+			this->fcgCBPMode->Name = L"fcgCBPMode";
+			this->fcgCBPMode->Size = System::Drawing::Size(15, 14);
+			this->fcgCBPMode->TabIndex = 74;
+			this->fcgCBPMode->Tag = L"reCmd";
+			this->fcgCBPMode->UseVisualStyleBackColor = true;
+			// 
+			// fcgCBPME
+			// 
+			this->fcgCBPME->AutoSize = true;
+			this->fcgCBPME->Location = System::Drawing::Point(145, 145);
+			this->fcgCBPME->Name = L"fcgCBPME";
+			this->fcgCBPME->Size = System::Drawing::Size(15, 14);
+			this->fcgCBPME->TabIndex = 75;
+			this->fcgCBPME->Tag = L"reCmd";
+			this->fcgCBPME->UseVisualStyleBackColor = true;
+			// 
+			// fcgLBPMode
+			// 
+			this->fcgLBPMode->AutoSize = true;
+			this->fcgLBPMode->Location = System::Drawing::Point(10, 114);
+			this->fcgLBPMode->Name = L"fcgLBPMode";
+			this->fcgLBPMode->Size = System::Drawing::Size(76, 14);
+			this->fcgLBPMode->TabIndex = 76;
+			this->fcgLBPMode->Text = L"並列モード解析";
+			// 
+			// fcgLBPME
+			// 
+			this->fcgLBPME->AutoSize = true;
+			this->fcgLBPME->Location = System::Drawing::Point(10, 144);
+			this->fcgLBPME->Name = L"fcgLBPME";
+			this->fcgLBPME->Size = System::Drawing::Size(70, 14);
+			this->fcgLBPME->TabIndex = 77;
+			this->fcgLBPME->Text = L"並列動き予測";
+			// 
+			// fcgLBAsymmetricMP
+			// 
+			this->fcgLBAsymmetricMP->AutoSize = true;
+			this->fcgLBAsymmetricMP->Location = System::Drawing::Point(16, 134);
+			this->fcgLBAsymmetricMP->Name = L"fcgLBAsymmetricMP";
+			this->fcgLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
+			this->fcgLBAsymmetricMP->TabIndex = 78;
+			this->fcgLBAsymmetricMP->Text = L"非対称予測ブロック";
+			// 
+			// fcgCBAsymmetricMP
+			// 
+			this->fcgCBAsymmetricMP->AutoSize = true;
+			this->fcgCBAsymmetricMP->Location = System::Drawing::Point(191, 135);
+			this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
+			this->fcgCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
+			this->fcgCBAsymmetricMP->TabIndex = 76;
+			this->fcgCBAsymmetricMP->Tag = L"reCmd";
+			this->fcgCBAsymmetricMP->UseVisualStyleBackColor = true;
+			// 
+			// fcgLBRectMP
+			// 
+			this->fcgLBRectMP->AutoSize = true;
+			this->fcgLBRectMP->Location = System::Drawing::Point(16, 107);
+			this->fcgLBRectMP->Name = L"fcgLBRectMP";
+			this->fcgLBRectMP->Size = System::Drawing::Size(92, 14);
+			this->fcgLBRectMP->TabIndex = 77;
+			this->fcgLBRectMP->Text = L"非正方予測ブロック";
+			// 
+			// fcgCBRectMP
+			// 
+			this->fcgCBRectMP->AutoSize = true;
+			this->fcgCBRectMP->Location = System::Drawing::Point(191, 108);
+			this->fcgCBRectMP->Name = L"fcgCBRectMP";
+			this->fcgCBRectMP->Size = System::Drawing::Size(15, 14);
+			this->fcgCBRectMP->TabIndex = 75;
+			this->fcgCBRectMP->Tag = L"reCmd";
+			this->fcgCBRectMP->UseVisualStyleBackColor = true;
 			// 
 			// frmConfig
 			// 

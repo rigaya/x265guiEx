@@ -195,6 +195,10 @@ static X265_OPTIONS x265_options_table[] = {
 	//{ "no-progress",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, disable_progress) },
 	{ "no-cutree",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, cutree         ) },
 	{ "cutree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, cutree         ) },
+	{ "no-pmode",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, pmode          ) },
+	{ "pmode",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pmode          ) },
+	{ "no-pme",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, pme            ) },
+	{ "pme",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pme            ) },
 	{ NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 
