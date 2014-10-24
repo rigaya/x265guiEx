@@ -121,6 +121,9 @@
     <ClCompile Include="prm\auo_conf_convert.cpp">
       <Filter>ソース ファイル\prm</Filter>
     </ClCompile>
+    <ClCompile Include="encode\exe_version.cpp">
+      <Filter>ソース ファイル\encode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="image\folder_open.ico">
@@ -254,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="frm\frmUpdate.h">
       <Filter>フォーム</Filter>
+    </ClInclude>
+    <ClInclude Include="encode\exe_version.h">
+      <Filter>ヘッダー ファイル\encode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
