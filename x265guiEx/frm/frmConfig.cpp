@@ -216,6 +216,9 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
 	LocalStg.audEncPath[DEFAULT_AUDIO_ENCODER] = String(stg.s_aud[DEFAULT_AUDIO_ENCODER].fullpath).ToString();
 
 	SetLocalStg();
+	if (DEFAULT_AUDIO_ENCODER == fcgCXAudioEncoder->SelectedIndex) {
+		fcgTXAudioEncoderPath->Text = LocalStg.audEncPath[fcgCXAudioEncoder->SelectedIndex];
+	}
 #endif
 }
 
