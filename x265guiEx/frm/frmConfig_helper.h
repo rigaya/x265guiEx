@@ -452,7 +452,7 @@ namespace x265guiEx {
 					try {
 						while (!processAuoSetup->HasExited) {
 							//停止制御用のイベントを開く
-							if (NULL == hEventAbort && countGetEvent < 600) {
+							if (NULL == hEventAbort && countGetEvent < 200) {
 								countGetEvent++;
 								Thread::Sleep(100);
 								hEventAbort = OpenEvent(EVENT_ALL_ACCESS, FALSE, AUOSETUP_EVENT_ABORT);
@@ -465,7 +465,8 @@ namespace x265guiEx {
 					} catch (...) {
 						;//なぜここに来た?
 					}
-					CloseHandle(hEventAbort);
+					if (NULL != hEventAbort)
+						CloseHandle(hEventAbort);
 					hEventAbort = NULL;
 					processAuoSetup->Close();
 					result = true;
