@@ -43,6 +43,7 @@
 #include "auo_encode.h"
 #include "auo_video.h"
 #include "auo_audio_parallel.h"
+#include "exe_version.h"
 
 const int DROP_FRAME_FLAG = INT_MAX;
 
@@ -374,45 +375,14 @@ static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
 
 static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 	AUO_RESULT ret = AUO_RESULT_WARNING;
-	char buffer[2048] = { 0 };
-	static const int REQUIRED_X265_VER[5] = { 0, 7, 0, 0, 225 };
-	if (get_exe_message(x265fullpath, "-V", buffer, _countof(buffer), AUO_PIPE_ENABLE) == RP_SUCCESS) {
-		char print_line[512] = { 0 };
-		const char *EXPECTED_HEADER = "x265 [info]: HEVC encoder version ";
-		const char *LINE_HEADER = "x265 version: ";
-		const char *LINE_CONFIGURATION = "x265 [info]: build info ";
-		sprintf_s(print_line, _countof(print_line), LINE_HEADER);
-		int v[5] = { 0 };
-		for (char *ptr = buffer, *qtr = NULL; NULL != (ptr = strtok_s(ptr, "\r\n", &qtr)); ) {
-			if (ptr == buffer) {
-				if (   5 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d.%d+%d", &v[0], &v[1], &v[2], &v[3], &v[4])
-					&& 4 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d.%d",    &v[0], &v[1], &v[2], &v[3]       )
-					&& 4 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d+%d",    &v[0], &v[1], &v[2],        &v[4])
-					&& 3 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d.%d",       &v[0], &v[1], &v[2]              )
-					&& 3 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d+%d",       &v[0], &v[1],               &v[4])
-					&& 2 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d.%d",          &v[0], &v[1]                     )
-					&& 2 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d+%d",          &v[0],                      &v[4])
-					&& 1 != sscanf_s(ptr, "x265 [info]: HEVC encoder version %d",             &v[0]                            ) ) {
-					v[0] = v[1] = v[2] = v[3] = v[4] = -1;
-				} else {
-					char *pos = strchr(ptr + strlen(LINE_CONFIGURATION), '-');
-					if (NULL != pos) *pos = '\0';
-				}
-				strcat_s(print_line, _countof(print_line), ptr + strlen(EXPECTED_HEADER) * (NULL == strncmp(ptr, EXPECTED_HEADER, strlen(EXPECTED_HEADER))));
-				strcat_s(print_line, _countof(print_line), " ");
-			} else if (strstr(ptr, LINE_CONFIGURATION)) {
-				strcat_s(print_line, _countof(print_line), ptr + strlen(LINE_CONFIGURATION));
-			}
-			ptr = NULL;
-		}
-		//x265はバージョン情報を出力してくれるので不要
-		//if (strlen(print_line) > strlen(LINE_HEADER)) {
-		//	write_log_auo_line(LOG_INFO, print_line);
-		//}
-		if (v[0] >= 0) {
+	static const int REQUIRED_X265_VER[4] = { 0, 7, 0, 225 };
+	int current_version[4] = { 0 };
+	if (   0 == get_exe_version_info(x265fullpath, current_version)
+		|| 0 == get_exe_version_from_cmd(x265fullpath, "--version", current_version)) {
+		if (current_version[0] >= 0) {
 			for (int i = 0; i < _countof(REQUIRED_X265_VER); i++) {
-				if (REQUIRED_X265_VER[i] != v[i]) {
-					ret = (REQUIRED_X265_VER[i] < v[i]) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
+				if (REQUIRED_X265_VER[i] != current_version[i]) {
+					ret = (REQUIRED_X265_VER[i] < current_version[i]) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
 					break;
 				}
 			}
@@ -422,7 +392,7 @@ static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
 			char required_ver[128] = { 0 };
 			char current_ver[128] = { 0 };
 			create_x265_ver_string(required_ver, _countof(required_ver), REQUIRED_X265_VER);
-			create_x265_ver_string(current_ver,  _countof(current_ver),  v);
+			create_x265_ver_string(current_ver,  _countof(current_ver),  current_version);
 			error_x265_version(required_ver, current_ver);
 		}
 	}
