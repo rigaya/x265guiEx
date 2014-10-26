@@ -989,8 +989,6 @@ BOOL del_arg(char *cmd, char *target_arg, int del_arg_delta);
 BOOL SetThreadPriorityForModule(DWORD TargetProcessId, const char *TargetModule, int ThreadPriority);
 BOOL SetThreadAffinityForModule(DWORD TargetProcessId, const char *TargetModule, DWORD_PTR ThreadAffinityMask);
 
-BOOL getProcessorCount(DWORD *physical_processor_core, DWORD *logical_processor_core);
-
-int getCPUName(char *buf, size_t nSize);
+const TCHAR *getOSVersion();
 
 #endif //_AUO_UTIL_H_

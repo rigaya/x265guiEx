@@ -124,6 +124,9 @@
     <ClCompile Include="encode\exe_version.cpp">
       <Filter>ソース ファイル\encode</Filter>
     </ClCompile>
+    <ClCompile Include="prm\cpu_info.cpp">
+      <Filter>ソース ファイル\prm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="image\folder_open.ico">
@@ -260,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="encode\exe_version.h">
       <Filter>ヘッダー ファイル\encode</Filter>
+    </ClInclude>
+    <ClInclude Include="prm\cpu_info.h">
+      <Filter>ヘッダー ファイル\prm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
