@@ -971,6 +971,7 @@ static inline int replace_cmd_CRLF_to_Space(WCHAR *cmd, size_t nSize) {
 DWORD check_bom(const void* chr);
 
 //与えられた文字列から主に日本語について文字コード判定を行う
+DWORD jpn_check(const void *str, DWORD size_in_byte);
 DWORD get_code_page(const void *str, DWORD size_in_byte);
 
 //IMultipleLanguge2 の DetectInoutCodePageがたまに的外れな「西ヨーロッパ言語」を返すので
