@@ -119,6 +119,8 @@ static X265_OPTIONS x265_options_table[] = {
 	//{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
 	{ "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, loop_filter    ) },
 	{ "deblock",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, loop_filter    ) },
+	{ "no-lft",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, loop_filter    ) },
+	{ "lft",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, loop_filter    ) },
 	{ "no-sao",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, sao            ) },
 	{ "sao",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, sao            ) },
 	{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
