@@ -591,7 +591,7 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
 			fcgLBQualityLeft->Text = L"高品質";
 			fcgLBQualityRight->Text = L"低品質";
 			fcgTBQuality->Minimum = -1;
-			fcgTBQuality->Maximum = 69;
+			fcgTBQuality->Maximum = 51;
 			fcgCBNulOut->Enabled = false; //Enabledの変更が先
 			fcgCBNulOut->Checked = false;
 			fcgCBFastFirstPass->Enabled = false; //Enabledの変更が先
@@ -1386,6 +1386,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	
 	SetNUValue(fcgNUVBVbuf,           cx265->vbv_bufsize);
 	SetNUValue(fcgNUVBVmax,           cx265->vbv_maxrate);
+	SetNUValue(fcgNUQComp,            cx265->qp_compress * 100);
 
 	SetNUValue(fcgNURD,               cx265->rd);
 	SetCXIndex(fcgCXAQMode,           cx265->aq_mode);
@@ -1523,6 +1524,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 
 	cnf->x265.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
 	cnf->x265.vbv_maxrate          = (int)fcgNUVBVmax->Value;
+	cnf->x265.qp_compress          = (float)(fcgNUQComp->Value * (System::Decimal)0.01);
 	
 	cnf->x265.rd                   = (int)fcgNURD->Value;
 	cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
@@ -1814,6 +1816,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	
 	fcgTTX265->SetToolTip(fcgNUVBVbuf,           L"--vbv-bufsize");
 	fcgTTX265->SetToolTip(fcgNUVBVmax,           L"--vbv-maxrate");
+	fcgTTX265->SetToolTip(fcgNUQComp,            L"--qcomp");
 	fcgTTX265->SetToolTip(fcgNUScenecut,         L"--scenecut");
 	fcgTTX265->SetToolTip(fcgNUKeyintMin,        L"--min-keyint");
 	fcgTTX265->SetToolTip(fcgNUKeyintMax,        L"--keyint");
@@ -1830,6 +1833,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fcgTTX265->SetToolTip(fcgCXAQMode,           L"--aq-mode");
 	fcgTTX265->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
 	fcgTTX265->SetToolTip(fcgNUPsyRD,            L"--psy-rd");
+	fcgTTX265->SetToolTip(fcgNUPsyRDOQ,          L"--psy-rdoq");
 	fcgTTX265->SetToolTip(fcgCBCUTree,           L"--cutree");
 
 	fcgTTX265->SetToolTip(fcgNUCtu,              L"--ctu");

@@ -55,6 +55,8 @@ BOOL guiEx_config::adjust_conf_size(CONF_GUIEX *conf_buf, void *old_data, int ol
 		return ret;
 	if (old_size == sizeof(CONF_GUIEX)) {
 		memcpy(conf_buf, old_data, old_size);
+		if (0 == strcmp(conf_buf->conf_name, CONF_NAME_OLD3))
+			convert_x265stgv2_to_x265stgv3(conf_buf);
 		ret = TRUE;
 	} else {
 		const void *data_table = NULL;
@@ -68,8 +70,11 @@ BOOL guiEx_config::adjust_conf_size(CONF_GUIEX *conf_buf, void *old_data, int ol
 		if (6 == ((CONF_GUIEX *)data_table)->block_count) {
 			//x264/x265guiEx 3.xx系の設定ファイルから変換する
 			//x26xguiEx 3.xxβ系の設定ファイルから変換する
-			convert_x26xstg_to_x265stg(conf_buf, old_data);
+			convert_x26xstg_to_x265stgv3(conf_buf, old_data);
 		} else {
+			if (0 == strcmp(((CONF_GUIEX *)old_data)->conf_name, CONF_NAME_OLD3))
+				convert_x265stgv2_to_x265stgv3((CONF_GUIEX *)old_data);
+
 			BYTE *dst = (BYTE *)conf_buf;
 			BYTE *block = NULL;
 			dst += CONF_HEAD_SIZE;
@@ -99,7 +104,8 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 	fread(&conf_name, sizeof(char), CONF_NAME_BLOCK_LEN, fp);
 	if (   strcmp(CONF_NAME,      conf_name)
 		&& strcmp(CONF_NAME_OLD1, conf_name)
-		&& strcmp(CONF_NAME_OLD2, conf_name)) {
+		&& strcmp(CONF_NAME_OLD2, conf_name)
+		&& strcmp(CONF_NAME_OLD3, conf_name)) {
 		fclose(fp);
 		return CONF_ERROR_FILE_OPEN;
 	}
@@ -109,13 +115,14 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 	fseek(fp, 0, SEEK_SET);
 	fread(dat, conf_size, 1, fp);
 	fclose(fp);
-
+	
+	convert_x265stgv2_to_x265stgv3(conf);
 	write_conf_header(conf);
 	
 	//旧設定ファイルから変換
 	if (   0 == strcmp(CONF_NAME_OLD1, conf_name)
 		|| 0 == strcmp(CONF_NAME_OLD2, conf_name)) {
-		convert_x26xstg_to_x265stg(conf, dat);
+		convert_x26xstg_to_x265stgv3(conf, dat);
 		return 0;
 	}
 
@@ -134,6 +141,9 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 		dst = (BYTE *)conf + conf_block_pointer[i];
 		memcpy(dst, filedat, min(((CONF_GUIEX *)dat)->block_size[i], conf_block_data[i]));
 	}
+
+	if (0 == strcmp(CONF_NAME_OLD3, conf_name))
+		convert_x265stgv2_to_x265stgv3(conf);
 
 	//x264/x265のオプション群はコマンドから設定を作る
 	char *all_cmd = ((char *)dat) + ((CONF_GUIEX *)dat)->block_head_p[CONF_BLOCK_COUNT];

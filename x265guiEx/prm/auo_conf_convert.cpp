@@ -45,7 +45,7 @@ typedef struct {
 	char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
 } CONF_VIDEO_OLD; //動画用設定(x264以外)
 
-void guiEx_config::convert_x26xstg_to_x265stg(CONF_GUIEX *conf, const void *dat) {
+void guiEx_config::convert_x26xstg_to_x265stgv3(CONF_GUIEX *conf, const void *dat) {
 	const CONF_GUIEX *old_data = (const CONF_GUIEX *)dat;
 	init_CONF_GUIEX(conf, FALSE);
 
@@ -79,4 +79,12 @@ void guiEx_config::convert_x26xstg_to_x265stg(CONF_GUIEX *conf, const void *dat)
 #undef COPY_VID_VALUE
 #undef COPY_AMP_VALUE
 #undef COPY_VID_STR
+	convert_x265stgv2_to_x265stgv3(conf);
+}
+
+void guiEx_config::convert_x265stgv2_to_x265stgv3(CONF_GUIEX *conf) {
+	conf->x265.qp_compress = 0.60f;
+	conf->x265.ip_ratio = 1.40f;
+	conf->x265.pb_ratio = 1.30f;
+	strcpy_s(conf->conf_name, CONF_NAME_OLD4);
 }

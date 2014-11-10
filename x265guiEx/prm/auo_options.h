@@ -85,7 +85,7 @@ const X265_OPTION_STR list_output_csp_x264[] = {
 };
 const X265_OPTION_STR list_output_csp_x265[] = {
 	{ "i420", L"i420" },
-	{ "----", L"----" },
+	{ "i422", L"i422" },
 	{ "i444", L"i444" },
 	{ NULL, NULL },
 	{ NULL, NULL },

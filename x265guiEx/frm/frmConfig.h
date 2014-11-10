@@ -590,8 +590,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUVBVmax;
 private: System::Windows::Forms::Label^  fcgLBVBVbuf;
 
 private: System::Windows::Forms::Label^  fcgLBVBVmax;
+private: System::Windows::Forms::GroupBox^  fcggroupBoxRateControl;
 
-private: System::Windows::Forms::GroupBox^  fcggroupBoxVBVBuf;
+
 private: System::Windows::Forms::GroupBox^  fcgGroupBoxME;
 
 
@@ -775,6 +776,9 @@ private: System::Windows::Forms::Label^  fcgLBAsymmetricMP;
 private: System::Windows::Forms::CheckBox^  fcgCBAsymmetricMP;
 private: System::Windows::Forms::Label^  fcgLBRectMP;
 private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
+private: System::Windows::Forms::Label^  fcgLBQComp;
+private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
+
 
 
 
@@ -864,6 +868,12 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgtabControlVideo = (gcnew System::Windows::Forms::TabControl());
 			this->fcgtabPageX265Main = (gcnew System::Windows::Forms::TabPage());
 			this->fcggroupBoxThread = (gcnew System::Windows::Forms::GroupBox());
+			this->fcgLBPME = (gcnew System::Windows::Forms::Label());
+			this->fcgLBPMode = (gcnew System::Windows::Forms::Label());
+			this->fcgCBPME = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgCBPMode = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgLBWpp = (gcnew System::Windows::Forms::Label());
+			this->fcgCBWpp = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgLBFrameThreads = (gcnew System::Windows::Forms::Label());
 			this->fcgNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBThreads = (gcnew System::Windows::Forms::Label());
@@ -888,7 +898,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgCXAspectRatio = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgCXCSP = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgLBCSP = (gcnew System::Windows::Forms::Label());
-			this->fcggroupBoxVBVBuf = (gcnew System::Windows::Forms::GroupBox());
+			this->fcggroupBoxRateControl = (gcnew System::Windows::Forms::GroupBox());
 			this->fcgLBVBVmax = (gcnew System::Windows::Forms::Label());
 			this->fcgNUVBVbuf = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBVBVbuf = (gcnew System::Windows::Forms::Label());
@@ -974,6 +984,10 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgNUMERange = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgCXSubME = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgGroupBoxCTU = (gcnew System::Windows::Forms::GroupBox());
+			this->fcgLBAsymmetricMP = (gcnew System::Windows::Forms::Label());
+			this->fcgCBAsymmetricMP = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgLBRectMP = (gcnew System::Windows::Forms::Label());
+			this->fcgCBRectMP = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgLBCtu = (gcnew System::Windows::Forms::Label());
 			this->fcgLBTuInterDepth = (gcnew System::Windows::Forms::Label());
 			this->fcgNUCtu = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1116,16 +1130,8 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fcgCSExeFiles = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->fcgTSExeFileshelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->fcgLBWpp = (gcnew System::Windows::Forms::Label());
-			this->fcgCBWpp = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgCBPMode = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgCBPME = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgLBPMode = (gcnew System::Windows::Forms::Label());
-			this->fcgLBPME = (gcnew System::Windows::Forms::Label());
-			this->fcgLBAsymmetricMP = (gcnew System::Windows::Forms::Label());
-			this->fcgCBAsymmetricMP = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgLBRectMP = (gcnew System::Windows::Forms::Label());
-			this->fcgCBRectMP = (gcnew System::Windows::Forms::CheckBox());
+			this->fcgNUQComp = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgLBQComp = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
@@ -1135,7 +1141,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcggroupBoxSAR->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->BeginInit();
-			this->fcggroupBoxVBVBuf->SuspendLayout();
+			this->fcggroupBoxRateControl->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->BeginInit();
 			this->fcggroupBoxPreset->SuspendLayout();
@@ -1180,6 +1186,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSExeFiles->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1206,7 +1213,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxSAR);
 			this->fcgtabPageX265Main->Controls->Add(this->fcgCXCSP);
 			this->fcgtabPageX265Main->Controls->Add(this->fcgLBCSP);
-			this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxVBVBuf);
+			this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxRateControl);
 			this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxPreset);
 			this->fcgtabPageX265Main->Controls->Add(this->fcgPNStatusFile);
 			this->fcgtabPageX265Main->Controls->Add(this->fcgPNBitrate);
@@ -1241,6 +1248,63 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcggroupBoxThread->Size = System::Drawing::Size(177, 182);
 			this->fcggroupBoxThread->TabIndex = 71;
 			this->fcggroupBoxThread->TabStop = false;
+			// 
+			// fcgLBPME
+			// 
+			this->fcgLBPME->AutoSize = true;
+			this->fcgLBPME->Location = System::Drawing::Point(10, 144);
+			this->fcgLBPME->Name = L"fcgLBPME";
+			this->fcgLBPME->Size = System::Drawing::Size(70, 14);
+			this->fcgLBPME->TabIndex = 77;
+			this->fcgLBPME->Text = L"並列動き予測";
+			// 
+			// fcgLBPMode
+			// 
+			this->fcgLBPMode->AutoSize = true;
+			this->fcgLBPMode->Location = System::Drawing::Point(10, 114);
+			this->fcgLBPMode->Name = L"fcgLBPMode";
+			this->fcgLBPMode->Size = System::Drawing::Size(76, 14);
+			this->fcgLBPMode->TabIndex = 76;
+			this->fcgLBPMode->Text = L"並列モード解析";
+			// 
+			// fcgCBPME
+			// 
+			this->fcgCBPME->AutoSize = true;
+			this->fcgCBPME->Location = System::Drawing::Point(145, 145);
+			this->fcgCBPME->Name = L"fcgCBPME";
+			this->fcgCBPME->Size = System::Drawing::Size(15, 14);
+			this->fcgCBPME->TabIndex = 75;
+			this->fcgCBPME->Tag = L"reCmd";
+			this->fcgCBPME->UseVisualStyleBackColor = true;
+			// 
+			// fcgCBPMode
+			// 
+			this->fcgCBPMode->AutoSize = true;
+			this->fcgCBPMode->Location = System::Drawing::Point(145, 116);
+			this->fcgCBPMode->Name = L"fcgCBPMode";
+			this->fcgCBPMode->Size = System::Drawing::Size(15, 14);
+			this->fcgCBPMode->TabIndex = 74;
+			this->fcgCBPMode->Tag = L"reCmd";
+			this->fcgCBPMode->UseVisualStyleBackColor = true;
+			// 
+			// fcgLBWpp
+			// 
+			this->fcgLBWpp->AutoSize = true;
+			this->fcgLBWpp->Location = System::Drawing::Point(10, 85);
+			this->fcgLBWpp->Name = L"fcgLBWpp";
+			this->fcgLBWpp->Size = System::Drawing::Size(123, 14);
+			this->fcgLBWpp->TabIndex = 73;
+			this->fcgLBWpp->Text = L"波面状並列処理 (WPP)";
+			// 
+			// fcgCBWpp
+			// 
+			this->fcgCBWpp->AutoSize = true;
+			this->fcgCBWpp->Location = System::Drawing::Point(145, 87);
+			this->fcgCBWpp->Name = L"fcgCBWpp";
+			this->fcgCBWpp->Size = System::Drawing::Size(15, 14);
+			this->fcgCBWpp->TabIndex = 72;
+			this->fcgCBWpp->Tag = L"reCmd";
+			this->fcgCBWpp->UseVisualStyleBackColor = true;
 			// 
 			// fcgLBFrameThreads
 			// 
@@ -1480,18 +1544,20 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgLBCSP->TabIndex = 60;
 			this->fcgLBCSP->Text = L"出力色フォーマット";
 			// 
-			// fcggroupBoxVBVBuf
+			// fcggroupBoxRateControl
 			// 
-			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgLBVBVmax);
-			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgNUVBVbuf);
-			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgLBVBVbuf);
-			this->fcggroupBoxVBVBuf->Controls->Add(this->fcgNUVBVmax);
-			this->fcggroupBoxVBVBuf->Location = System::Drawing::Point(396, 183);
-			this->fcggroupBoxVBVBuf->Name = L"fcggroupBoxVBVBuf";
-			this->fcggroupBoxVBVBuf->Size = System::Drawing::Size(205, 85);
-			this->fcggroupBoxVBVBuf->TabIndex = 19;
-			this->fcggroupBoxVBVBuf->TabStop = false;
-			this->fcggroupBoxVBVBuf->Text = L"VBV (ビデオバッファ制御)";
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgLBQComp);
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgNUQComp);
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgLBVBVmax);
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgNUVBVbuf);
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgLBVBVbuf);
+			this->fcggroupBoxRateControl->Controls->Add(this->fcgNUVBVmax);
+			this->fcggroupBoxRateControl->Location = System::Drawing::Point(396, 181);
+			this->fcggroupBoxRateControl->Name = L"fcggroupBoxRateControl";
+			this->fcggroupBoxRateControl->Size = System::Drawing::Size(205, 112);
+			this->fcggroupBoxRateControl->TabIndex = 19;
+			this->fcggroupBoxRateControl->TabStop = false;
+			this->fcggroupBoxRateControl->Text = L"レート制御";
 			// 
 			// fcgLBVBVmax
 			// 
@@ -1945,7 +2011,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
 			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(105, 464);
+			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(316, 381);
 			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
 			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
 			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
@@ -1956,7 +2022,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBPsyRDOQ
 			// 
 			this->fcgLBPsyRDOQ->AutoSize = true;
-			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(13, 466);
+			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(224, 383);
 			this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
 			this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
 			this->fcgLBPsyRDOQ->TabIndex = 105;
@@ -1966,7 +2032,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			this->fcgNUPsyRD->DecimalPlaces = 2;
 			this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUPsyRD->Location = System::Drawing::Point(104, 434);
+			this->fcgNUPsyRD->Location = System::Drawing::Point(316, 351);
 			this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
 			this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
 			this->fcgNUPsyRD->Size = System::Drawing::Size(64, 21);
@@ -1977,7 +2043,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBPsyRD
 			// 
 			this->fcgLBPsyRD->AutoSize = true;
-			this->fcgLBPsyRD->Location = System::Drawing::Point(12, 436);
+			this->fcgLBPsyRD->Location = System::Drawing::Point(224, 353);
 			this->fcgLBPsyRD->Name = L"fcgLBPsyRD";
 			this->fcgLBPsyRD->Size = System::Drawing::Size(42, 14);
 			this->fcgLBPsyRD->TabIndex = 103;
@@ -2007,16 +2073,16 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcggroupBoxFrame->Controls->Add(this->fcgLBOpenGOP);
 			this->fcggroupBoxFrame->Controls->Add(this->fcgLBKeyintMin);
 			this->fcggroupBoxFrame->Controls->Add(this->fcgCBOpenGOP);
-			this->fcggroupBoxFrame->Location = System::Drawing::Point(368, 5);
+			this->fcggroupBoxFrame->Location = System::Drawing::Point(368, 3);
 			this->fcggroupBoxFrame->Name = L"fcggroupBoxFrame";
-			this->fcggroupBoxFrame->Size = System::Drawing::Size(230, 343);
+			this->fcggroupBoxFrame->Size = System::Drawing::Size(230, 330);
 			this->fcggroupBoxFrame->TabIndex = 20;
 			this->fcggroupBoxFrame->TabStop = false;
 			// 
 			// fcgLBWeightB
 			// 
 			this->fcgLBWeightB->AutoSize = true;
-			this->fcgLBWeightB->Location = System::Drawing::Point(17, 293);
+			this->fcgLBWeightB->Location = System::Drawing::Point(17, 277);
 			this->fcgLBWeightB->Name = L"fcgLBWeightB";
 			this->fcgLBWeightB->Size = System::Drawing::Size(87, 14);
 			this->fcgLBWeightB->TabIndex = 94;
@@ -2025,7 +2091,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBWeightB
 			// 
 			this->fcgCBWeightB->AutoSize = true;
-			this->fcgCBWeightB->Location = System::Drawing::Point(188, 294);
+			this->fcgCBWeightB->Location = System::Drawing::Point(188, 278);
 			this->fcgCBWeightB->Name = L"fcgCBWeightB";
 			this->fcgCBWeightB->Size = System::Drawing::Size(15, 14);
 			this->fcgCBWeightB->TabIndex = 30;
@@ -2044,7 +2110,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBRef
 			// 
 			this->fcgLBRef->AutoSize = true;
-			this->fcgLBRef->Location = System::Drawing::Point(17, 186);
+			this->fcgLBRef->Location = System::Drawing::Point(17, 170);
 			this->fcgLBRef->Name = L"fcgLBRef";
 			this->fcgLBRef->Size = System::Drawing::Size(51, 14);
 			this->fcgLBRef->TabIndex = 78;
@@ -2052,7 +2118,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			// fcgNURef
 			// 
-			this->fcgNURef->Location = System::Drawing::Point(146, 184);
+			this->fcgNURef->Location = System::Drawing::Point(146, 168);
 			this->fcgNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fcgNURef->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->fcgNURef->Name = L"fcgNURef";
@@ -2065,7 +2131,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBBframes
 			// 
 			this->fcgLBBframes->AutoSize = true;
-			this->fcgLBBframes->Location = System::Drawing::Point(17, 213);
+			this->fcgLBBframes->Location = System::Drawing::Point(17, 197);
 			this->fcgLBBframes->Name = L"fcgLBBframes";
 			this->fcgLBBframes->Size = System::Drawing::Size(102, 14);
 			this->fcgLBBframes->TabIndex = 80;
@@ -2073,7 +2139,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			// fcgNUBframes
 			// 
-			this->fcgNUBframes->Location = System::Drawing::Point(146, 211);
+			this->fcgNUBframes->Location = System::Drawing::Point(146, 195);
 			this->fcgNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
 			this->fcgNUBframes->Name = L"fcgNUBframes";
 			this->fcgNUBframes->Size = System::Drawing::Size(65, 21);
@@ -2084,7 +2150,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBBadapt
 			// 
 			this->fcgLBBadapt->AutoSize = true;
-			this->fcgLBBadapt->Location = System::Drawing::Point(17, 242);
+			this->fcgLBBadapt->Location = System::Drawing::Point(17, 226);
 			this->fcgLBBadapt->Name = L"fcgLBBadapt";
 			this->fcgLBBadapt->Size = System::Drawing::Size(102, 14);
 			this->fcgLBBadapt->TabIndex = 82;
@@ -2114,7 +2180,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBRcLookAhead
 			// 
 			this->fcgLBRcLookAhead->AutoSize = true;
-			this->fcgLBRcLookAhead->Location = System::Drawing::Point(17, 143);
+			this->fcgLBRcLookAhead->Location = System::Drawing::Point(17, 135);
 			this->fcgLBRcLookAhead->Name = L"fcgLBRcLookAhead";
 			this->fcgLBRcLookAhead->Size = System::Drawing::Size(95, 14);
 			this->fcgLBRcLookAhead->TabIndex = 76;
@@ -2123,7 +2189,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBWeightP
 			// 
 			this->fcgCBWeightP->AutoSize = true;
-			this->fcgCBWeightP->Location = System::Drawing::Point(188, 318);
+			this->fcgCBWeightP->Location = System::Drawing::Point(188, 302);
 			this->fcgCBWeightP->Name = L"fcgCBWeightP";
 			this->fcgCBWeightP->Size = System::Drawing::Size(15, 14);
 			this->fcgCBWeightP->TabIndex = 31;
@@ -2133,7 +2199,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgNURCLookahead
 			// 
 			this->fcgNURCLookahead->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-			this->fcgNURCLookahead->Location = System::Drawing::Point(146, 141);
+			this->fcgNURCLookahead->Location = System::Drawing::Point(146, 133);
 			this->fcgNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
 			this->fcgNURCLookahead->Name = L"fcgNURCLookahead";
 			this->fcgNURCLookahead->Size = System::Drawing::Size(65, 21);
@@ -2144,7 +2210,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBWeightP
 			// 
 			this->fcgLBWeightP->AutoSize = true;
-			this->fcgLBWeightP->Location = System::Drawing::Point(17, 317);
+			this->fcgLBWeightP->Location = System::Drawing::Point(17, 301);
 			this->fcgLBWeightP->Name = L"fcgLBWeightP";
 			this->fcgLBWeightP->Size = System::Drawing::Size(87, 14);
 			this->fcgLBWeightP->TabIndex = 92;
@@ -2154,7 +2220,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			this->fcgCXBadapt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fcgCXBadapt->FormattingEnabled = true;
-			this->fcgCXBadapt->Location = System::Drawing::Point(125, 239);
+			this->fcgCXBadapt->Location = System::Drawing::Point(125, 223);
 			this->fcgCXBadapt->Name = L"fcgCXBadapt";
 			this->fcgCXBadapt->Size = System::Drawing::Size(88, 22);
 			this->fcgCXBadapt->TabIndex = 28;
@@ -2173,7 +2239,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBBpyramid
 			// 
 			this->fcgLBBpyramid->AutoSize = true;
-			this->fcgLBBpyramid->Location = System::Drawing::Point(17, 269);
+			this->fcgLBBpyramid->Location = System::Drawing::Point(17, 253);
 			this->fcgLBBpyramid->Name = L"fcgLBBpyramid";
 			this->fcgLBBpyramid->Size = System::Drawing::Size(66, 14);
 			this->fcgLBBpyramid->TabIndex = 84;
@@ -2182,7 +2248,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBBpyramid
 			// 
 			this->fcgCBBpyramid->AutoSize = true;
-			this->fcgCBBpyramid->Location = System::Drawing::Point(188, 270);
+			this->fcgCBBpyramid->Location = System::Drawing::Point(188, 254);
 			this->fcgCBBpyramid->Name = L"fcgCBBpyramid";
 			this->fcgCBBpyramid->Size = System::Drawing::Size(15, 14);
 			this->fcgCBBpyramid->TabIndex = 29;
@@ -2231,7 +2297,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBCUTree
 			// 
 			this->fcgCBCUTree->AutoSize = true;
-			this->fcgCBCUTree->Location = System::Drawing::Point(328, 397);
+			this->fcgCBCUTree->Location = System::Drawing::Point(102, 417);
 			this->fcgCBCUTree->Name = L"fcgCBCUTree";
 			this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
 			this->fcgCBCUTree->TabIndex = 45;
@@ -2241,7 +2307,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBCUTree
 			// 
 			this->fcgLBCUTree->AutoSize = true;
-			this->fcgLBCUTree->Location = System::Drawing::Point(228, 395);
+			this->fcgLBCUTree->Location = System::Drawing::Point(13, 416);
 			this->fcgLBCUTree->Name = L"fcgLBCUTree";
 			this->fcgLBCUTree->Size = System::Drawing::Size(45, 14);
 			this->fcgLBCUTree->TabIndex = 100;
@@ -2249,7 +2315,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			// fcgNURD
 			// 
-			this->fcgNURD->Location = System::Drawing::Point(326, 365);
+			this->fcgNURD->Location = System::Drawing::Point(330, 413);
 			this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
 			this->fcgNURD->Name = L"fcgNURD";
 			this->fcgNURD->Size = System::Drawing::Size(50, 21);
@@ -2261,7 +2327,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			this->fcgNUAQStrength->DecimalPlaces = 2;
 			this->fcgNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUAQStrength->Location = System::Drawing::Point(105, 395);
+			this->fcgNUAQStrength->Location = System::Drawing::Point(101, 381);
 			this->fcgNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fcgNUAQStrength->Name = L"fcgNUAQStrength";
 			this->fcgNUAQStrength->Size = System::Drawing::Size(64, 21);
@@ -2272,7 +2338,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBAQStrength
 			// 
 			this->fcgLBAQStrength->AutoSize = true;
-			this->fcgLBAQStrength->Location = System::Drawing::Point(13, 397);
+			this->fcgLBAQStrength->Location = System::Drawing::Point(13, 383);
 			this->fcgLBAQStrength->Name = L"fcgLBAQStrength";
 			this->fcgLBAQStrength->Size = System::Drawing::Size(41, 14);
 			this->fcgLBAQStrength->TabIndex = 97;
@@ -2282,7 +2348,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// 
 			this->fcgCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fcgCXAQMode->FormattingEnabled = true;
-			this->fcgCXAQMode->Location = System::Drawing::Point(101, 364);
+			this->fcgCXAQMode->Location = System::Drawing::Point(101, 350);
 			this->fcgCXAQMode->Name = L"fcgCXAQMode";
 			this->fcgCXAQMode->Size = System::Drawing::Size(82, 22);
 			this->fcgCXAQMode->TabIndex = 40;
@@ -2291,7 +2357,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBAQMode
 			// 
 			this->fcgLBAQMode->AutoSize = true;
-			this->fcgLBAQMode->Location = System::Drawing::Point(12, 367);
+			this->fcgLBAQMode->Location = System::Drawing::Point(12, 353);
 			this->fcgLBAQMode->Name = L"fcgLBAQMode";
 			this->fcgLBAQMode->Size = System::Drawing::Size(80, 14);
 			this->fcgLBAQMode->TabIndex = 95;
@@ -2300,7 +2366,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBRD
 			// 
 			this->fcgLBRD->AutoSize = true;
-			this->fcgLBRD->Location = System::Drawing::Point(227, 367);
+			this->fcgLBRD->Location = System::Drawing::Point(224, 415);
 			this->fcgLBRD->Name = L"fcgLBRD";
 			this->fcgLBRD->Size = System::Drawing::Size(86, 14);
 			this->fcgLBRD->TabIndex = 94;
@@ -2316,7 +2382,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgGroupBoxME->Controls->Add(this->fcgCXME);
 			this->fcgGroupBoxME->Controls->Add(this->fcgNUMERange);
 			this->fcgGroupBoxME->Controls->Add(this->fcgCXSubME);
-			this->fcgGroupBoxME->Location = System::Drawing::Point(8, 187);
+			this->fcgGroupBoxME->Location = System::Drawing::Point(8, 172);
 			this->fcgGroupBoxME->Name = L"fcgGroupBoxME";
 			this->fcgGroupBoxME->Size = System::Drawing::Size(345, 161);
 			this->fcgGroupBoxME->TabIndex = 10;
@@ -2412,11 +2478,49 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgLBTuIntraDepth);
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgNUTuInterDepth);
 			this->fcgGroupBoxCTU->Controls->Add(this->fcgNUTuIntraDepth);
-			this->fcgGroupBoxCTU->Location = System::Drawing::Point(8, 5);
+			this->fcgGroupBoxCTU->Location = System::Drawing::Point(8, 3);
 			this->fcgGroupBoxCTU->Name = L"fcgGroupBoxCTU";
 			this->fcgGroupBoxCTU->Size = System::Drawing::Size(345, 162);
 			this->fcgGroupBoxCTU->TabIndex = 0;
 			this->fcgGroupBoxCTU->TabStop = false;
+			// 
+			// fcgLBAsymmetricMP
+			// 
+			this->fcgLBAsymmetricMP->AutoSize = true;
+			this->fcgLBAsymmetricMP->Location = System::Drawing::Point(16, 134);
+			this->fcgLBAsymmetricMP->Name = L"fcgLBAsymmetricMP";
+			this->fcgLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
+			this->fcgLBAsymmetricMP->TabIndex = 78;
+			this->fcgLBAsymmetricMP->Text = L"非対称予測ブロック";
+			// 
+			// fcgCBAsymmetricMP
+			// 
+			this->fcgCBAsymmetricMP->AutoSize = true;
+			this->fcgCBAsymmetricMP->Location = System::Drawing::Point(191, 135);
+			this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
+			this->fcgCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
+			this->fcgCBAsymmetricMP->TabIndex = 76;
+			this->fcgCBAsymmetricMP->Tag = L"reCmd";
+			this->fcgCBAsymmetricMP->UseVisualStyleBackColor = true;
+			// 
+			// fcgLBRectMP
+			// 
+			this->fcgLBRectMP->AutoSize = true;
+			this->fcgLBRectMP->Location = System::Drawing::Point(16, 107);
+			this->fcgLBRectMP->Name = L"fcgLBRectMP";
+			this->fcgLBRectMP->Size = System::Drawing::Size(92, 14);
+			this->fcgLBRectMP->TabIndex = 77;
+			this->fcgLBRectMP->Text = L"非正方予測ブロック";
+			// 
+			// fcgCBRectMP
+			// 
+			this->fcgCBRectMP->AutoSize = true;
+			this->fcgCBRectMP->Location = System::Drawing::Point(191, 108);
+			this->fcgCBRectMP->Name = L"fcgCBRectMP";
+			this->fcgCBRectMP->Size = System::Drawing::Size(15, 14);
+			this->fcgCBRectMP->TabIndex = 75;
+			this->fcgCBRectMP->Tag = L"reCmd";
+			this->fcgCBRectMP->UseVisualStyleBackColor = true;
 			// 
 			// fcgLBCtu
 			// 
@@ -2485,7 +2589,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBSAO
 			// 
 			this->fcgCBSAO->AutoSize = true;
-			this->fcgCBSAO->Location = System::Drawing::Point(573, 392);
+			this->fcgCBSAO->Location = System::Drawing::Point(573, 378);
 			this->fcgCBSAO->Name = L"fcgCBSAO";
 			this->fcgCBSAO->Size = System::Drawing::Size(15, 14);
 			this->fcgCBSAO->TabIndex = 51;
@@ -2495,7 +2599,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBSAO
 			// 
 			this->fcgLBSAO->AutoSize = true;
-			this->fcgLBSAO->Location = System::Drawing::Point(437, 391);
+			this->fcgLBSAO->Location = System::Drawing::Point(437, 377);
 			this->fcgLBSAO->Name = L"fcgLBSAO";
 			this->fcgLBSAO->Size = System::Drawing::Size(121, 14);
 			this->fcgLBSAO->TabIndex = 39;
@@ -2504,7 +2608,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgCBLoopFilter
 			// 
 			this->fcgCBLoopFilter->AutoSize = true;
-			this->fcgCBLoopFilter->Location = System::Drawing::Point(573, 367);
+			this->fcgCBLoopFilter->Location = System::Drawing::Point(573, 353);
 			this->fcgCBLoopFilter->Name = L"fcgCBLoopFilter";
 			this->fcgCBLoopFilter->Size = System::Drawing::Size(15, 14);
 			this->fcgCBLoopFilter->TabIndex = 50;
@@ -2514,7 +2618,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			// fcgLBLoopFilter
 			// 
 			this->fcgLBLoopFilter->AutoSize = true;
-			this->fcgLBLoopFilter->Location = System::Drawing::Point(437, 366);
+			this->fcgLBLoopFilter->Location = System::Drawing::Point(437, 352);
 			this->fcgLBLoopFilter->Name = L"fcgLBLoopFilter";
 			this->fcgLBLoopFilter->Size = System::Drawing::Size(63, 14);
 			this->fcgLBLoopFilter->TabIndex = 37;
@@ -3933,100 +4037,24 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
 			// 
-			// fcgLBWpp
+			// fcgNUQComp
 			// 
-			this->fcgLBWpp->AutoSize = true;
-			this->fcgLBWpp->Location = System::Drawing::Point(10, 85);
-			this->fcgLBWpp->Name = L"fcgLBWpp";
-			this->fcgLBWpp->Size = System::Drawing::Size(123, 14);
-			this->fcgLBWpp->TabIndex = 73;
-			this->fcgLBWpp->Text = L"波面状並列処理 (WPP)";
+			this->fcgNUQComp->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			this->fcgNUQComp->Location = System::Drawing::Point(126, 82);
+			this->fcgNUQComp->Name = L"fcgNUQComp";
+			this->fcgNUQComp->Size = System::Drawing::Size(67, 21);
+			this->fcgNUQComp->TabIndex = 59;
+			this->fcgNUQComp->Tag = L"reCmd";
+			this->fcgNUQComp->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
-			// fcgCBWpp
+			// fcgLBQComp
 			// 
-			this->fcgCBWpp->AutoSize = true;
-			this->fcgCBWpp->Location = System::Drawing::Point(145, 87);
-			this->fcgCBWpp->Name = L"fcgCBWpp";
-			this->fcgCBWpp->Size = System::Drawing::Size(15, 14);
-			this->fcgCBWpp->TabIndex = 72;
-			this->fcgCBWpp->Tag = L"reCmd";
-			this->fcgCBWpp->UseVisualStyleBackColor = true;
-			// 
-			// fcgCBPMode
-			// 
-			this->fcgCBPMode->AutoSize = true;
-			this->fcgCBPMode->Location = System::Drawing::Point(145, 116);
-			this->fcgCBPMode->Name = L"fcgCBPMode";
-			this->fcgCBPMode->Size = System::Drawing::Size(15, 14);
-			this->fcgCBPMode->TabIndex = 74;
-			this->fcgCBPMode->Tag = L"reCmd";
-			this->fcgCBPMode->UseVisualStyleBackColor = true;
-			// 
-			// fcgCBPME
-			// 
-			this->fcgCBPME->AutoSize = true;
-			this->fcgCBPME->Location = System::Drawing::Point(145, 145);
-			this->fcgCBPME->Name = L"fcgCBPME";
-			this->fcgCBPME->Size = System::Drawing::Size(15, 14);
-			this->fcgCBPME->TabIndex = 75;
-			this->fcgCBPME->Tag = L"reCmd";
-			this->fcgCBPME->UseVisualStyleBackColor = true;
-			// 
-			// fcgLBPMode
-			// 
-			this->fcgLBPMode->AutoSize = true;
-			this->fcgLBPMode->Location = System::Drawing::Point(10, 114);
-			this->fcgLBPMode->Name = L"fcgLBPMode";
-			this->fcgLBPMode->Size = System::Drawing::Size(76, 14);
-			this->fcgLBPMode->TabIndex = 76;
-			this->fcgLBPMode->Text = L"並列モード解析";
-			// 
-			// fcgLBPME
-			// 
-			this->fcgLBPME->AutoSize = true;
-			this->fcgLBPME->Location = System::Drawing::Point(10, 144);
-			this->fcgLBPME->Name = L"fcgLBPME";
-			this->fcgLBPME->Size = System::Drawing::Size(70, 14);
-			this->fcgLBPME->TabIndex = 77;
-			this->fcgLBPME->Text = L"並列動き予測";
-			// 
-			// fcgLBAsymmetricMP
-			// 
-			this->fcgLBAsymmetricMP->AutoSize = true;
-			this->fcgLBAsymmetricMP->Location = System::Drawing::Point(16, 134);
-			this->fcgLBAsymmetricMP->Name = L"fcgLBAsymmetricMP";
-			this->fcgLBAsymmetricMP->Size = System::Drawing::Size(92, 14);
-			this->fcgLBAsymmetricMP->TabIndex = 78;
-			this->fcgLBAsymmetricMP->Text = L"非対称予測ブロック";
-			// 
-			// fcgCBAsymmetricMP
-			// 
-			this->fcgCBAsymmetricMP->AutoSize = true;
-			this->fcgCBAsymmetricMP->Location = System::Drawing::Point(191, 135);
-			this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
-			this->fcgCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
-			this->fcgCBAsymmetricMP->TabIndex = 76;
-			this->fcgCBAsymmetricMP->Tag = L"reCmd";
-			this->fcgCBAsymmetricMP->UseVisualStyleBackColor = true;
-			// 
-			// fcgLBRectMP
-			// 
-			this->fcgLBRectMP->AutoSize = true;
-			this->fcgLBRectMP->Location = System::Drawing::Point(16, 107);
-			this->fcgLBRectMP->Name = L"fcgLBRectMP";
-			this->fcgLBRectMP->Size = System::Drawing::Size(92, 14);
-			this->fcgLBRectMP->TabIndex = 77;
-			this->fcgLBRectMP->Text = L"非正方予測ブロック";
-			// 
-			// fcgCBRectMP
-			// 
-			this->fcgCBRectMP->AutoSize = true;
-			this->fcgCBRectMP->Location = System::Drawing::Point(191, 108);
-			this->fcgCBRectMP->Name = L"fcgCBRectMP";
-			this->fcgCBRectMP->Size = System::Drawing::Size(15, 14);
-			this->fcgCBRectMP->TabIndex = 75;
-			this->fcgCBRectMP->Tag = L"reCmd";
-			this->fcgCBRectMP->UseVisualStyleBackColor = true;
+			this->fcgLBQComp->AutoSize = true;
+			this->fcgLBQComp->Location = System::Drawing::Point(7, 84);
+			this->fcgLBQComp->Name = L"fcgLBQComp";
+			this->fcgLBQComp->Size = System::Drawing::Size(108, 14);
+			this->fcgLBQComp->TabIndex = 60;
+			this->fcgLBQComp->Text = L"ビットレート変動率(%)";
 			// 
 			// frmConfig
 			// 
@@ -4050,7 +4078,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->MaximizeBox = false;
 			this->Name = L"frmConfig";
 			this->ShowIcon = false;
-			this->Text = L"Aviutl 出力 プラグイン";
+			this->Text = L"fcgNUQComp";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &frmConfig::frmConfig_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &frmConfig::frmConfig_Load);
 			this->fcgtabControlVideo->ResumeLayout(false);
@@ -4066,8 +4094,8 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcggroupBoxSAR->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->EndInit();
-			this->fcggroupBoxVBVBuf->ResumeLayout(false);
-			this->fcggroupBoxVBVBuf->PerformLayout();
+			this->fcggroupBoxRateControl->ResumeLayout(false);
+			this->fcggroupBoxRateControl->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->EndInit();
 			this->fcggroupBoxPreset->ResumeLayout(false);
@@ -4131,6 +4159,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSExeFiles->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
