@@ -231,16 +231,53 @@ namespace x265guiEx {
 		}
 	private:
 		void addToBuffer(String^ mes) {
+			if (nullptr == mes)
+				return;
+
 			if (nullptr == exeMesBuffer) {
 				exeMesBuffer = gcnew StringBuilder();
 			}
 			exeMesBuffer->Append(mes);
 		}
 	private:
+		static System::Boolean directoryRequiresAdmin(String^ Dir) {
+			if (nullptr == Dir)
+				return false;
+			String^ FullDirectory;
+			try {
+				if (Path::IsPathRooted(Dir)) {
+					FullDirectory = Dir;
+				} else {
+					FullDirectory = Path::GetFullPath(Dir);
+				}
+			} catch (...) {
+				return true;
+			}
+			bool required = false;
+			List<String^>^ blackListDir = gcnew List<String^>();
+			blackListDir->Add(System::Environment::ExpandEnvironmentVariables(L"%ProgramFiles%"));
+			blackListDir->Add(System::Environment::ExpandEnvironmentVariables(L"%ProgramFiles(x86)%"));
+			blackListDir->Add(System::Environment::ExpandEnvironmentVariables(L"%ProgramW6432%"));
+			blackListDir->Add(System::Environment::ExpandEnvironmentVariables(L"%SystemRoot%"));
+			for (int i = 0; i < blackListDir->Count; i++) {
+				if (0 <= FullDirectory->IndexOf(blackListDir[i], StringComparison::OrdinalIgnoreCase)) {
+					required = true;
+					break;
+				}
+			}
+			delete blackListDir;
+			return required;
+		}
+	private:
 		//auoSetup.exe用のフォルダを作成し、
 		//リソースからauoSetup.exeを取り出す
 		bool createAuoSetupExeFile() {
 			bool result = true;
+			if (directoryRequiresAdmin(auoDir)) {
+				addToBuffer(L"Aviutlが管理者権限の必要な場所にインストールされています。\r\n");
+				addToBuffer(L"更新を実行できません。\r\n");
+				return false;
+			}
 			//x264guiExのあるところから2階層掘って、そこにauoSetup.exeを作成
 			//2階層掘らないとauoSetup.exeの仕様上、うまく動かない
 			//zipを展開したフォルダ内のx264guiEx.auoと、インストール先のx264guiEx.auoを区別する
@@ -260,6 +297,8 @@ namespace x265guiEx {
 					result = false;
 				}
 			} catch (...) {
+				addToBuffer(L"更新用の一時フォルダの作成に失敗しました。\r\n");
+				addToBuffer(L"更新を実行できません。\r\n");
 				result = false;
 			}
 			return result;
@@ -343,43 +382,45 @@ namespace x265guiEx {
 			auoSetupResult result = auoSetupResult::error;
 			if (runAuoSetup(L"-nogui -check-only")) {
 				array<String^>^ delimiterLine = { L"\r\n", L"\r", L"\n" };
-				array<String^>^ exeMesLines = exeMesBuffer->ToString()->Split(delimiterLine, StringSplitOptions::None);
-				result = auoSetupResult::success;
+				if (nullptr != exeMesBuffer && exeMesBuffer->ToString()->Length > 0) {
+					array<String^>^ exeMesLines = exeMesBuffer->ToString()->Split(delimiterLine, StringSplitOptions::None);
+					result = auoSetupResult::success;
 
-				if (nullptr != verInfo) { delete verInfo; }
-				verInfo = gcnew List<VersionInfo>();
-				//各実行ファイルの情報をチェック
-				//各行ごとに、各実行ファイルについてチェック
-				for each (auto targetLine in exeMesLines) {
-					for each (auto targetName in TARGET_LIST) {
-						if (0 <= targetLine->IndexOf(targetName)) {
-							VersionInfo info;
-							info.name = targetName;
-							array<String^>^ delimiterMes = { L"。", L"→" };
-							array<String^>^ splittedMes = targetLine->Trim()->Split(delimiterMes, StringSplitOptions::None);
-							if (2 <= splittedMes->Length) {
-								if (3 <= splittedMes->Length
-									&& 0 <= splittedMes[0]->IndexOf(L"更新します")) {
-									info.currentVer = splittedMes[1]->Trim();
-									info.LatestVer = splittedMes[2]->Trim();
-									verInfo->Add(info);
-									result = auoSetupResult::success_with_info;
-								} else if (0 <= splittedMes[0]->IndexOf(L"ダウンロードします")) {
-									info.currentVer = L" - ";
-									info.LatestVer = splittedMes[1]->Trim();
-									verInfo->Add(info);
-									result = auoSetupResult::success_with_info;
-								} else if (0 <= splittedMes[0]->IndexOf(L"必要ありません")) {
-									info.currentVer = splittedMes[1]->Trim();
-									info.LatestVer = VERSION_SAME_AS_CURRENT;
-									verInfo->Add(info);
+					if (nullptr != verInfo) { delete verInfo; }
+					verInfo = gcnew List<VersionInfo>();
+					//各実行ファイルの情報をチェック
+					//各行ごとに、各実行ファイルについてチェック
+					for each (auto targetLine in exeMesLines) {
+						for each (auto targetName in TARGET_LIST) {
+							if (0 <= targetLine->IndexOf(targetName)) {
+								VersionInfo info;
+								info.name = targetName;
+								array<String^>^ delimiterMes ={ L"。", L"→" };
+								array<String^>^ splittedMes = targetLine->Trim()->Split(delimiterMes, StringSplitOptions::None);
+								if (2 <= splittedMes->Length) {
+									if (3 <= splittedMes->Length
+										&& 0 <= splittedMes[0]->IndexOf(L"更新します")) {
+										info.currentVer = splittedMes[1]->Trim();
+										info.LatestVer = splittedMes[2]->Trim();
+										verInfo->Add(info);
+										result = auoSetupResult::success_with_info;
+									} else if (0 <= splittedMes[0]->IndexOf(L"ダウンロードします")) {
+										info.currentVer = L" - ";
+										info.LatestVer = splittedMes[1]->Trim();
+										verInfo->Add(info);
+										result = auoSetupResult::success_with_info;
+									} else if (0 <= splittedMes[0]->IndexOf(L"必要ありません")) {
+										info.currentVer = splittedMes[1]->Trim();
+										info.LatestVer = VERSION_SAME_AS_CURRENT;
+										verInfo->Add(info);
+									}
 								}
+								break;
 							}
-							break;
 						}
 					}
+					setVerionInfoToDataTable();
 				}
-				setVerionInfoToDataTable();
 			}
 			finFuncCheck(RESULT_MES[static_cast<int>(result)]);
 		}
@@ -397,46 +438,49 @@ namespace x265guiEx {
 			//メッセージ解析
 			auoSetupResult result = auoSetupResult::unknown;
 			array<String^>^ delimiterLine = { L"\r\n", L"\r", L"\n" };
-			array<String^>^ exeMesLines = exeMesBuffer->ToString()->Split(delimiterLine, StringSplitOptions::None);
-			//最後の5行分ぐらいには結果があるはず
-			for (int i = 0, i_line = exeMesLines->Length - 1; 0 > static_cast<int>(result) && i < 5 && i_line >= 0; i++, i_line--)
-				for (int j = 0; j < RESULT_STRING->Length; j++)
-					if (0 <= exeMesLines[i_line]->IndexOf(RESULT_STRING[j]))
-						result = static_cast<auoSetupResult>(j);
-			//unknownのままなのもおかしいのでこれもエラー
-			if (auoSetupResult::unknown == result)
-				result = auoSetupResult::error;
-			//終了処理
-			finFuncRun(RESULT_STRING[static_cast<int>(result)]);
-			//DataTableの更新
-			switch (result) {
-			case auoSetupResult::success:
-			case auoSetupResult::success_with_info: //完了
-				for (int i = 0; i < verInfo->Count; i++) {
-					if (0 != String::Compare(verInfo[i].LatestVer, VERSION_SAME_AS_CURRENT)) {
-						VersionInfo info = verInfo[i];
-						info.currentVer = info.LatestVer;
-						info.LatestVer = VERSION_SAME_AS_CURRENT;
-						verInfo[i] = info;
+			if (nullptr != exeMesBuffer && exeMesBuffer->ToString()->Length > 0) {
+				array<String^>^ exeMesLines = exeMesBuffer->ToString()->Split(delimiterLine, StringSplitOptions::None);
+				//最後の5行分ぐらいには結果があるはず
+				for (int i = 0, i_line = exeMesLines->Length - 1; 0 > static_cast<int>(result) && i < 5 && i_line >= 0; i++, i_line--)
+					for (int j = 0; j < RESULT_STRING->Length; j++)
+						if (0 <= exeMesLines[i_line]->IndexOf(RESULT_STRING[j]))
+							result = static_cast<auoSetupResult>(j);
+				//unknownのままなのもおかしいのでこれもエラー
+				if (auoSetupResult::unknown == result)
+					result = auoSetupResult::error;
+				//終了処理
+				finFuncRun(RESULT_STRING[static_cast<int>(result)]);
+				//DataTableの更新
+				switch (result) {
+				case auoSetupResult::success:
+				case auoSetupResult::success_with_info: //完了
+					for (int i = 0; i < verInfo->Count; i++) {
+						if (0 != String::Compare(verInfo[i].LatestVer, VERSION_SAME_AS_CURRENT)) {
+							VersionInfo info = verInfo[i];
+							info.currentVer = info.LatestVer;
+							info.LatestVer = VERSION_SAME_AS_CURRENT;
+							verInfo[i] = info;
+						}
 					}
+					break;
+				case auoSetupResult::abort: //中止
+					break;
+				case auoSetupResult::error:
+				default: //エラー
+					//チェックを実行する前にDelegateを書き換えておく
+					mesFunc = gcnew DelegateMessage(this, &auoSetupControl::addToBuffer);
+					finFuncCheck = gcnew DelegateProcessFin(this, &auoSetupControl::addToBuffer);
+					check();
+					break;
 				}
-				break;
-			case auoSetupResult::abort: //中止
-				break;
-			case auoSetupResult::error:
-			default: //エラー
-				//チェックを実行する前にDelegateを書き換えておく
-				mesFunc = gcnew DelegateMessage(this, &auoSetupControl::addToBuffer);
-				finFuncCheck = gcnew DelegateProcessFin(this, &auoSetupControl::addToBuffer);
-				check();
-				break;
+				setVerionInfoToDataTable();
 			}
-			setVerionInfoToDataTable();
 		}
 	private:
 		bool runAuoSetup(String^ args) {
 			bool result = false;
 			if (createAuoSetupExeFile()) {
+				hEventAbort = NULL;
 				ProcessStartInfo ^psInfo = gcnew ProcessStartInfo();
 				psInfo->FileName = auoSetupFilePath;
 				psInfo->Arguments = args + L" -dir \"" + aviutlDir + L"\" -ini \"" + iniFileName + "\"";
@@ -474,12 +518,17 @@ namespace x265guiEx {
 					if (nullptr != mesFunc)
 						mesFunc(L"更新の実行に失敗しました。\r\n");
 				} finally {
-					delete processAuoSetup;
+					if (nullptr != processAuoSetup)
+						delete processAuoSetup;
 				}
 				delete psInfo;
 			}
-			if (Directory::Exists(auoSetupDir))
-				Directory::Delete(auoSetupDir, true);
+			try {
+				if (Directory::Exists(auoSetupDir))
+					Directory::Delete(auoSetupDir, true);
+			} catch (...) {
+				//特に何かする必要はない
+			}
 			return result;
 		}
 	private:

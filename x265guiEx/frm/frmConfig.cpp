@@ -179,15 +179,16 @@ System::Void frmConfig::fcgTSBUpdate_CheckedChanged(System::Object^  sender, Sys
 System::Void frmConfig::fcgTSBUpdate_CheckFinished(String^ mes) {
 #if ENABLE_AUOSETUP
 	//更新をチェックした時間を保存する
-	guiEx_settings stg;
-	stg.load_encode_stg();
-	GetCHARfromString(stg.s_local.last_update_check, _countof(stg.s_local.last_update_check), DateTime::Now.ToString());
-	stg.save_local();
-
 	if (this->InvokeRequired) {
 		this->Invoke(gcnew x265guiEx::DelegateProcessFin(this, &frmConfig::fcgTSBUpdate_CheckFinished), mes);
 		return;
 	}
+
+	guiEx_settings stg;
+	stg.load_encode_stg();
+	GetCHARfromString(stg.s_local.last_update_check, _countof(stg.s_local.last_update_check), DateTime::Now.ToString());
+	stg.save_local();
+	
 	if (auoSetupControl::checkIfUpdateAvailable(mes)) {
 		fcgTSBUpdate->Text = L"更新*";
 		fcgTSBUpdate->ForeColor = Color::MediumSlateBlue;

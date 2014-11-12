@@ -362,7 +362,8 @@ int create_auoSetup(const char *exePath) {
 	DWORD resourceSize = 0;
 	FILE *fp = NULL;
 	HMODULE hModule = GetModuleHandleA(AUO_NAME);
-	if (   NULL == (hResource = FindResource(hModule, "AUOSETUP", "EXE_DATA"))
+	if (   NULL == hModule
+		|| NULL == (hResource = FindResource(hModule, "AUOSETUP", "EXE_DATA"))
 		|| NULL == (hResourceData = LoadResource(hModule, hResource))
 		|| NULL == (pDataPtr = (const char *)LockResource(hResourceData))
 		|| 0    == (resourceSize = SizeofResource(hModule, hResource))) {

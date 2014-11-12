@@ -233,7 +233,9 @@ namespace x265guiEx {
 				return;
 			}
 			fruTXUpdate->AppendText(message);
-			fruTXUpdate->ScrollToCaret();
+			if (this->Visible) {
+				fruTXUpdate->ScrollToCaret();
+			}
 		}
 	private:
 		//更新チェック終了のコールバック
