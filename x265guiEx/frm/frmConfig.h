@@ -573,9 +573,9 @@ private: System::Windows::Forms::CheckBox^  fcgCBSAO;
 
 private: System::Windows::Forms::Label^  fcgLBSAO;
 
-private: System::Windows::Forms::CheckBox^  fcgCBLoopFilter;
 
-private: System::Windows::Forms::Label^  fcgLBLoopFilter;
+
+
 
 private: System::Windows::Forms::NumericUpDown^  fcgNUVBVbuf;
 
@@ -778,6 +778,12 @@ private: System::Windows::Forms::Label^  fcgLBRectMP;
 private: System::Windows::Forms::CheckBox^  fcgCBRectMP;
 private: System::Windows::Forms::Label^  fcgLBQComp;
 private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
+private: System::Windows::Forms::CheckBox^  fcgCBDeblock;
+private: System::Windows::Forms::GroupBox^  fcggroupBoxDeblock;
+private: System::Windows::Forms::NumericUpDown^  fcgNUDeblockThreshold;
+private: System::Windows::Forms::NumericUpDown^  fcgNUDeblockStrength;
+private: System::Windows::Forms::Label^  fcgLBDeblockThreshold;
+private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 
 
 
@@ -899,6 +905,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgCXCSP = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgLBCSP = (gcnew System::Windows::Forms::Label());
 			this->fcggroupBoxRateControl = (gcnew System::Windows::Forms::GroupBox());
+			this->fcgLBQComp = (gcnew System::Windows::Forms::Label());
+			this->fcgNUQComp = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBVBVmax = (gcnew System::Windows::Forms::Label());
 			this->fcgNUVBVbuf = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBVBVbuf = (gcnew System::Windows::Forms::Label());
@@ -939,6 +947,12 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgTXX265Path = (gcnew System::Windows::Forms::TextBox());
 			this->fcgLBX265Path = (gcnew System::Windows::Forms::Label());
 			this->fcgtabPageX265Other = (gcnew System::Windows::Forms::TabPage());
+			this->fcgCBDeblock = (gcnew System::Windows::Forms::CheckBox());
+			this->fcggroupBoxDeblock = (gcnew System::Windows::Forms::GroupBox());
+			this->fcgNUDeblockThreshold = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgNUDeblockStrength = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgLBDeblockThreshold = (gcnew System::Windows::Forms::Label());
+			this->fcgLBDeblockStrength = (gcnew System::Windows::Forms::Label());
 			this->fcgNUPsyRDOQ = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBPsyRDOQ = (gcnew System::Windows::Forms::Label());
 			this->fcgNUPsyRD = (gcnew System::Windows::Forms::NumericUpDown());
@@ -996,8 +1010,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgNUTuIntraDepth = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgCBSAO = (gcnew System::Windows::Forms::CheckBox());
 			this->fcgLBSAO = (gcnew System::Windows::Forms::Label());
-			this->fcgCBLoopFilter = (gcnew System::Windows::Forms::CheckBox());
-			this->fcgLBLoopFilter = (gcnew System::Windows::Forms::Label());
 			this->fcgtabPageExSettings = (gcnew System::Windows::Forms::TabPage());
 			this->fchPNX265Sub = (gcnew System::Windows::Forms::Panel());
 			this->fcgLBX265PathSub = (gcnew System::Windows::Forms::Label());
@@ -1130,8 +1142,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgTTX265 = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->fcgCSExeFiles = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->fcgTSExeFileshelp = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->fcgNUQComp = (gcnew System::Windows::Forms::NumericUpDown());
-			this->fcgLBQComp = (gcnew System::Windows::Forms::Label());
 			this->fcgtabControlVideo->SuspendLayout();
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
@@ -1142,6 +1152,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->BeginInit();
 			this->fcggroupBoxRateControl->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->BeginInit();
 			this->fcggroupBoxPreset->SuspendLayout();
@@ -1154,6 +1165,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAutoNPass))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->BeginInit();
 			this->fcgtabPageX265Other->SuspendLayout();
+			this->fcggroupBoxDeblock->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockThreshold))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockStrength))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->BeginInit();
 			this->fcggroupBoxFrame->SuspendLayout();
@@ -1186,7 +1200,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgtabPageMux->SuspendLayout();
 			this->fcgtabPageBat->SuspendLayout();
 			this->fcgCSExeFiles->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// fcgtabControlVideo
@@ -1558,6 +1571,25 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcggroupBoxRateControl->TabIndex = 19;
 			this->fcggroupBoxRateControl->TabStop = false;
 			this->fcggroupBoxRateControl->Text = L"レート制御";
+			// 
+			// fcgLBQComp
+			// 
+			this->fcgLBQComp->AutoSize = true;
+			this->fcgLBQComp->Location = System::Drawing::Point(7, 84);
+			this->fcgLBQComp->Name = L"fcgLBQComp";
+			this->fcgLBQComp->Size = System::Drawing::Size(108, 14);
+			this->fcgLBQComp->TabIndex = 60;
+			this->fcgLBQComp->Text = L"ビットレート変動率(%)";
+			// 
+			// fcgNUQComp
+			// 
+			this->fcgNUQComp->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
+			this->fcgNUQComp->Location = System::Drawing::Point(126, 82);
+			this->fcgNUQComp->Name = L"fcgNUQComp";
+			this->fcgNUQComp->Size = System::Drawing::Size(67, 21);
+			this->fcgNUQComp->TabIndex = 59;
+			this->fcgNUQComp->Tag = L"reCmd";
+			this->fcgNUQComp->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fcgLBVBVmax
 			// 
@@ -1981,6 +2013,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			// 
 			// fcgtabPageX265Other
 			// 
+			this->fcgtabPageX265Other->Controls->Add(this->fcgCBDeblock);
+			this->fcgtabPageX265Other->Controls->Add(this->fcggroupBoxDeblock);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgNUPsyRDOQ);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgLBPsyRDOQ);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgNUPsyRD);
@@ -1998,8 +2032,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgtabPageX265Other->Controls->Add(this->fcgGroupBoxCTU);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgCBSAO);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgLBSAO);
-			this->fcgtabPageX265Other->Controls->Add(this->fcgCBLoopFilter);
-			this->fcgtabPageX265Other->Controls->Add(this->fcgLBLoopFilter);
 			this->fcgtabPageX265Other->Location = System::Drawing::Point(4, 23);
 			this->fcgtabPageX265Other->Name = L"fcgtabPageX265Other";
 			this->fcgtabPageX265Other->Size = System::Drawing::Size(608, 493);
@@ -2007,12 +2039,75 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgtabPageX265Other->Text = L"x265 (2)";
 			this->fcgtabPageX265Other->UseVisualStyleBackColor = true;
 			// 
+			// fcgCBDeblock
+			// 
+			this->fcgCBDeblock->AutoSize = true;
+			this->fcgCBDeblock->Location = System::Drawing::Point(416, 385);
+			this->fcgCBDeblock->Name = L"fcgCBDeblock";
+			this->fcgCBDeblock->Size = System::Drawing::Size(141, 18);
+			this->fcgCBDeblock->TabIndex = 106;
+			this->fcgCBDeblock->Tag = L"reCmd";
+			this->fcgCBDeblock->Text = L"インループ デブロックフィルタ";
+			this->fcgCBDeblock->UseVisualStyleBackColor = true;
+			// 
+			// fcggroupBoxDeblock
+			// 
+			this->fcggroupBoxDeblock->Controls->Add(this->fcgNUDeblockThreshold);
+			this->fcggroupBoxDeblock->Controls->Add(this->fcgNUDeblockStrength);
+			this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockThreshold);
+			this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockStrength);
+			this->fcggroupBoxDeblock->Location = System::Drawing::Point(404, 387);
+			this->fcggroupBoxDeblock->Name = L"fcggroupBoxDeblock";
+			this->fcggroupBoxDeblock->Size = System::Drawing::Size(194, 85);
+			this->fcggroupBoxDeblock->TabIndex = 107;
+			this->fcggroupBoxDeblock->TabStop = false;
+			// 
+			// fcgNUDeblockThreshold
+			// 
+			this->fcgNUDeblockThreshold->Location = System::Drawing::Point(118, 53);
+			this->fcgNUDeblockThreshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
+			this->fcgNUDeblockThreshold->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
+			this->fcgNUDeblockThreshold->Name = L"fcgNUDeblockThreshold";
+			this->fcgNUDeblockThreshold->Size = System::Drawing::Size(54, 21);
+			this->fcgNUDeblockThreshold->TabIndex = 1;
+			this->fcgNUDeblockThreshold->Tag = L"reCmd";
+			this->fcgNUDeblockThreshold->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fcgNUDeblockStrength
+			// 
+			this->fcgNUDeblockStrength->Location = System::Drawing::Point(118, 24);
+			this->fcgNUDeblockStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
+			this->fcgNUDeblockStrength->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
+			this->fcgNUDeblockStrength->Name = L"fcgNUDeblockStrength";
+			this->fcgNUDeblockStrength->Size = System::Drawing::Size(54, 21);
+			this->fcgNUDeblockStrength->TabIndex = 0;
+			this->fcgNUDeblockStrength->Tag = L"reCmd";
+			this->fcgNUDeblockStrength->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			// 
+			// fcgLBDeblockThreshold
+			// 
+			this->fcgLBDeblockThreshold->AutoSize = true;
+			this->fcgLBDeblockThreshold->Location = System::Drawing::Point(16, 55);
+			this->fcgLBDeblockThreshold->Name = L"fcgLBDeblockThreshold";
+			this->fcgLBDeblockThreshold->Size = System::Drawing::Size(68, 14);
+			this->fcgLBDeblockThreshold->TabIndex = 1;
+			this->fcgLBDeblockThreshold->Text = L"デブロック閾値";
+			// 
+			// fcgLBDeblockStrength
+			// 
+			this->fcgLBDeblockStrength->AutoSize = true;
+			this->fcgLBDeblockStrength->Location = System::Drawing::Point(16, 26);
+			this->fcgLBDeblockStrength->Name = L"fcgLBDeblockStrength";
+			this->fcgLBDeblockStrength->Size = System::Drawing::Size(68, 14);
+			this->fcgLBDeblockStrength->TabIndex = 0;
+			this->fcgLBDeblockStrength->Text = L"デブロック強度";
+			// 
 			// fcgNUPsyRDOQ
 			// 
 			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
 			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
 			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(316, 381);
-			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
 			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
 			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
 			this->fcgNUPsyRDOQ->TabIndex = 43;
@@ -2589,7 +2684,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			// fcgCBSAO
 			// 
 			this->fcgCBSAO->AutoSize = true;
-			this->fcgCBSAO->Location = System::Drawing::Point(573, 378);
+			this->fcgCBSAO->Location = System::Drawing::Point(556, 353);
 			this->fcgCBSAO->Name = L"fcgCBSAO";
 			this->fcgCBSAO->Size = System::Drawing::Size(15, 14);
 			this->fcgCBSAO->TabIndex = 51;
@@ -2599,30 +2694,11 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			// fcgLBSAO
 			// 
 			this->fcgLBSAO->AutoSize = true;
-			this->fcgLBSAO->Location = System::Drawing::Point(437, 377);
+			this->fcgLBSAO->Location = System::Drawing::Point(412, 351);
 			this->fcgLBSAO->Name = L"fcgLBSAO";
 			this->fcgLBSAO->Size = System::Drawing::Size(121, 14);
 			this->fcgLBSAO->TabIndex = 39;
 			this->fcgLBSAO->Text = L"画素適応オフセット(SAO)";
-			// 
-			// fcgCBLoopFilter
-			// 
-			this->fcgCBLoopFilter->AutoSize = true;
-			this->fcgCBLoopFilter->Location = System::Drawing::Point(573, 353);
-			this->fcgCBLoopFilter->Name = L"fcgCBLoopFilter";
-			this->fcgCBLoopFilter->Size = System::Drawing::Size(15, 14);
-			this->fcgCBLoopFilter->TabIndex = 50;
-			this->fcgCBLoopFilter->Tag = L"reCmd";
-			this->fcgCBLoopFilter->UseVisualStyleBackColor = true;
-			// 
-			// fcgLBLoopFilter
-			// 
-			this->fcgLBLoopFilter->AutoSize = true;
-			this->fcgLBLoopFilter->Location = System::Drawing::Point(437, 352);
-			this->fcgLBLoopFilter->Name = L"fcgLBLoopFilter";
-			this->fcgLBLoopFilter->Size = System::Drawing::Size(63, 14);
-			this->fcgLBLoopFilter->TabIndex = 37;
-			this->fcgLBLoopFilter->Text = L"ループフィルタ";
 			// 
 			// fcgtabPageExSettings
 			// 
@@ -4037,25 +4113,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgTSExeFileshelp->Text = L"helpを表示";
 			this->fcgTSExeFileshelp->Click += gcnew System::EventHandler(this, &frmConfig::fcgTSExeFileshelp_Click);
 			// 
-			// fcgNUQComp
-			// 
-			this->fcgNUQComp->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
-			this->fcgNUQComp->Location = System::Drawing::Point(126, 82);
-			this->fcgNUQComp->Name = L"fcgNUQComp";
-			this->fcgNUQComp->Size = System::Drawing::Size(67, 21);
-			this->fcgNUQComp->TabIndex = 59;
-			this->fcgNUQComp->Tag = L"reCmd";
-			this->fcgNUQComp->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			// 
-			// fcgLBQComp
-			// 
-			this->fcgLBQComp->AutoSize = true;
-			this->fcgLBQComp->Location = System::Drawing::Point(7, 84);
-			this->fcgLBQComp->Name = L"fcgLBQComp";
-			this->fcgLBQComp->Size = System::Drawing::Size(108, 14);
-			this->fcgLBQComp->TabIndex = 60;
-			this->fcgLBQComp->Text = L"ビットレート変動率(%)";
-			// 
 			// frmConfig
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -4096,6 +4153,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->EndInit();
 			this->fcggroupBoxRateControl->ResumeLayout(false);
 			this->fcggroupBoxRateControl->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->EndInit();
 			this->fcggroupBoxPreset->ResumeLayout(false);
@@ -4113,6 +4171,10 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->EndInit();
 			this->fcgtabPageX265Other->ResumeLayout(false);
 			this->fcgtabPageX265Other->PerformLayout();
+			this->fcggroupBoxDeblock->ResumeLayout(false);
+			this->fcggroupBoxDeblock->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockThreshold))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockStrength))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->EndInit();
 			this->fcggroupBoxFrame->ResumeLayout(false);
@@ -4159,7 +4221,6 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUQComp;
 			this->fcgtabPageBat->ResumeLayout(false);
 			this->fcgtabPageBat->PerformLayout();
 			this->fcgCSExeFiles->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

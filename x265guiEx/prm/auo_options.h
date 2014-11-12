@@ -385,12 +385,13 @@ typedef struct CONF_X265 {
 	BOOL    tskip_fast;
 	BOOL    strong_intra_smooth;
 	int     rd;
-	BOOL    loop_filter;
+	BOOL    use_deblock;
 	BOOL    sao;
 	BOOL    cutree;
 	float   psy_rdoq;
 	BOOL    pmode;
 	BOOL    pme;
+	INT2    deblock;
 } CONF_X265;
 
 typedef struct X265_OPTIONS {

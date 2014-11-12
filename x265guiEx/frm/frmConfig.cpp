@@ -1411,8 +1411,10 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	fcgCBWpp->Checked               = cx265->wpp != 0;
 	fcgCBPMode->Checked             = cx265->pmode != 0;
 	fcgCBPME->Checked               = cx265->pme != 0;
-
-	fcgCBLoopFilter->Checked        = cx265->loop_filter != 0;
+	
+	fcgCBDeblock->Checked           = cx265->use_deblock != 0;
+	SetNUValue(fcgNUDeblockStrength,  cx265->deblock.x);
+	SetNUValue(fcgNUDeblockThreshold, cx265->deblock.y);
 	fcgCBSAO->Checked               = cx265->sao != 0;
 	}
 
@@ -1549,8 +1551,10 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.wpp                  = fcgCBWpp->Checked;
 	cnf->x265.pmode                = fcgCBPMode->Checked;
 	cnf->x265.pme                  = fcgCBPME->Checked;
-
-	cnf->x265.loop_filter          = fcgCBLoopFilter->Checked;
+	
+	cnf->x265.use_deblock          = fcgCBDeblock->Checked;
+	cnf->x265.deblock.x            = (int)fcgNUDeblockStrength->Value;
+	cnf->x265.deblock.y            = (int)fcgNUDeblockThreshold->Value;
 	cnf->x265.sao                  = fcgCBSAO->Checked;
 
 	GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats), fcgTXStatusFile->Text);
@@ -1855,8 +1859,10 @@ System::Void frmConfig::SetHelpToolTips() {
 	fcgTTX265->SetToolTip(fcgCBPMode,            L"--pmode");
 	fcgTTX265->SetToolTip(fcgCBPME,              L"--pme");
 
-	fcgTTX265->SetToolTip(fcgCBLoopFilter,       L"--lft");
 	fcgTTX265->SetToolTip(fcgCBSAO,              L"--sao");
+	fcgTTX265->SetToolTip(fcgCBDeblock,          L"--deblock <Strength>:<Threshold>\nチェックオフ時 --no-deblock");
+	fcgTTX265->SetToolTip(fcgNUDeblockStrength,  L"--deblock <Strength>:<Threshold>");
+	fcgTTX265->SetToolTip(fcgNUDeblockThreshold, L"--deblock <Strength>:<Threshold>");
 
 	//拡張
 	fcgTTEx->SetToolTip(fcgCBAFS,                L""

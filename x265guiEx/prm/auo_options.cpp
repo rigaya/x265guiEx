@@ -62,6 +62,7 @@ static const DWORD OPTION_NO_VALUE[] = {
 	OPTION_TYPE_BOOL2_REVERSE,
 	OPTION_TYPE_TFF,
 	OPTION_TYPE_BFF,
+	OPTION_TYPE_DEBLOCK,
 	NULL
 };
 
@@ -117,10 +118,8 @@ static X265_OPTIONS x265_options_table[] = {
 	{ "no-b-pyramid",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, b_pyramid      ) },
 	//{ "slices",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, slice_n        ) },
 	//{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
-	{ "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, loop_filter    ) },
-	{ "deblock",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, loop_filter    ) },
-	{ "no-lft",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, loop_filter    ) },
-	{ "lft",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, loop_filter    ) },
+	{ "deblock",          "f",  OPTION_TYPE_DEBLOCK,       NULL,                 NULL                                 },
+	{ "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, use_deblock    ) },
 	{ "no-sao",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, sao            ) },
 	{ "sao",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, sao            ) },
 	{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
@@ -414,6 +413,25 @@ static BOOL set_keyint(void *i, const char *value, const X265_OPTION_STR *list) 
 	if ((*(int*)i = _stricmp(value, "infinite")) != NULL)
 		return auo_parse_int((int *)i, value, NULL);
 	return TRUE;
+}
+static BOOL set_deblock(void *cx, const char *value, const X265_OPTION_STR *list) {
+	BOOL ret = FALSE;
+	if (NULL == value) {
+		((CONF_X265 *)cx)->use_deblock = TRUE;
+		ret = TRUE;
+	} else {
+		const int BUF_LEN = 128;
+		const char *a = NULL;
+		size_t len = strlen(value);
+		if (*value == '[' && value[len-1] == ']' && NULL != (a = strstr(value, "if_on")) && BUF_LEN >= a - value && ((CONF_X265 *)cx)->use_deblock) {
+			char tmp[BUF_LEN] = { 0 };
+			memcpy(tmp, value + 1, a - value - 1);
+			ret = set_int2(&((CONF_X265 *)cx)->deblock, tmp, list);
+		} else if (FALSE != (ret = set_int2(&((CONF_X265 *)cx)->deblock, value, list))) {
+			((CONF_X265 *)cx)->use_deblock = TRUE;
+		}
+	}
+	return ret;
 }
 static BOOL set_mb_partitions(void *cx, const char *value, const X265_OPTION_STR *list) {
 	BOOL ret = TRUE;
@@ -715,6 +733,12 @@ static int write_keyint_x264(char *cmd, size_t nSize, const X265_OPTIONS *option
 	}
 	return 0;
 }
+static int write_deblock(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+	if (cx->use_deblock)
+		if (write_all || cx->deblock.x != def->deblock.x || cx->deblock.y != def->deblock.y)
+			return sprintf_s(cmd, nSize, " --%s %d:%d", options->long_name, cx->deblock.x, cx->deblock.y);
+	return 0;
+}
 static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
 	INT2 *iptr = (INT2*)((BYTE*)cx + options->p_offset);
 	INT2 *defptr = (INT2*)((BYTE*)def + options->p_offset);
@@ -750,7 +774,7 @@ const SET_VALUE set_value[] = {
 	set_bitrate,
 	set_qp,
 	set_keyint,
-	set_do_nothing,
+	set_deblock,
 	set_list,
 	set_do_nothing,
 	set_int,
@@ -816,7 +840,7 @@ const WRITE_CMD_x265 write_cmd_x265[] = {
 	write_bitrate,
 	write_qp,
 	write_int,
-	write_do_nothing,
+	write_deblock,
 	write_do_nothing,
 	write_do_nothing,
 	write_input_depth,
