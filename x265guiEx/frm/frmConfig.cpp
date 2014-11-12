@@ -1557,6 +1557,9 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.deblock.y            = (int)fcgNUDeblockThreshold->Value;
 	cnf->x265.sao                  = fcgCBSAO->Checked;
 
+	cnf->x265.ip_ratio             = 0.0f;
+	cnf->x265.pb_ratio             = 0.0f;
+
 	GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats), fcgTXStatusFile->Text);
 
 	//拡張部

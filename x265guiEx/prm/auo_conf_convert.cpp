@@ -84,7 +84,5 @@ void guiEx_config::convert_x26xstg_to_x265stgv3(CONF_GUIEX *conf, const void *da
 
 void guiEx_config::convert_x265stgv2_to_x265stgv3(CONF_GUIEX *conf) {
 	conf->x265.qp_compress = 0.60f;
-	conf->x265.ip_ratio = 1.40f;
-	conf->x265.pb_ratio = 1.30f;
 	strcpy_s(conf->conf_name, CONF_NAME_OLD4);
 }
