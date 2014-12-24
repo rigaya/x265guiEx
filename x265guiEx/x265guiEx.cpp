@@ -317,40 +317,40 @@ void make_file_filter(char *filter, size_t nSize, int default_index) {
 		nSize = _countof(auo_filefilter);
 	}
 	char *ptr = filter;
-	
-#define ADD_FILTER(str, appendix) { \
-	size_t len = strlen(str); \
-	if (nSize - (ptr - filter) <= len + 1) return; \
-	memcpy(ptr, (str), sizeof(ptr[0]) * len); \
-	ptr += len; \
-	*ptr = (appendix); \
-	ptr++; \
-}
-#define ADD_DESC(idx) { \
-	size_t len = sprintf_s(ptr, nSize - (ptr - filter), "%s (%s)", OUTPUT_FILE_EXT_DESC[idx], OUTPUT_FILE_EXT_FILTER[idx]); \
-	ptr += len; \
-	*ptr = separator; \
-	ptr++; \
-	len = strlen(OUTPUT_FILE_EXT_FILTER[idx]); \
-	if (nSize - (ptr - filter) <= len + 1) return; \
-	memcpy(ptr, OUTPUT_FILE_EXT_FILTER[idx], sizeof(ptr[0]) * len); \
-	ptr += len; \
-	*ptr = separator; \
-	ptr++; \
-}
-	ADD_FILTER(TOP, separator);
-	ADD_FILTER(OUTPUT_FILE_EXT_FILTER[default_index], ';');
+
+	auto add_filter = [&](const char *str, char appendix) {
+		size_t len = strlen(str);
+		if (nSize - (ptr - filter) <= len + 1)
+			return;
+		memcpy(ptr, (str), sizeof(ptr[0]) * len);
+		ptr += len;
+		*ptr = appendix;
+		ptr++;
+	};
+	auto add_desc = [&](int idx) {
+		size_t len = sprintf_s(ptr, nSize - (ptr - filter), "%s (%s)", OUTPUT_FILE_EXT_DESC[idx], OUTPUT_FILE_EXT_FILTER[idx]);
+		ptr += len;
+		*ptr = separator;
+		ptr++;
+		len = strlen(OUTPUT_FILE_EXT_FILTER[idx]);
+		if (nSize - (ptr - filter) <= len + 1)
+			return;
+		memcpy(ptr, OUTPUT_FILE_EXT_FILTER[idx], sizeof(ptr[0]) * len);
+		ptr += len;
+		*ptr = separator;
+		ptr++;
+	};
+	add_filter(TOP, separator);
+	add_filter(OUTPUT_FILE_EXT_FILTER[default_index], ';');
 	for (int idx = 0; idx < _countof(OUTPUT_FILE_EXT_FILTER); idx++)
 		if (idx != default_index)
-			ADD_FILTER(OUTPUT_FILE_EXT_FILTER[idx], ';');
-	ADD_FILTER(OUTPUT_FILE_EXT_FILTER[default_index], separator);
-	ADD_DESC(default_index);
+			add_filter(OUTPUT_FILE_EXT_FILTER[idx], ';');
+	add_filter(OUTPUT_FILE_EXT_FILTER[default_index], separator);
+	add_desc(default_index);
 	for (int idx = 0; idx < _countof(OUTPUT_FILE_EXT_FILTER); idx++)
 		if (idx != default_index)
-			ADD_DESC(idx);
+			add_desc(idx);
 	ptr[0] = '\0';
-#undef ADD_FILTER
-#undef ADD_DESC
 }
 
 int create_auoSetup(const char *exePath) {
