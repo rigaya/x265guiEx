@@ -620,14 +620,15 @@ int check_video_ouput(const CONF_GUIEX *conf, const OUTPUT_INFO *oip) {
 	}
 	return VIDEO_OUTPUT_DISABLED;
 }
-
+#pragma warning( push )
+#pragma warning( disable: 4100 )
 int check_muxer_to_be_used(const CONF_GUIEX *conf, int video_output_type, BOOL audio_output) {
 	//if (conf.vid.afs)
 	//	conf.mux.disable_mp4ext = conf.mux.disable_mkvext = FALSE; //afsなら外部muxerを強制する
 
 	//音声なし、afsなしならmuxしない
-	if (!audio_output && !conf->vid.afs)
-		return MUXER_DISABLED;
+	//if (!audio_output && !conf->vid.afs)
+	//	return MUXER_DISABLED;
 
 	if (video_output_type == VIDEO_OUTPUT_MP4 && !conf->mux.disable_mp4ext)
 		return (conf->vid.afs) ? MUXER_TC2MP4 : MUXER_MP4;
@@ -638,7 +639,7 @@ int check_muxer_to_be_used(const CONF_GUIEX *conf, int video_output_type, BOOL a
 	else
 		return MUXER_DISABLED;
 }
-
+#pragma warning( pop )
 AUO_RESULT getLogFilePath(char *log_file_path, size_t nSize, const PRM_ENC *pe, const SYSTEM_DATA *sys_dat, const CONF_GUIEX *conf, const OUTPUT_INFO *oip) {
 	AUO_RESULT ret = AUO_RESULT_SUCCESS;
 	guiEx_settings stg(TRUE); //ログウィンドウの保存先設定は最新のものを使用する
