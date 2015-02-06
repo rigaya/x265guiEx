@@ -492,6 +492,8 @@ namespace x265guiEx {
 				Process^ processAuoSetup = nullptr;
 				try {
 					processAuoSetup = Process::Start(psInfo);
+					char event_name[1024];
+					sprintf_s(event_name, "%s_%d", AUOSETUP_EVENT_ABORT, processAuoSetup->Id);
 					int countGetEvent = 0;
 					try {
 						while (!processAuoSetup->HasExited) {
@@ -499,7 +501,7 @@ namespace x265guiEx {
 							if (NULL == hEventAbort && countGetEvent < 200) {
 								countGetEvent++;
 								Thread::Sleep(100);
-								hEventAbort = OpenEvent(EVENT_ALL_ACCESS, FALSE, AUOSETUP_EVENT_ABORT);
+								hEventAbort = OpenEvent(EVENT_ALL_ACCESS, FALSE, event_name);
 							}
 							mesFunc(processAuoSetup->StandardOutput->ReadLine() + L"\r\n");
 							Thread::Sleep(50);
