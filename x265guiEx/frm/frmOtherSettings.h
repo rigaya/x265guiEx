@@ -193,6 +193,7 @@ private: System::Windows::Forms::CheckBox^  fosCBOutputMoreLog;
 			this->fosCXDefaultOutExt = (gcnew System::Windows::Forms::ComboBox());
 			this->fosLBDefaultOutExt = (gcnew System::Windows::Forms::Label());
 			this->fostabPageGUI = (gcnew System::Windows::Forms::TabPage());
+			this->fosCBOutputMoreLog = (gcnew System::Windows::Forms::CheckBox());
 			this->fosCBWineCompat = (gcnew System::Windows::Forms::CheckBox());
 			this->fosCBGetRelativePath = (gcnew System::Windows::Forms::CheckBox());
 			this->fosBTSetFont = (gcnew System::Windows::Forms::Button());
@@ -225,7 +226,6 @@ private: System::Windows::Forms::CheckBox^  fosCBOutputMoreLog;
 			this->fosLBAMPLimitMarginMin = (gcnew System::Windows::Forms::Label());
 			this->fosTBAMPLimitMarginMulti = (gcnew System::Windows::Forms::TrackBar());
 			this->fosCBAmpKeepOldFile = (gcnew System::Windows::Forms::CheckBox());
-			this->fosCBOutputMoreLog = (gcnew System::Windows::Forms::CheckBox());
 			this->fosTabControl->SuspendLayout();
 			this->fostabPageGeneral->SuspendLayout();
 			this->fostabPageGUI->SuspendLayout();
@@ -347,10 +347,11 @@ private: System::Windows::Forms::CheckBox^  fosCBOutputMoreLog;
 			this->fosCBAutoRefLimitByLevel->AutoSize = true;
 			this->fosCBAutoRefLimitByLevel->Location = System::Drawing::Point(16, 307);
 			this->fosCBAutoRefLimitByLevel->Name = L"fosCBAutoRefLimitByLevel";
-			this->fosCBAutoRefLimitByLevel->Size = System::Drawing::Size(283, 19);
+			this->fosCBAutoRefLimitByLevel->Size = System::Drawing::Size(281, 19);
 			this->fosCBAutoRefLimitByLevel->TabIndex = 19;
-			this->fosCBAutoRefLimitByLevel->Text = L"参照距離をH.264のレベルに応じて自動的に制限する";
+			this->fosCBAutoRefLimitByLevel->Text = L"参照距離をHEVCのレベルに応じて自動的に制限する";
 			this->fosCBAutoRefLimitByLevel->UseVisualStyleBackColor = true;
+			this->fosCBAutoRefLimitByLevel->Visible = false;
 			// 
 			// fosCBChapConvertToUTF8
 			// 
@@ -444,6 +445,16 @@ private: System::Windows::Forms::CheckBox^  fosCBOutputMoreLog;
 			this->fostabPageGUI->TabIndex = 2;
 			this->fostabPageGUI->Text = L"ログ・設定画面";
 			this->fostabPageGUI->UseVisualStyleBackColor = true;
+			// 
+			// fosCBOutputMoreLog
+			// 
+			this->fosCBOutputMoreLog->AutoSize = true;
+			this->fosCBOutputMoreLog->Location = System::Drawing::Point(18, 294);
+			this->fosCBOutputMoreLog->Name = L"fosCBOutputMoreLog";
+			this->fosCBOutputMoreLog->Size = System::Drawing::Size(143, 19);
+			this->fosCBOutputMoreLog->TabIndex = 27;
+			this->fosCBOutputMoreLog->Text = L"音声・muxのログも表示";
+			this->fosCBOutputMoreLog->UseVisualStyleBackColor = true;
 			// 
 			// fosCBWineCompat
 			// 
@@ -778,16 +789,6 @@ private: System::Windows::Forms::CheckBox^  fosCBOutputMoreLog;
 			this->fosCBAmpKeepOldFile->TabIndex = 0;
 			this->fosCBAmpKeepOldFile->Text = L"自動マルチパスで、上限をオーバーしてしまい再エンコードする際に、上限オーバーの動画を削除しない";
 			this->fosCBAmpKeepOldFile->UseVisualStyleBackColor = true;
-			// 
-			// fosCBOutputMoreLog
-			// 
-			this->fosCBOutputMoreLog->AutoSize = true;
-			this->fosCBOutputMoreLog->Location = System::Drawing::Point(18, 294);
-			this->fosCBOutputMoreLog->Name = L"fosCBOutputMoreLog";
-			this->fosCBOutputMoreLog->Size = System::Drawing::Size(143, 19);
-			this->fosCBOutputMoreLog->TabIndex = 27;
-			this->fosCBOutputMoreLog->Text = L"音声・muxのログも表示";
-			this->fosCBOutputMoreLog->UseVisualStyleBackColor = true;
 			// 
 			// frmOtherSettings
 			// 

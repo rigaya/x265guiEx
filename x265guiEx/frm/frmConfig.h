@@ -759,7 +759,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUFrameThreads;
 
 
 private: System::Windows::Forms::Label^  fcgLBThreads;
-private: System::Windows::Forms::NumericUpDown^  fcgNUThreads;
+private: System::Windows::Forms::NumericUpDown^  fcgNUPools;
 private: System::Windows::Forms::ContextMenuStrip^  fcgCSExeFiles;
 private: System::Windows::Forms::ToolStripMenuItem^  fcgTSExeFileshelp;
 private: System::Windows::Forms::NumericUpDown^  fcgNUPsyRDOQ;
@@ -883,7 +883,7 @@ private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 			this->fcgLBFrameThreads = (gcnew System::Windows::Forms::Label());
 			this->fcgNUFrameThreads = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBThreads = (gcnew System::Windows::Forms::Label());
-			this->fcgNUThreads = (gcnew System::Windows::Forms::NumericUpDown());
+			this->fcgNUPools = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgCXInterlaced = (gcnew System::Windows::Forms::ComboBox());
 			this->fcgLBInterlaced = (gcnew System::Windows::Forms::Label());
 			this->fcggroupBoxVUIColor = (gcnew System::Windows::Forms::GroupBox());
@@ -1146,7 +1146,7 @@ private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 			this->fcgtabPageX265Main->SuspendLayout();
 			this->fcggroupBoxThread->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUFrameThreads))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUThreads))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->BeginInit();
 			this->fcggroupBoxVUIColor->SuspendLayout();
 			this->fcggroupBoxSAR->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->BeginInit();
@@ -1255,7 +1255,7 @@ private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 			this->fcggroupBoxThread->Controls->Add(this->fcgLBFrameThreads);
 			this->fcggroupBoxThread->Controls->Add(this->fcgNUFrameThreads);
 			this->fcggroupBoxThread->Controls->Add(this->fcgLBThreads);
-			this->fcggroupBoxThread->Controls->Add(this->fcgNUThreads);
+			this->fcggroupBoxThread->Controls->Add(this->fcgNUPools);
 			this->fcggroupBoxThread->Location = System::Drawing::Point(196, 305);
 			this->fcggroupBoxThread->Name = L"fcggroupBoxThread";
 			this->fcggroupBoxThread->Size = System::Drawing::Size(177, 182);
@@ -1346,14 +1346,14 @@ private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 			this->fcgLBThreads->TabIndex = 0;
 			this->fcgLBThreads->Text = L"スレッド数";
 			// 
-			// fcgNUThreads
+			// fcgNUPools
 			// 
-			this->fcgNUThreads->Location = System::Drawing::Point(95, 19);
-			this->fcgNUThreads->Name = L"fcgNUThreads";
-			this->fcgNUThreads->Size = System::Drawing::Size(64, 21);
-			this->fcgNUThreads->TabIndex = 51;
-			this->fcgNUThreads->Tag = L"reCmd";
-			this->fcgNUThreads->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fcgNUPools->Location = System::Drawing::Point(95, 19);
+			this->fcgNUPools->Name = L"fcgNUPools";
+			this->fcgNUPools->Size = System::Drawing::Size(64, 21);
+			this->fcgNUPools->TabIndex = 51;
+			this->fcgNUPools->Tag = L"reCmd";
+			this->fcgNUPools->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			// 
 			// fcgCXInterlaced
 			// 
@@ -4144,7 +4144,7 @@ private: System::Windows::Forms::Label^  fcgLBDeblockStrength;
 			this->fcggroupBoxThread->ResumeLayout(false);
 			this->fcggroupBoxThread->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUFrameThreads))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUThreads))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->EndInit();
 			this->fcggroupBoxVUIColor->ResumeLayout(false);
 			this->fcggroupBoxVUIColor->PerformLayout();
 			this->fcggroupBoxSAR->ResumeLayout(false);

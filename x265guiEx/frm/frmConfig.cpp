@@ -1407,7 +1407,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fcgNUMERange,          cx265->me_range);
 	SetNUValue(fcgNUMaxMerge,         cx265->max_merge);
 
-	SetNUValue(fcgNUThreads,          cx265->threads);
+	SetNUValue(fcgNUPools,            cx265->pools);
 	SetNUValue(fcgNUFrameThreads,     cx265->frame_threads);
 	fcgCBWpp->Checked               = cx265->wpp != 0;
 	fcgCBPMode->Checked             = cx265->pmode != 0;
@@ -1547,7 +1547,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.me_range             = (int)fcgNUMERange->Value;
 	cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
 	
-	cnf->x265.threads              = (int)fcgNUThreads->Value;
+	cnf->x265.pools                = (int)fcgNUPools->Value;
 	cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
 	cnf->x265.wpp                  = fcgCBWpp->Checked;
 	cnf->x265.pmode                = fcgCBPMode->Checked;
@@ -1855,7 +1855,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
 	fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
 
-	fcgTTX265->SetToolTip(fcgNUThreads,          L"--threads\n"
+	fcgTTX265->SetToolTip(fcgNUPools,            L"--pools\n"
 		+ L"\"0\" で自動です。"
 		);
 	fcgTTX265->SetToolTip(fcgNUFrameThreads,     L"--frame-threads");

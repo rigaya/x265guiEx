@@ -367,7 +367,7 @@ typedef struct CONF_X265 {
 	BOOL    use_tcfilein;
 	BOOL    use_timebase;
 	INT2    timebase;
-	int     threads;
+	int     pools;
 	int     frame_threads;
 	BOOL    wpp;
 	int     ctu;
