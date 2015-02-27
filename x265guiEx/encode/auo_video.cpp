@@ -90,7 +90,7 @@ static int get_frame_num_to_encode(int total_frames, const PRM_ENC *pe) {
 	return total_frames + pe->delay_cut_additional_vframe;
 }
 
-BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL auto_afs_disable) {
+BOOL setup_afsvideo(const OUTPUT_INFO *oip, const SYSTEM_DATA *sys_dat, CONF_GUIEX *conf, PRM_ENC *pe) {
 	//すでに初期化してある または 必要ない
 	if (pe->afs_init || pe->video_out_type == VIDEO_OUTPUT_DISABLED || !conf->vid.afs)
 		return TRUE;
@@ -101,16 +101,16 @@ BOOL setup_afsvideo(const OUTPUT_INFO *oip, CONF_GUIEX *conf, PRM_ENC *pe, BOOL 
 	if (afs_vbuf_setup((OUTPUT_INFO *)oip, conf->vid.afs, frame_size, COLORFORMATS[color_format].FOURCC)) {
 		pe->afs_init = TRUE;
 		return TRUE;
-	} else if (conf->vid.afs && auto_afs_disable) {
+	} else if (conf->vid.afs && sys_dat->exstg->s_local.auto_afs_disable) {
 		afs_vbuf_release(); //一度解放
 		warning_auto_afs_disable();
 		conf->vid.afs = FALSE;
 		//再度使用するmuxerをチェックする
-		pe->muxer_to_be_used = check_muxer_to_be_used(conf, pe->video_out_type, (oip->flag & OUTPUT_INFO_FLAG_AUDIO) != 0);
+		pe->muxer_to_be_used = check_muxer_to_be_used(conf, sys_dat, pe->temp_filename, pe->video_out_type, (oip->flag & OUTPUT_INFO_FLAG_AUDIO) != 0);
 		return TRUE;
 	}
 	//エラー
-	error_afs_setup(conf->vid.afs, auto_afs_disable);
+	error_afs_setup(conf->vid.afs, sys_dat->exstg->s_local.auto_afs_disable);
 	return FALSE;
 }
 
@@ -134,7 +134,7 @@ static AUO_RESULT check_cmdex(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC 
 	if (color_format != get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48)) {
 		//cmdexで入力色形式が変更になる場合、再初期化
 		close_afsvideo(pe);
-		if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
+		if (!setup_afsvideo(oip, sys_dat, conf, pe)) {
 			ret |= AUO_RESULT_ERROR; //Aviutl(afs)からのフレーム読み込みに失敗
 		}
 	}
@@ -744,7 +744,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	}
 	PathGetDirectory(x265dir, _countof(x265dir), x265fullpath);
 
-    //YUY2/YC48->NV12/YUV444, RGBコピー用関数
+	//YUY2/YC48->NV12/YUV444, RGBコピー用関数
 	const int input_csp_idx = get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48);
 	const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x265.bit_depth, conf->x265.interlaced, conf->x265.output_csp);
 	if (convert_frame == NULL) {
@@ -786,7 +786,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 	} else if ((jitter = (int *)calloc(frames_to_enc + 1, sizeof(int))) == NULL) {
 		ret |= AUO_RESULT_ERROR; error_malloc_tc();
 	//Aviutl(afs)からのフレーム読み込み
-	} else if (!setup_afsvideo(oip, conf, pe, sys_dat->exstg->s_local.auto_afs_disable)) {
+	} else if (!setup_afsvideo(oip, sys_dat, conf, pe)) {
 		ret |= AUO_RESULT_ERROR; //Aviutl(afs)からのフレーム読み込みに失敗
 	//x265プロセス開始
 	} else if ((rp_ret = RunProcess(x265args, x265dir, &pi_enc, &pipes, (set_priority == AVIUTLSYNC_PRIORITY_CLASS) ? GetPriorityClass(pe->h_p_aviutl) : set_priority, TRUE, FALSE)) != RP_SUCCESS) {
@@ -1138,9 +1138,6 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
 		if (conf->x265.output_csp == OUT_CSP_NV12) conf->x265.output_csp = OUT_CSP_YV12;
 		if (conf->x265.output_csp == OUT_CSP_NV16) conf->x265.output_csp = OUT_CSP_YUV422;
 	}
-	
-	//一時ファイルの拡張子を変更
-	change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
 
 	for (; !ret && pe->current_pass <= pe->total_pass; pe->current_pass++) {
 		if (conf->x265.use_auto_npass) {
