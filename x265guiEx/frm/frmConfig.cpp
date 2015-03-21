@@ -1394,6 +1394,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fcgNUAQStrength,       cx265->aq_strength);
 	SetNUValue(fcgNUPsyRD,            cx265->psy_rd.x);
 	SetNUValue(fcgNUPsyRDOQ,          cx265->psy_rdoq);
+	SetNUValue(fcgNURdoqLevel,        cx265->rdoq_level);
 	fcgCBCUTree->Checked            = cx265->cutree != 0;
 
 	SetNUValue(fcgNUCtu,              cx265->ctu);
@@ -1534,6 +1535,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
 	cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
 	cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
+	cnf->x265.rdoq_level           = (int)fcgNURdoqLevel->Value;
 	cnf->x265.cutree               = fcgCBCUTree->Checked;
 
 	cnf->x265.ctu                  = (int)fcgNUCtu->Value;
@@ -1842,6 +1844,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fcgTTX265->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
 	fcgTTX265->SetToolTip(fcgNUPsyRD,            L"--psy-rd");
 	fcgTTX265->SetToolTip(fcgNUPsyRDOQ,          L"--psy-rdoq");
+	fcgTTX265->SetToolTip(fcgNURdoqLevel,        L"--rdoq-level");
 	fcgTTX265->SetToolTip(fcgCBCUTree,           L"--cutree");
 
 	fcgTTX265->SetToolTip(fcgNUCtu,              L"--ctu");

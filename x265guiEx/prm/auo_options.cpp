@@ -103,6 +103,8 @@ static X265_OPTIONS x265_options_table[] = {
 	{ "no-psy-rd",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, psy_rd         ) },
 	{ "psy-rdoq",         "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, psy_rdoq       ) },
 	{ "no-psy-rdoq",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, psy_rdoq       ) },
+	{ "rdoq-level",       "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rdoq_level     ) },
+	{ "no-rdoq-level",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, rdoq_level     ) },
 	//{ "psy",              "",   OPTION_TYPE_PSY,           NULL,                 offsetof(CONF_X265, psy_rd         ) },
 	//{ "no-psy",           "",   OPTION_TYPE_BOOL2_REVERSE, NULL,                 offsetof(CONF_X265, psy_rd         ) },
 	{ "scenecut",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, scenecut       ) },

@@ -392,6 +392,7 @@ typedef struct CONF_X265 {
 	BOOL    pmode;
 	BOOL    pme;
 	INT2    deblock;
+	int     rdoq_level;
 } CONF_X265;
 
 typedef struct X265_OPTIONS {
