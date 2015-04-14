@@ -22,17 +22,26 @@ enum {
 	TMP_DIR_CUSTOM = 2,
 };
 
-enum {
-	RUN_BAT_NONE   = 0x00,
-	RUN_BAT_AFTER  = 0x01,
-	RUN_BAT_BEFORE = 0x02,
+enum : DWORD {
+	RUN_BAT_NONE           = 0x00,
+	RUN_BAT_BEFORE_PROCESS = 0x01,
+	RUN_BAT_AFTER_PROCESS  = 0x02,
+	RUN_BAT_BEFORE_AUDIO   = 0x04,
+	RUN_BAT_AFTER_AUDIO    = 0x08,
 };
+
+static inline int get_run_bat_idx(DWORD flag) {
+	DWORD ret;
+	_BitScanForward(&ret, flag);
+	return (int)ret;
+}
 
 static const char *const CONF_NAME_OLD1 = "x265guiEx ConfigFile";
 static const char *const CONF_NAME_OLD2 = "x264/x265guiEx ConfigFile";
 static const char *const CONF_NAME_OLD3 = "x265guiEx ConfigFile v2";
 static const char *const CONF_NAME_OLD4 = "x265guiEx ConfigFile v3";
-static const char *const CONF_NAME      = CONF_NAME_OLD4;
+static const char *const CONF_NAME_OLD5 = "x265guiEx ConfigFile v4";
+static const char *const CONF_NAME      = CONF_NAME_OLD5;
 const int CONF_NAME_BLOCK_LEN          = 32;
 const int CONF_BLOCK_MAX               = 32;
 const int CONF_BLOCK_COUNT             = 5; //最大 CONF_BLOCK_MAXまで
@@ -124,8 +133,15 @@ typedef struct CONF_OTHER {
 	char  notes[128];             //メモ
 	DWORD run_bat;                //バッチファイルを実行するかどうか (RUN_BAT_xxx)
 	DWORD dont_wait_bat_fin;      //バッチファイルの処理終了待機をするかどうか (RUN_BAT_xxx)
-	char  batfile_after[MAX_PATH_LEN];   //エンコ後バッチファイルのパス
-	char  batfile_before[MAX_PATH_LEN];  //エンコ前バッチファイルのパス
+	union {
+		char batfiles[4][512];        //バッチファイルのパス
+		struct {
+			char before_process[512]; //エンコ前バッチファイルのパス
+			char after_process[512];  //エンコ後バッチファイルのパス
+			char before_audio[512];   //音声エンコ前バッチファイルのパス
+			char after_audio[512];    //音声エンコ後バッチファイルのパス
+		} batfile;
+	};
 } CONF_OTHER;
 
 typedef struct CONF_GUIEX {
@@ -146,8 +162,9 @@ class guiEx_config {
 private:
 	static const size_t conf_block_pointer[CONF_BLOCK_COUNT];
 	static const int conf_block_data[CONF_BLOCK_COUNT];
-	static void convert_x26xstg_to_x265stgv3(CONF_GUIEX *conf, const void *dat);
-	static void convert_x265stgv2_to_x265stgv3(CONF_GUIEX *conf);
+	static void convert_x26xstg_to_x265stgv4(CONF_GUIEX *conf, const void *dat);
+	static void convert_x265stgv2_to_x265stgv4(CONF_GUIEX *conf);
+	static void convert_x265stgv3_to_x265stgv4(CONF_GUIEX *conf);
 public:
 	guiEx_config();
 	static void write_conf_header(CONF_GUIEX *conf);
