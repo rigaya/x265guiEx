@@ -433,11 +433,13 @@ static int read_log_enc_stdout(PIPE_SET *pipes, int total_drop, int current_fram
 }
 
 static int read_log_enc_all(PIPE_SET *pipes, int total_drop, int current_frames) {
-	int pipe_read_total = 0;
-	for (int pipe_read = 0; 0 < (pipe_read = read_log_enc_stderr(pipes, total_drop, current_frames));)
+	int pipe_read, pipe_read_total = 0;
+	while (0 < (pipe_read = read_log_enc_stderr(pipes, total_drop, current_frames)))
 		pipe_read_total += pipe_read;
-	for (int pipe_read = 0; 0 < (pipe_read = read_log_enc_stdout(pipes, total_drop, current_frames));)
+	pipe_read_total += pipe_read;
+	while (0 < (pipe_read = read_log_enc_stdout(pipes, total_drop, current_frames)))
 		pipe_read_total += pipe_read;
+	pipe_read_total += pipe_read;
 	return pipe_read_total;
 }
 
