@@ -192,6 +192,8 @@ const X265_OPTION_STR list_transfer[] = {
 	{ "iec61966-2-1", L"iec61966-2-1" },
 	{ "bt2020-10",    L"bt2020-10"    },
 	{ "bt2020-12",    L"bt2020-12"    },
+	{ "smpte-st-2084",L"smpte-st-2084"},
+	{ "smpte-st-428", L"smpte-st-428" },
 	{ NULL, NULL }
 };
 const X265_OPTION_STR list_range[] = {
