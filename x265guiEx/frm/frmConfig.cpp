@@ -1402,6 +1402,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 	SetNUValue(fcgNUPsyRDOQ,          cx265->psy_rdoq);
 	SetNUValue(fcgNURdoqLevel,        cx265->rdoq_level);
 	fcgCBCUTree->Checked            = cx265->cutree != 0;
+	SetNUValue(fcgNUQGSize,           cx265->qg_size);
 
 	SetNUValue(fcgNUCtu,              cx265->ctu);
 	SetNUValue(fcgNUTuIntraDepth,     cx265->tu_intra_depth);
@@ -1547,6 +1548,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 	cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
 	cnf->x265.rdoq_level           = (int)fcgNURdoqLevel->Value;
 	cnf->x265.cutree               = fcgCBCUTree->Checked;
+	cnf->x265.qg_size              = (int)fcgNUQGSize->Value;
 
 	cnf->x265.ctu                  = (int)fcgNUCtu->Value;
 	cnf->x265.tu_intra_depth       = (int)fcgNUTuIntraDepth->Value;
@@ -1860,6 +1862,7 @@ System::Void frmConfig::SetHelpToolTips() {
 	fcgTTX265->SetToolTip(fcgNUPsyRDOQ,          L"--psy-rdoq");
 	fcgTTX265->SetToolTip(fcgNURdoqLevel,        L"--rdoq-level");
 	fcgTTX265->SetToolTip(fcgCBCUTree,           L"--cutree");
+	fcgTTX265->SetToolTip(fcgNUQGSize,           L"--qg-size");
 
 	fcgTTX265->SetToolTip(fcgNUCtu,              L"--ctu");
 	fcgTTX265->SetToolTip(fcgNUTuIntraDepth,     L"--tu-intra-depth");

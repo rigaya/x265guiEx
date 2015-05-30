@@ -183,6 +183,7 @@ static X265_OPTIONS x265_options_table[] = {
 	//{ "pic-struct",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pic_struct     ) },
 	//{ "nal-hrd",          "",   OPTION_TYPE_LIST,          list_nal_hrd,         offsetof(CONF_X265, nal_hrd        ) },
 	//{ "bluray-compat",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, bluray_compat  ) },
+	{ "qg-size",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qg_size          ) },
 	{ "pools",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, pools          ) },
 	{ "frame-threads",   "F",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, frame_threads  ) },
 	//{ "lookahead-threads","",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, lookahead_threads) },

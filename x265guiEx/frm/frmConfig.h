@@ -824,6 +824,8 @@ private: System::Windows::Forms::Label^  fcgLBBatBeforeAudioPath;
 private: System::Windows::Forms::CheckBox^  fcgCBRunBatBeforeAudio;
 private: System::Windows::Forms::ComboBox^  fcgCXAudioPriority;
 private: System::Windows::Forms::Label^  fcgLBAudioPriority;
+private: System::Windows::Forms::Label^  fcgLBQGSize;
+private: System::Windows::Forms::NumericUpDown^  fcgNUQGSize;
 
 
 
@@ -987,6 +989,8 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			this->fcgTXX265Path = (gcnew System::Windows::Forms::TextBox());
 			this->fcgLBX265Path = (gcnew System::Windows::Forms::Label());
 			this->fcgtabPageX265Other = (gcnew System::Windows::Forms::TabPage());
+			this->fcgLBQGSize = (gcnew System::Windows::Forms::Label());
+			this->fcgNUQGSize = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgNURdoqLevel = (gcnew System::Windows::Forms::NumericUpDown());
 			this->fcgLBRdoqLevel = (gcnew System::Windows::Forms::Label());
 			this->fcgCBDeblock = (gcnew System::Windows::Forms::CheckBox());
@@ -1221,6 +1225,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAutoNPass))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->BeginInit();
 			this->fcgtabPageX265Other->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQGSize))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURdoqLevel))->BeginInit();
 			this->fcggroupBoxDeblock->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockThreshold))->BeginInit();
@@ -2072,6 +2077,8 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			// fcgtabPageX265Other
 			// 
+			this->fcgtabPageX265Other->Controls->Add(this->fcgLBQGSize);
+			this->fcgtabPageX265Other->Controls->Add(this->fcgNUQGSize);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgNURdoqLevel);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgLBRdoqLevel);
 			this->fcgtabPageX265Other->Controls->Add(this->fcgCBDeblock);
@@ -2100,9 +2107,31 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			this->fcgtabPageX265Other->Text = L"x265 (2)";
 			this->fcgtabPageX265Other->UseVisualStyleBackColor = true;
 			// 
+			// fcgLBQGSize
+			// 
+			this->fcgLBQGSize->AutoSize = true;
+			this->fcgLBQGSize->Location = System::Drawing::Point(13, 447);
+			this->fcgLBQGSize->Name = L"fcgLBQGSize";
+			this->fcgLBQGSize->Size = System::Drawing::Size(96, 14);
+			this->fcgLBQGSize->TabIndex = 111;
+			this->fcgLBQGSize->Text = L"量子化ブロックサイズ";
+			// 
+			// fcgNUQGSize
+			// 
+			this->fcgNUQGSize->Location = System::Drawing::Point(114, 445);
+			this->fcgNUQGSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
+			this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
+			this->fcgNUQGSize->Name = L"fcgNUQGSize";
+			this->fcgNUQGSize->Size = System::Drawing::Size(64, 21);
+			this->fcgNUQGSize->TabIndex = 110;
+			this->fcgNUQGSize->Tag = L"reCmd";
+			this->fcgNUQGSize->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->fcgNUQGSize->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
+			this->fcgNUQGSize->ValueChanged += gcnew System::EventHandler(this, &frmConfig::fcgNUCtu_ValueChanged);
+			// 
 			// fcgNURdoqLevel
 			// 
-			this->fcgNURdoqLevel->Location = System::Drawing::Point(330, 413);
+			this->fcgNURdoqLevel->Location = System::Drawing::Point(332, 413);
 			this->fcgNURdoqLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
 			this->fcgNURdoqLevel->Name = L"fcgNURdoqLevel";
 			this->fcgNURdoqLevel->Size = System::Drawing::Size(50, 21);
@@ -2113,7 +2142,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// fcgLBRdoqLevel
 			// 
 			this->fcgLBRdoqLevel->AutoSize = true;
-			this->fcgLBRdoqLevel->Location = System::Drawing::Point(224, 415);
+			this->fcgLBRdoqLevel->Location = System::Drawing::Point(230, 415);
 			this->fcgLBRdoqLevel->Name = L"fcgLBRdoqLevel";
 			this->fcgLBRdoqLevel->Size = System::Drawing::Size(62, 14);
 			this->fcgLBRdoqLevel->TabIndex = 109;
@@ -2186,7 +2215,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			this->fcgNUPsyRDOQ->DecimalPlaces = 2;
 			this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(316, 381);
+			this->fcgNUPsyRDOQ->Location = System::Drawing::Point(318, 381);
 			this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
 			this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
 			this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
@@ -2197,7 +2226,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// fcgLBPsyRDOQ
 			// 
 			this->fcgLBPsyRDOQ->AutoSize = true;
-			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(224, 383);
+			this->fcgLBPsyRDOQ->Location = System::Drawing::Point(230, 383);
 			this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
 			this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
 			this->fcgLBPsyRDOQ->TabIndex = 105;
@@ -2207,7 +2236,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			this->fcgNUPsyRD->DecimalPlaces = 2;
 			this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUPsyRD->Location = System::Drawing::Point(316, 351);
+			this->fcgNUPsyRD->Location = System::Drawing::Point(318, 351);
 			this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
 			this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
 			this->fcgNUPsyRD->Size = System::Drawing::Size(64, 21);
@@ -2218,7 +2247,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// fcgLBPsyRD
 			// 
 			this->fcgLBPsyRD->AutoSize = true;
-			this->fcgLBPsyRD->Location = System::Drawing::Point(224, 353);
+			this->fcgLBPsyRD->Location = System::Drawing::Point(230, 353);
 			this->fcgLBPsyRD->Name = L"fcgLBPsyRD";
 			this->fcgLBPsyRD->Size = System::Drawing::Size(42, 14);
 			this->fcgLBPsyRD->TabIndex = 103;
@@ -2472,7 +2501,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// fcgCBCUTree
 			// 
 			this->fcgCBCUTree->AutoSize = true;
-			this->fcgCBCUTree->Location = System::Drawing::Point(102, 417);
+			this->fcgCBCUTree->Location = System::Drawing::Point(114, 417);
 			this->fcgCBCUTree->Name = L"fcgCBCUTree";
 			this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
 			this->fcgCBCUTree->TabIndex = 45;
@@ -2490,7 +2519,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			// fcgNURD
 			// 
-			this->fcgNURD->Location = System::Drawing::Point(330, 452);
+			this->fcgNURD->Location = System::Drawing::Point(332, 452);
 			this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
 			this->fcgNURD->Name = L"fcgNURD";
 			this->fcgNURD->Size = System::Drawing::Size(50, 21);
@@ -2502,7 +2531,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			this->fcgNUAQStrength->DecimalPlaces = 2;
 			this->fcgNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-			this->fcgNUAQStrength->Location = System::Drawing::Point(101, 381);
+			this->fcgNUAQStrength->Location = System::Drawing::Point(114, 381);
 			this->fcgNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
 			this->fcgNUAQStrength->Name = L"fcgNUAQStrength";
 			this->fcgNUAQStrength->Size = System::Drawing::Size(64, 21);
@@ -2523,7 +2552,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// 
 			this->fcgCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->fcgCXAQMode->FormattingEnabled = true;
-			this->fcgCXAQMode->Location = System::Drawing::Point(101, 350);
+			this->fcgCXAQMode->Location = System::Drawing::Point(114, 350);
 			this->fcgCXAQMode->Name = L"fcgCXAQMode";
 			this->fcgCXAQMode->Size = System::Drawing::Size(82, 22);
 			this->fcgCXAQMode->TabIndex = 40;
@@ -2541,7 +2570,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			// fcgLBRD
 			// 
 			this->fcgLBRD->AutoSize = true;
-			this->fcgLBRD->Location = System::Drawing::Point(224, 454);
+			this->fcgLBRD->Location = System::Drawing::Point(230, 454);
 			this->fcgLBRD->Name = L"fcgLBRD";
 			this->fcgLBRD->Size = System::Drawing::Size(86, 14);
 			this->fcgLBRD->TabIndex = 94;
@@ -4412,6 +4441,7 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->EndInit();
 			this->fcgtabPageX265Other->ResumeLayout(false);
 			this->fcgtabPageX265Other->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQGSize))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURdoqLevel))->EndInit();
 			this->fcggroupBoxDeblock->ResumeLayout(false);
 			this->fcggroupBoxDeblock->PerformLayout();
@@ -5191,27 +5221,30 @@ private: System::Windows::Forms::Label^  fcgLBAudioPriority;
 		}
 	private:
 		System::Void fcgNUCtu_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-			int current_value = (int)fcgNUCtu->Value;
-			int max_ctu_size = (int)fcgNUCtu->Maximum;
-			int increment = (int)fcgNUCtu->Increment;
-			
-			int value_to_set = 0;
-			for (int i = 0, pow2i = 1; 0==value_to_set && pow2i <= max_ctu_size; i++) {
-				if (current_value == pow2i)             value_to_set = pow2i;
-				if (current_value == pow2i - increment) value_to_set = max(pow2i / 2, (int)fcgNUCtu->Minimum);
-				if (current_value == pow2i + increment) value_to_set = min(pow2i * 2, (int)fcgNUCtu->Maximum);
-				pow2i *= 2;
-			}
-			if (0 == value_to_set) {
+			NumericUpDown^ senderNU = dynamic_cast<NumericUpDown^>(sender);
+			if (senderNU != nullptr) {
+				int current_value = (int)senderNU->Value;
+				int max_ctu_size = (int)senderNU->Maximum;
+				int increment = (int)senderNU->Increment;
+
+				int value_to_set = 0;
 				for (int i = 0, pow2i = 1; 0==value_to_set && pow2i <= max_ctu_size; i++) {
-					if (current_value < pow2i) {
-						value_to_set = clamp(pow2i, (int)fcgNUCtu->Minimum, (int)fcgNUCtu->Maximum);
-						break;
-					}
+					if (current_value == pow2i)             value_to_set = pow2i;
+					if (current_value == pow2i - increment) value_to_set = max(pow2i / 2, (int)senderNU->Minimum);
+					if (current_value == pow2i + increment) value_to_set = min(pow2i * 2, (int)senderNU->Maximum);
 					pow2i *= 2;
 				}
+				if (0 == value_to_set) {
+					for (int i = 0, pow2i = 1; 0==value_to_set && pow2i <= max_ctu_size; i++) {
+						if (current_value < pow2i) {
+							value_to_set = clamp(pow2i, (int)senderNU->Minimum, (int)senderNU->Maximum);
+							break;
+						}
+						pow2i *= 2;
+					}
+				}
+				SetNUValue(senderNU, value_to_set);
 			}
-			SetNUValue(fcgNUCtu, value_to_set);
 		}
 };
 }
