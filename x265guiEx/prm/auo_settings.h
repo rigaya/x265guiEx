@@ -152,6 +152,7 @@ typedef struct AUDIO_ENC_MODE {
 	int delay;           //エンコード遅延 (音声が映像に対し遅れるsample数)
 	int enc_2pass;       //2passエンコを行う
 	int use_8bit;        //8bitwavを入力する
+	int use_remuxer;     //remuxerが必要
 	char *disp_list;     //表示名のリスト
 	char *cmd_list;      //コマンドラインのリスト
 } AUDIO_ENC_MODE;
@@ -164,7 +165,6 @@ typedef struct AUDIO_SETTINGS {
 	char *aud_appendix;          //作成する音声ファイル名に追加する文字列
 	char *raw_appendix;          //作成する音声ファイル名に追加する文字列 (raw出力時)
 	int pipe_input;              //パイプ入力が可能
-	int use_remuxer;             //remuxerが必要
 	DWORD disable_log;           //ログ表示を禁止 (DISABLE_LOG_xxx)
 	char *cmd_base;              //1st pass用コマンドライン
 	char *cmd_2pass;             //2nd pass用コマンドライン
