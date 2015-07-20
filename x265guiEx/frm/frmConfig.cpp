@@ -210,7 +210,6 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
     guiEx_settings stg;
     stg.load_encode_stg();
     LocalStg.x265Path        = String(stg.s_x265.fullpath).ToString();
-    LocalStg.x265Pathhighbit = String(stg.s_x265.fullpath_highbit).ToString();
     LocalStg.MP4MuxerPath    = String(stg.s_mux[MUXER_MP4].fullpath).ToString();
     LocalStg.TC2MP4Path      = String(stg.s_mux[MUXER_TC2MP4].fullpath).ToString();
     LocalStg.MP4RawPath      = String(stg.s_mux[MUXER_MP4_RAW].fullpath).ToString();
@@ -246,7 +245,6 @@ System::Void frmConfig::LoadLocalStg() {
     _ex_stg->load_encode_stg();
     LocalStg.x265ExeName     = String(_ex_stg->s_x265.filename).ToString();
     LocalStg.x265Path        = String(_ex_stg->s_x265.fullpath).ToString();
-    LocalStg.x265Pathhighbit = String(_ex_stg->s_x265.fullpath_highbit).ToString();
     LocalStg.CustomTmpDir    = String(_ex_stg->s_local.custom_tmp_dir).ToString();
     LocalStg.CustomAudTmpDir = String(_ex_stg->s_local.custom_audio_tmp_dir).ToString();
     LocalStg.CustomMP4TmpDir = String(_ex_stg->s_local.custom_mp4box_tmp_dir).ToString();
@@ -279,7 +277,6 @@ System::Boolean frmConfig::CheckLocalStg() {
     bool error = false;
     String^ err = "";
     //x265のチェック
-    bool CheckX265highbit;
     if (fcgTSBCMDOnly->Checked) {
         //CLIモードの時はコマンドラインを解析してhighbitかどうか判定
         CONF_GUIEX cnf;
@@ -287,17 +284,10 @@ System::Boolean frmConfig::CheckLocalStg() {
         char cmdex[2048] = { 0 };
         GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
         set_cmd_to_conf(cmdex, &cnf.x265);
-        CheckX265highbit = 8 < cnf.x265.bit_depth;
-    } else {
-        CheckX265highbit = fcgCBUsehighbit->Checked;
     }
-    if (!CheckX265highbit && !File::Exists(LocalStg.x265Path)) {
+    if (!File::Exists(LocalStg.x265Path)) {
         error = true;
         err += L"指定された x265 は存在しません。\n [ " + LocalStg.x265Path + L" ]\n";
-    }
-    if (CheckX265highbit && !File::Exists(LocalStg.x265Pathhighbit)) {
-        error = true;
-        err += L"指定された x265 (highbit用) は存在しません。\n [ " + LocalStg.x265Pathhighbit + L" ]\n";
     }
     //音声エンコーダのチェック (実行ファイル名がない場合はチェックしない)
     if (LocalStg.audEncExeName[fcgCXAudioEncoder->SelectedIndex]->Length) {
@@ -348,7 +338,6 @@ System::Void frmConfig::SaveLocalStg() {
     _ex_stg->load_encode_stg();
     _ex_stg->s_local.large_cmdbox = fcgTXCmd->Multiline;
     GetCHARfromString(_ex_stg->s_x265.fullpath,               sizeof(_ex_stg->s_x265.fullpath),               LocalStg.x265Path);
-    GetCHARfromString(_ex_stg->s_x265.fullpath_highbit,       sizeof(_ex_stg->s_x265.fullpath_highbit),       LocalStg.x265Pathhighbit);
     GetCHARfromString(_ex_stg->s_local.custom_tmp_dir,        sizeof(_ex_stg->s_local.custom_tmp_dir),        LocalStg.CustomTmpDir);
     GetCHARfromString(_ex_stg->s_local.custom_mp4box_tmp_dir, sizeof(_ex_stg->s_local.custom_mp4box_tmp_dir), LocalStg.CustomMP4TmpDir);
     GetCHARfromString(_ex_stg->s_local.custom_audio_tmp_dir,  sizeof(_ex_stg->s_local.custom_audio_tmp_dir),  LocalStg.CustomAudTmpDir);
@@ -367,9 +356,8 @@ System::Void frmConfig::SaveLocalStg() {
 System::Void frmConfig::SetLocalStg() {
     fcgLBX265Path->Text           = L"x265.exe の指定";
     fcgLBX265PathSub->Text        = L"x265.exe の指定";
-    fcgTXX265Path->Text           = (fcgCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
+    fcgTXX265Path->Text           = LocalStg.x265Path;
     fcgTXX265PathSub->Text        = LocalStg.x265Path;
-    fcgTXX265PathSubhighbit->Text = LocalStg.x265Pathhighbit;
 
     fcgTXMP4MuxerPath->Text       = LocalStg.MP4MuxerPath;
     fcgTXMKVMuxerPath->Text       = LocalStg.MKVMuxerPath;
@@ -387,7 +375,6 @@ System::Void frmConfig::SetLocalStg() {
 
     fcgTXX265Path->SelectionStart           = fcgTXX265Path->Text->Length;
     fcgTXX265PathSub->SelectionStart        = fcgTXX265PathSub->Text->Length;
-    fcgTXX265PathSubhighbit->SelectionStart = fcgTXX265PathSubhighbit->Text->Length;
     fcgTXMP4MuxerPath->SelectionStart       = fcgTXMP4MuxerPath->Text->Length;
     fcgTXTC2MP4Path->SelectionStart         = fcgTXTC2MP4Path->Text->Length;
     fcgTXMKVMuxerPath->SelectionStart       = fcgTXMKVMuxerPath->Text->Length;
@@ -481,10 +468,10 @@ System::Void frmConfig::fcgCBUsehighbit_CheckedChanged(System::Object^  sender, 
     //一度ウィンドウの再描画を完全に抑止する
     SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 0, 0);
     fcgCXX265Mode_SelectedIndexChanged(sender, e);
-    fcgTXX265Path->Text = (fcgCBUsehighbit->Checked) ? LocalStg.x265Pathhighbit : LocalStg.x265Path;
+    fcgTXX265Path->Text = LocalStg.x265Path;
     fcgTXX265Path->SelectionStart = fcgTXX265Path->Text->Length;
-    fcgLBX265Path->Text = (fcgCBUsehighbit->Checked) ? L"x265.exe(highbit) の指定" : L"x265.exe の指定";
-    SetX265VersionToolTip(fcgTXX265Path->Text, fcgCBUsehighbit->Checked);
+    fcgLBX265Path->Text = L"x265.exe の指定";
+    SetX265VersionToolTip(fcgTXX265Path->Text);
     //一度ウィンドウの再描画を再開し、強制的に再描画させる
     SendMessage(reinterpret_cast<HWND>(this->Handle.ToPointer()), WM_SETREDRAW, 1, 0);
     this->Refresh();
@@ -609,13 +596,13 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
             fcgLBQuality->Text = L"品質(Quality)";
             fcgLBQualityLeft->Text = L"高品質";
             fcgLBQualityRight->Text = L"低品質";
-            fcgTBQuality->Minimum = (fcgCBUsehighbit->Checked) ? -12*2 : 0;
+            fcgTBQuality->Minimum = (get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8) ? -12*2 : 0;
             fcgTBQuality->Maximum = 51*2;
             fcgCBNulOut->Enabled = false; //Enabledの変更が先
             fcgCBNulOut->Checked = false;
             fcgCBFastFirstPass->Enabled = false; //Enabledの変更が先
             fcgCBFastFirstPass->Checked = false;
-            fcgTXQuality->Text = Convert::ToString(clamp(cnf_fcgTemp->crf / 100.0, (fcgCBUsehighbit->Checked) ? -12 : 0, 51));
+            fcgTXQuality->Text = Convert::ToString(clamp(cnf_fcgTemp->crf / 100.0, (get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8) ? -12 : 0, 51));
             SetfbcBTVBEnable(false);
             break;
     }
@@ -986,7 +973,7 @@ System::Void frmConfig::SaveToStgFile(String^ stgName) {
     size_t nameLen = CountStringBytes(stgName) + 1; 
     char *stg_name = (char *)malloc(nameLen);
     GetCHARfromString(stg_name, nameLen, stgName);
-    init_CONF_GUIEX(cnf_stgSelected, fcgCBUsehighbit->Checked);
+    init_CONF_GUIEX(cnf_stgSelected, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
     FrmToConf(cnf_stgSelected);
     String^ stgDir = Path::GetDirectoryName(stgName);
     if (!Directory::Exists(stgDir))
@@ -1004,7 +991,7 @@ System::Void frmConfig::SaveToStgFile(String^ stgName) {
         default:
             break;
     }
-    init_CONF_GUIEX(cnf_stgSelected, fcgCBUsehighbit->Checked);
+    init_CONF_GUIEX(cnf_stgSelected, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
     FrmToConf(cnf_stgSelected);
 }
 
@@ -1109,6 +1096,7 @@ System::Void frmConfig::InitComboBox() {
     setComboBox(fcgCXTempDir,        tempdir_desc);
     
     //x265
+    setComboBox(fcgCXBitDepth,       bit_depth_desc);
     setComboBox(fcgCXCSP,            list_output_csp_x265);
     setComboBox(fcgCXAQMode,         list_aq);
     setComboBox(fcgCXAspectRatio,    aspect_desc);
@@ -1151,7 +1139,6 @@ System::Void frmConfig::SetTXMaxLenAll() {
     SetTXMaxLen(fcgTXCmdEx,                sizeof(conf->vid.cmdex) - 1);
     SetTXMaxLen(fcgTXX265Path,             sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
     SetTXMaxLen(fcgTXX265PathSub,          sizeof(sys_dat->exstg->s_x265.fullpath) - 1);
-    SetTXMaxLen(fcgTXX265PathSubhighbit,   sizeof(sys_dat->exstg->s_x265.fullpath_highbit) - 1);
     SetTXMaxLen(fcgTXAudioEncoderPath,     sizeof(sys_dat->exstg->s_aud[0].fullpath) - 1);
     SetTXMaxLen(fcgTXMP4MuxerPath,         sizeof(sys_dat->exstg->s_mux[MUXER_MP4].fullpath) - 1);
     SetTXMaxLen(fcgTXMKVMuxerPath,         sizeof(sys_dat->exstg->s_mux[MUXER_MKV].fullpath) - 1);
@@ -1178,14 +1165,10 @@ System::Void frmConfig::InitStgFileList() {
 
 System::Void frmConfig::fcgChangeEnabled(System::Object^  sender, System::EventArgs^  e) {
     fcgLBX265PathSub->Visible = fcgTSBCMDOnly->Checked;
-    fcgLBX265PathSub8bit->Visible = fcgTSBCMDOnly->Checked;
-    fcgLBX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
     fcgTXX265PathSub->Visible = fcgTSBCMDOnly->Checked;
     fcgBTX265PathSub->Visible = fcgTSBCMDOnly->Checked;
-    fcgTXX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-    fcgBTX265PathSubhighbit->Visible = fcgTSBCMDOnly->Checked;
-    fcgBTCmdEx->Visible = !fcgTSBCMDOnly->Checked;
-    fcgCBNulOutCLI->Visible = fcgTSBCMDOnly->Checked;
+    fcgBTCmdEx->Visible       = !fcgTSBCMDOnly->Checked;
+    fcgCBNulOutCLI->Visible   = fcgTSBCMDOnly->Checked;
 }
 
 System::Void frmConfig::fcgChangeMuxerVisible(System::Object^  sender, System::EventArgs^  e) {
@@ -1299,8 +1282,7 @@ System::Void frmConfig::InitForm() {
     InitTimer();
     //ツールチップ
     SetHelpToolTips();
-    SetX265VersionToolTip(LocalStg.x265Path, false);
-    SetX265VersionToolTip(LocalStg.x265Pathhighbit, true);
+    SetX265VersionToolTip(LocalStg.x265Path);
     ActivateToolTip(sys_dat->exstg->s_local.disable_tooltip_help == FALSE);
     //パラメータセット
     ConfToFrm(conf, true);
@@ -1332,7 +1314,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     //x265
     CONF_X265 *cx265 = &cnf->x265;
     memcpy(cnf_fcgTemp, cx265, sizeof(CONF_X265)); //一時保存用
-    fcgCBUsehighbit->Checked = 8 < cx265->bit_depth;
+    fcgCXBitDepth->SelectedIndex = get_bit_depth_idx(cx265->bit_depth);
     switch (cx265->rc_mode) {
         case X265_RC_QP:
             fcgCXX265Mode->SelectedIndex = 1;
@@ -1494,7 +1476,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     //これもひたすら書くだけ。めんどい
     //x265
-    cnf->x265.bit_depth            = fcgCBUsehighbit->Checked ? 16 : 8;
+	cnf->x265.bit_depth            = get_bit_depth(fcgCXBitDepth->SelectedIndex);
     cnf->x265.rc_mode              = cnf_fcgTemp->rc_mode;
     cnf->x265.bitrate              = cnf_fcgTemp->bitrate;
     cnf->x265.qp                   = cnf_fcgTemp->qp;
@@ -1718,18 +1700,6 @@ System::Void frmConfig::SetHelpToolTipsColorMatrixX265(Control^ control, const c
 
 System::Void frmConfig::SetHelpToolTips() {
     //x265
-    fcgTTX265->SetToolTip(fcgCBUsehighbit, L"" 
-        + L"--input-depth 16\n"
-        + L"\n"
-        + L"high bit-depthでエンコードを行います。\n"
-        + L"x265もhigh bit depthのものを使用してください。\n"
-        + L"通常のプレーヤーでは再生できないこともあるため、\n"
-        + L"high bit depthエンコードがなにかを理解している場合にのみ、\n"
-        + L"使用してください。\n"
-        + L"\n"
-        + L"8bit用x265.exeとhigh bit depth用x265.exeは別々に設定でき、\n"
-        + L"このチェックボックスによって切り替わります。"
-        );
     fcgTTX265->SetToolTip(fcgBTX265Path, L""
         + L"x265.exeの場所を指定します。\n"
         + L"\n"
@@ -1738,12 +1708,6 @@ System::Void frmConfig::SetHelpToolTips() {
         );
     fcgTTX265->SetToolTip(fcgBTX265PathSub, L""
         + L"x265.exeの場所を指定します。\n"
-        + L"\n"
-        + L"この設定はx265guiEx.confに保存され、\n"
-        + L"バッチ処理ごとの変更はできません。"
-        );
-    fcgTTX265->SetToolTip(fcgBTX265PathSubhighbit, L""
-        + L"x265.exe(high bit depth用)の場所を指定します。\n"
         + L"\n"
         + L"この設定はx265guiEx.confに保存され、\n"
         + L"バッチ処理ごとの変更はできません。"
@@ -1832,6 +1796,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgCXInterlaced,       L"--interlace");
     fcgTTX265->SetToolTip(fcgCXVideoFormat,      L"--videoformat");
 
+	fcgTTX265->SetToolTip(fcgCXBitDepth,         L"--input-depth / --output-depth");
     fcgTTX265->SetToolTip(fcgCXCSP,              L"--input-csp\n"
         + L"通常は i420 を使用します。"
         );
@@ -2162,7 +2127,7 @@ System::Void frmConfig::SetHelpToolTips() {
         + L"デフォルト設定をロードします。"
         );
 }
-System::Void frmConfig::SetX265VersionToolTip(String^ x265Path, bool ashighbit) {
+System::Void frmConfig::SetX265VersionToolTip(String^ x265Path) {
     String^ mes;
     if (File::Exists(x265Path)) {
         char mes_buf[2560];
@@ -2175,10 +2140,8 @@ System::Void frmConfig::SetX265VersionToolTip(String^ x265Path, bool ashighbit) 
     } else {
         mes = L"指定されたx265が存在しません。";
     }
-    if (ashighbit == fcgCBUsehighbit->Checked)
-        fcgTTX265Version->SetToolTip(fcgTXX265Path, mes);
-
-    fcgTTX265Version->SetToolTip((ashighbit) ? fcgTXX265PathSubhighbit : fcgTXX265PathSub, mes);
+    fcgTTX265Version->SetToolTip(fcgTXX265Path, mes);
+    fcgTTX265Version->SetToolTip(fcgTXX265PathSub, mes);
 }
 System::Void frmConfig::ShowExehelp(String^ ExePath, String^ args) {
     if (!File::Exists(ExePath)) {

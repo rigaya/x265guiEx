@@ -79,7 +79,6 @@ namespace x265guiEx {
     public:
         String^ x265ExeName;
         String^ x265Path;
-        String^ x265Pathhighbit;
         List<String^>^ audEncName;
         List<String^>^ audEncExeName;
         List<String^>^ audEncPath;
@@ -765,6 +764,30 @@ const WCHAR * const audio_delay_cut_desc[] = {
     L"映像追加",
     NULL
 };
+
+const WCHAR * const bit_depth_desc[] ={
+	L"8bit",
+	L"10bit",
+	L"12bit",
+	NULL
+};
+static int get_bit_depth(const WCHAR *str) {
+	if (0 == wcscmp(str, bit_depth_desc[0])) return 8;
+	if (0 == wcscmp(str, bit_depth_desc[1])) return 10;
+	if (0 == wcscmp(str, bit_depth_desc[2])) return 12;
+	return 8;
+}
+static int get_bit_depth(int index) {
+	return get_bit_depth(bit_depth_desc[index]);
+}
+static int get_bit_depth_idx(int bit_depth) {
+	switch (bit_depth) {
+	case 10: return 1;
+	case 12: return 2;
+	case 8:
+	default: return 0;
+	}
+}
 
 //メモ表示用 RGB
 const int StgNotesColor[][3] = {

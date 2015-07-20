@@ -725,7 +725,6 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
     char x265cmd[MAX_CMD_LEN]  = { 0 };
     char x265args[MAX_CMD_LEN] = { 0 };
     char x265dir[MAX_PATH_LEN] = { 0 };
-    char *x265fullpath = (8 < conf->x265.bit_depth) ? sys_dat->exstg->s_x265.fullpath_highbit : sys_dat->exstg->s_x265.fullpath;
     
     const BOOL afs = conf->vid.afs != 0;
     CONVERT_CF_DATA pixel_data = { 0 };
@@ -740,15 +739,15 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
     DWORD set_priority = (pe->h_p_aviutl || conf->vid.priority != AVIUTLSYNC_PRIORITY_CLASS) ? priority_table[conf->vid.priority].value : NORMAL_PRIORITY_CLASS;
 
     //プロセス用情報準備
-    if (!PathFileExists(x265fullpath)) {
-        ret |= AUO_RESULT_ERROR; error_no_exe_file("x265", x265fullpath);
+    if (!PathFileExists(sys_dat->exstg->s_x265.fullpath)) {
+        ret |= AUO_RESULT_ERROR; error_no_exe_file("x265", sys_dat->exstg->s_x265.fullpath);
         return ret;
     }
-    PathGetDirectory(x265dir, _countof(x265dir), x265fullpath);
+    PathGetDirectory(x265dir, _countof(x265dir), sys_dat->exstg->s_x265.fullpath);
 
     //YUY2/YC48->NV12/YUV444, RGBコピー用関数
     const int input_csp_idx = get_aviutl_color_format(conf->x265.bit_depth, conf->x265.output_csp, conf->vid.input_as_lw48);
-    const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x265.bit_depth, conf->x265.interlaced, conf->x265.output_csp);
+    const func_convert_frame convert_frame = get_convert_func(oip->w, input_csp_idx, conf->x265.bit_depth > 8 ? 16 : 8, conf->x265.interlaced, conf->x265.output_csp);
     if (convert_frame == NULL) {
         ret |= AUO_RESULT_ERROR; error_select_convert_func(oip->w, oip->h, conf->x265.bit_depth, conf->x265.interlaced, conf->x265.output_csp);
         return ret;
@@ -768,7 +767,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
     //x264/x265のバージョン情報表示・チェック
     if (!sys_dat->exstg->s_local.disable_x265_version_check
-        && AUO_RESULT_ERROR == write_log_x265_version(x265fullpath)) {
+        && AUO_RESULT_ERROR == write_log_x265_version(sys_dat->exstg->s_x265.fullpath)) {
         return (ret | AUO_RESULT_ERROR);
     }
 
@@ -776,7 +775,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
     build_full_cmd(x265cmd, _countof(x265cmd), conf, oip, pe, sys_dat, PIPE_FN);
     write_log_auo_line_fmt(LOG_INFO, "%s options...", "x265");
     write_args(x265cmd);
-    sprintf_s(x265args, _countof(x265args), "\"%s\" %s", x265fullpath, x265cmd);
+    sprintf_s(x265args, _countof(x265args), "\"%s\" %s", sys_dat->exstg->s_x265.fullpath, x265cmd);
     remove(pe->temp_filename); //ファイルサイズチェックの時に旧ファイルを参照してしまうのを回避
 
     //エンコードするフレーム数

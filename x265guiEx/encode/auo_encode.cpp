@@ -140,9 +140,8 @@ BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, c
 
     //必要な実行ファイル
     if (!conf->oth.disable_guicmd) {
-        const char *x265fullpath = (8 < conf->x265.bit_depth) ? exstg->s_x265.fullpath_highbit : exstg->s_x265.fullpath;
-        if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(x265fullpath)) {
-            error_no_exe_file("x265.exe", x265fullpath);
+        if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(exstg->s_x265.fullpath)) {
+            error_no_exe_file("x265.exe", exstg->s_x265.fullpath);
             check = FALSE;
         }
     }
@@ -515,7 +514,6 @@ void cmd_replace(char *cmd, size_t nSize, const PRM_ENC *pe, const SYSTEM_DATA *
 
     char fullpath[MAX_PATH_LEN];
     replace(cmd, nSize, "%{x265path}",     GetFullPath(sys_dat->exstg->s_x265.fullpath,                   fullpath, _countof(fullpath)));
-    replace(cmd, nSize, "%{x265_10path}",  GetFullPath(sys_dat->exstg->s_x265.fullpath_highbit,           fullpath, _countof(fullpath)));
     replace(cmd, nSize, "%{audencpath}",   GetFullPath(sys_dat->exstg->s_aud[conf->aud.encoder].fullpath, fullpath, _countof(fullpath)));
     replace(cmd, nSize, "%{mp4muxerpath}", GetFullPath(sys_dat->exstg->s_mux[MUXER_MP4].fullpath,         fullpath, _countof(fullpath)));
     replace(cmd, nSize, "%{mkvmuxerpath}", GetFullPath(sys_dat->exstg->s_mux[MUXER_MKV].fullpath,         fullpath, _countof(fullpath)));

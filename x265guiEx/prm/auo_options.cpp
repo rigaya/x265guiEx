@@ -39,7 +39,7 @@ enum {
     OPTION_TYPE_DEBLOCK,
     OPTION_TYPE_CQM,
     OPTION_TYPE_TCFILE_IN,
-    OPTION_TYPE_INPUT_DEPTH,
+    OPTION_TYPE_OUTPUT_DEPTH,
     OPTION_TYPE_PASS,
     OPTION_TYPE_MB_PARTITION,
     OPTION_TYPE_TFF,
@@ -70,7 +70,7 @@ static const DWORD OPTION_NO_VALUE[] = {
 static guiEx_settings *ex_stg;
 
 static X265_OPTIONS x265_options_table[] = {
-    { "input-depth",      "",   OPTION_TYPE_INPUT_DEPTH,   NULL,                 offsetof(CONF_X265, bit_depth      ) },
+    { "output-depth",     "",   OPTION_TYPE_OUTPUT_DEPTH,  NULL,                 offsetof(CONF_X265, bit_depth      ) },
     { "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
     { "pass",             "",   OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
     { "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
@@ -754,7 +754,7 @@ static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, 
 }
 static int write_input_depth(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->bit_depth > 8)
-        return sprintf_s(cmd, nSize, " --input-depth %d", cx->bit_depth);
+        return sprintf_s(cmd, nSize, " --input-depth 16 --output-depth %d", cx->bit_depth);
     return 0;
 }
 static int write_do_nothing(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
