@@ -449,8 +449,6 @@ void guiEx_settings::load_fn_replace() {
 }
 
 void guiEx_settings::load_x26x_cmd(X265_CMD *x26xcmd, int *count, int *default_index, const char *section) {
-    int i;
-    char *p, *q;
     char key[INI_KEY_MAX_LEN];
     char *name = s_x26x_mc.SetPrivateProfileString(section, "name", "", ini_fileName);
     s_x26x_mc.CutMem(sizeof(key[0]));
@@ -460,7 +458,8 @@ void guiEx_settings::load_x26x_cmd(X265_CMD *x26xcmd, int *count, int *default_i
     x26xcmd->cmd = (char **)s_x26x_mc.CutMem(sizeof(char *) * (*count + 1));
 
     x26xcmd->name[0].name = name;
-    for (i = 0, p = x26xcmd->name[0].name; (x26xcmd->name[i].name = strtok_s(p, ",", &q)) != NULL; i++)
+    char *p = x26xcmd->name[0].name, *q;
+    for (int i = 0; (x26xcmd->name[i].name = strtok_s(p, ",", &q)) != NULL; i++)
         p = NULL;
 
     setlocale(LC_ALL, "japanese");
@@ -475,7 +474,7 @@ void guiEx_settings::load_x26x_cmd(X265_CMD *x26xcmd, int *count, int *default_i
     char *def = s_x26x_mc.SetPrivateProfileString(section, "disp", "", ini_fileName);
     sprintf_s(key,  sizeof(key), "cmd_");
     size_t keybase_len = strlen(key);
-    for (i = 0; x26xcmd->name[i].name; i++) {
+    for (int i = 0; x26xcmd->name[i].name; i++) {
         strcpy_s(key + keybase_len, sizeof(key) - keybase_len, x26xcmd->name[i].name);
         x26xcmd->cmd[i] = s_x26x_mc.SetPrivateProfileString(section, key, "", ini_fileName);
         if (_stricmp(x26xcmd->name[i].name, def) == NULL)
@@ -509,7 +508,7 @@ void guiEx_settings::load_x26x() {
         s_x26x[i_enctype]->profile_vbv_multi = (float *)s_x26x_mc.CutMem(sizeof(float) * s_x26x[i_enctype]->profile_count);
         for (int i = 0; i < s_x26x[i_enctype]->profile_count; i++) {
             char key[INI_KEY_MAX_LEN];
-            sprintf_s(key, _countof(key), "vbv_multi_%s", s_x26x[i_enctype]->profile.name[i]);
+            sprintf_s(key, _countof(key), "vbv_multi_%s", s_x26x[i_enctype]->profile.name[i].name);
             s_x26x[i_enctype]->profile_vbv_multi[i] = (float)GetPrivateProfileDouble(INI_SECTION_X26X_PROFILE[i_enctype], key, 1.0, ini_fileName);
         }
     }

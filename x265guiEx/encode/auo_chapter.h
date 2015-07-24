@@ -91,10 +91,10 @@ public:
     int get_result();
 
     //チャプターファイルの読み込み
-    //filepath ...読み込むファイル
-    //code_page...ファイルの文字コードを指定
-    //duration ...動画の長さ情報(秒)を渡す
-    int read_file(const char *filepath, DWORD code_page, double duration);
+    //chap_filepath ...読み込むファイル
+    //chap_code_page...ファイルの文字コードを指定
+    //vid_duration ...動画の長さ情報(秒)を渡す
+    int read_file(const char *chap_filepath, DWORD chap_code_page, double vid_duration);
 
     //チャプターファイルの書き出し
     //out_filepath...出力先

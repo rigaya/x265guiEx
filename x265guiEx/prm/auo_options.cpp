@@ -241,8 +241,8 @@ static BOOL auo_strtof(float *f, const char *str, DWORD len) {
 static BOOL auo_parse_int(int *i, const char *value, DWORD len) {
     BOOL ret;
     if ((ret = auo_strtol(i, value, len)) == FALSE) {
-        size_t len = strlen(value);
-        if (*value == '[' && value[len-1] == ']') {
+        size_t str_len = strlen(value);
+        if (*value == '[' && value[str_len -1] == ']') {
             const char *a, *b, *c;
             if ((a = strstr(value, "if>")) != NULL && (b = strstr(value, "else")) != NULL) {
                 int v;
@@ -250,10 +250,10 @@ static BOOL auo_parse_int(int *i, const char *value, DWORD len) {
                 ret |= auo_strtol(&v, c, b-c);
                 b += strlen("else");
                 if (*i > v)
-                    c = value+1, len = a - c;
+                    c = value+1, str_len = a - c;
                 else
-                    c = b, len = (value + len - 1) - c;
-                ret &= auo_strtol(i, c, len);
+                    c = b, str_len = (value + str_len - 1) - c;
+                ret &= auo_strtol(i, c, str_len);
             }
         }
     }
@@ -263,8 +263,8 @@ static BOOL auo_parse_int(int *i, const char *value, DWORD len) {
 static BOOL auo_parse_float(float *f, const char *value, DWORD len) {
     BOOL ret;
     if ((ret = auo_strtof(f, value, len)) == FALSE) {
-        size_t len = strlen(value);
-        if (*value == '[' && value[len-1] == ']') {
+        size_t val_len = strlen(value);
+        if (*value == '[' && value[val_len -1] == ']') {
             const char *a, *b, *c;
             if ((a = strstr(value, "if>")) != NULL && (b = strstr(value, "else")) != NULL) {
                 float v;
@@ -272,10 +272,10 @@ static BOOL auo_parse_float(float *f, const char *value, DWORD len) {
                 ret |= auo_strtof(&v, c, b-c);
                 b += strlen("else");
                 if (*f > v)
-                    c = value+1, len = a - c;
+                    c = value+1, val_len = a - c;
                 else
-                    c = b, len = (value + len - 1) - c;
-                ret &= auo_strtof(f, c, len);
+                    c = b, val_len = (value + val_len - 1) - c;
+                ret &= auo_strtof(f, c, val_len);
             }
         }
     }
@@ -509,8 +509,8 @@ static BOOL set_level(void *cx, const char *value, const X265_OPTION_STR *list) 
             if (i == 9)
                 strcpy_s(buf, _countof(buf), "1b");
             else {
-                size_t len = sprintf_s(buf, _countof(buf), "%.1f", i / 10.0);
-                char *p = buf + len - 1;
+                size_t buf_len = sprintf_s(buf, _countof(buf), "%.1f", i / 10.0);
+                char *p = buf + buf_len - 1;
                 while (*p == '0' && p >= buf)
                     p--;
                 if (*p == '.') p--; //最後に'.'が残ったら消す
@@ -697,7 +697,7 @@ static int write_list(char *cmd, size_t nSize, const X265_OPTIONS *options, cons
     int *iptr = (int*)((BYTE*)cx + options->p_offset);
     int *defptr = (int*)((BYTE*)def + options->p_offset);
     if (write_all || *iptr != *defptr)
-        return sprintf_s(cmd, nSize, " --%s %s", options->long_name, options->list[*iptr]);
+        return sprintf_s(cmd, nSize, " --%s %s", options->long_name, options->list[*iptr].name);
     return 0;
 }
 

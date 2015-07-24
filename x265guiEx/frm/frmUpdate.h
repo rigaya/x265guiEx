@@ -186,9 +186,9 @@ namespace x265guiEx {
         }
     public:
         //frmConfig側へのコールバックを受け取っておく
-        System::Void init(DelegateProcessFin^ checkFin, DelegateProcessFin^ updateFin) {
-            this->checkFin = checkFin;
-            this->updateFin = updateFin;
+        System::Void init(DelegateProcessFin^ progCheckFin, DelegateProcessFin^ progUpdateFin) {
+            this->checkFin = progCheckFin;
+            this->updateFin = progUpdateFin;
             updateFinEvent = nullptr;
             updateFinLockObject = gcnew System::Object();
             updateFinWaiting = false;
