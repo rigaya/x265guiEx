@@ -94,9 +94,10 @@ const X265_OPTION_STR list_output_csp_x265[] = {
     { NULL, NULL },
 };
 const X265_OPTION_STR list_aq[] = { 
-    { NULL, L"none"    }, 
-    { NULL, L"VAQ"     }, 
-    { NULL, L"AutoVAQ" }, 
+    { NULL, L"none"              }, 
+    { NULL, L"VAQ"               }, 
+    { NULL, L"AutoVAQ"           },
+    { NULL, L"AutoVAQ(暗部保護)" },
     { NULL, NULL } 
 };
 const X265_OPTION_STR list_weightp[] = { 

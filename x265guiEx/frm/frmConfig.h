@@ -2098,7 +2098,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBQGSize
             // 
             this->fcgLBQGSize->AutoSize = true;
-            this->fcgLBQGSize->Location = System::Drawing::Point(13, 447);
+            this->fcgLBQGSize->Location = System::Drawing::Point(9, 447);
             this->fcgLBQGSize->Name = L"fcgLBQGSize";
             this->fcgLBQGSize->Size = System::Drawing::Size(96, 14);
             this->fcgLBQGSize->TabIndex = 111;
@@ -2106,11 +2106,11 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             // fcgNUQGSize
             // 
-            this->fcgNUQGSize->Location = System::Drawing::Point(114, 445);
+            this->fcgNUQGSize->Location = System::Drawing::Point(109, 445);
             this->fcgNUQGSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
             this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNUQGSize->Name = L"fcgNUQGSize";
-            this->fcgNUQGSize->Size = System::Drawing::Size(64, 21);
+            this->fcgNUQGSize->Size = System::Drawing::Size(59, 21);
             this->fcgNUQGSize->TabIndex = 110;
             this->fcgNUQGSize->Tag = L"reCmd";
             this->fcgNUQGSize->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2119,10 +2119,10 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             // fcgNURdoqLevel
             // 
-            this->fcgNURdoqLevel->Location = System::Drawing::Point(332, 413);
+            this->fcgNURdoqLevel->Location = System::Drawing::Point(342, 413);
             this->fcgNURdoqLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURdoqLevel->Name = L"fcgNURdoqLevel";
-            this->fcgNURdoqLevel->Size = System::Drawing::Size(50, 21);
+            this->fcgNURdoqLevel->Size = System::Drawing::Size(45, 21);
             this->fcgNURdoqLevel->TabIndex = 108;
             this->fcgNURdoqLevel->Tag = L"reCmd";
             this->fcgNURdoqLevel->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2130,7 +2130,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBRdoqLevel
             // 
             this->fcgLBRdoqLevel->AutoSize = true;
-            this->fcgLBRdoqLevel->Location = System::Drawing::Point(230, 415);
+            this->fcgLBRdoqLevel->Location = System::Drawing::Point(254, 415);
             this->fcgLBRdoqLevel->Name = L"fcgLBRdoqLevel";
             this->fcgLBRdoqLevel->Size = System::Drawing::Size(62, 14);
             this->fcgLBRdoqLevel->TabIndex = 109;
@@ -2203,10 +2203,10 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             this->fcgNUPsyRDOQ->DecimalPlaces = 2;
             this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUPsyRDOQ->Location = System::Drawing::Point(318, 381);
+            this->fcgNUPsyRDOQ->Location = System::Drawing::Point(328, 381);
             this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
             this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
-            this->fcgNUPsyRDOQ->Size = System::Drawing::Size(64, 21);
+            this->fcgNUPsyRDOQ->Size = System::Drawing::Size(59, 21);
             this->fcgNUPsyRDOQ->TabIndex = 43;
             this->fcgNUPsyRDOQ->Tag = L"reCmd";
             this->fcgNUPsyRDOQ->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2214,7 +2214,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBPsyRDOQ
             // 
             this->fcgLBPsyRDOQ->AutoSize = true;
-            this->fcgLBPsyRDOQ->Location = System::Drawing::Point(230, 383);
+            this->fcgLBPsyRDOQ->Location = System::Drawing::Point(254, 383);
             this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
             this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
             this->fcgLBPsyRDOQ->TabIndex = 105;
@@ -2224,10 +2224,10 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             this->fcgNUPsyRD->DecimalPlaces = 2;
             this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUPsyRD->Location = System::Drawing::Point(318, 351);
+            this->fcgNUPsyRD->Location = System::Drawing::Point(328, 351);
             this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
-            this->fcgNUPsyRD->Size = System::Drawing::Size(64, 21);
+            this->fcgNUPsyRD->Size = System::Drawing::Size(59, 21);
             this->fcgNUPsyRD->TabIndex = 42;
             this->fcgNUPsyRD->Tag = L"reCmd";
             this->fcgNUPsyRD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2235,7 +2235,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBPsyRD
             // 
             this->fcgLBPsyRD->AutoSize = true;
-            this->fcgLBPsyRD->Location = System::Drawing::Point(230, 353);
+            this->fcgLBPsyRD->Location = System::Drawing::Point(254, 353);
             this->fcgLBPsyRD->Name = L"fcgLBPsyRD";
             this->fcgLBPsyRD->Size = System::Drawing::Size(42, 14);
             this->fcgLBPsyRD->TabIndex = 103;
@@ -2489,7 +2489,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgCBCUTree
             // 
             this->fcgCBCUTree->AutoSize = true;
-            this->fcgCBCUTree->Location = System::Drawing::Point(114, 417);
+            this->fcgCBCUTree->Location = System::Drawing::Point(109, 417);
             this->fcgCBCUTree->Name = L"fcgCBCUTree";
             this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
             this->fcgCBCUTree->TabIndex = 45;
@@ -2499,7 +2499,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBCUTree
             // 
             this->fcgLBCUTree->AutoSize = true;
-            this->fcgLBCUTree->Location = System::Drawing::Point(13, 416);
+            this->fcgLBCUTree->Location = System::Drawing::Point(9, 416);
             this->fcgLBCUTree->Name = L"fcgLBCUTree";
             this->fcgLBCUTree->Size = System::Drawing::Size(45, 14);
             this->fcgLBCUTree->TabIndex = 100;
@@ -2507,10 +2507,10 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             // fcgNURD
             // 
-            this->fcgNURD->Location = System::Drawing::Point(332, 452);
+            this->fcgNURD->Location = System::Drawing::Point(342, 452);
             this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNURD->Name = L"fcgNURD";
-            this->fcgNURD->Size = System::Drawing::Size(50, 21);
+            this->fcgNURD->Size = System::Drawing::Size(45, 21);
             this->fcgNURD->TabIndex = 44;
             this->fcgNURD->Tag = L"reCmd";
             this->fcgNURD->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2519,10 +2519,10 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             this->fcgNUAQStrength->DecimalPlaces = 2;
             this->fcgNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUAQStrength->Location = System::Drawing::Point(114, 381);
+            this->fcgNUAQStrength->Location = System::Drawing::Point(109, 381);
             this->fcgNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNUAQStrength->Name = L"fcgNUAQStrength";
-            this->fcgNUAQStrength->Size = System::Drawing::Size(64, 21);
+            this->fcgNUAQStrength->Size = System::Drawing::Size(59, 21);
             this->fcgNUAQStrength->TabIndex = 41;
             this->fcgNUAQStrength->Tag = L"reCmd";
             this->fcgNUAQStrength->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
@@ -2530,7 +2530,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBAQStrength
             // 
             this->fcgLBAQStrength->AutoSize = true;
-            this->fcgLBAQStrength->Location = System::Drawing::Point(13, 383);
+            this->fcgLBAQStrength->Location = System::Drawing::Point(9, 383);
             this->fcgLBAQStrength->Name = L"fcgLBAQStrength";
             this->fcgLBAQStrength->Size = System::Drawing::Size(41, 14);
             this->fcgLBAQStrength->TabIndex = 97;
@@ -2540,16 +2540,16 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // 
             this->fcgCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAQMode->FormattingEnabled = true;
-            this->fcgCXAQMode->Location = System::Drawing::Point(114, 350);
+            this->fcgCXAQMode->Location = System::Drawing::Point(109, 350);
             this->fcgCXAQMode->Name = L"fcgCXAQMode";
-            this->fcgCXAQMode->Size = System::Drawing::Size(82, 22);
+            this->fcgCXAQMode->Size = System::Drawing::Size(126, 22);
             this->fcgCXAQMode->TabIndex = 40;
             this->fcgCXAQMode->Tag = L"reCmd";
             // 
             // fcgLBAQMode
             // 
             this->fcgLBAQMode->AutoSize = true;
-            this->fcgLBAQMode->Location = System::Drawing::Point(12, 353);
+            this->fcgLBAQMode->Location = System::Drawing::Point(9, 353);
             this->fcgLBAQMode->Name = L"fcgLBAQMode";
             this->fcgLBAQMode->Size = System::Drawing::Size(80, 14);
             this->fcgLBAQMode->TabIndex = 95;
@@ -2558,7 +2558,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             // fcgLBRD
             // 
             this->fcgLBRD->AutoSize = true;
-            this->fcgLBRD->Location = System::Drawing::Point(230, 454);
+            this->fcgLBRD->Location = System::Drawing::Point(254, 454);
             this->fcgLBRD->Name = L"fcgLBRD";
             this->fcgLBRD->Size = System::Drawing::Size(86, 14);
             this->fcgLBRD->TabIndex = 94;
