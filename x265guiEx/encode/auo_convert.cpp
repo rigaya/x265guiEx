@@ -166,6 +166,9 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
 #else
     //YUY2 -> yuv422(8bit)
     { CF_YUY2, OUT_CSP_YUV422, BIT_8, A,  1,  NONE,                 convert_yuy2_to_yuv422 },
+
+    //YC48 -> yuv422(16bit)
+    { CF_YC48, OUT_CSP_YUV422, BIT16, A,  1,  NONE,                 convert_yc48_to_yuv422_16bit },
 #endif
     //YC48 -> yuv444(8bit)
     { CF_YC48, OUT_CSP_YUV444, BIT_8, A,  1,  AVX2|AVX,             convert_yc48_to_yuv444_avx2 },
