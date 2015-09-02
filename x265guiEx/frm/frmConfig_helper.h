@@ -427,6 +427,16 @@ namespace x265guiEx {
         System::Void run() {
             //オプションの決定
             String ^options = L"-nogui -update-exe-only -no-nero";
+            {
+                guiEx_settings ex_stg;
+                ex_stg.load_encode_stg();
+                if (ex_stg.s_local.update_overwrite) {
+                    options += L" -update-overwrite";
+                }
+                if (ex_stg.s_local.update_x265_pgo) {
+                    options += L" -x265-pgo";
+                }
+            }
             for each (auto info in verInfo) {
                 if (0 == String::Compare(info.LatestVer, VERSION_SAME_AS_CURRENT)) {
                     options += L" -no-" + info.name;

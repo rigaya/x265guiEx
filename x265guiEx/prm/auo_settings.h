@@ -26,6 +26,8 @@ static const BOOL   DEFAULT_AUD_DELAY_CUT_MODE    = 0;
 static const BOOL   DEFAULT_DISABLE_TOOLTIP_HELP  = 0;
 static const BOOL   DEFAULT_DISABLE_VISUAL_STYLES = 0;
 static const BOOL   DEFAULT_ENABLE_STG_ESC_KEY    = 0;
+static const BOOL   DEFAULT_UPDATE_X265_PGO       = 0;
+static const BOOL   DEFAULT_UPDATE_OVERWRITE      = 0;
 static const BOOL   DEFAULT_SAVE_RELATIVE_PATH    = 0;
 static const BOOL   DEFAULT_CHAP_NERO_TO_UTF8     = 0;
 static const BOOL   DEFAULT_AUDIO_ENCODER         = 8;
@@ -69,6 +71,11 @@ typedef struct X265_OPTION_STR {
     char *name; //x26xでのオプション名
     WCHAR *desc; //GUIでの表示用
 } X265_OPTION_STR;
+
+static const WCHAR *UPDATE_X265[] ={
+    L"標準ビルド (8bit + 10bit + 12bit)",
+    L"PGOビルド(高速) (8bit + 10bit)"
+};
 
 const int FAW_INDEX_ERROR = -1;
 
@@ -271,6 +278,8 @@ typedef struct LOCAL_SETTINGS {
     BOOL   disable_visual_styles;               //視覚効果をオフにする
     BOOL   enable_stg_esc_key;                  //設定画面でEscキーを有効化する
     AUO_FONT_INFO conf_font;                    //設定画面のフォント
+    BOOL   update_x265_pgo;                     //PGOビルド版のx265に更新する
+    BOOL   update_overwrite;                    //更新時、実行ファイルを上書きする
     int    default_audio_encoder;               //デフォルトの音声エンコーダ
     int    amp_retry_limit;                     //自動マルチパス試行回数制限
     double amp_bitrate_margin_multi;            //自動マルチパスで、上限ファイルサイズからビットレートを再計算するときの倍率
