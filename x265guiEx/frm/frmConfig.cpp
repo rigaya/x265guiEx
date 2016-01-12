@@ -2114,7 +2114,7 @@ System::Void frmConfig::SetHelpToolTips() {
 
     //他
     fcgTTEx->SetToolTip(fcgTXCmd,         L""
-        + L"x264に渡される予定のコマンドラインです。\n"
+        + L"x265に渡される予定のコマンドラインです。\n"
         + L"エンコード時には更に\n"
         + L"・「追加コマンド」の付加\n"
         + L"・\"auto\"な設定項目の反映\n"
