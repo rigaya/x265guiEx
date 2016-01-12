@@ -917,6 +917,8 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(frmConfig::typeid));
             this->fcgtabControlVideo = (gcnew System::Windows::Forms::TabControl());
             this->fcgtabPageX265Main = (gcnew System::Windows::Forms::TabPage());
+            this->fcgCXBitDepth = (gcnew System::Windows::Forms::ComboBox());
+            this->fcgLBBitDepth = (gcnew System::Windows::Forms::Label());
             this->fcggroupBoxThread = (gcnew System::Windows::Forms::GroupBox());
             this->fcgLBPME = (gcnew System::Windows::Forms::Label());
             this->fcgLBPMode = (gcnew System::Windows::Forms::Label());
@@ -1199,8 +1201,6 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
-            this->fcgCXBitDepth = (gcnew System::Windows::Forms::ComboBox());
-            this->fcgLBBitDepth = (gcnew System::Windows::Forms::Label());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -1307,6 +1307,25 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             this->fcgtabPageX265Main->TabIndex = 5;
             this->fcgtabPageX265Main->Text = L" x265 (1)";
             this->fcgtabPageX265Main->UseVisualStyleBackColor = true;
+            // 
+            // fcgCXBitDepth
+            // 
+            this->fcgCXBitDepth->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+            this->fcgCXBitDepth->FormattingEnabled = true;
+            this->fcgCXBitDepth->Location = System::Drawing::Point(494, 284);
+            this->fcgCXBitDepth->Name = L"fcgCXBitDepth";
+            this->fcgCXBitDepth->Size = System::Drawing::Size(95, 22);
+            this->fcgCXBitDepth->TabIndex = 72;
+            this->fcgCXBitDepth->Tag = L"reCmd";
+            // 
+            // fcgLBBitDepth
+            // 
+            this->fcgLBBitDepth->AutoSize = true;
+            this->fcgLBBitDepth->Location = System::Drawing::Point(396, 287);
+            this->fcgLBBitDepth->Name = L"fcgLBBitDepth";
+            this->fcgLBBitDepth->Size = System::Drawing::Size(62, 14);
+            this->fcgLBBitDepth->TabIndex = 73;
+            this->fcgLBBitDepth->Text = L"出力色深度";
             // 
             // fcggroupBoxThread
             // 
@@ -2225,7 +2244,7 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             this->fcgNUPsyRD->DecimalPlaces = 2;
             this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
             this->fcgNUPsyRD->Location = System::Drawing::Point(328, 351);
-            this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+            this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
             this->fcgNUPsyRD->Size = System::Drawing::Size(59, 21);
             this->fcgNUPsyRD->TabIndex = 42;
@@ -4328,25 +4347,6 @@ private: System::Windows::Forms::Label^  fcgLBBitDepth;
             this->fcgLBAudioPriority->Size = System::Drawing::Size(62, 14);
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
-            // 
-            // fcgCXBitDepth
-            // 
-            this->fcgCXBitDepth->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
-            this->fcgCXBitDepth->FormattingEnabled = true;
-            this->fcgCXBitDepth->Location = System::Drawing::Point(494, 284);
-            this->fcgCXBitDepth->Name = L"fcgCXBitDepth";
-            this->fcgCXBitDepth->Size = System::Drawing::Size(95, 22);
-            this->fcgCXBitDepth->TabIndex = 72;
-            this->fcgCXBitDepth->Tag = L"reCmd";
-            // 
-            // fcgLBBitDepth
-            // 
-            this->fcgLBBitDepth->AutoSize = true;
-            this->fcgLBBitDepth->Location = System::Drawing::Point(396, 287);
-            this->fcgLBBitDepth->Name = L"fcgLBBitDepth";
-            this->fcgLBBitDepth->Size = System::Drawing::Size(62, 14);
-            this->fcgLBBitDepth->TabIndex = 73;
-            this->fcgLBBitDepth->Text = L"出力色深度";
             // 
             // frmConfig
             // 
