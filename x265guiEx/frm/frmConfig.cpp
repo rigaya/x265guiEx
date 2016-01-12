@@ -1476,7 +1476,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     //これもひたすら書くだけ。めんどい
     //x265
-	cnf->x265.bit_depth            = get_bit_depth(fcgCXBitDepth->SelectedIndex);
+    cnf->x265.bit_depth            = get_bit_depth(fcgCXBitDepth->SelectedIndex);
     cnf->x265.rc_mode              = cnf_fcgTemp->rc_mode;
     cnf->x265.bitrate              = cnf_fcgTemp->bitrate;
     cnf->x265.qp                   = cnf_fcgTemp->qp;
@@ -1557,7 +1557,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.ip_ratio             = 0.0f;
     cnf->x265.pb_ratio             = 0.0f;
 
-    GetCHARfromString(cnf->vid.stats,     sizeof(cnf->vid.stats), fcgTXStatusFile->Text);
+    GetCHARfromString(cnf->vid.stats, fcgTXStatusFile->Text);
 
     //拡張部
     cnf->vid.afs                    = fcgCBAFS->Checked;
@@ -1569,7 +1569,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->vid.priority               = fcgCXX264Priority->SelectedIndex;
     cnf->vid.input_as_lw48          = fcgCBInputAsLW48->Checked;
     cnf->oth.temp_dir               = fcgCXTempDir->SelectedIndex;
-    GetCHARfromString(cnf->vid.cmdex, sizeof(cnf->vid.cmdex), fcgTXCmdEx->Text);
+    GetCHARfromString(cnf->vid.cmdex, fcgTXCmdEx->Text);
 
     //音声部
     cnf->aud.encoder                = fcgCXAudioEncoder->SelectedIndex;
@@ -1603,10 +1603,10 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->oth.dont_wait_bat_fin      = RUN_BAT_NONE;
     cnf->oth.dont_wait_bat_fin     |= (!fcgCBWaitForBatBefore->Checked) ? RUN_BAT_BEFORE_PROCESS : NULL;
     cnf->oth.dont_wait_bat_fin     |= (!fcgCBWaitForBatAfter->Checked)  ? RUN_BAT_AFTER_PROCESS  : NULL;
-    GetCHARfromString(cnf->oth.batfile.before_process, sizeof(cnf->oth.batfile.before_process), fcgTXBatBeforePath->Text);
-    GetCHARfromString(cnf->oth.batfile.after_process,  sizeof(cnf->oth.batfile.after_process),  fcgTXBatAfterPath->Text);
-    GetCHARfromString(cnf->oth.batfile.before_audio, sizeof(cnf->oth.batfile.before_audio), fcgTXBatBeforeAudioPath->Text);
-    GetCHARfromString(cnf->oth.batfile.after_audio,  sizeof(cnf->oth.batfile.after_audio),  fcgTXBatAfterAudioPath->Text);
+    GetCHARfromString(cnf->oth.batfile.before_process, fcgTXBatBeforePath->Text);
+    GetCHARfromString(cnf->oth.batfile.after_process,  fcgTXBatAfterPath->Text);
+    GetCHARfromString(cnf->oth.batfile.before_audio,   fcgTXBatBeforeAudioPath->Text);
+    GetCHARfromString(cnf->oth.batfile.after_audio,    fcgTXBatAfterAudioPath->Text);
 
     GetfcgTSLSettingsNotes(cnf->oth.notes, sizeof(cnf->oth.notes));
 
@@ -1796,7 +1796,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgCXInterlaced,       L"--interlace");
     fcgTTX265->SetToolTip(fcgCXVideoFormat,      L"--videoformat");
 
-	fcgTTX265->SetToolTip(fcgCXBitDepth,         L"--input-depth / --output-depth");
+    fcgTTX265->SetToolTip(fcgCXBitDepth,         L"--input-depth / --output-depth");
     fcgTTX265->SetToolTip(fcgCXCSP,              L"--input-csp\n"
         + L"通常は i420 を使用します。"
         );
