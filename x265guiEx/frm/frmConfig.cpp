@@ -1391,11 +1391,14 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUTuInterDepth,     cx265->tu_inter_depth);
     fcgCBRectMP->Checked            = cx265->rect_mp != 0;
     fcgCBAsymmetricMP->Checked      = cx265->asymmnteric_mp != 0;
+    SetNUValue(fcgNULimitRefs,        cx265->limit_refs);
+    fcgCBLimitModes->Checked        = cx265->limit_modes != 0;
     
     SetCXIndex(fcgCXME,               cx265->me);
     SetCXIndex(fcgCXSubME,            cx265->subme);
     SetNUValue(fcgNUMERange,          cx265->me_range);
     SetNUValue(fcgNUMaxMerge,         cx265->max_merge);
+    fcgCBNoRecusrionSkip->Checked   = cx265->recursion_skip == 0;
 
     SetNUValue(fcgNUPools,            cx265->pools);
     SetNUValue(fcgNUFrameThreads,     cx265->frame_threads);
@@ -1537,11 +1540,14 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.tu_inter_depth       = (int)fcgNUTuInterDepth->Value;
     cnf->x265.rect_mp              = fcgCBRectMP->Checked;
     cnf->x265.asymmnteric_mp       = fcgCBAsymmetricMP->Checked;
+    cnf->x265.limit_refs           = (int)fcgNULimitRefs->Value;
+    cnf->x265.limit_modes          = fcgCBLimitModes->Checked;
 
     cnf->x265.me                   = fcgCXME->SelectedIndex;
     cnf->x265.subme                = fcgCXSubME->SelectedIndex;
     cnf->x265.me_range             = (int)fcgNUMERange->Value;
     cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
+    cnf->x265.recursion_skip       =!fcgCBNoRecusrionSkip->Checked;
     
     cnf->x265.pools                = (int)fcgNUPools->Value;
     cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
@@ -1834,11 +1840,14 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgNUTuInterDepth,     L"--tu-inter-depth");
     fcgTTX265->SetToolTip(fcgCBAsymmetricMP,     L"--amp");
     fcgTTX265->SetToolTip(fcgCBRectMP,           L"--rect");
+    fcgTTX265->SetToolTip(fcgNULimitRefs,        L"--limit-refs");
+    fcgTTX265->SetToolTip(fcgCBLimitModes,       L"--limit-modes");
 
     fcgTTX265->SetToolTip(fcgCXME,               L"--me");
     fcgTTX265->SetToolTip(fcgCXSubME,            L"--subme");
     fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
     fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
+    fcgTTX265->SetToolTip(fcgCBNoRecusrionSkip,  L"--no-recursion-skip");
 
     fcgTTX265->SetToolTip(fcgNUPools,            L"--pools\n"
         + L"\"0\" で自動です。"

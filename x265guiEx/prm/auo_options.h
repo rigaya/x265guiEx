@@ -320,7 +320,7 @@ typedef struct CONF_X265 {
     int     pass;
     BOOL    slow_first_pass;
     BOOL    use_auto_npass;
-    int        auto_npass;
+    int     auto_npass;
     BOOL    nul_out;
     int     preset;
     int     tune;
@@ -398,6 +398,9 @@ typedef struct CONF_X265 {
     INT2    deblock;
     int     rdoq_level;
     int     qg_size;
+    BOOL    recursion_skip;
+    int     limit_refs;
+    BOOL    limit_modes;
 } CONF_X265;
 
 typedef struct X265_OPTIONS {

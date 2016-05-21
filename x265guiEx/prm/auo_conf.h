@@ -144,6 +144,7 @@ typedef struct CONF_OTHER {
     };
 } CONF_OTHER;
 
+#pragma pack(push, 1)
 typedef struct CONF_GUIEX {
     char        conf_name[CONF_NAME_BLOCK_LEN];  //保存時に使用
     int         size_all;                        //保存時: CONF_GUIEXの全サイズ / 設定中、エンコ中: CONF_INITIALIZED
@@ -157,6 +158,7 @@ typedef struct CONF_GUIEX {
     CONF_MUX    mux;                             //muxについての設定
     CONF_OTHER  oth;                             //その他の設定
 } CONF_GUIEX;
+#pragma pack(pop)
 
 class guiEx_config {
 private:
