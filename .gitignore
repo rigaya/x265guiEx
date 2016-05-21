@@ -31,6 +31,7 @@ build/
 *.meta
 *.obj
 *.opendb
+*.VC.db
 *.pch
 *.pdb
 *.pgc
