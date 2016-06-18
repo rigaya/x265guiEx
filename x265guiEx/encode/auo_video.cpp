@@ -496,10 +496,9 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
     char auoqpfile[MAX_PATH_LEN];
     apply_appendix(auoqpfile, _countof(auoqpfile), pe->temp_filename, pe->append.qp);
     //x264用のコード
-    //BOOL disable_keyframe_afs = conf->vid.afs && !sys_dat->exstg->s_local.set_keyframe_as_afs_24fps;
-    //if (prm.vid.check_keyframe && !disable_keyframe_afs && PathFileExists(auoqpfile) && strstr(cmd, "--qpfile") == NULL)
-    //    if (conf->vid.enc_type == ENC_TYPE_X264)
-    //        sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
+    BOOL disable_keyframe_afs = conf->vid.afs && !sys_dat->exstg->s_local.set_keyframe_as_afs_24fps;
+    if (prm.vid.check_keyframe && !disable_keyframe_afs && PathFileExists(auoqpfile) && strstr(cmd, "--qpfile") == NULL)
+        sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
     //1pass目でafsでない、--framesがなければ--framesを指定
     if ((!prm.vid.afs || pe->current_pass > 1) && strstr(cmd, "--frames") == NULL)
         sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --frames %d", get_frame_num_to_encode(oip->n, pe) - pe->drop_count);
