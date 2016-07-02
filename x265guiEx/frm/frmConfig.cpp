@@ -1847,7 +1847,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgCXSubME,            L"--subme");
     fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
     fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
-    fcgTTX265->SetToolTip(fcgCBNoRecusrionSkip,  L"--no-recursion-skip");
+    fcgTTX265->SetToolTip(fcgCBNoRecusrionSkip,  L"--no-rskip");
 
     fcgTTX265->SetToolTip(fcgNUPools,            L"--pools\n"
         + L"\"0\" で自動です。"
