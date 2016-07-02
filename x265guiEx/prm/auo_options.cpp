@@ -52,7 +52,9 @@ enum {
     OPTION_TYPE_INTERLACED,
     OPTION_TYPE_PSY,
     OPTION_TYPE_SAR_X265,
-    OPTION_TYPE_LOSSLESS
+    OPTION_TYPE_LOSSLESS,
+    OPTION_TYPE_FIRST_PASS,
+    OPTION_TYPE_FIRST_PASS_R,
 };
 
 //値を取らないオプションタイプのリスト
@@ -63,6 +65,8 @@ static const DWORD OPTION_NO_VALUE[] = {
     OPTION_TYPE_TFF,
     OPTION_TYPE_BFF,
     OPTION_TYPE_DEBLOCK,
+    OPTION_TYPE_FIRST_PASS,
+    OPTION_TYPE_FIRST_PASS_R,
     NULL
 };
 
@@ -73,8 +77,8 @@ static X265_OPTIONS x265_options_table[] = {
     { "output-depth",     "",   OPTION_TYPE_OUTPUT_DEPTH,  NULL,                 offsetof(CONF_X265, bit_depth      ) },
     { "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
     { "pass",             "",   OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
-    { "slow-firstpass",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, slow_first_pass) },
-    { "no-slow-firstpass","",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, slow_first_pass) },
+    { "slow-firstpass",   "",   OPTION_TYPE_FIRST_PASS,    NULL,                 offsetof(CONF_X265, slow_first_pass) },
+    { "no-slow-firstpass","",   OPTION_TYPE_FIRST_PASS_R,  NULL,                 offsetof(CONF_X265, slow_first_pass) },
     //{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },
     { "preset",          "p",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
     { "tune",            "t",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
@@ -762,6 +766,18 @@ static int write_input_depth(char *cmd, size_t nSize, const X265_OPTIONS *option
         return sprintf_s(cmd, nSize, " --input-depth 16 --output-depth %d", cx->bit_depth);
     return 0;
 }
+static int write_slow_first_pass(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+    if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
+        return write_bool(cmd, nSize, options, cx, def, vid, write_all);
+    }
+    return 0;
+}
+static int write_slow_first_pass_r(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+    if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
+        return write_bool_reverse(cmd, nSize, options, cx, def, vid, write_all);
+    }
+    return 0;
+}
 static int write_do_nothing(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
     return 0;
 }
@@ -801,6 +817,8 @@ const SET_VALUE set_value[] = {
     set_psy,
     set_x265_sar,
     set_lossless,
+    set_bool,
+    set_bool_reverse,
 };
 
 //この配列に従って各関数に飛ばされる
@@ -867,6 +885,8 @@ const WRITE_CMD_x265 write_cmd_x265[] = {
     write_do_nothing,
     write_x265_sar,
     write_do_nothing,
+    write_slow_first_pass,
+    write_slow_first_pass_r,
 };
 
 //MediaInfoからの情報で無視するもの
