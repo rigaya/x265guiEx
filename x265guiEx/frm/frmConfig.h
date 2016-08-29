@@ -2144,7 +2144,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNULimitRefs;
             // 
             this->fcgNUQGSize->Location = System::Drawing::Point(109, 461);
             this->fcgNUQGSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
-            this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
+            this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 8, 0, 0, 0 });
             this->fcgNUQGSize->Name = L"fcgNUQGSize";
             this->fcgNUQGSize->Size = System::Drawing::Size(59, 21);
             this->fcgNUQGSize->TabIndex = 110;
