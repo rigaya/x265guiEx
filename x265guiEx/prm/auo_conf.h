@@ -82,6 +82,7 @@ static const char *const AUDIO_DELAY_CUT_MODE[] = {
     NULL
 };
 
+#pragma pack(push,4)
 typedef struct {
     BOOL   afs;                      //自動フィールドシフトの使用
     BOOL   afs_bitrate_correction;   //afs & 2pass時、ドロップ数に応じてビットレートを補正
@@ -93,11 +94,13 @@ typedef struct {
     char   cqmfile[MAX_PATH_LEN];    //x264 cqmfileの場所
     char   cmdex[CMDEX_MAX_LEN];     //追加コマンドライン
     DWORD  amp_check;                //自動マルチパス時のチェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
+    int    reserved;
     double amp_limit_file_size;      //自動マルチパス時のファイルサイズ制限(MB)
     double amp_limit_bitrate;        //自動マルチパス時のビットレート制限(kbps)
     BOOL   input_as_lw48;            //LW48モード
     char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
 } CONF_VIDEO; //動画用設定(x264以外)
+#pragma pack(pop)
 
 typedef struct CONF_AUDIO {
     int  encoder;             //使用する音声エンコーダ

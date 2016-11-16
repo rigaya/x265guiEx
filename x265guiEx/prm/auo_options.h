@@ -314,6 +314,7 @@ typedef struct FLOAT2 {
     float y;
 } FLOAT2;
 
+#pragma pack(push,4)
 typedef struct CONF_X265 {
     int     bit_depth;
     int     output_csp;
@@ -402,6 +403,7 @@ typedef struct CONF_X265 {
     int     limit_refs;
     BOOL    limit_modes;
 } CONF_X265;
+#pragma pack(pop)
 
 typedef struct X265_OPTIONS {
     char *long_name;
