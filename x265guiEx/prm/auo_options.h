@@ -278,6 +278,7 @@ const X265_OPTION_STR list_me_x265[] = {
     { "hex",  L"Hexagonal Search"      },
     { "umh",  L"Uneven Multi-Hexagon"  },
     { "star", L"Star Search"           },
+    { "sea",  L"SEA Search"            },
     { "full", L"Full Search (低速)"    },
     { NULL, NULL }
 };
