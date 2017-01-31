@@ -403,6 +403,8 @@ typedef struct CONF_X265 {
     BOOL    recursion_skip;
     int     limit_refs;
     BOOL    limit_modes;
+    BOOL    aq_motion;
+    BOOL    ssim_rd;
 } CONF_X265;
 #pragma pack(pop)
 

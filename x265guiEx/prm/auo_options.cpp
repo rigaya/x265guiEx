@@ -210,6 +210,10 @@ static X265_OPTIONS x265_options_table[] = {
     { "pmode",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pmode          ) },
     { "no-pme",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, pme            ) },
     { "pme",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pme            ) },
+    { "no-aq-motion",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, aq_motion      ) },
+    { "aq-motion",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, aq_motion      ) },
+    { "no-ssim-rd",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, ssim_rd        ) },
+    { "ssim-rd",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, ssim_rd        ) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 

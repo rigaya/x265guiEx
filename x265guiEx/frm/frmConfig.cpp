@@ -1380,11 +1380,13 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNURD,               cx265->rd);
     SetCXIndex(fcgCXAQMode,           cx265->aq_mode);
     SetNUValue(fcgNUAQStrength,       cx265->aq_strength);
+    fcgCBAQMotion->Checked          = cx265->aq_motion != 0;
     SetNUValue(fcgNUPsyRD,            cx265->psy_rd.x);
     SetNUValue(fcgNUPsyRDOQ,          cx265->psy_rdoq);
     SetNUValue(fcgNURdoqLevel,        cx265->rdoq_level);
     fcgCBCUTree->Checked            = cx265->cutree != 0;
     SetNUValue(fcgNUQGSize,           cx265->qg_size);
+    fcgCBSsimRd->Checked            = cx265->ssim_rd != 0;
 
     SetNUValue(fcgNUCtu,              cx265->ctu);
     SetNUValue(fcgNUTuIntraDepth,     cx265->tu_intra_depth);
@@ -1529,9 +1531,11 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.rd                   = (int)fcgNURD->Value;
     cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
     cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
+    cnf->x265.aq_motion            = fcgCBAQMotion->Checked;
     cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
     cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
     cnf->x265.rdoq_level           = (int)fcgNURdoqLevel->Value;
+    cnf->x265.ssim_rd              = fcgCBSsimRd->Checked;
     cnf->x265.cutree               = fcgCBCUTree->Checked;
     cnf->x265.qg_size              = (int)fcgNUQGSize->Value;
 
@@ -1829,11 +1833,13 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgNURD,               L"--rd");
     fcgTTX265->SetToolTip(fcgCXAQMode,           L"--aq-mode");
     fcgTTX265->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
+    fcgTTX265->SetToolTip(fcgCBAQMotion,       L"--aq-motion");
     fcgTTX265->SetToolTip(fcgNUPsyRD,            L"--psy-rd");
     fcgTTX265->SetToolTip(fcgNUPsyRDOQ,          L"--psy-rdoq");
     fcgTTX265->SetToolTip(fcgNURdoqLevel,        L"--rdoq-level");
     fcgTTX265->SetToolTip(fcgCBCUTree,           L"--cutree");
     fcgTTX265->SetToolTip(fcgNUQGSize,           L"--qg-size");
+    fcgTTX265->SetToolTip(fcgCBSsimRd,           L"--ssim-rd");
 
     fcgTTX265->SetToolTip(fcgNUCtu,              L"--ctu");
     fcgTTX265->SetToolTip(fcgNUTuIntraDepth,     L"--tu-intra-depth");
