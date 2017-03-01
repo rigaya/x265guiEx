@@ -535,8 +535,8 @@ namespace x265guiEx {
                 delete psInfo;
             }
             try {
-                if (Directory::Exists(auoSetupDir))
-                    Directory::Delete(auoSetupDir, true);
+                //if (Directory::Exists(auoSetupDir))
+                //    Directory::Delete(auoSetupDir, true);
             } catch (...) {
                 //特に何かする必要はない
             }
