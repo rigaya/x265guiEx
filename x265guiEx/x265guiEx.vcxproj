@@ -78,8 +78,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /y x265guiEx.ini "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <AdditionalManifestFiles>
@@ -126,8 +125,7 @@
       <CLRThreadAttribute>STAThreadingAttribute</CLRThreadAttribute>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /y x265guiEx.ini "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <AdditionalManifestFiles>
