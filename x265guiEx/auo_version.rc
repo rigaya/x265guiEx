@@ -11,7 +11,7 @@
 #include "auo_version.h"
 
 #if ENABLE_AUOSETUP
-AUOSETUP    EXE_DATA DISCARDABLE "..\\auoSetup\\auoSetup.exe"
+AUOSETUP    EXE_DATA DISCARDABLE "..\\auoSetup\\auoSetup.exe.gz"
 #endif
 //
 // Version Information
