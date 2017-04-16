@@ -841,6 +841,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBAQMotion;
 
 private: System::Windows::Forms::CheckBox^  fcgCBSsimRd;
 private: System::Windows::Forms::Label^  fcgLBSsimRd;
+private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
 
 
 
@@ -1227,6 +1228,7 @@ private: System::Windows::Forms::Label^  fcgLBSsimRd;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
+            this->fcgCBRyzenDisableAVX2 = (gcnew System::Windows::Forms::CheckBox());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -3125,6 +3127,7 @@ private: System::Windows::Forms::Label^  fcgLBSsimRd;
             // 
             // fcggroupBoxExSettings
             // 
+            this->fcggroupBoxExSettings->Controls->Add(this->fcgCBRyzenDisableAVX2);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBSetKeyframeAtChapter);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBInputAsLW48);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBCheckKeyframes);
@@ -4480,6 +4483,17 @@ private: System::Windows::Forms::Label^  fcgLBSsimRd;
             this->fcgLBAudioPriority->Size = System::Drawing::Size(62, 14);
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
+            // 
+            // fcgCBRyzenDisableAVX2
+            // 
+            this->fcgCBRyzenDisableAVX2->AutoSize = true;
+            this->fcgCBRyzenDisableAVX2->Location = System::Drawing::Point(18, 195);
+            this->fcgCBRyzenDisableAVX2->Name = L"fcgCBRyzenDisableAVX2";
+            this->fcgCBRyzenDisableAVX2->Size = System::Drawing::Size(190, 18);
+            this->fcgCBRyzenDisableAVX2->TabIndex = 7;
+            this->fcgCBRyzenDisableAVX2->Tag = L"chValue";
+            this->fcgCBRyzenDisableAVX2->Text = L"AMD RyzenではAVX2を使用しない";
+            this->fcgCBRyzenDisableAVX2->UseVisualStyleBackColor = true;
             // 
             // frmConfig
             // 
