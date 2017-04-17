@@ -8,7 +8,7 @@ by rigaya
 [rigayaの日記兼メモ帳＞＞](http://rigaya34589.blog135.fc2.com/blog-category-5.html)
 
 ## 基本動作環境
-Windows Vista, 7, 8, 8.1, 10 (x86/x64)  
+Windows 7, 8, 8.1, 10 (x86/x64)  
 Aviutl 0.99g4 以降  
 Aviutl 0.99k2 以降 推奨  
 
