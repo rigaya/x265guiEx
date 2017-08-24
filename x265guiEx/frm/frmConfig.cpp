@@ -446,6 +446,7 @@ System::Void frmConfig::fcgTSBRearrageTabs_CheckedChanged(System::Object^  sende
     if (!fcgTSBCMDOnly->Checked) {
         fcgtabControlVideo->TabPages->Insert(0, fcgtabPageX265Main);
         fcgtabControlVideo->TabPages->Insert(1, fcgtabPageX265Other);
+        fcgtabControlVideo->TabPages->Insert(2, fcgtabPageX2652pass);
     }
     fcgtabControlVideo->SelectedIndex = 0;
     //一度ウィンドウの再描画を再開し、強制的に再描画させる
@@ -1412,6 +1413,13 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUDeblockStrength,  cx265->deblock.x);
     SetNUValue(fcgNUDeblockThreshold, cx265->deblock.y);
     fcgCBSAO->Checked               = cx265->sao != 0;
+
+    fcgCBAnalysisReuse->Checked     = cx265->analysis_reuse_mode != 0;
+    SetNUValue(fcgNUAnalysisReuseLevel, cx265->analysis_reuse_level);
+    SetNUValue(fcgNURefineInter,        cx265->refine_inter);
+    SetNUValue(fcgNURefineIntra,        cx265->refine_intra);
+
+    fcgTXAnalysisReuseFile->Text    = (str_has_char(cnf->vid.analysis_file)) ? String(cnf->vid.analysis_file).ToString() : String(DefaultAnalysisFilePath).ToString();
     }
 
      
@@ -1569,6 +1577,13 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.pb_ratio             = 0.0f;
 
     GetCHARfromString(cnf->vid.stats, fcgTXStatusFile->Text);
+
+    cnf->x265.analysis_reuse_mode  = fcgCBAnalysisReuse->Checked;
+    cnf->x265.analysis_reuse_level = (int)fcgNUAnalysisReuseLevel->Value;
+    cnf->x265.refine_intra         = (int)fcgNURefineIntra->Value;
+    cnf->x265.refine_inter         = (int)fcgNURefineInter->Value;
+
+    GetCHARfromString(cnf->vid.analysis_file, fcgTXAnalysisReuseFile->Text);
 
     //拡張部
     cnf->vid.afs                    = fcgCBAFS->Checked;
@@ -1835,7 +1850,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgNURD,               L"--rd");
     fcgTTX265->SetToolTip(fcgCXAQMode,           L"--aq-mode");
     fcgTTX265->SetToolTip(fcgNUAQStrength,       L"--aq-strength");
-    fcgTTX265->SetToolTip(fcgCBAQMotion,       L"--aq-motion");
+    fcgTTX265->SetToolTip(fcgCBAQMotion,         L"--aq-motion");
     fcgTTX265->SetToolTip(fcgNUPsyRD,            L"--psy-rd");
     fcgTTX265->SetToolTip(fcgNUPsyRDOQ,          L"--psy-rdoq");
     fcgTTX265->SetToolTip(fcgNURdoqLevel,        L"--rdoq-level");
@@ -1869,6 +1884,12 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgCBDeblock,          L"--deblock <Strength>:<Threshold>\nチェックオフ時 --no-deblock");
     fcgTTX265->SetToolTip(fcgNUDeblockStrength,  L"--deblock <Strength>:<Threshold>");
     fcgTTX265->SetToolTip(fcgNUDeblockThreshold, L"--deblock <Strength>:<Threshold>");
+
+    fcgTTX265->SetToolTip(fcgCBAnalysisReuse,      L"--analysis-reuse-mode");
+    fcgTTX265->SetToolTip(fcgNUAnalysisReuseLevel, L"--analysis-reuse-level");
+    fcgTTX265->SetToolTip(fcgTXAnalysisReuseFile,  L"--analysis-reuse-file");
+    fcgTTX265->SetToolTip(fcgNURefineIntra,        L"--refine-intra");
+    fcgTTX265->SetToolTip(fcgNURefineInter,        L"--refine-inter");
 
     //拡張
     fcgTTEx->SetToolTip(fcgCBAFS,                L""

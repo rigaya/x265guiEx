@@ -99,6 +99,7 @@ typedef struct {
     double amp_limit_bitrate;        //自動マルチパス時のビットレート制限(kbps)
     BOOL   input_as_lw48;            //LW48モード
     char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
+    char   analysis_file[MAX_PATH_LEN]; //x265用ステータスファイルの場所
 } CONF_VIDEO; //動画用設定(x264以外)
 #pragma pack(pop)
 

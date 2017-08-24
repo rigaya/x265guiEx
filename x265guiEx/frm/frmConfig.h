@@ -842,6 +842,20 @@ private: System::Windows::Forms::CheckBox^  fcgCBAQMotion;
 private: System::Windows::Forms::CheckBox^  fcgCBSsimRd;
 private: System::Windows::Forms::Label^  fcgLBSsimRd;
 private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
+private: System::Windows::Forms::TabPage^  fcgtabPageX2652pass;
+private: System::Windows::Forms::CheckBox^  fcgCBAnalysisReuse;
+private: System::Windows::Forms::GroupBox^  fcggroupBoxAnalysisReuse;
+private: System::Windows::Forms::NumericUpDown^  fcgNURefineInter;
+
+private: System::Windows::Forms::NumericUpDown^  fcgNURefineIntra;
+
+private: System::Windows::Forms::Label^  fcgTXAnalysisRefineInter;
+private: System::Windows::Forms::Label^  fcgTXAnalysisRefineIntra;
+private: System::Windows::Forms::Label^  fcgLBAnalysisReuseLevel;
+private: System::Windows::Forms::Label^  fcgLBAnalysisReuseFile;
+private: System::Windows::Forms::TextBox^  fcgTXAnalysisReuseFile;
+private: System::Windows::Forms::Button^  fcgBTAnalysisReuseFile;
+private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
 
 
 
@@ -1103,6 +1117,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             this->fcgCXX264Priority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBX265Priority = (gcnew System::Windows::Forms::Label());
             this->fcggroupBoxExSettings = (gcnew System::Windows::Forms::GroupBox());
+            this->fcgCBRyzenDisableAVX2 = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBSetKeyframeAtChapter = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBInputAsLW48 = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBCheckKeyframes = (gcnew System::Windows::Forms::CheckBox());
@@ -1228,7 +1243,18 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
-            this->fcgCBRyzenDisableAVX2 = (gcnew System::Windows::Forms::CheckBox());
+            this->fcgtabPageX2652pass = (gcnew System::Windows::Forms::TabPage());
+            this->fcggroupBoxAnalysisReuse = (gcnew System::Windows::Forms::GroupBox());
+            this->fcgNUAnalysisReuseLevel = (gcnew System::Windows::Forms::NumericUpDown());
+            this->fcgCBAnalysisReuse = (gcnew System::Windows::Forms::CheckBox());
+            this->fcgLBAnalysisReuseFile = (gcnew System::Windows::Forms::Label());
+            this->fcgTXAnalysisReuseFile = (gcnew System::Windows::Forms::TextBox());
+            this->fcgBTAnalysisReuseFile = (gcnew System::Windows::Forms::Button());
+            this->fcgLBAnalysisReuseLevel = (gcnew System::Windows::Forms::Label());
+            this->fcgTXAnalysisRefineIntra = (gcnew System::Windows::Forms::Label());
+            this->fcgTXAnalysisRefineInter = (gcnew System::Windows::Forms::Label());
+            this->fcgNURefineIntra = (gcnew System::Windows::Forms::NumericUpDown());
+            this->fcgNURefineInter = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -1292,12 +1318,18 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             this->fcgtabPageAudioMain->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAudioBitrate))->BeginInit();
             this->fcgtabPageAudioOther->SuspendLayout();
+            this->fcgtabPageX2652pass->SuspendLayout();
+            this->fcggroupBoxAnalysisReuse->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAnalysisReuseLevel))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineIntra))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineInter))->BeginInit();
             this->SuspendLayout();
             // 
             // fcgtabControlVideo
             // 
             this->fcgtabControlVideo->Controls->Add(this->fcgtabPageX265Main);
             this->fcgtabControlVideo->Controls->Add(this->fcgtabPageX265Other);
+            this->fcgtabControlVideo->Controls->Add(this->fcgtabPageX2652pass);
             this->fcgtabControlVideo->Controls->Add(this->fcgtabPageExSettings);
             this->fcgtabControlVideo->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
@@ -3141,6 +3173,17 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             this->fcggroupBoxExSettings->TabStop = false;
             this->fcggroupBoxExSettings->Text = L"拡張設定";
             // 
+            // fcgCBRyzenDisableAVX2
+            // 
+            this->fcgCBRyzenDisableAVX2->AutoSize = true;
+            this->fcgCBRyzenDisableAVX2->Location = System::Drawing::Point(18, 195);
+            this->fcgCBRyzenDisableAVX2->Name = L"fcgCBRyzenDisableAVX2";
+            this->fcgCBRyzenDisableAVX2->Size = System::Drawing::Size(190, 18);
+            this->fcgCBRyzenDisableAVX2->TabIndex = 7;
+            this->fcgCBRyzenDisableAVX2->Tag = L"chValue";
+            this->fcgCBRyzenDisableAVX2->Text = L"AMD RyzenではAVX2を使用しない";
+            this->fcgCBRyzenDisableAVX2->UseVisualStyleBackColor = true;
+            // 
             // fcgCBSetKeyframeAtChapter
             // 
             this->fcgCBSetKeyframeAtChapter->AutoSize = true;
@@ -4484,16 +4527,132 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
             // 
-            // fcgCBRyzenDisableAVX2
+            // fcgtabPageX2652pass
             // 
-            this->fcgCBRyzenDisableAVX2->AutoSize = true;
-            this->fcgCBRyzenDisableAVX2->Location = System::Drawing::Point(18, 195);
-            this->fcgCBRyzenDisableAVX2->Name = L"fcgCBRyzenDisableAVX2";
-            this->fcgCBRyzenDisableAVX2->Size = System::Drawing::Size(190, 18);
-            this->fcgCBRyzenDisableAVX2->TabIndex = 7;
-            this->fcgCBRyzenDisableAVX2->Tag = L"chValue";
-            this->fcgCBRyzenDisableAVX2->Text = L"AMD RyzenではAVX2を使用しない";
-            this->fcgCBRyzenDisableAVX2->UseVisualStyleBackColor = true;
+            this->fcgtabPageX2652pass->Controls->Add(this->fcgCBAnalysisReuse);
+            this->fcgtabPageX2652pass->Controls->Add(this->fcggroupBoxAnalysisReuse);
+            this->fcgtabPageX2652pass->Location = System::Drawing::Point(4, 23);
+            this->fcgtabPageX2652pass->Name = L"fcgtabPageX2652pass";
+            this->fcgtabPageX2652pass->Size = System::Drawing::Size(608, 493);
+            this->fcgtabPageX2652pass->TabIndex = 7;
+            this->fcgtabPageX2652pass->Text = L"x265 (3)";
+            this->fcgtabPageX2652pass->UseVisualStyleBackColor = true;
+            // 
+            // fcggroupBoxAnalysisReuse
+            // 
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgNURefineInter);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgNURefineIntra);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgTXAnalysisRefineInter);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgTXAnalysisRefineIntra);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgLBAnalysisReuseLevel);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgLBAnalysisReuseFile);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgTXAnalysisReuseFile);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgBTAnalysisReuseFile);
+            this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgNUAnalysisReuseLevel);
+            this->fcggroupBoxAnalysisReuse->Location = System::Drawing::Point(8, 5);
+            this->fcggroupBoxAnalysisReuse->Name = L"fcggroupBoxAnalysisReuse";
+            this->fcggroupBoxAnalysisReuse->Size = System::Drawing::Size(303, 150);
+            this->fcggroupBoxAnalysisReuse->TabIndex = 51;
+            this->fcggroupBoxAnalysisReuse->TabStop = false;
+            // 
+            // fcgNUAnalysisReuseLevel
+            // 
+            this->fcgNUAnalysisReuseLevel->Location = System::Drawing::Point(92, 30);
+            this->fcgNUAnalysisReuseLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+            this->fcgNUAnalysisReuseLevel->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            this->fcgNUAnalysisReuseLevel->Name = L"fcgNUAnalysisReuseLevel";
+            this->fcgNUAnalysisReuseLevel->Size = System::Drawing::Size(60, 21);
+            this->fcgNUAnalysisReuseLevel->TabIndex = 53;
+            this->fcgNUAnalysisReuseLevel->Tag = L"reCmd";
+            this->fcgNUAnalysisReuseLevel->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+            this->fcgNUAnalysisReuseLevel->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            // 
+            // fcgCBAnalysisReuse
+            // 
+            this->fcgCBAnalysisReuse->AutoSize = true;
+            this->fcgCBAnalysisReuse->Location = System::Drawing::Point(17, 6);
+            this->fcgCBAnalysisReuse->Name = L"fcgCBAnalysisReuse";
+            this->fcgCBAnalysisReuse->Size = System::Drawing::Size(112, 18);
+            this->fcgCBAnalysisReuse->TabIndex = 52;
+            this->fcgCBAnalysisReuse->Tag = L"reCmd";
+            this->fcgCBAnalysisReuse->Text = L"解析結果の再利用";
+            this->fcgCBAnalysisReuse->UseVisualStyleBackColor = true;
+            // 
+            // fcgLBAnalysisReuseFile
+            // 
+            this->fcgLBAnalysisReuseFile->AutoSize = true;
+            this->fcgLBAnalysisReuseFile->Location = System::Drawing::Point(6, 121);
+            this->fcgLBAnalysisReuseFile->Name = L"fcgLBAnalysisReuseFile";
+            this->fcgLBAnalysisReuseFile->Size = System::Drawing::Size(59, 14);
+            this->fcgLBAnalysisReuseFile->TabIndex = 56;
+            this->fcgLBAnalysisReuseFile->Text = L"解析ファイル";
+            // 
+            // fcgTXAnalysisReuseFile
+            // 
+            this->fcgTXAnalysisReuseFile->Location = System::Drawing::Point(71, 118);
+            this->fcgTXAnalysisReuseFile->Name = L"fcgTXAnalysisReuseFile";
+            this->fcgTXAnalysisReuseFile->Size = System::Drawing::Size(194, 21);
+            this->fcgTXAnalysisReuseFile->TabIndex = 54;
+            this->fcgTXAnalysisReuseFile->Tag = L"reCmd";
+            this->fcgTXAnalysisReuseFile->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
+            this->fcgTXAnalysisReuseFile->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
+            // 
+            // fcgBTAnalysisReuseFile
+            // 
+            this->fcgBTAnalysisReuseFile->Location = System::Drawing::Point(271, 117);
+            this->fcgBTAnalysisReuseFile->Name = L"fcgBTAnalysisReuseFile";
+            this->fcgBTAnalysisReuseFile->Size = System::Drawing::Size(29, 22);
+            this->fcgBTAnalysisReuseFile->TabIndex = 55;
+            this->fcgBTAnalysisReuseFile->Text = L"...";
+            this->fcgBTAnalysisReuseFile->UseVisualStyleBackColor = true;
+            this->fcgBTAnalysisReuseFile->Click += gcnew System::EventHandler(this, &frmConfig::fcgBTAnalysisReuseFile_Click);
+            // 
+            // fcgLBAnalysisReuseLevel
+            // 
+            this->fcgLBAnalysisReuseLevel->AutoSize = true;
+            this->fcgLBAnalysisReuseLevel->Location = System::Drawing::Point(6, 32);
+            this->fcgLBAnalysisReuseLevel->Name = L"fcgLBAnalysisReuseLevel";
+            this->fcgLBAnalysisReuseLevel->Size = System::Drawing::Size(80, 14);
+            this->fcgLBAnalysisReuseLevel->TabIndex = 57;
+            this->fcgLBAnalysisReuseLevel->Text = L"再利用の度合い";
+            // 
+            // fcgTXAnalysisRefineIntra
+            // 
+            this->fcgTXAnalysisRefineIntra->AutoSize = true;
+            this->fcgTXAnalysisRefineIntra->Location = System::Drawing::Point(6, 61);
+            this->fcgTXAnalysisRefineIntra->Name = L"fcgTXAnalysisRefineIntra";
+            this->fcgTXAnalysisRefineIntra->Size = System::Drawing::Size(61, 14);
+            this->fcgTXAnalysisRefineIntra->TabIndex = 58;
+            this->fcgTXAnalysisRefineIntra->Text = L"イントラ改質";
+            // 
+            // fcgTXAnalysisRefineInter
+            // 
+            this->fcgTXAnalysisRefineInter->AutoSize = true;
+            this->fcgTXAnalysisRefineInter->Location = System::Drawing::Point(6, 90);
+            this->fcgTXAnalysisRefineInter->Name = L"fcgTXAnalysisRefineInter";
+            this->fcgTXAnalysisRefineInter->Size = System::Drawing::Size(62, 14);
+            this->fcgTXAnalysisRefineInter->TabIndex = 59;
+            this->fcgTXAnalysisRefineInter->Text = L"インター改質";
+            // 
+            // fcgNURefineIntra
+            // 
+            this->fcgNURefineIntra->Location = System::Drawing::Point(92, 59);
+            this->fcgNURefineIntra->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+            this->fcgNURefineIntra->Name = L"fcgNURefineIntra";
+            this->fcgNURefineIntra->Size = System::Drawing::Size(60, 21);
+            this->fcgNURefineIntra->TabIndex = 60;
+            this->fcgNURefineIntra->Tag = L"reCmd";
+            this->fcgNURefineIntra->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+            // 
+            // fcgNURefineInter
+            // 
+            this->fcgNURefineInter->Location = System::Drawing::Point(92, 88);
+            this->fcgNURefineInter->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+            this->fcgNURefineInter->Name = L"fcgNURefineInter";
+            this->fcgNURefineInter->Size = System::Drawing::Size(60, 21);
+            this->fcgNURefineInter->TabIndex = 61;
+            this->fcgNURefineInter->Tag = L"reCmd";
+            this->fcgNURefineInter->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
             // 
             // frmConfig
             // 
@@ -4609,6 +4768,13 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAudioBitrate))->EndInit();
             this->fcgtabPageAudioOther->ResumeLayout(false);
             this->fcgtabPageAudioOther->PerformLayout();
+            this->fcgtabPageX2652pass->ResumeLayout(false);
+            this->fcgtabPageX2652pass->PerformLayout();
+            this->fcggroupBoxAnalysisReuse->ResumeLayout(false);
+            this->fcggroupBoxAnalysisReuse->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAnalysisReuseLevel))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineIntra))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineInter))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -4950,6 +5116,10 @@ private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
     private: 
         System::Void fcgBTStatusFile_Click(System::Object^  sender, System::EventArgs^  e) {
             openAndSetFilePath(fcgTXStatusFile, L"ステータスファイル");
+        }
+    private:
+        System::Void fcgBTAnalysisReuseFile_Click(System::Object^  sender, System::EventArgs^  e) {
+            openAndSetFilePath(fcgTXAnalysisReuseFile, L"解析結果ファイル");
         }
     private:
         System::Void fcgBTBatBeforePath_Click(System::Object^  sender, System::EventArgs^  e) {

@@ -808,6 +808,8 @@ const int StgNotesColor[][3] = {
 const WCHAR * const DefaultStgNotes = L"メモ...";
 const WCHAR * const DefaultStatusFilePath = L"%{savfile}.stats";
 const WCHAR * const DefaultTcFilePath = L"%{savfile}_tc.txt";
+const WCHAR * const DefaultAnalysisFilePath = L"%{savfile}_x265_analysis.dat";
+
 
 typedef struct {
     WCHAR *string;
