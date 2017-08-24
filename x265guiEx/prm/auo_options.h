@@ -175,6 +175,9 @@ const X265_OPTION_STR list_colorprim[] = {
     { "smpte240m", L"smpte240m" },
     { "film",      L"film"      },
     { "bt2020",    L"bt2020"    },
+    { "smpte-st-428",  L"smpte-st-428"  },
+    { "smpte-rp-431",  L"smpte-rp-431"  },
+    { "smpte-eg-432",  L"smpte-eg-432"  },
     { NULL, NULL }
 };
 const X265_OPTION_STR list_transfer[] = {
@@ -215,6 +218,10 @@ const X265_OPTION_STR list_colormatrix[] = {
     { "GBR",       L"GBR"       },
     { "bt2020nc",  L"bt2020nc"  },
     { "bt2020c",   L"bt2020c"   },
+    { "smpte-st-2085", L"smpte-st-2085" },
+    { "chroma-nc", L"chroma-nc" },
+    { "chroma-c",  L"chroma-c"  },
+    { "ictcp",     L"ictcp" },
     { NULL, NULL }
 };
 const X265_OPTION_STR list_videoformat[] = {
