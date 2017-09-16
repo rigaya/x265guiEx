@@ -216,8 +216,8 @@ static X265_OPTIONS x265_options_table[] = {
     { "ssim-rd",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, ssim_rd        ) },
     //{ "analysis-reuse-mode", "", OPTION_TYPE_BOOL,        NULL,                 offsetof(CONF_X265, analysis_reuse_mode) },
     { "analysis-reuse-level", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, analysis_reuse_level) },
-    { "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_intra)         },
-    { "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
+    //{ "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_intra)         },
+    //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 
