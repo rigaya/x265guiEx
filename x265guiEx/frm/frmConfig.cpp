@@ -1416,7 +1416,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUDeblockThreshold, cx265->deblock.y);
     fcgCBSAO->Checked               = cx265->sao != 0;
 
-    fcgCBAnalysisReuse->Checked     = cx265->analysis_reuse_mode != 0;
+    fcgCBAnalysisReuse->Checked     = cx265->analysis_reuse != 0;
     SetNUValue(fcgNUAnalysisReuseLevel, cx265->analysis_reuse_level);
     SetNUValue(fcgNURefineInter,        cx265->refine_inter);
     SetNUValue(fcgNURefineIntra,        cx265->refine_intra);
@@ -1580,7 +1580,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
 
     GetCHARfromString(cnf->vid.stats, fcgTXStatusFile->Text);
 
-    cnf->x265.analysis_reuse_mode  = fcgCBAnalysisReuse->Checked;
+    cnf->x265.analysis_reuse       = fcgCBAnalysisReuse->Checked;
     cnf->x265.analysis_reuse_level = (int)fcgNUAnalysisReuseLevel->Value;
     cnf->x265.refine_intra         = (int)fcgNURefineIntra->Value;
     cnf->x265.refine_inter         = (int)fcgNURefineInter->Value;

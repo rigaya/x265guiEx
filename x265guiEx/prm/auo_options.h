@@ -412,7 +412,7 @@ typedef struct CONF_X265 {
     BOOL    limit_modes;
     BOOL    aq_motion;
     BOOL    ssim_rd;
-    BOOL    analysis_reuse_mode;
+    BOOL    analysis_reuse;
     int     analysis_reuse_level;
     int     refine_intra;
     int     refine_inter;

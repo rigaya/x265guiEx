@@ -214,7 +214,7 @@ static X265_OPTIONS x265_options_table[] = {
     { "aq-motion",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, aq_motion      ) },
     { "no-ssim-rd",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, ssim_rd        ) },
     { "ssim-rd",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, ssim_rd        ) },
-    //{ "analysis-reuse-mode", "", OPTION_TYPE_BOOL,        NULL,                 offsetof(CONF_X265, analysis_reuse_mode) },
+    //{ "analysis-reuse-mode", "", OPTION_TYPE_BOOL,        NULL,                 offsetof(CONF_X265, analysis_reuse) },
     { "analysis-reuse-level", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, analysis_reuse_level) },
     //{ "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_intra)         },
     //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
@@ -731,9 +731,8 @@ static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, c
         if (cx->pass) {
             len += sprintf_s(cmd + len, nSize - len, " --pass %d", cx->pass);
             len += sprintf_s(cmd + len, nSize - len, " --stats \"%s\"", vid->stats);
-            if (cx->analysis_reuse_mode) {
-                len += sprintf_s(cmd + len, nSize - len, " --analysis-reuse-mode %s", (cx->pass == 1) ? "save" : "load");
-                len += sprintf_s(cmd + len, nSize - len, " --analysis-reuse-file \"%s\"", vid->analysis_file);
+            if (cx->analysis_reuse) {
+                len += sprintf_s(cmd + len, nSize - len, " --analysis-%s \"%s\"", (cx->pass == 1) ? "save" : "load", vid->analysis_file);
             }
         }
         return len;

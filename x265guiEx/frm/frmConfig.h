@@ -1334,7 +1334,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabControlVideo->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->fcgtabControlVideo->Location = System::Drawing::Point(0, 31);
-            this->fcgtabControlVideo->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabControlVideo->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabControlVideo->Name = L"fcgtabControlVideo";
             this->fcgtabControlVideo->SelectedIndex = 0;
             this->fcgtabControlVideo->Size = System::Drawing::Size(770, 650);
@@ -1363,9 +1363,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageX265Main->Controls->Add(this->fcgTXX265Path);
             this->fcgtabPageX265Main->Controls->Add(this->fcgLBX265Path);
             this->fcgtabPageX265Main->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageX265Main->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageX265Main->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageX265Main->Name = L"fcgtabPageX265Main";
-            this->fcgtabPageX265Main->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageX265Main->Padding = System::Windows::Forms::Padding(4);
             this->fcgtabPageX265Main->Size = System::Drawing::Size(762, 619);
             this->fcgtabPageX265Main->TabIndex = 5;
             this->fcgtabPageX265Main->Text = L" x265 (1)";
@@ -1376,7 +1376,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXBitDepth->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXBitDepth->FormattingEnabled = true;
             this->fcgCXBitDepth->Location = System::Drawing::Point(618, 355);
-            this->fcgCXBitDepth->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXBitDepth->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXBitDepth->Name = L"fcgCXBitDepth";
             this->fcgCXBitDepth->Size = System::Drawing::Size(118, 26);
             this->fcgCXBitDepth->TabIndex = 65;
@@ -1405,9 +1405,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxThread->Controls->Add(this->fcgLBThreads);
             this->fcggroupBoxThread->Controls->Add(this->fcgNUPools);
             this->fcggroupBoxThread->Location = System::Drawing::Point(245, 381);
-            this->fcggroupBoxThread->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxThread->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxThread->Name = L"fcggroupBoxThread";
-            this->fcggroupBoxThread->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxThread->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxThread->Size = System::Drawing::Size(221, 228);
             this->fcggroupBoxThread->TabIndex = 40;
             this->fcggroupBoxThread->TabStop = false;
@@ -1436,7 +1436,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBPME->AutoSize = true;
             this->fcgCBPME->Location = System::Drawing::Point(181, 181);
-            this->fcgCBPME->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBPME->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBPME->Name = L"fcgCBPME";
             this->fcgCBPME->Size = System::Drawing::Size(18, 17);
             this->fcgCBPME->TabIndex = 45;
@@ -1447,7 +1447,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBPMode->AutoSize = true;
             this->fcgCBPMode->Location = System::Drawing::Point(181, 145);
-            this->fcgCBPMode->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBPMode->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBPMode->Name = L"fcgCBPMode";
             this->fcgCBPMode->Size = System::Drawing::Size(18, 17);
             this->fcgCBPMode->TabIndex = 44;
@@ -1468,7 +1468,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBWpp->AutoSize = true;
             this->fcgCBWpp->Location = System::Drawing::Point(181, 109);
-            this->fcgCBWpp->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBWpp->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBWpp->Name = L"fcgCBWpp";
             this->fcgCBWpp->Size = System::Drawing::Size(18, 17);
             this->fcgCBWpp->TabIndex = 43;
@@ -1488,7 +1488,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUFrameThreads
             // 
             this->fcgNUFrameThreads->Location = System::Drawing::Point(119, 61);
-            this->fcgNUFrameThreads->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUFrameThreads->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUFrameThreads->Name = L"fcgNUFrameThreads";
             this->fcgNUFrameThreads->Size = System::Drawing::Size(80, 25);
             this->fcgNUFrameThreads->TabIndex = 42;
@@ -1508,7 +1508,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUPools
             // 
             this->fcgNUPools->Location = System::Drawing::Point(119, 24);
-            this->fcgNUPools->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUPools->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUPools->Name = L"fcgNUPools";
             this->fcgNUPools->Size = System::Drawing::Size(80, 25);
             this->fcgNUPools->TabIndex = 41;
@@ -1520,7 +1520,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXInterlaced->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXInterlaced->FormattingEnabled = true;
             this->fcgCXInterlaced->Location = System::Drawing::Point(616, 166);
-            this->fcgCXInterlaced->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXInterlaced->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXInterlaced->Name = L"fcgCXInterlaced";
             this->fcgCXInterlaced->Size = System::Drawing::Size(119, 26);
             this->fcgCXInterlaced->TabIndex = 55;
@@ -1547,9 +1547,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxVUIColor->Controls->Add(this->fcgLBColorPrim);
             this->fcggroupBoxVUIColor->Controls->Add(this->fcgLBColorMatrix);
             this->fcggroupBoxVUIColor->Location = System::Drawing::Point(490, 435);
-            this->fcggroupBoxVUIColor->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxVUIColor->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxVUIColor->Name = L"fcggroupBoxVUIColor";
-            this->fcggroupBoxVUIColor->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxVUIColor->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxVUIColor->Size = System::Drawing::Size(261, 175);
             this->fcggroupBoxVUIColor->TabIndex = 70;
             this->fcggroupBoxVUIColor->TabStop = false;
@@ -1559,7 +1559,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBFullRange->AutoSize = true;
             this->fcgCBFullRange->Location = System::Drawing::Point(205, 144);
-            this->fcgCBFullRange->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBFullRange->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBFullRange->Name = L"fcgCBFullRange";
             this->fcgCBFullRange->Size = System::Drawing::Size(18, 17);
             this->fcgCBFullRange->TabIndex = 74;
@@ -1581,7 +1581,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXTransfer->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXTransfer->FormattingEnabled = true;
             this->fcgCXTransfer->Location = System::Drawing::Point(131, 101);
-            this->fcgCXTransfer->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXTransfer->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXTransfer->Name = L"fcgCXTransfer";
             this->fcgCXTransfer->Size = System::Drawing::Size(114, 26);
             this->fcgCXTransfer->TabIndex = 73;
@@ -1592,7 +1592,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXColorPrim->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXColorPrim->FormattingEnabled = true;
             this->fcgCXColorPrim->Location = System::Drawing::Point(131, 61);
-            this->fcgCXColorPrim->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXColorPrim->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXColorPrim->Name = L"fcgCXColorPrim";
             this->fcgCXColorPrim->Size = System::Drawing::Size(114, 26);
             this->fcgCXColorPrim->TabIndex = 72;
@@ -1603,7 +1603,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXColorMatrix->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXColorMatrix->FormattingEnabled = true;
             this->fcgCXColorMatrix->Location = System::Drawing::Point(131, 22);
-            this->fcgCXColorMatrix->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXColorMatrix->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXColorMatrix->Name = L"fcgCXColorMatrix";
             this->fcgCXColorMatrix->Size = System::Drawing::Size(114, 26);
             this->fcgCXColorMatrix->TabIndex = 71;
@@ -1644,7 +1644,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXVideoFormat->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXVideoFormat->FormattingEnabled = true;
             this->fcgCXVideoFormat->Location = System::Drawing::Point(616, 128);
-            this->fcgCXVideoFormat->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXVideoFormat->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXVideoFormat->Name = L"fcgCXVideoFormat";
             this->fcgCXVideoFormat->Size = System::Drawing::Size(118, 26);
             this->fcgCXVideoFormat->TabIndex = 54;
@@ -1667,9 +1667,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxSAR->Controls->Add(this->fcgNUAspectRatioX);
             this->fcggroupBoxSAR->Controls->Add(this->fcgCXAspectRatio);
             this->fcggroupBoxSAR->Location = System::Drawing::Point(495, 6);
-            this->fcggroupBoxSAR->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxSAR->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxSAR->Name = L"fcggroupBoxSAR";
-            this->fcggroupBoxSAR->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxSAR->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxSAR->Size = System::Drawing::Size(256, 108);
             this->fcggroupBoxSAR->TabIndex = 50;
             this->fcggroupBoxSAR->TabStop = false;
@@ -1678,7 +1678,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUAspectRatioY
             // 
             this->fcgNUAspectRatioY->Location = System::Drawing::Point(158, 66);
-            this->fcgNUAspectRatioY->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAspectRatioY->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAspectRatioY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
             this->fcgNUAspectRatioY->Name = L"fcgNUAspectRatioY";
             this->fcgNUAspectRatioY->Size = System::Drawing::Size(75, 25);
@@ -1699,7 +1699,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUAspectRatioX
             // 
             this->fcgNUAspectRatioX->Location = System::Drawing::Point(52, 66);
-            this->fcgNUAspectRatioX->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAspectRatioX->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAspectRatioX->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000, 0, 0, 0 });
             this->fcgNUAspectRatioX->Name = L"fcgNUAspectRatioX";
             this->fcgNUAspectRatioX->Size = System::Drawing::Size(75, 25);
@@ -1712,7 +1712,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAspectRatio->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAspectRatio->FormattingEnabled = true;
             this->fcgCXAspectRatio->Location = System::Drawing::Point(19, 31);
-            this->fcgCXAspectRatio->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAspectRatio->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAspectRatio->Name = L"fcgCXAspectRatio";
             this->fcgCXAspectRatio->Size = System::Drawing::Size(213, 26);
             this->fcgCXAspectRatio->TabIndex = 51;
@@ -1723,7 +1723,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXCSP->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXCSP->FormattingEnabled = true;
             this->fcgCXCSP->Location = System::Drawing::Point(618, 394);
-            this->fcgCXCSP->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXCSP->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXCSP->Name = L"fcgCXCSP";
             this->fcgCXCSP->Size = System::Drawing::Size(118, 26);
             this->fcgCXCSP->TabIndex = 66;
@@ -1748,9 +1748,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxRateControl->Controls->Add(this->fcgLBVBVbuf);
             this->fcggroupBoxRateControl->Controls->Add(this->fcgNUVBVmax);
             this->fcggroupBoxRateControl->Location = System::Drawing::Point(495, 205);
-            this->fcggroupBoxRateControl->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxRateControl->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxRateControl->Name = L"fcggroupBoxRateControl";
-            this->fcggroupBoxRateControl->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxRateControl->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxRateControl->Size = System::Drawing::Size(256, 135);
             this->fcggroupBoxRateControl->TabIndex = 60;
             this->fcggroupBoxRateControl->TabStop = false;
@@ -1770,7 +1770,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUQComp->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUQComp->Location = System::Drawing::Point(158, 96);
-            this->fcgNUQComp->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUQComp->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUQComp->Name = L"fcgNUQComp";
             this->fcgNUQComp->Size = System::Drawing::Size(84, 25);
             this->fcgNUQComp->TabIndex = 63;
@@ -1791,7 +1791,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUVBVbuf->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
             this->fcgNUVBVbuf->Location = System::Drawing::Point(121, 61);
-            this->fcgNUVBVbuf->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUVBVbuf->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUVBVbuf->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
             this->fcgNUVBVbuf->Name = L"fcgNUVBVbuf";
             this->fcgNUVBVbuf->Size = System::Drawing::Size(120, 25);
@@ -1813,7 +1813,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUVBVmax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 500, 0, 0, 0 });
             this->fcgNUVBVmax->Location = System::Drawing::Point(121, 25);
-            this->fcgNUVBVmax->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUVBVmax->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUVBVmax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1000000, 0, 0, 0 });
             this->fcgNUVBVmax->Name = L"fcgNUVBVmax";
             this->fcgNUVBVmax->Size = System::Drawing::Size(119, 25);
@@ -1831,9 +1831,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxPreset->Controls->Add(this->fcgLBX265Tune);
             this->fcggroupBoxPreset->Controls->Add(this->fcgLBX265Preset);
             this->fcggroupBoxPreset->Location = System::Drawing::Point(9, 381);
-            this->fcggroupBoxPreset->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxPreset->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxPreset->Name = L"fcggroupBoxPreset";
-            this->fcggroupBoxPreset->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxPreset->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxPreset->Size = System::Drawing::Size(228, 229);
             this->fcggroupBoxPreset->TabIndex = 30;
             this->fcggroupBoxPreset->TabStop = false;
@@ -1842,7 +1842,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTApplyPreset
             // 
             this->fcgBTApplyPreset->Location = System::Drawing::Point(91, 172);
-            this->fcgBTApplyPreset->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTApplyPreset->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTApplyPreset->Name = L"fcgBTApplyPreset";
             this->fcgBTApplyPreset->Size = System::Drawing::Size(118, 40);
             this->fcgBTApplyPreset->TabIndex = 34;
@@ -1855,7 +1855,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXProfile->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXProfile->FormattingEnabled = true;
             this->fcgCXProfile->Location = System::Drawing::Point(91, 122);
-            this->fcgCXProfile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXProfile->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXProfile->Name = L"fcgCXProfile";
             this->fcgCXProfile->Size = System::Drawing::Size(116, 26);
             this->fcgCXProfile->TabIndex = 33;
@@ -1866,7 +1866,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXTune->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXTune->FormattingEnabled = true;
             this->fcgCXTune->Location = System::Drawing::Point(91, 78);
-            this->fcgCXTune->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXTune->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXTune->Name = L"fcgCXTune";
             this->fcgCXTune->Size = System::Drawing::Size(116, 26);
             this->fcgCXTune->TabIndex = 32;
@@ -1877,7 +1877,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXPreset->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXPreset->FormattingEnabled = true;
             this->fcgCXPreset->Location = System::Drawing::Point(91, 32);
-            this->fcgCXPreset->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXPreset->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXPreset->Name = L"fcgCXPreset";
             this->fcgCXPreset->Size = System::Drawing::Size(116, 26);
             this->fcgCXPreset->TabIndex = 31;
@@ -1919,7 +1919,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgPNStatusFile->Controls->Add(this->fcgTXStatusFile);
             this->fcgPNStatusFile->Controls->Add(this->fcgBTStatusFile);
             this->fcgPNStatusFile->Location = System::Drawing::Point(6, 339);
-            this->fcgPNStatusFile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgPNStatusFile->Margin = System::Windows::Forms::Padding(4);
             this->fcgPNStatusFile->Name = L"fcgPNStatusFile";
             this->fcgPNStatusFile->Size = System::Drawing::Size(470, 40);
             this->fcgPNStatusFile->TabIndex = 6;
@@ -1937,7 +1937,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXStatusFile
             // 
             this->fcgTXStatusFile->Location = System::Drawing::Point(118, 9);
-            this->fcgTXStatusFile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXStatusFile->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXStatusFile->Name = L"fcgTXStatusFile";
             this->fcgTXStatusFile->Size = System::Drawing::Size(315, 25);
             this->fcgTXStatusFile->TabIndex = 16;
@@ -1948,7 +1948,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTStatusFile
             // 
             this->fcgBTStatusFile->Location = System::Drawing::Point(434, 8);
-            this->fcgBTStatusFile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTStatusFile->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTStatusFile->Name = L"fcgBTStatusFile";
             this->fcgBTStatusFile->Size = System::Drawing::Size(34, 28);
             this->fcgBTStatusFile->TabIndex = 17;
@@ -1966,7 +1966,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgPNBitrate->Controls->Add(this->fcgBTTBQualityAdd);
             this->fcgPNBitrate->Controls->Add(this->fcgTBQuality);
             this->fcgPNBitrate->Location = System::Drawing::Point(6, 239);
-            this->fcgPNBitrate->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgPNBitrate->Margin = System::Windows::Forms::Padding(4);
             this->fcgPNBitrate->Name = L"fcgPNBitrate";
             this->fcgPNBitrate->Size = System::Drawing::Size(470, 105);
             this->fcgPNBitrate->TabIndex = 5;
@@ -2004,7 +2004,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXQuality
             // 
             this->fcgTXQuality->Location = System::Drawing::Point(362, 10);
-            this->fcgTXQuality->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXQuality->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXQuality->Name = L"fcgTXQuality";
             this->fcgTXQuality->Size = System::Drawing::Size(94, 25);
             this->fcgTXQuality->TabIndex = 12;
@@ -2018,7 +2018,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgBTTBQualitySubtract->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgBTTBQualitySubtract.Image")));
             this->fcgBTTBQualitySubtract->Location = System::Drawing::Point(0, 41);
-            this->fcgBTTBQualitySubtract->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTTBQualitySubtract->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTTBQualitySubtract->Name = L"fcgBTTBQualitySubtract";
             this->fcgBTTBQualitySubtract->Size = System::Drawing::Size(26, 29);
             this->fcgBTTBQualitySubtract->TabIndex = 13;
@@ -2031,7 +2031,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgBTTBQualityAdd->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgBTTBQualityAdd.Image")));
             this->fcgBTTBQualityAdd->Location = System::Drawing::Point(440, 42);
-            this->fcgBTTBQualityAdd->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTTBQualityAdd->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTTBQualityAdd->Name = L"fcgBTTBQualityAdd";
             this->fcgBTTBQualityAdd->Size = System::Drawing::Size(26, 29);
             this->fcgBTTBQualityAdd->TabIndex = 15;
@@ -2045,7 +2045,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgTBQuality->AutoSize = false;
             this->fcgTBQuality->BackColor = System::Drawing::SystemColors::Window;
             this->fcgTBQuality->Location = System::Drawing::Point(19, 44);
-            this->fcgTBQuality->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTBQuality->Margin = System::Windows::Forms::Padding(4);
             this->fcgTBQuality->Maximum = 54000;
             this->fcgTBQuality->Name = L"fcgTBQuality";
             this->fcgTBQuality->Size = System::Drawing::Size(424, 31);
@@ -2066,7 +2066,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgPNX265Mode->Controls->Add(this->fcgCBAMPLimitFileSize);
             this->fcgPNX265Mode->Controls->Add(this->fcgLBAutoNpass);
             this->fcgPNX265Mode->Location = System::Drawing::Point(6, 84);
-            this->fcgPNX265Mode->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgPNX265Mode->Margin = System::Windows::Forms::Padding(4);
             this->fcgPNX265Mode->Name = L"fcgPNX265Mode";
             this->fcgPNX265Mode->Size = System::Drawing::Size(470, 158);
             this->fcgPNX265Mode->TabIndex = 4;
@@ -2075,7 +2075,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUAMPLimitBitrate->DecimalPlaces = 1;
             this->fcgNUAMPLimitBitrate->Location = System::Drawing::Point(362, 125);
-            this->fcgNUAMPLimitBitrate->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAMPLimitBitrate->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAMPLimitBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128000, 0, 0, 0 });
             this->fcgNUAMPLimitBitrate->Name = L"fcgNUAMPLimitBitrate";
             this->fcgNUAMPLimitBitrate->Size = System::Drawing::Size(98, 25);
@@ -2087,7 +2087,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUAMPLimitFileSize->DecimalPlaces = 1;
             this->fcgNUAMPLimitFileSize->Location = System::Drawing::Point(362, 94);
-            this->fcgNUAMPLimitFileSize->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAMPLimitFileSize->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAMPLimitFileSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16384, 0, 0, 0 });
             this->fcgNUAMPLimitFileSize->Name = L"fcgNUAMPLimitFileSize";
             this->fcgNUAMPLimitFileSize->Size = System::Drawing::Size(98, 25);
@@ -2100,7 +2100,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXX265Mode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXX265Mode->FormattingEnabled = true;
             this->fcgCXX265Mode->Location = System::Drawing::Point(8, 9);
-            this->fcgCXX265Mode->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXX265Mode->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXX265Mode->Name = L"fcgCXX265Mode";
             this->fcgCXX265Mode->Size = System::Drawing::Size(452, 26);
             this->fcgCXX265Mode->TabIndex = 4;
@@ -2111,7 +2111,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBNulOut->AutoSize = true;
             this->fcgCBNulOut->Location = System::Drawing::Point(8, 56);
-            this->fcgCBNulOut->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBNulOut->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBNulOut->Name = L"fcgCBNulOut";
             this->fcgCBNulOut->Size = System::Drawing::Size(80, 22);
             this->fcgCBNulOut->TabIndex = 5;
@@ -2124,7 +2124,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAMPLimitBitrate->AutoSize = true;
             this->fcgCBAMPLimitBitrate->Location = System::Drawing::Point(38, 126);
-            this->fcgCBAMPLimitBitrate->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAMPLimitBitrate->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAMPLimitBitrate->Name = L"fcgCBAMPLimitBitrate";
             this->fcgCBAMPLimitBitrate->Size = System::Drawing::Size(278, 22);
             this->fcgCBAMPLimitBitrate->TabIndex = 10;
@@ -2136,7 +2136,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBFastFirstPass->AutoSize = true;
             this->fcgCBFastFirstPass->Location = System::Drawing::Point(108, 56);
-            this->fcgCBFastFirstPass->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBFastFirstPass->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBFastFirstPass->Name = L"fcgCBFastFirstPass";
             this->fcgCBFastFirstPass->Size = System::Drawing::Size(127, 22);
             this->fcgCBFastFirstPass->TabIndex = 6;
@@ -2148,7 +2148,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUAutoNPass
             // 
             this->fcgNUAutoNPass->Location = System::Drawing::Point(391, 55);
-            this->fcgNUAutoNPass->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAutoNPass->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAutoNPass->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNUAutoNPass->Name = L"fcgNUAutoNPass";
             this->fcgNUAutoNPass->Size = System::Drawing::Size(69, 25);
@@ -2161,7 +2161,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAMPLimitFileSize->AutoSize = true;
             this->fcgCBAMPLimitFileSize->Location = System::Drawing::Point(38, 95);
-            this->fcgCBAMPLimitFileSize->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAMPLimitFileSize->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAMPLimitFileSize->Name = L"fcgCBAMPLimitFileSize";
             this->fcgCBAMPLimitFileSize->Size = System::Drawing::Size(238, 22);
             this->fcgCBAMPLimitFileSize->TabIndex = 8;
@@ -2183,7 +2183,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgpictureBoxX265->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgpictureBoxX265.Image")));
             this->fcgpictureBoxX265->Location = System::Drawing::Point(5, 15);
-            this->fcgpictureBoxX265->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgpictureBoxX265->Margin = System::Windows::Forms::Padding(4);
             this->fcgpictureBoxX265->Name = L"fcgpictureBoxX265";
             this->fcgpictureBoxX265->Size = System::Drawing::Size(138, 55);
             this->fcgpictureBoxX265->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -2193,7 +2193,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTX265Path
             // 
             this->fcgBTX265Path->Location = System::Drawing::Point(442, 42);
-            this->fcgBTX265Path->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTX265Path->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTX265Path->Name = L"fcgBTX265Path";
             this->fcgBTX265Path->Size = System::Drawing::Size(34, 28);
             this->fcgBTX265Path->TabIndex = 1;
@@ -2205,7 +2205,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXX265Path->AllowDrop = true;
             this->fcgTXX265Path->Location = System::Drawing::Point(149, 44);
-            this->fcgTXX265Path->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXX265Path->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXX265Path->Name = L"fcgTXX265Path";
             this->fcgTXX265Path->Size = System::Drawing::Size(293, 25);
             this->fcgTXX265Path->TabIndex = 0;
@@ -2254,7 +2254,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageX265Other->Controls->Add(this->fcgCBSAO);
             this->fcgtabPageX265Other->Controls->Add(this->fcgLBSAO);
             this->fcgtabPageX265Other->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageX265Other->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageX265Other->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageX265Other->Name = L"fcgtabPageX265Other";
             this->fcgtabPageX265Other->Size = System::Drawing::Size(762, 619);
             this->fcgtabPageX265Other->TabIndex = 6;
@@ -2265,7 +2265,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBSsimRd->AutoSize = true;
             this->fcgCBSsimRd->Location = System::Drawing::Point(449, 582);
-            this->fcgCBSsimRd->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBSsimRd->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBSsimRd->Name = L"fcgCBSsimRd";
             this->fcgCBSsimRd->Size = System::Drawing::Size(18, 17);
             this->fcgCBSsimRd->TabIndex = 54;
@@ -2296,7 +2296,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAQMotion->AutoSize = true;
             this->fcgCBAQMotion->Location = System::Drawing::Point(136, 516);
-            this->fcgCBAQMotion->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAQMotion->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAQMotion->Name = L"fcgCBAQMotion";
             this->fcgCBAQMotion->Size = System::Drawing::Size(18, 17);
             this->fcgCBAQMotion->TabIndex = 42;
@@ -2316,7 +2316,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUQGSize
             // 
             this->fcgNUQGSize->Location = System::Drawing::Point(136, 579);
-            this->fcgNUQGSize->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUQGSize->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUQGSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
             this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 8, 0, 0, 0 });
             this->fcgNUQGSize->Name = L"fcgNUQGSize";
@@ -2330,7 +2330,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNURdoqLevel
             // 
             this->fcgNURdoqLevel->Location = System::Drawing::Point(428, 510);
-            this->fcgNURdoqLevel->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURdoqLevel->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURdoqLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURdoqLevel->Name = L"fcgNURdoqLevel";
             this->fcgNURdoqLevel->Size = System::Drawing::Size(56, 25);
@@ -2352,7 +2352,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBDeblock->AutoSize = true;
             this->fcgCBDeblock->Location = System::Drawing::Point(520, 498);
-            this->fcgCBDeblock->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBDeblock->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBDeblock->Name = L"fcgCBDeblock";
             this->fcgCBDeblock->Size = System::Drawing::Size(176, 22);
             this->fcgCBDeblock->TabIndex = 61;
@@ -2367,9 +2367,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockThreshold);
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockStrength);
             this->fcggroupBoxDeblock->Location = System::Drawing::Point(505, 500);
-            this->fcggroupBoxDeblock->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxDeblock->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxDeblock->Name = L"fcggroupBoxDeblock";
-            this->fcggroupBoxDeblock->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxDeblock->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxDeblock->Size = System::Drawing::Size(242, 106);
             this->fcggroupBoxDeblock->TabIndex = 62;
             this->fcggroupBoxDeblock->TabStop = false;
@@ -2377,7 +2377,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUDeblockThreshold
             // 
             this->fcgNUDeblockThreshold->Location = System::Drawing::Point(148, 66);
-            this->fcgNUDeblockThreshold->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUDeblockThreshold->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUDeblockThreshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockThreshold->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockThreshold->Name = L"fcgNUDeblockThreshold";
@@ -2389,7 +2389,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUDeblockStrength
             // 
             this->fcgNUDeblockStrength->Location = System::Drawing::Point(148, 30);
-            this->fcgNUDeblockStrength->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUDeblockStrength->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUDeblockStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockStrength->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockStrength->Name = L"fcgNUDeblockStrength";
@@ -2423,7 +2423,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgNUPsyRDOQ->DecimalPlaces = 2;
             this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
             this->fcgNUPsyRDOQ->Location = System::Drawing::Point(410, 475);
-            this->fcgNUPsyRDOQ->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUPsyRDOQ->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
             this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
             this->fcgNUPsyRDOQ->Size = System::Drawing::Size(74, 25);
@@ -2446,7 +2446,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgNUPsyRD->DecimalPlaces = 2;
             this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
             this->fcgNUPsyRD->Location = System::Drawing::Point(410, 440);
-            this->fcgNUPsyRD->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUPsyRD->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
             this->fcgNUPsyRD->Size = System::Drawing::Size(74, 25);
@@ -2489,9 +2489,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxFrame->Controls->Add(this->fcgLBKeyintMin);
             this->fcggroupBoxFrame->Controls->Add(this->fcgCBOpenGOP);
             this->fcggroupBoxFrame->Location = System::Drawing::Point(460, 4);
-            this->fcggroupBoxFrame->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxFrame->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxFrame->Name = L"fcggroupBoxFrame";
-            this->fcggroupBoxFrame->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxFrame->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxFrame->Size = System::Drawing::Size(288, 422);
             this->fcggroupBoxFrame->TabIndex = 20;
             this->fcggroupBoxFrame->TabStop = false;
@@ -2510,7 +2510,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBWeightB->AutoSize = true;
             this->fcgCBWeightB->Location = System::Drawing::Point(235, 334);
-            this->fcgCBWeightB->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBWeightB->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBWeightB->Name = L"fcgCBWeightB";
             this->fcgCBWeightB->Size = System::Drawing::Size(18, 17);
             this->fcgCBWeightB->TabIndex = 30;
@@ -2540,7 +2540,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNURef
             // 
             this->fcgNURef->Location = System::Drawing::Point(182, 196);
-            this->fcgNURef->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURef->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNURef->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNURef->Name = L"fcgNURef";
@@ -2563,7 +2563,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUBframes
             // 
             this->fcgNUBframes->Location = System::Drawing::Point(182, 230);
-            this->fcgNUBframes->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUBframes->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNUBframes->Name = L"fcgNUBframes";
             this->fcgNUBframes->Size = System::Drawing::Size(81, 25);
@@ -2595,7 +2595,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUKeyintMax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
             this->fcgNUKeyintMax->Location = System::Drawing::Point(182, 79);
-            this->fcgNUKeyintMax->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUKeyintMax->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUKeyintMax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
             this->fcgNUKeyintMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, System::Int32::MinValue });
             this->fcgNUKeyintMax->Name = L"fcgNUKeyintMax";
@@ -2618,7 +2618,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBWeightP->AutoSize = true;
             this->fcgCBWeightP->Location = System::Drawing::Point(235, 364);
-            this->fcgCBWeightP->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBWeightP->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBWeightP->Name = L"fcgCBWeightP";
             this->fcgCBWeightP->Size = System::Drawing::Size(18, 17);
             this->fcgCBWeightP->TabIndex = 31;
@@ -2629,7 +2629,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNURCLookahead->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
             this->fcgNURCLookahead->Location = System::Drawing::Point(182, 152);
-            this->fcgNURCLookahead->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURCLookahead->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
             this->fcgNURCLookahead->Name = L"fcgNURCLookahead";
             this->fcgNURCLookahead->Size = System::Drawing::Size(81, 25);
@@ -2652,7 +2652,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXBadapt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXBadapt->FormattingEnabled = true;
             this->fcgCXBadapt->Location = System::Drawing::Point(156, 265);
-            this->fcgCXBadapt->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXBadapt->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXBadapt->Name = L"fcgCXBadapt";
             this->fcgCXBadapt->Size = System::Drawing::Size(109, 26);
             this->fcgCXBadapt->TabIndex = 28;
@@ -2662,7 +2662,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUScenecut->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
             this->fcgNUScenecut->Location = System::Drawing::Point(182, 16);
-            this->fcgNUScenecut->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUScenecut->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUScenecut->Name = L"fcgNUScenecut";
             this->fcgNUScenecut->Size = System::Drawing::Size(81, 25);
             this->fcgNUScenecut->TabIndex = 21;
@@ -2683,7 +2683,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBBpyramid->AutoSize = true;
             this->fcgCBBpyramid->Location = System::Drawing::Point(235, 304);
-            this->fcgCBBpyramid->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBBpyramid->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBBpyramid->Name = L"fcgCBBpyramid";
             this->fcgCBBpyramid->Size = System::Drawing::Size(18, 17);
             this->fcgCBBpyramid->TabIndex = 29;
@@ -2694,7 +2694,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgNUKeyintMin->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
             this->fcgNUKeyintMin->Location = System::Drawing::Point(182, 48);
-            this->fcgNUKeyintMin->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUKeyintMin->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUKeyintMin->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
             this->fcgNUKeyintMin->Name = L"fcgNUKeyintMin";
             this->fcgNUKeyintMin->Size = System::Drawing::Size(81, 25);
@@ -2726,7 +2726,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBOpenGOP->AutoSize = true;
             this->fcgCBOpenGOP->Location = System::Drawing::Point(235, 115);
-            this->fcgCBOpenGOP->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBOpenGOP->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBOpenGOP->Name = L"fcgCBOpenGOP";
             this->fcgCBOpenGOP->Size = System::Drawing::Size(18, 17);
             this->fcgCBOpenGOP->TabIndex = 24;
@@ -2737,7 +2737,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBCUTree->AutoSize = true;
             this->fcgCBCUTree->Location = System::Drawing::Point(136, 549);
-            this->fcgCBCUTree->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBCUTree->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBCUTree->Name = L"fcgCBCUTree";
             this->fcgCBCUTree->Size = System::Drawing::Size(18, 17);
             this->fcgCBCUTree->TabIndex = 43;
@@ -2757,7 +2757,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNURD
             // 
             this->fcgNURD->Location = System::Drawing::Point(428, 545);
-            this->fcgNURD->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURD->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNURD->Name = L"fcgNURD";
             this->fcgNURD->Size = System::Drawing::Size(56, 25);
@@ -2770,7 +2770,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgNUAQStrength->DecimalPlaces = 2;
             this->fcgNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
             this->fcgNUAQStrength->Location = System::Drawing::Point(136, 478);
-            this->fcgNUAQStrength->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAQStrength->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNUAQStrength->Name = L"fcgNUAQStrength";
             this->fcgNUAQStrength->Size = System::Drawing::Size(74, 25);
@@ -2793,7 +2793,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAQMode->FormattingEnabled = true;
             this->fcgCXAQMode->Location = System::Drawing::Point(136, 441);
-            this->fcgCXAQMode->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAQMode->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAQMode->Name = L"fcgCXAQMode";
             this->fcgCXAQMode->Size = System::Drawing::Size(156, 26);
             this->fcgCXAQMode->TabIndex = 40;
@@ -2832,9 +2832,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgGroupBoxME->Controls->Add(this->fcgNUMERange);
             this->fcgGroupBoxME->Controls->Add(this->fcgCXSubME);
             this->fcgGroupBoxME->Location = System::Drawing::Point(10, 244);
-            this->fcgGroupBoxME->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgGroupBoxME->Margin = System::Windows::Forms::Padding(4);
             this->fcgGroupBoxME->Name = L"fcgGroupBoxME";
-            this->fcgGroupBoxME->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgGroupBoxME->Padding = System::Windows::Forms::Padding(4);
             this->fcgGroupBoxME->Size = System::Drawing::Size(431, 182);
             this->fcgGroupBoxME->TabIndex = 10;
             this->fcgGroupBoxME->TabStop = false;
@@ -2853,7 +2853,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBNoRecusrionSkip->AutoSize = true;
             this->fcgCBNoRecusrionSkip->Location = System::Drawing::Point(235, 155);
-            this->fcgCBNoRecusrionSkip->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBNoRecusrionSkip->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBNoRecusrionSkip->Name = L"fcgCBNoRecusrionSkip";
             this->fcgCBNoRecusrionSkip->Size = System::Drawing::Size(18, 17);
             this->fcgCBNoRecusrionSkip->TabIndex = 15;
@@ -2883,7 +2883,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUMaxMerge
             // 
             this->fcgNUMaxMerge->Location = System::Drawing::Point(191, 120);
-            this->fcgNUMaxMerge->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUMaxMerge->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUMaxMerge->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUMaxMerge->Name = L"fcgNUMaxMerge";
@@ -2918,7 +2918,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXME->FormattingEnabled = true;
             this->fcgCXME->Location = System::Drawing::Point(191, 19);
-            this->fcgCXME->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXME->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXME->Name = L"fcgCXME";
             this->fcgCXME->Size = System::Drawing::Size(219, 26);
             this->fcgCXME->TabIndex = 11;
@@ -2927,7 +2927,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUMERange
             // 
             this->fcgNUMERange->Location = System::Drawing::Point(191, 88);
-            this->fcgNUMERange->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUMERange->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32768, 0, 0, 0 });
             this->fcgNUMERange->Name = L"fcgNUMERange";
             this->fcgNUMERange->Size = System::Drawing::Size(81, 25);
@@ -2940,7 +2940,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXSubME->FormattingEnabled = true;
             this->fcgCXSubME->Location = System::Drawing::Point(191, 52);
-            this->fcgCXSubME->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXSubME->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXSubME->Name = L"fcgCXSubME";
             this->fcgCXSubME->Size = System::Drawing::Size(219, 26);
             this->fcgCXSubME->TabIndex = 12;
@@ -2963,9 +2963,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgGroupBoxCTU->Controls->Add(this->fcgNUTuInterDepth);
             this->fcgGroupBoxCTU->Controls->Add(this->fcgNUTuIntraDepth);
             this->fcgGroupBoxCTU->Location = System::Drawing::Point(10, 4);
-            this->fcgGroupBoxCTU->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgGroupBoxCTU->Margin = System::Windows::Forms::Padding(4);
             this->fcgGroupBoxCTU->Name = L"fcgGroupBoxCTU";
-            this->fcgGroupBoxCTU->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgGroupBoxCTU->Padding = System::Windows::Forms::Padding(4);
             this->fcgGroupBoxCTU->Size = System::Drawing::Size(431, 235);
             this->fcgGroupBoxCTU->TabIndex = 0;
             this->fcgGroupBoxCTU->TabStop = false;
@@ -2984,7 +2984,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBLimitModes->AutoSize = true;
             this->fcgCBLimitModes->Location = System::Drawing::Point(239, 206);
-            this->fcgCBLimitModes->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBLimitModes->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBLimitModes->Name = L"fcgCBLimitModes";
             this->fcgCBLimitModes->Size = System::Drawing::Size(18, 17);
             this->fcgCBLimitModes->TabIndex = 7;
@@ -3004,7 +3004,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNULimitRefs
             // 
             this->fcgNULimitRefs->Location = System::Drawing::Point(191, 171);
-            this->fcgNULimitRefs->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNULimitRefs->Margin = System::Windows::Forms::Padding(4);
             this->fcgNULimitRefs->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNULimitRefs->Name = L"fcgNULimitRefs";
             this->fcgNULimitRefs->Size = System::Drawing::Size(80, 25);
@@ -3027,7 +3027,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAsymmetricMP->AutoSize = true;
             this->fcgCBAsymmetricMP->Location = System::Drawing::Point(239, 145);
-            this->fcgCBAsymmetricMP->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAsymmetricMP->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
             this->fcgCBAsymmetricMP->Size = System::Drawing::Size(18, 17);
             this->fcgCBAsymmetricMP->TabIndex = 5;
@@ -3048,7 +3048,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRectMP->AutoSize = true;
             this->fcgCBRectMP->Location = System::Drawing::Point(239, 115);
-            this->fcgCBRectMP->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRectMP->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRectMP->Name = L"fcgCBRectMP";
             this->fcgCBRectMP->Size = System::Drawing::Size(18, 17);
             this->fcgCBRectMP->TabIndex = 4;
@@ -3078,7 +3078,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUCtu
             // 
             this->fcgNUCtu->Location = System::Drawing::Point(191, 16);
-            this->fcgNUCtu->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUCtu->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
             this->fcgNUCtu->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNUCtu->Name = L"fcgNUCtu";
@@ -3102,7 +3102,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUTuInterDepth
             // 
             this->fcgNUTuInterDepth->Location = System::Drawing::Point(191, 79);
-            this->fcgNUTuInterDepth->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUTuInterDepth->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
             this->fcgNUTuInterDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUTuInterDepth->Name = L"fcgNUTuInterDepth";
@@ -3115,7 +3115,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUTuIntraDepth
             // 
             this->fcgNUTuIntraDepth->Location = System::Drawing::Point(191, 48);
-            this->fcgNUTuIntraDepth->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUTuIntraDepth->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
             this->fcgNUTuIntraDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUTuIntraDepth->Name = L"fcgNUTuIntraDepth";
@@ -3129,7 +3129,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBSAO->AutoSize = true;
             this->fcgCBSAO->Location = System::Drawing::Point(695, 446);
-            this->fcgCBSAO->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBSAO->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBSAO->Name = L"fcgCBSAO";
             this->fcgCBSAO->Size = System::Drawing::Size(18, 17);
             this->fcgCBSAO->TabIndex = 60;
@@ -3151,7 +3151,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageX2652pass->Controls->Add(this->fcgCBAnalysisReuse);
             this->fcgtabPageX2652pass->Controls->Add(this->fcggroupBoxAnalysisReuse);
             this->fcgtabPageX2652pass->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageX2652pass->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageX2652pass->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageX2652pass->Name = L"fcgtabPageX2652pass";
             this->fcgtabPageX2652pass->Size = System::Drawing::Size(762, 619);
             this->fcgtabPageX2652pass->TabIndex = 7;
@@ -3162,7 +3162,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAnalysisReuse->AutoSize = true;
             this->fcgCBAnalysisReuse->Location = System::Drawing::Point(21, 8);
-            this->fcgCBAnalysisReuse->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAnalysisReuse->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAnalysisReuse->Name = L"fcgCBAnalysisReuse";
             this->fcgCBAnalysisReuse->Size = System::Drawing::Size(139, 22);
             this->fcgCBAnalysisReuse->TabIndex = 52;
@@ -3182,9 +3182,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgBTAnalysisReuseFile);
             this->fcggroupBoxAnalysisReuse->Controls->Add(this->fcgNUAnalysisReuseLevel);
             this->fcggroupBoxAnalysisReuse->Location = System::Drawing::Point(10, 6);
-            this->fcggroupBoxAnalysisReuse->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxAnalysisReuse->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxAnalysisReuse->Name = L"fcggroupBoxAnalysisReuse";
-            this->fcggroupBoxAnalysisReuse->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxAnalysisReuse->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxAnalysisReuse->Size = System::Drawing::Size(379, 110);
             this->fcggroupBoxAnalysisReuse->TabIndex = 51;
             this->fcggroupBoxAnalysisReuse->TabStop = false;
@@ -3192,7 +3192,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNURefineInter
             // 
             this->fcgNURefineInter->Location = System::Drawing::Point(300, 40);
-            this->fcgNURefineInter->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURefineInter->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURefineInter->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNURefineInter->Name = L"fcgNURefineInter";
             this->fcgNURefineInter->Size = System::Drawing::Size(75, 25);
@@ -3203,8 +3203,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             // fcgNURefineIntra
             // 
-            this->fcgNURefineIntra->Location = System::Drawing::Point(299, 11);
-            this->fcgNURefineIntra->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNURefineIntra->Location = System::Drawing::Point(300, 11);
+            this->fcgNURefineIntra->Margin = System::Windows::Forms::Padding(4);
             this->fcgNURefineIntra->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNURefineIntra->Name = L"fcgNURefineIntra";
             this->fcgNURefineIntra->Size = System::Drawing::Size(75, 25);
@@ -3258,7 +3258,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXAnalysisReuseFile
             // 
             this->fcgTXAnalysisReuseFile->Location = System::Drawing::Point(89, 73);
-            this->fcgTXAnalysisReuseFile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXAnalysisReuseFile->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXAnalysisReuseFile->Name = L"fcgTXAnalysisReuseFile";
             this->fcgTXAnalysisReuseFile->Size = System::Drawing::Size(242, 25);
             this->fcgTXAnalysisReuseFile->TabIndex = 54;
@@ -3269,7 +3269,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTAnalysisReuseFile
             // 
             this->fcgBTAnalysisReuseFile->Location = System::Drawing::Point(339, 71);
-            this->fcgBTAnalysisReuseFile->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTAnalysisReuseFile->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTAnalysisReuseFile->Name = L"fcgBTAnalysisReuseFile";
             this->fcgBTAnalysisReuseFile->Size = System::Drawing::Size(36, 28);
             this->fcgBTAnalysisReuseFile->TabIndex = 55;
@@ -3280,7 +3280,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUAnalysisReuseLevel
             // 
             this->fcgNUAnalysisReuseLevel->Location = System::Drawing::Point(115, 38);
-            this->fcgNUAnalysisReuseLevel->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAnalysisReuseLevel->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAnalysisReuseLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
             this->fcgNUAnalysisReuseLevel->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUAnalysisReuseLevel->Name = L"fcgNUAnalysisReuseLevel";
@@ -3302,7 +3302,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageExSettings->Controls->Add(this->fcgLBX265Priority);
             this->fcgtabPageExSettings->Controls->Add(this->fcggroupBoxExSettings);
             this->fcgtabPageExSettings->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageExSettings->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageExSettings->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageExSettings->Name = L"fcgtabPageExSettings";
             this->fcgtabPageExSettings->Size = System::Drawing::Size(762, 619);
             this->fcgtabPageExSettings->TabIndex = 3;
@@ -3315,7 +3315,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fchPNX265Sub->Controls->Add(this->fcgTXX265PathSub);
             this->fchPNX265Sub->Controls->Add(this->fcgBTX265PathSub);
             this->fchPNX265Sub->Location = System::Drawing::Point(421, 11);
-            this->fchPNX265Sub->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fchPNX265Sub->Margin = System::Windows::Forms::Padding(4);
             this->fchPNX265Sub->Name = L"fchPNX265Sub";
             this->fchPNX265Sub->Size = System::Drawing::Size(330, 81);
             this->fchPNX265Sub->TabIndex = 12;
@@ -3334,7 +3334,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXX265PathSub->AllowDrop = true;
             this->fcgTXX265PathSub->Location = System::Drawing::Point(69, 42);
-            this->fcgTXX265PathSub->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXX265PathSub->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXX265PathSub->Name = L"fcgTXX265PathSub";
             this->fcgTXX265PathSub->Size = System::Drawing::Size(219, 25);
             this->fcgTXX265PathSub->TabIndex = 10;
@@ -3344,7 +3344,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTX265PathSub
             // 
             this->fcgBTX265PathSub->Location = System::Drawing::Point(294, 41);
-            this->fcgBTX265PathSub->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTX265PathSub->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTX265PathSub->Name = L"fcgBTX265PathSub";
             this->fcgBTX265PathSub->Size = System::Drawing::Size(34, 28);
             this->fcgBTX265PathSub->TabIndex = 11;
@@ -3365,7 +3365,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTCustomTempDir
             // 
             this->fcgBTCustomTempDir->Location = System::Drawing::Point(702, 259);
-            this->fcgBTCustomTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTCustomTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTCustomTempDir->Name = L"fcgBTCustomTempDir";
             this->fcgBTCustomTempDir->Size = System::Drawing::Size(36, 29);
             this->fcgBTCustomTempDir->TabIndex = 22;
@@ -3380,9 +3380,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxCmdEx->Controls->Add(this->fcgBTCmdEx);
             this->fcggroupBoxCmdEx->Controls->Add(this->fcgTXCmdEx);
             this->fcggroupBoxCmdEx->Location = System::Drawing::Point(10, 304);
-            this->fcggroupBoxCmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxCmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxCmdEx->Name = L"fcggroupBoxCmdEx";
-            this->fcggroupBoxCmdEx->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxCmdEx->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxCmdEx->Size = System::Drawing::Size(736, 291);
             this->fcggroupBoxCmdEx->TabIndex = 30;
             this->fcggroupBoxCmdEx->TabStop = false;
@@ -3393,7 +3393,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXCmdExInsert->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXCmdExInsert->FormattingEnabled = true;
             this->fcgCXCmdExInsert->Location = System::Drawing::Point(246, 255);
-            this->fcgCXCmdExInsert->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXCmdExInsert->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXCmdExInsert->Name = L"fcgCXCmdExInsert";
             this->fcgCXCmdExInsert->Size = System::Drawing::Size(209, 26);
             this->fcgCXCmdExInsert->TabIndex = 33;
@@ -3404,7 +3404,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBNulOutCLI->AutoSize = true;
             this->fcgCBNulOutCLI->Location = System::Drawing::Point(22, 258);
-            this->fcgCBNulOutCLI->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBNulOutCLI->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBNulOutCLI->Name = L"fcgCBNulOutCLI";
             this->fcgCBNulOutCLI->Size = System::Drawing::Size(80, 22);
             this->fcgCBNulOutCLI->TabIndex = 32;
@@ -3415,7 +3415,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTCmdEx
             // 
             this->fcgBTCmdEx->Location = System::Drawing::Point(602, 255);
-            this->fcgBTCmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTCmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTCmdEx->Name = L"fcgBTCmdEx";
             this->fcgBTCmdEx->Size = System::Drawing::Size(121, 29);
             this->fcgBTCmdEx->TabIndex = 34;
@@ -3429,7 +3429,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgTXCmdEx->Font = (gcnew System::Drawing::Font(L"ＭＳ ゴシック", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->fcgTXCmdEx->Location = System::Drawing::Point(8, 25);
-            this->fcgTXCmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXCmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXCmdEx->Multiline = true;
             this->fcgTXCmdEx->Name = L"fcgTXCmdEx";
             this->fcgTXCmdEx->Size = System::Drawing::Size(720, 224);
@@ -3442,7 +3442,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXCustomTempDir
             // 
             this->fcgTXCustomTempDir->Location = System::Drawing::Point(471, 260);
-            this->fcgTXCustomTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXCustomTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXCustomTempDir->Name = L"fcgTXCustomTempDir";
             this->fcgTXCustomTempDir->Size = System::Drawing::Size(226, 25);
             this->fcgTXCustomTempDir->TabIndex = 21;
@@ -3454,7 +3454,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXTempDir->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXTempDir->FormattingEnabled = true;
             this->fcgCXTempDir->Location = System::Drawing::Point(456, 225);
-            this->fcgCXTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXTempDir->Name = L"fcgCXTempDir";
             this->fcgCXTempDir->Size = System::Drawing::Size(260, 26);
             this->fcgCXTempDir->TabIndex = 20;
@@ -3465,7 +3465,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXX264Priority->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXX264Priority->FormattingEnabled = true;
             this->fcgCXX264Priority->Location = System::Drawing::Point(544, 131);
-            this->fcgCXX264Priority->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXX264Priority->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXX264Priority->Name = L"fcgCXX264Priority";
             this->fcgCXX264Priority->Size = System::Drawing::Size(189, 26);
             this->fcgCXX264Priority->TabIndex = 15;
@@ -3491,9 +3491,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBAFSBitrateCorrection);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBAFS);
             this->fcggroupBoxExSettings->Location = System::Drawing::Point(10, 4);
-            this->fcggroupBoxExSettings->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxExSettings->Margin = System::Windows::Forms::Padding(4);
             this->fcggroupBoxExSettings->Name = L"fcggroupBoxExSettings";
-            this->fcggroupBoxExSettings->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcggroupBoxExSettings->Padding = System::Windows::Forms::Padding(4);
             this->fcggroupBoxExSettings->Size = System::Drawing::Size(404, 292);
             this->fcggroupBoxExSettings->TabIndex = 0;
             this->fcggroupBoxExSettings->TabStop = false;
@@ -3503,7 +3503,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRyzenDisableAVX2->AutoSize = true;
             this->fcgCBRyzenDisableAVX2->Location = System::Drawing::Point(22, 244);
-            this->fcgCBRyzenDisableAVX2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRyzenDisableAVX2->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRyzenDisableAVX2->Name = L"fcgCBRyzenDisableAVX2";
             this->fcgCBRyzenDisableAVX2->Size = System::Drawing::Size(240, 22);
             this->fcgCBRyzenDisableAVX2->TabIndex = 7;
@@ -3515,7 +3515,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBSetKeyframeAtChapter->AutoSize = true;
             this->fcgCBSetKeyframeAtChapter->Location = System::Drawing::Point(22, 175);
-            this->fcgCBSetKeyframeAtChapter->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBSetKeyframeAtChapter->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBSetKeyframeAtChapter->Name = L"fcgCBSetKeyframeAtChapter";
             this->fcgCBSetKeyframeAtChapter->Size = System::Drawing::Size(336, 22);
             this->fcgCBSetKeyframeAtChapter->TabIndex = 5;
@@ -3527,7 +3527,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBInputAsLW48->AutoSize = true;
             this->fcgCBInputAsLW48->Location = System::Drawing::Point(22, 214);
-            this->fcgCBInputAsLW48->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBInputAsLW48->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBInputAsLW48->Name = L"fcgCBInputAsLW48";
             this->fcgCBInputAsLW48->Size = System::Drawing::Size(101, 22);
             this->fcgCBInputAsLW48->TabIndex = 6;
@@ -3539,7 +3539,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBCheckKeyframes->AutoSize = true;
             this->fcgCBCheckKeyframes->Location = System::Drawing::Point(22, 145);
-            this->fcgCBCheckKeyframes->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBCheckKeyframes->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBCheckKeyframes->Name = L"fcgCBCheckKeyframes";
             this->fcgCBCheckKeyframes->Size = System::Drawing::Size(234, 22);
             this->fcgCBCheckKeyframes->TabIndex = 4;
@@ -3551,7 +3551,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAuoTcfileout->AutoSize = true;
             this->fcgCBAuoTcfileout->Location = System::Drawing::Point(22, 115);
-            this->fcgCBAuoTcfileout->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAuoTcfileout->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAuoTcfileout->Name = L"fcgCBAuoTcfileout";
             this->fcgCBAuoTcfileout->Size = System::Drawing::Size(120, 22);
             this->fcgCBAuoTcfileout->TabIndex = 3;
@@ -3563,7 +3563,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAFSBitrateCorrection->AutoSize = true;
             this->fcgCBAFSBitrateCorrection->Location = System::Drawing::Point(42, 66);
-            this->fcgCBAFSBitrateCorrection->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAFSBitrateCorrection->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAFSBitrateCorrection->Name = L"fcgCBAFSBitrateCorrection";
             this->fcgCBAFSBitrateCorrection->Size = System::Drawing::Size(354, 22);
             this->fcgCBAFSBitrateCorrection->TabIndex = 2;
@@ -3575,7 +3575,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAFS->AutoSize = true;
             this->fcgCBAFS->Location = System::Drawing::Point(22, 36);
-            this->fcgCBAFS->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAFS->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAFS->Name = L"fcgCBAFS";
             this->fcgCBAFS->Size = System::Drawing::Size(231, 22);
             this->fcgCBAFS->TabIndex = 1;
@@ -3750,7 +3750,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabControlMux->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->fcgtabControlMux->Location = System::Drawing::Point(778, 414);
-            this->fcgtabControlMux->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabControlMux->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabControlMux->Name = L"fcgtabControlMux";
             this->fcgtabControlMux->SelectedIndex = 0;
             this->fcgtabControlMux->Size = System::Drawing::Size(480, 268);
@@ -3776,9 +3776,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMP4->Controls->Add(this->fcgCXMP4BoxTempDir);
             this->fcgtabPageMP4->Controls->Add(this->fcgLBMP4BoxTempDir);
             this->fcgtabPageMP4->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageMP4->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMP4->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageMP4->Name = L"fcgtabPageMP4";
-            this->fcgtabPageMP4->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMP4->Padding = System::Windows::Forms::Padding(4);
             this->fcgtabPageMP4->Size = System::Drawing::Size(472, 237);
             this->fcgtabPageMP4->TabIndex = 0;
             this->fcgtabPageMP4->Text = L"mp4";
@@ -3788,7 +3788,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBMP4MuxApple->AutoSize = true;
             this->fcgCBMP4MuxApple->Location = System::Drawing::Point(326, 46);
-            this->fcgCBMP4MuxApple->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBMP4MuxApple->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBMP4MuxApple->Name = L"fcgCBMP4MuxApple";
             this->fcgCBMP4MuxApple->Size = System::Drawing::Size(136, 22);
             this->fcgCBMP4MuxApple->TabIndex = 2;
@@ -3799,7 +3799,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTTC2MP4Path
             // 
             this->fcgBTTC2MP4Path->Location = System::Drawing::Point(425, 109);
-            this->fcgBTTC2MP4Path->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTTC2MP4Path->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTTC2MP4Path->Name = L"fcgBTTC2MP4Path";
             this->fcgBTTC2MP4Path->Size = System::Drawing::Size(38, 29);
             this->fcgBTTC2MP4Path->TabIndex = 6;
@@ -3811,7 +3811,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXTC2MP4Path->AllowDrop = true;
             this->fcgTXTC2MP4Path->Location = System::Drawing::Point(170, 110);
-            this->fcgTXTC2MP4Path->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXTC2MP4Path->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXTC2MP4Path->Name = L"fcgTXTC2MP4Path";
             this->fcgTXTC2MP4Path->Size = System::Drawing::Size(252, 25);
             this->fcgTXTC2MP4Path->TabIndex = 5;
@@ -3822,7 +3822,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTMP4MuxerPath
             // 
             this->fcgBTMP4MuxerPath->Location = System::Drawing::Point(425, 81);
-            this->fcgBTMP4MuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTMP4MuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTMP4MuxerPath->Name = L"fcgBTMP4MuxerPath";
             this->fcgBTMP4MuxerPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTMP4MuxerPath->TabIndex = 4;
@@ -3834,7 +3834,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXMP4MuxerPath->AllowDrop = true;
             this->fcgTXMP4MuxerPath->Location = System::Drawing::Point(170, 82);
-            this->fcgTXMP4MuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXMP4MuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXMP4MuxerPath->Name = L"fcgTXMP4MuxerPath";
             this->fcgTXMP4MuxerPath->Size = System::Drawing::Size(252, 25);
             this->fcgTXMP4MuxerPath->TabIndex = 3;
@@ -3868,7 +3868,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXMP4CmdEx->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXMP4CmdEx->FormattingEnabled = true;
             this->fcgCXMP4CmdEx->Location = System::Drawing::Point(266, 11);
-            this->fcgCXMP4CmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXMP4CmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXMP4CmdEx->Name = L"fcgCXMP4CmdEx";
             this->fcgCXMP4CmdEx->Size = System::Drawing::Size(195, 26);
             this->fcgCXMP4CmdEx->TabIndex = 1;
@@ -3888,7 +3888,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBMP4MuxerExt->AutoSize = true;
             this->fcgCBMP4MuxerExt->Location = System::Drawing::Point(12, 14);
-            this->fcgCBMP4MuxerExt->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBMP4MuxerExt->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBMP4MuxerExt->Name = L"fcgCBMP4MuxerExt";
             this->fcgCBMP4MuxerExt->Size = System::Drawing::Size(141, 22);
             this->fcgCBMP4MuxerExt->TabIndex = 0;
@@ -3899,7 +3899,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTMP4RawPath
             // 
             this->fcgBTMP4RawPath->Location = System::Drawing::Point(425, 136);
-            this->fcgBTMP4RawPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTMP4RawPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTMP4RawPath->Name = L"fcgBTMP4RawPath";
             this->fcgBTMP4RawPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTMP4RawPath->TabIndex = 8;
@@ -3911,7 +3911,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXMP4RawPath->AllowDrop = true;
             this->fcgTXMP4RawPath->Location = System::Drawing::Point(170, 138);
-            this->fcgTXMP4RawPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXMP4RawPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXMP4RawPath->Name = L"fcgTXMP4RawPath";
             this->fcgTXMP4RawPath->Size = System::Drawing::Size(252, 25);
             this->fcgTXMP4RawPath->TabIndex = 7;
@@ -3932,7 +3932,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTMP4BoxTempDir
             // 
             this->fcgBTMP4BoxTempDir->Location = System::Drawing::Point(425, 199);
-            this->fcgBTMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTMP4BoxTempDir->Name = L"fcgBTMP4BoxTempDir";
             this->fcgBTMP4BoxTempDir->Size = System::Drawing::Size(38, 29);
             this->fcgBTMP4BoxTempDir->TabIndex = 11;
@@ -3943,7 +3943,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXMP4BoxTempDir
             // 
             this->fcgTXMP4BoxTempDir->Location = System::Drawing::Point(134, 200);
-            this->fcgTXMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXMP4BoxTempDir->Name = L"fcgTXMP4BoxTempDir";
             this->fcgTXMP4BoxTempDir->Size = System::Drawing::Size(283, 25);
             this->fcgTXMP4BoxTempDir->TabIndex = 10;
@@ -3954,7 +3954,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXMP4BoxTempDir->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXMP4BoxTempDir->FormattingEnabled = true;
             this->fcgCXMP4BoxTempDir->Location = System::Drawing::Point(181, 165);
-            this->fcgCXMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXMP4BoxTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXMP4BoxTempDir->Name = L"fcgCXMP4BoxTempDir";
             this->fcgCXMP4BoxTempDir->Size = System::Drawing::Size(256, 26);
             this->fcgCXMP4BoxTempDir->TabIndex = 9;
@@ -3979,9 +3979,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMKV->Controls->Add(this->fcgLBMKVMuxerCmdEx);
             this->fcgtabPageMKV->Controls->Add(this->fcgCBMKVMuxerExt);
             this->fcgtabPageMKV->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageMKV->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMKV->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageMKV->Name = L"fcgtabPageMKV";
-            this->fcgtabPageMKV->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMKV->Padding = System::Windows::Forms::Padding(4);
             this->fcgtabPageMKV->Size = System::Drawing::Size(472, 237);
             this->fcgtabPageMKV->TabIndex = 1;
             this->fcgtabPageMKV->Text = L"mkv";
@@ -3990,7 +3990,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTMKVMuxerPath
             // 
             this->fcgBTMKVMuxerPath->Location = System::Drawing::Point(425, 95);
-            this->fcgBTMKVMuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTMKVMuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTMKVMuxerPath->Name = L"fcgBTMKVMuxerPath";
             this->fcgBTMKVMuxerPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTMKVMuxerPath->TabIndex = 3;
@@ -4001,7 +4001,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXMKVMuxerPath
             // 
             this->fcgTXMKVMuxerPath->Location = System::Drawing::Point(164, 96);
-            this->fcgTXMKVMuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXMKVMuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXMKVMuxerPath->Name = L"fcgTXMKVMuxerPath";
             this->fcgTXMKVMuxerPath->Size = System::Drawing::Size(258, 25);
             this->fcgTXMKVMuxerPath->TabIndex = 2;
@@ -4024,7 +4024,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXMKVCmdEx->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXMKVCmdEx->FormattingEnabled = true;
             this->fcgCXMKVCmdEx->Location = System::Drawing::Point(266, 54);
-            this->fcgCXMKVCmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXMKVCmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXMKVCmdEx->Name = L"fcgCXMKVCmdEx";
             this->fcgCXMKVCmdEx->Size = System::Drawing::Size(195, 26);
             this->fcgCXMKVCmdEx->TabIndex = 1;
@@ -4044,7 +4044,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBMKVMuxerExt->AutoSize = true;
             this->fcgCBMKVMuxerExt->Location = System::Drawing::Point(12, 56);
-            this->fcgCBMKVMuxerExt->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBMKVMuxerExt->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBMKVMuxerExt->Name = L"fcgCBMKVMuxerExt";
             this->fcgCBMKVMuxerExt->Size = System::Drawing::Size(141, 22);
             this->fcgCBMKVMuxerExt->TabIndex = 0;
@@ -4061,7 +4061,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMPG->Controls->Add(this->fcgLBMPGMuxerCmdEx);
             this->fcgtabPageMPG->Controls->Add(this->fcgCBMPGMuxerExt);
             this->fcgtabPageMPG->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageMPG->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMPG->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageMPG->Name = L"fcgtabPageMPG";
             this->fcgtabPageMPG->Size = System::Drawing::Size(472, 237);
             this->fcgtabPageMPG->TabIndex = 4;
@@ -4071,7 +4071,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTMPGMuxerPath
             // 
             this->fcgBTMPGMuxerPath->Location = System::Drawing::Point(426, 122);
-            this->fcgBTMPGMuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTMPGMuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTMPGMuxerPath->Name = L"fcgBTMPGMuxerPath";
             this->fcgBTMPGMuxerPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTMPGMuxerPath->TabIndex = 23;
@@ -4082,7 +4082,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXMPGMuxerPath
             // 
             this->fcgTXMPGMuxerPath->Location = System::Drawing::Point(165, 124);
-            this->fcgTXMPGMuxerPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXMPGMuxerPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXMPGMuxerPath->Name = L"fcgTXMPGMuxerPath";
             this->fcgTXMPGMuxerPath->Size = System::Drawing::Size(258, 25);
             this->fcgTXMPGMuxerPath->TabIndex = 22;
@@ -4105,7 +4105,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXMPGCmdEx->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXMPGCmdEx->FormattingEnabled = true;
             this->fcgCXMPGCmdEx->Location = System::Drawing::Point(268, 81);
-            this->fcgCXMPGCmdEx->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXMPGCmdEx->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXMPGCmdEx->Name = L"fcgCXMPGCmdEx";
             this->fcgCXMPGCmdEx->Size = System::Drawing::Size(195, 26);
             this->fcgCXMPGCmdEx->TabIndex = 21;
@@ -4125,7 +4125,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBMPGMuxerExt->AutoSize = true;
             this->fcgCBMPGMuxerExt->Location = System::Drawing::Point(14, 84);
-            this->fcgCBMPGMuxerExt->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBMPGMuxerExt->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBMPGMuxerExt->Name = L"fcgCBMPGMuxerExt";
             this->fcgCBMPGMuxerExt->Size = System::Drawing::Size(141, 22);
             this->fcgCBMPGMuxerExt->TabIndex = 20;
@@ -4138,7 +4138,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMux->Controls->Add(this->fcgCXMuxPriority);
             this->fcgtabPageMux->Controls->Add(this->fcgLBMuxPriority);
             this->fcgtabPageMux->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageMux->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageMux->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageMux->Name = L"fcgtabPageMux";
             this->fcgtabPageMux->Size = System::Drawing::Size(472, 237);
             this->fcgtabPageMux->TabIndex = 2;
@@ -4150,7 +4150,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXMuxPriority->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXMuxPriority->FormattingEnabled = true;
             this->fcgCXMuxPriority->Location = System::Drawing::Point(128, 80);
-            this->fcgCXMuxPriority->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXMuxPriority->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXMuxPriority->Name = L"fcgCXMuxPriority";
             this->fcgCXMuxPriority->Size = System::Drawing::Size(246, 26);
             this->fcgCXMuxPriority->TabIndex = 1;
@@ -4182,7 +4182,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageBat->Controls->Add(this->fcgCBWaitForBatBefore);
             this->fcgtabPageBat->Controls->Add(this->fcgCBRunBatBefore);
             this->fcgtabPageBat->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageBat->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageBat->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageBat->Name = L"fcgtabPageBat";
             this->fcgtabPageBat->Size = System::Drawing::Size(472, 237);
             this->fcgtabPageBat->TabIndex = 3;
@@ -4220,7 +4220,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTBatAfterPath
             // 
             this->fcgBTBatAfterPath->Location = System::Drawing::Point(412, 192);
-            this->fcgBTBatAfterPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTBatAfterPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTBatAfterPath->Name = L"fcgBTBatAfterPath";
             this->fcgBTBatAfterPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTBatAfterPath->TabIndex = 11;
@@ -4233,7 +4233,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXBatAfterPath->AllowDrop = true;
             this->fcgTXBatAfterPath->Location = System::Drawing::Point(158, 194);
-            this->fcgTXBatAfterPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXBatAfterPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXBatAfterPath->Name = L"fcgTXBatAfterPath";
             this->fcgTXBatAfterPath->Size = System::Drawing::Size(252, 25);
             this->fcgTXBatAfterPath->TabIndex = 10;
@@ -4255,7 +4255,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBWaitForBatAfter->AutoSize = true;
             this->fcgCBWaitForBatAfter->Location = System::Drawing::Point(50, 161);
-            this->fcgCBWaitForBatAfter->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBWaitForBatAfter->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBWaitForBatAfter->Name = L"fcgCBWaitForBatAfter";
             this->fcgCBWaitForBatAfter->Size = System::Drawing::Size(190, 22);
             this->fcgCBWaitForBatAfter->TabIndex = 8;
@@ -4267,7 +4267,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRunBatAfter->AutoSize = true;
             this->fcgCBRunBatAfter->Location = System::Drawing::Point(22, 131);
-            this->fcgCBRunBatAfter->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRunBatAfter->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRunBatAfter->Name = L"fcgCBRunBatAfter";
             this->fcgCBRunBatAfter->Size = System::Drawing::Size(226, 22);
             this->fcgCBRunBatAfter->TabIndex = 7;
@@ -4279,7 +4279,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgPNSeparator->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
             this->fcgPNSeparator->Location = System::Drawing::Point(22, 118);
-            this->fcgPNSeparator->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgPNSeparator->Margin = System::Windows::Forms::Padding(4);
             this->fcgPNSeparator->Name = L"fcgPNSeparator";
             this->fcgPNSeparator->Size = System::Drawing::Size(427, 1);
             this->fcgPNSeparator->TabIndex = 6;
@@ -4287,7 +4287,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTBatBeforePath
             // 
             this->fcgBTBatBeforePath->Location = System::Drawing::Point(412, 76);
-            this->fcgBTBatBeforePath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTBatBeforePath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTBatBeforePath->Name = L"fcgBTBatBeforePath";
             this->fcgBTBatBeforePath->Size = System::Drawing::Size(38, 29);
             this->fcgBTBatBeforePath->TabIndex = 5;
@@ -4300,7 +4300,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXBatBeforePath->AllowDrop = true;
             this->fcgTXBatBeforePath->Location = System::Drawing::Point(158, 78);
-            this->fcgTXBatBeforePath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXBatBeforePath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXBatBeforePath->Name = L"fcgTXBatBeforePath";
             this->fcgTXBatBeforePath->Size = System::Drawing::Size(252, 25);
             this->fcgTXBatBeforePath->TabIndex = 4;
@@ -4322,7 +4322,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBWaitForBatBefore->AutoSize = true;
             this->fcgCBWaitForBatBefore->Location = System::Drawing::Point(50, 45);
-            this->fcgCBWaitForBatBefore->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBWaitForBatBefore->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBWaitForBatBefore->Name = L"fcgCBWaitForBatBefore";
             this->fcgCBWaitForBatBefore->Size = System::Drawing::Size(190, 22);
             this->fcgCBWaitForBatBefore->TabIndex = 1;
@@ -4334,7 +4334,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRunBatBefore->AutoSize = true;
             this->fcgCBRunBatBefore->Location = System::Drawing::Point(22, 15);
-            this->fcgCBRunBatBefore->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRunBatBefore->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRunBatBefore->Name = L"fcgCBRunBatBefore";
             this->fcgCBRunBatBefore->Size = System::Drawing::Size(226, 22);
             this->fcgCBRunBatBefore->TabIndex = 0;
@@ -4350,7 +4350,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgTXCmd->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->fcgTXCmd->Location = System::Drawing::Point(11, 684);
-            this->fcgTXCmd->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXCmd->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXCmd->Name = L"fcgTXCmd";
             this->fcgTXCmd->ReadOnly = true;
             this->fcgTXCmd->Size = System::Drawing::Size(1239, 25);
@@ -4361,7 +4361,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgBTCancel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
             this->fcgBTCancel->Location = System::Drawing::Point(964, 712);
-            this->fcgBTCancel->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTCancel->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTCancel->Name = L"fcgBTCancel";
             this->fcgBTCancel->Size = System::Drawing::Size(105, 35);
             this->fcgBTCancel->TabIndex = 5;
@@ -4373,7 +4373,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgBTOK->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
             this->fcgBTOK->Location = System::Drawing::Point(1116, 712);
-            this->fcgBTOK->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTOK->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTOK->Name = L"fcgBTOK";
             this->fcgBTOK->Size = System::Drawing::Size(105, 35);
             this->fcgBTOK->TabIndex = 6;
@@ -4385,7 +4385,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgBTDefault->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
             this->fcgBTDefault->Location = System::Drawing::Point(11, 715);
-            this->fcgBTDefault->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTDefault->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTDefault->Name = L"fcgBTDefault";
             this->fcgBTDefault->Size = System::Drawing::Size(140, 35);
             this->fcgBTDefault->TabIndex = 7;
@@ -4502,7 +4502,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabControlAudio->Controls->Add(this->fcgtabPageAudioOther);
             this->fcgtabControlAudio->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 8.25F));
             this->fcgtabControlAudio->Location = System::Drawing::Point(776, 31);
-            this->fcgtabControlAudio->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabControlAudio->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabControlAudio->Name = L"fcgtabControlAudio";
             this->fcgtabControlAudio->SelectedIndex = 0;
             this->fcgtabControlAudio->Size = System::Drawing::Size(480, 370);
@@ -4532,9 +4532,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageAudioMain->Controls->Add(this->fcgLBAudioEncoder);
             this->fcgtabPageAudioMain->Controls->Add(this->fcgLBAudioTemp);
             this->fcgtabPageAudioMain->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageAudioMain->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageAudioMain->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageAudioMain->Name = L"fcgtabPageAudioMain";
-            this->fcgtabPageAudioMain->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageAudioMain->Padding = System::Windows::Forms::Padding(4);
             this->fcgtabPageAudioMain->Size = System::Drawing::Size(472, 339);
             this->fcgtabPageAudioMain->TabIndex = 0;
             this->fcgtabPageAudioMain->Text = L"音声";
@@ -4545,7 +4545,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioDelayCut->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioDelayCut->FormattingEnabled = true;
             this->fcgCXAudioDelayCut->Location = System::Drawing::Point(364, 166);
-            this->fcgCXAudioDelayCut->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioDelayCut->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioDelayCut->Name = L"fcgCXAudioDelayCut";
             this->fcgCXAudioDelayCut->Size = System::Drawing::Size(86, 26);
             this->fcgCXAudioDelayCut->TabIndex = 54;
@@ -4576,7 +4576,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioEncTiming->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioEncTiming->FormattingEnabled = true;
             this->fcgCXAudioEncTiming->Location = System::Drawing::Point(358, 64);
-            this->fcgCXAudioEncTiming->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioEncTiming->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioEncTiming->Name = L"fcgCXAudioEncTiming";
             this->fcgCXAudioEncTiming->Size = System::Drawing::Size(84, 26);
             this->fcgCXAudioEncTiming->TabIndex = 37;
@@ -4587,7 +4587,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioTempDir->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioTempDir->FormattingEnabled = true;
             this->fcgCXAudioTempDir->Location = System::Drawing::Point(169, 260);
-            this->fcgCXAudioTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioTempDir->Name = L"fcgCXAudioTempDir";
             this->fcgCXAudioTempDir->Size = System::Drawing::Size(186, 26);
             this->fcgCXAudioTempDir->TabIndex = 60;
@@ -4596,7 +4596,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgTXCustomAudioTempDir
             // 
             this->fcgTXCustomAudioTempDir->Location = System::Drawing::Point(80, 295);
-            this->fcgTXCustomAudioTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXCustomAudioTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXCustomAudioTempDir->Name = L"fcgTXCustomAudioTempDir";
             this->fcgTXCustomAudioTempDir->Size = System::Drawing::Size(305, 25);
             this->fcgTXCustomAudioTempDir->TabIndex = 61;
@@ -4605,7 +4605,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTCustomAudioTempDir
             // 
             this->fcgBTCustomAudioTempDir->Location = System::Drawing::Point(395, 292);
-            this->fcgBTCustomAudioTempDir->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTCustomAudioTempDir->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTCustomAudioTempDir->Name = L"fcgBTCustomAudioTempDir";
             this->fcgBTCustomAudioTempDir->Size = System::Drawing::Size(36, 29);
             this->fcgBTCustomAudioTempDir->TabIndex = 62;
@@ -4617,7 +4617,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAudioUsePipe->AutoSize = true;
             this->fcgCBAudioUsePipe->Location = System::Drawing::Point(162, 168);
-            this->fcgCBAudioUsePipe->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAudioUsePipe->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAudioUsePipe->Name = L"fcgCBAudioUsePipe";
             this->fcgCBAudioUsePipe->Size = System::Drawing::Size(91, 22);
             this->fcgCBAudioUsePipe->TabIndex = 53;
@@ -4638,7 +4638,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgNUAudioBitrate
             // 
             this->fcgNUAudioBitrate->Location = System::Drawing::Point(265, 196);
-            this->fcgNUAudioBitrate->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgNUAudioBitrate->Margin = System::Windows::Forms::Padding(4);
             this->fcgNUAudioBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1536, 0, 0, 0 });
             this->fcgNUAudioBitrate->Name = L"fcgNUAudioBitrate";
             this->fcgNUAudioBitrate->Size = System::Drawing::Size(81, 25);
@@ -4650,7 +4650,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBAudio2pass->AutoSize = true;
             this->fcgCBAudio2pass->Location = System::Drawing::Point(74, 168);
-            this->fcgCBAudio2pass->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAudio2pass->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAudio2pass->Name = L"fcgCBAudio2pass";
             this->fcgCBAudio2pass->Size = System::Drawing::Size(70, 22);
             this->fcgCBAudio2pass->TabIndex = 52;
@@ -4664,7 +4664,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioEncMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioEncMode->FormattingEnabled = true;
             this->fcgCXAudioEncMode->Location = System::Drawing::Point(20, 195);
-            this->fcgCXAudioEncMode->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioEncMode->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioEncMode->Name = L"fcgCXAudioEncMode";
             this->fcgCXAudioEncMode->Size = System::Drawing::Size(235, 26);
             this->fcgCXAudioEncMode->TabIndex = 50;
@@ -4684,7 +4684,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTAudioEncoderPath
             // 
             this->fcgBTAudioEncoderPath->Location = System::Drawing::Point(405, 112);
-            this->fcgBTAudioEncoderPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTAudioEncoderPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTAudioEncoderPath->Name = L"fcgBTAudioEncoderPath";
             this->fcgBTAudioEncoderPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTAudioEncoderPath->TabIndex = 41;
@@ -4696,7 +4696,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXAudioEncoderPath->AllowDrop = true;
             this->fcgTXAudioEncoderPath->Location = System::Drawing::Point(20, 115);
-            this->fcgTXAudioEncoderPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXAudioEncoderPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXAudioEncoderPath->Name = L"fcgTXAudioEncoderPath";
             this->fcgTXAudioEncoderPath->Size = System::Drawing::Size(378, 25);
             this->fcgTXAudioEncoderPath->TabIndex = 40;
@@ -4719,7 +4719,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCBAudioOnly->AutoSize = true;
             this->fcgCBAudioOnly->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
             this->fcgCBAudioOnly->Location = System::Drawing::Point(315, 6);
-            this->fcgCBAudioOnly->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBAudioOnly->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBAudioOnly->Name = L"fcgCBAudioOnly";
             this->fcgCBAudioOnly->Size = System::Drawing::Size(109, 22);
             this->fcgCBAudioOnly->TabIndex = 34;
@@ -4731,7 +4731,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBFAWCheck->AutoSize = true;
             this->fcgCBFAWCheck->Location = System::Drawing::Point(315, 35);
-            this->fcgCBFAWCheck->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBFAWCheck->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBFAWCheck->Name = L"fcgCBFAWCheck";
             this->fcgCBFAWCheck->Size = System::Drawing::Size(101, 22);
             this->fcgCBFAWCheck->TabIndex = 36;
@@ -4744,7 +4744,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioEncoder->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioEncoder->FormattingEnabled = true;
             this->fcgCXAudioEncoder->Location = System::Drawing::Point(21, 42);
-            this->fcgCXAudioEncoder->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioEncoder->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioEncoder->Name = L"fcgCXAudioEncoder";
             this->fcgCXAudioEncoder->Size = System::Drawing::Size(214, 26);
             this->fcgCXAudioEncoder->TabIndex = 32;
@@ -4788,9 +4788,9 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageAudioOther->Controls->Add(this->fcgCXAudioPriority);
             this->fcgtabPageAudioOther->Controls->Add(this->fcgLBAudioPriority);
             this->fcgtabPageAudioOther->Location = System::Drawing::Point(4, 27);
-            this->fcgtabPageAudioOther->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageAudioOther->Margin = System::Windows::Forms::Padding(4);
             this->fcgtabPageAudioOther->Name = L"fcgtabPageAudioOther";
-            this->fcgtabPageAudioOther->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgtabPageAudioOther->Padding = System::Windows::Forms::Padding(4);
             this->fcgtabPageAudioOther->Size = System::Drawing::Size(472, 339);
             this->fcgtabPageAudioOther->TabIndex = 1;
             this->fcgtabPageAudioOther->Text = L"その他";
@@ -4800,7 +4800,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
             this->panel2->Location = System::Drawing::Point(22, 158);
-            this->panel2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->panel2->Margin = System::Windows::Forms::Padding(4);
             this->panel2->Name = L"panel2";
             this->panel2->Size = System::Drawing::Size(427, 1);
             this->panel2->TabIndex = 61;
@@ -4836,7 +4836,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTBatAfterAudioPath
             // 
             this->fcgBTBatAfterAudioPath->Location = System::Drawing::Point(412, 289);
-            this->fcgBTBatAfterAudioPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTBatAfterAudioPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTBatAfterAudioPath->Name = L"fcgBTBatAfterAudioPath";
             this->fcgBTBatAfterAudioPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTBatAfterAudioPath->TabIndex = 59;
@@ -4849,7 +4849,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXBatAfterAudioPath->AllowDrop = true;
             this->fcgTXBatAfterAudioPath->Location = System::Drawing::Point(158, 290);
-            this->fcgTXBatAfterAudioPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXBatAfterAudioPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXBatAfterAudioPath->Name = L"fcgTXBatAfterAudioPath";
             this->fcgTXBatAfterAudioPath->Size = System::Drawing::Size(252, 25);
             this->fcgTXBatAfterAudioPath->TabIndex = 58;
@@ -4871,7 +4871,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRunBatAfterAudio->AutoSize = true;
             this->fcgCBRunBatAfterAudio->Location = System::Drawing::Point(22, 259);
-            this->fcgCBRunBatAfterAudio->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRunBatAfterAudio->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRunBatAfterAudio->Name = L"fcgCBRunBatAfterAudio";
             this->fcgCBRunBatAfterAudio->Size = System::Drawing::Size(254, 22);
             this->fcgCBRunBatAfterAudio->TabIndex = 55;
@@ -4883,7 +4883,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
             this->panel1->Location = System::Drawing::Point(22, 245);
-            this->panel1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->panel1->Margin = System::Windows::Forms::Padding(4);
             this->panel1->Name = L"panel1";
             this->panel1->Size = System::Drawing::Size(427, 1);
             this->panel1->TabIndex = 54;
@@ -4891,7 +4891,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgBTBatBeforeAudioPath
             // 
             this->fcgBTBatBeforeAudioPath->Location = System::Drawing::Point(412, 205);
-            this->fcgBTBatBeforeAudioPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgBTBatBeforeAudioPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgBTBatBeforeAudioPath->Name = L"fcgBTBatBeforeAudioPath";
             this->fcgBTBatBeforeAudioPath->Size = System::Drawing::Size(38, 29);
             this->fcgBTBatBeforeAudioPath->TabIndex = 53;
@@ -4904,7 +4904,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgTXBatBeforeAudioPath->AllowDrop = true;
             this->fcgTXBatBeforeAudioPath->Location = System::Drawing::Point(158, 205);
-            this->fcgTXBatBeforeAudioPath->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgTXBatBeforeAudioPath->Margin = System::Windows::Forms::Padding(4);
             this->fcgTXBatBeforeAudioPath->Name = L"fcgTXBatBeforeAudioPath";
             this->fcgTXBatBeforeAudioPath->Size = System::Drawing::Size(252, 25);
             this->fcgTXBatBeforeAudioPath->TabIndex = 52;
@@ -4926,7 +4926,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             this->fcgCBRunBatBeforeAudio->AutoSize = true;
             this->fcgCBRunBatBeforeAudio->Location = System::Drawing::Point(22, 174);
-            this->fcgCBRunBatBeforeAudio->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCBRunBatBeforeAudio->Margin = System::Windows::Forms::Padding(4);
             this->fcgCBRunBatBeforeAudio->Name = L"fcgCBRunBatBeforeAudio";
             this->fcgCBRunBatBeforeAudio->Size = System::Drawing::Size(254, 22);
             this->fcgCBRunBatBeforeAudio->TabIndex = 48;
@@ -4939,7 +4939,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCXAudioPriority->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAudioPriority->FormattingEnabled = true;
             this->fcgCXAudioPriority->Location = System::Drawing::Point(195, 25);
-            this->fcgCXAudioPriority->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->fcgCXAudioPriority->Margin = System::Windows::Forms::Padding(4);
             this->fcgCXAudioPriority->Name = L"fcgCXAudioPriority";
             this->fcgCXAudioPriority->Size = System::Drawing::Size(169, 26);
             this->fcgCXAudioPriority->TabIndex = 47;
@@ -4974,7 +4974,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
-            this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->Margin = System::Windows::Forms::Padding(4);
             this->MaximizeBox = false;
             this->Name = L"frmConfig";
             this->ShowIcon = false;

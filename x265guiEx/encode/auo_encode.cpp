@@ -600,7 +600,7 @@ AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const
         strcat_s(stats, sizeof(stats), ".cutree");
         move_temp_file(NULL, stats, NULL, ret, TRUE, "mbtree ステータス", FALSE);
 
-        if (conf->x265.analysis_reuse_mode) {
+        if (conf->x265.analysis_reuse) {
             strcpy_s(stats, sizeof(stats), conf->vid.analysis_file);
             cmd_replace(stats, sizeof(stats), pe, sys_dat, conf, oip);
             move_temp_file(NULL, stats, NULL, ret, TRUE, "解析結果", FALSE);
