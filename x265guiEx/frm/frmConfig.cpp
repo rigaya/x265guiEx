@@ -1244,6 +1244,9 @@ System::Void frmConfig::initUpdater() {
     frmExeUpdate->Owner = this;
     frmExeUpdate->init(gcnew x265guiEx::DelegateProcessFin(this, &frmConfig::fcgTSBUpdate_CheckFinished),
                        gcnew x265guiEx::DelegateProcessFin(this, &frmConfig::fcgTSBUpdate_UpdateFinished));
+    if (!sys_dat->exstg->s_local.update_check_auto) {
+        return;
+    }
     if (str_has_char(sys_dat->exstg->s_local.last_update_check)) {
         try {
             DateTime dtLastUpdate = DateTime::Parse(String(sys_dat->exstg->s_local.last_update_check).ToString());
