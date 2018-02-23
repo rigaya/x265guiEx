@@ -316,20 +316,22 @@ void set_enc_prm(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SY
     }
 
     pe->muxer_to_be_used = check_muxer_to_be_used(conf, sys_dat, pe->temp_filename, pe->video_out_type, (oip->flag & OUTPUT_INFO_FLAG_AUDIO) != 0);
-    const MUXER_CMD_EX *muxer_mode = &sys_dat->exstg->s_mux[pe->muxer_to_be_used].ex_cmd[get_mux_excmd_mode(conf, pe)];
-    if (str_has_char(muxer_mode->chap_file) && strstr(muxer_mode->chap_file, "chapter.%{pid}.txt")) {
-        char move_to[MAX_PATH_LEN] = { 0 };
-        char move_from[MAX_PATH_LEN] = { 0 };
-        strcpy_s(move_to, muxer_mode->chap_file);
-        strcpy_s(move_from, muxer_mode->chap_file);
-        replace(move_from, sizeof(move_from), "%{pid}.", "");
-        cmd_replace(move_to,   sizeof(move_to),   pe, sys_dat, conf, oip);
-        cmd_replace(move_from, sizeof(move_from), pe, sys_dat, conf, oip);
-        if (PathFileExists(move_from)) {
-            if (PathFileExists(move_to))
-                remove(move_to);
-            if (rename(move_from, move_to))
-                write_log_auo_line_fmt(LOG_WARNING, "チャプターファイルの移動に失敗しました。");
+    if (pe->muxer_to_be_used >= 0) {
+        const MUXER_CMD_EX *muxer_mode = &sys_dat->exstg->s_mux[pe->muxer_to_be_used].ex_cmd[get_mux_excmd_mode(conf, pe)];
+        if (str_has_char(muxer_mode->chap_file) && strstr(muxer_mode->chap_file, "chapter.%{pid}.txt")) {
+            char move_to[MAX_PATH_LEN] = { 0 };
+            char move_from[MAX_PATH_LEN] = { 0 };
+            strcpy_s(move_to, muxer_mode->chap_file);
+            strcpy_s(move_from, muxer_mode->chap_file);
+            replace(move_from, sizeof(move_from), "%{pid}.", "");
+            cmd_replace(move_to, sizeof(move_to), pe, sys_dat, conf, oip);
+            cmd_replace(move_from, sizeof(move_from), pe, sys_dat, conf, oip);
+            if (PathFileExists(move_from)) {
+                if (PathFileExists(move_to))
+                    remove(move_to);
+                if (rename(move_from, move_to))
+                    write_log_auo_line_fmt(LOG_WARNING, "チャプターファイルの移動に失敗しました。");
+            }
         }
     }
     
