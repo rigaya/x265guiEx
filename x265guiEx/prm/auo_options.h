@@ -175,9 +175,9 @@ const X265_OPTION_STR list_colorprim[] = {
     { "smpte240m", L"smpte240m" },
     { "film",      L"film"      },
     { "bt2020",    L"bt2020"    },
-    { "smpte-st-428",  L"smpte-st-428"  },
-    { "smpte-rp-431",  L"smpte-rp-431"  },
-    { "smpte-eg-432",  L"smpte-eg-432"  },
+    { "smpte428",  L"smpte428"  },
+    { "smpte431",  L"smpte431"  },
+    { "smpte432",  L"smpte432"  },
     { NULL, NULL }
 };
 const X265_OPTION_STR list_transfer[] = {
@@ -196,13 +196,13 @@ const X265_OPTION_STR list_transfer[] = {
     { "iec61966-2-1", L"iec61966-2-1" },
     { "bt2020-10",    L"bt2020-10"    },
     { "bt2020-12",    L"bt2020-12"    },
-    { "smpte-st-2084",L"smpte-st-2084"},
-    { "smpte-st-428", L"smpte-st-428" },
+    { "smpte2084",    L"smpte2084"},
+    { "smpte428",     L"smpte428" },
     { "arib-std-b67", L"arib-std-b67" },
     { NULL, NULL }
 };
 const X265_OPTION_STR list_range[] = {
-    { "limited",      L"limiteed"     },
+    { "limited",      L"limited"     },
     { "full",         L"full"         },
     { NULL, NULL }
 };
@@ -213,14 +213,14 @@ const X265_OPTION_STR list_colormatrix[] = {
     { "smpte170m", L"smpte170m" },
     { "bt470bg",   L"bt470bg"   },
     { "smpte240m", L"smpte240m" },
-    { "YCgCo",     L"YCgCo"     },
+    { "ycgco",     L"ycgco"     },
     { "fcc",       L"fcc"       },
-    { "GBR",       L"GBR"       },
+    { "gbr",       L"gbr"       },
     { "bt2020nc",  L"bt2020nc"  },
     { "bt2020c",   L"bt2020c"   },
-    { "smpte-st-2085", L"smpte-st-2085" },
-    { "chroma-nc", L"chroma-nc" },
-    { "chroma-c",  L"chroma-c"  },
+    { "smpte2085", L"smpte2085" },
+    { "chroma-derived-nc", L"chroma-derived-nc" },
+    { "chroma-derived-c",  L"chroma-derived-c"  },
     { "ictcp",     L"ictcp" },
     { NULL, NULL }
 };
