@@ -178,7 +178,7 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_YC48, OUT_CSP_YUV444, BIT_8, A, 16,  SSE2,                 convert_yc48_to_yuv444_sse2_mod16 },
     { CF_YC48, OUT_CSP_YUV444, BIT_8, A,  1,  SSE2,                 convert_yc48_to_yuv444_sse2 },
     { CF_YC48, OUT_CSP_YUV444, BIT_8, A,  1,  NONE,                 convert_yc48_to_yuv444 },
-    
+
     //YC48 -> yuv444(10bit)
     { CF_YC48, OUT_CSP_YUV444, BIT10, A,  1,  NONE,                 convert_yc48_to_yuv444_10bit },
 
@@ -213,7 +213,7 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_LW48, OUT_CSP_NV12,   BIT16, I,  8,  SSE2,                 convert_lw48_to_nv12_i_16bit_sse2_mod8 },
     { CF_LW48, OUT_CSP_NV12,   BIT16, I,  1,  SSE2,                 convert_lw48_to_nv12_i_16bit_sse2 },
     { CF_LW48, OUT_CSP_NV12,   BIT16, I,  1,  NONE,                 convert_lw48_to_nv12_i_16bit },
-    
+
     //LW48 -> nv16 (8bit)
     { CF_LW48, OUT_CSP_NV16,   BIT_8, A,  1,  NONE,                 convert_lw48_to_nv16 },
 
@@ -285,7 +285,7 @@ static void auo_write_func_info(const COVERT_FUNC_INFO *func_info) {
     switch (func_info->for_interlaced) {
         case P: interlaced = "p"; break;
         case I: interlaced = "i"; break;
-        case A: 
+        case A:
         default:interlaced = ""; break;
     }
     const char *bit_depth = "";
