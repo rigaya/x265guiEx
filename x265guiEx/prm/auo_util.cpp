@@ -47,7 +47,7 @@ static BOOL isJis(const void *str, DWORD size_in_byte) {
         if (*chr > 0x7F)
             return FALSE;
         for (int i = 0; ESCAPE[i][0]; i++) {
-            if (str_fin - chr > ESCAPE[i][0] && 
+            if (str_fin - chr > ESCAPE[i][0] &&
                 memcmp(chr, &ESCAPE[i][1], ESCAPE[i][0]) == NULL)
                 return TRUE;
         }
@@ -102,8 +102,8 @@ DWORD jpn_check(const void *str, DWORD size_in_byte) {
                 score_euc += 2; chr++;
         } else if (
             str_fin - chr > 2 &&
-            chr[0] == 0x8F && 
-            (0xA1 <= chr[1] && chr[1] <= 0xFE) && 
+            chr[0] == 0x8F &&
+            (0xA1 <= chr[1] && chr[1] <= 0xFE) &&
             (0xA1 <= chr[2] && chr[2] <= 0xFE)) {
                 score_euc += 3; chr += 2;
         }
@@ -189,7 +189,7 @@ BOOL del_arg(char *cmd, char *target_arg, int del_arg_delta) {
     //文字列の移動
     if (del_arg_delta < 0)
         std::swap(p_start, ptr);
-        
+
     memmove(p_start, ptr, (cmd_fin - ptr + 1) * sizeof(cmd[0]));
     return TRUE;
 }
@@ -334,6 +334,15 @@ static int getRealWindowsVersion(DWORD *major, DWORD *minor, DWORD *build) {
         FreeLibrary(hModule);
     }
     return ret;
+}
+
+void getOSVersion(OSVERSIONINFO *info) {
+    memset(info, 0, sizeof(info[0]));
+    info->dwOSVersionInfoSize = sizeof(info);
+    GetVersionEx(info);
+    if (info->dwPlatformId == VER_PLATFORM_WIN32_NT && info->dwMajorVersion == 6) {
+        getRealWindowsVersion(&info->dwMajorVersion, &info->dwMinorVersion, &info->dwBuildNumber);
+    }
 }
 
 const TCHAR *getOSVersion(DWORD *buildNumber) {
