@@ -338,7 +338,7 @@ static int getRealWindowsVersion(DWORD *major, DWORD *minor, DWORD *build) {
 
 void getOSVersion(OSVERSIONINFO *info) {
     memset(info, 0, sizeof(info[0]));
-    info->dwOSVersionInfoSize = sizeof(info);
+    info->dwOSVersionInfoSize = sizeof(info[0]);
     GetVersionEx(info);
     if (info->dwPlatformId == VER_PLATFORM_WIN32_NT && info->dwMajorVersion == 6) {
         getRealWindowsVersion(&info->dwMajorVersion, &info->dwMinorVersion, &info->dwBuildNumber);
