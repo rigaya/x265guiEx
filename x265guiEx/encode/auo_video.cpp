@@ -84,7 +84,14 @@ int get_aviutl_color_format(int bit_depth, int output_csp, int input_as_lw48) {
 
 static int calc_input_frame_size(int width, int height, int color_format) {
     width = (color_format == CF_RGB) ? (width+3) & ~3 : (width+1) & ~1;
-    return width * height * COLORFORMATS[color_format].size;
+    //widthが割り切れない場合、多めにアクセスが発生するので、そのぶんを確保しておく
+    const DWORD pixel_size = COLORFORMATS[color_format].size;
+    const DWORD simd_check = get_availableSIMD();
+    const DWORD align_size = (simd_check & AUO_SIMD_SSE2) ? ((simd_check & AUO_SIMD_AVX2) ? 64 : 32) : 1;
+#define ALIGN_NEXT(i, align) (((i) + (align-1)) & (~(align-1))) //alignは2の累乗(1,2,4,8,16,32...)
+    const DWORD frame_size = ALIGN_NEXT(width * height * pixel_size + (ALIGN_NEXT(width, align_size / pixel_size) - width) * 2 * pixel_size, align_size);
+#undef ALIGN_NEXT
+    return frame_size;
 }
 
 static int get_frame_num_to_encode(int total_frames, const PRM_ENC *pe) {
