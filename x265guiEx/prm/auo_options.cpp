@@ -58,9 +58,9 @@ enum {
 };
 
 //値を取らないオプションタイプのリスト
-static const DWORD OPTION_NO_VALUE[] = { 
-    OPTION_TYPE_BOOL, 
-    OPTION_TYPE_BOOL_REVERSE, 
+static const DWORD OPTION_NO_VALUE[] = {
+    OPTION_TYPE_BOOL,
+    OPTION_TYPE_BOOL_REVERSE,
     OPTION_TYPE_BOOL2_REVERSE,
     OPTION_TYPE_TFF,
     OPTION_TYPE_BFF,
@@ -218,6 +218,8 @@ static X265_OPTIONS x265_options_table[] = {
     { "analysis-reuse-level", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, analysis_reuse_level) },
     //{ "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_intra)         },
     //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
+    { "no-hevc-aq",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hevc_aq) },
+    { "hevc-aq",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hevc_aq) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 
@@ -409,7 +411,7 @@ static BOOL set_list(void *i, const char *value, const X265_OPTION_STR *list) {
             }
         }
     }
-    return ret; 
+    return ret;
 }
 static BOOL set_crf(void *cx, const char *value, const X265_OPTION_STR *list) {
     ((CONF_X265 *)cx)->rc_mode = X265_RC_CRF;
@@ -549,7 +551,7 @@ static BOOL set_analyse(void *cx, const char *value, const X265_OPTION_STR *list
         if ((DWORD)i_val.y & 0x0002) *(DWORD*)cx |= MB_PARTITION_I8x8;
         if ((DWORD)i_val.y & 0x0001) *(DWORD*)cx |= MB_PARTITION_I4x4;
     }
-    return ret; 
+    return ret;
 }
 static BOOL set_rc(void *cx, const char *value, const X265_OPTION_STR *list) {
     BOOL ret = TRUE;
@@ -568,7 +570,7 @@ static BOOL set_rc(void *cx, const char *value, const X265_OPTION_STR *list) {
     } else {
         ret = FALSE;
     }
-    return ret; 
+    return ret;
 }
 static BOOL set_aq(void *cx, const char *value, const X265_OPTION_STR *list) {
     FLOAT2 f_val = { 0, 0 };
@@ -577,7 +579,7 @@ static BOOL set_aq(void *cx, const char *value, const X265_OPTION_STR *list) {
         ((CONF_X265 *)cx)->aq_mode = ((int)(f_val.x + 0.5));
         ((CONF_X265 *)cx)->aq_strength = f_val.y;
     }
-    return ret; 
+    return ret;
 }
 static BOOL set_interlaced(void *cx, const char *value, const X265_OPTION_STR *list) {
     BOOL ret = TRUE;
@@ -596,7 +598,7 @@ static BOOL set_interlaced(void *cx, const char *value, const X265_OPTION_STR *l
     } else {
         ret = FALSE;
     }
-    return ret; 
+    return ret;
 }
 static BOOL set_psy(void *cx, const char *value, const X265_OPTION_STR *list) {
     BOOL ret = TRUE;
@@ -835,7 +837,7 @@ const SET_VALUE set_value[] = {
 //この配列に従って各関数に飛ばされる
 typedef int (*WRITE_CMD_x265) (char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all);
 //const WRITE_CMD_x265 write_cmd_x264[] = {
-//    NULL, 
+//    NULL,
 //    write_bool,
 //    write_bool_reverse,
 //    write_int,
@@ -866,7 +868,7 @@ typedef int (*WRITE_CMD_x265) (char *cmd, size_t nSize, const X265_OPTIONS *opti
 //    write_do_nothing
 //};
 const WRITE_CMD_x265 write_cmd_x265[] = {
-    NULL, 
+    NULL,
     write_bool,
     write_bool_reverse,
     write_int,
@@ -1060,7 +1062,7 @@ static void set_conf_x265(std::vector<CMD_ARG> &cmd_arg_list, CONF_X265 *conf_se
         for (i = 0; i < _countof(x265_options_table); i++) {
             if (NULL == x265_options_table[i].long_name) //書き出しの終了条件
                 continue;
-            if (NULL == ((it_arg->arg_type == ARG_TYPE_LONG) ? strcmp(it_arg->option_name, x265_options_table[i].long_name) : 
+            if (NULL == ((it_arg->arg_type == ARG_TYPE_LONG) ? strcmp(it_arg->option_name, x265_options_table[i].long_name) :
                                                                strncmp(it_arg->option_name, x265_options_table[i].short_name, 1))) {
                 it_arg->ret = (option_has_no_value(x265_options_table[i].type) == FALSE && it_arg->value == NULL) ? FALSE : TRUE;
                 break;

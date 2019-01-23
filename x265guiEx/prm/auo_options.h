@@ -93,18 +93,18 @@ const X265_OPTION_STR list_output_csp_x265[] = {
     { "i422", L"i422" },
     { NULL, NULL },
 };
-const X265_OPTION_STR list_aq[] = { 
-    { NULL, L"none"              }, 
-    { NULL, L"VAQ"               }, 
+const X265_OPTION_STR list_aq[] = {
+    { NULL, L"none"              },
+    { NULL, L"VAQ"               },
     { NULL, L"AutoVAQ"           },
     { NULL, L"AutoVAQ(暗部保護)" },
-    { NULL, NULL } 
+    { NULL, NULL }
 };
-const X265_OPTION_STR list_weightp[] = { 
-    { NULL, L"Disabled" }, 
-    { NULL, L"Simple"   }, 
-    { NULL, L"Smart"    }, 
-    { NULL, NULL } 
+const X265_OPTION_STR list_weightp[] = {
+    { NULL, L"Disabled" },
+    { NULL, L"Simple"   },
+    { NULL, L"Smart"    },
+    { NULL, NULL }
 };
 const X265_OPTION_STR list_b_adpat[] = {
     { NULL, L"無効" },
@@ -231,7 +231,7 @@ const X265_OPTION_STR list_videoformat[] = {
     { "pal",       L"pal"       },
     { "secam",     L"secam"     },
     { "mac",       L"mac"       },
-    { NULL, NULL } 
+    { NULL, NULL }
 };
 const X265_OPTION_STR list_sar_x265[] = {
     { "undef",     L"undef"     },
@@ -251,7 +251,7 @@ const X265_OPTION_STR list_sar_x265[] = {
     { "4:3",       L"4:3"       },
     { "3:2",       L"3:2"       },
     { "2:1",       L"2:1"       },
-    { NULL, NULL } 
+    { NULL, NULL }
 };
 const X265_OPTION_STR list_log_type[] = {
     { "none",    L"none"    },
@@ -416,6 +416,7 @@ typedef struct CONF_X265 {
     int     analysis_reuse_level;
     int     refine_intra;
     int     refine_inter;
+    int     hevc_aq;
 } CONF_X265;
 #pragma pack(pop)
 

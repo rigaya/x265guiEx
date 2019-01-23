@@ -41,7 +41,7 @@ System::Boolean frmSaveNewStg::checkStgFileName(String^ stgName) {
     String^ fileName;
     if (stgName->Length == 0)
         return false;
-    
+
     if (!ValidiateFileName(stgName)) {
         MessageBox::Show(L"ファイル名に使用できない文字が含まれています。\n保存できません。", L"エラー", MessageBoxButtons::OK, MessageBoxIcon::Error);
         return false;
@@ -188,7 +188,7 @@ System::Void frmConfig::fcgTSBUpdate_CheckFinished(String^ mes) {
     stg.load_encode_stg();
     GetCHARfromString(stg.s_local.last_update_check, _countof(stg.s_local.last_update_check), DateTime::Now.ToString());
     stg.save_local();
-    
+
     if (auoSetupControl::checkIfUpdateAvailable(mes)) {
         fcgTSBUpdate->Text = L"更新*";
         fcgTSBUpdate->ForeColor = Color::MediumSlateBlue;
@@ -205,7 +205,7 @@ System::Void frmConfig::fcgTSBUpdate_UpdateFinished(String^ mes) {
 
     fcgTSBUpdate->Text = L"更新";
     fcgTSBUpdate->ForeColor = SystemColors::ControlText;
-    
+
     //更新にしたがって表示を更新する
     guiEx_settings stg;
     stg.load_encode_stg();
@@ -294,8 +294,8 @@ System::Boolean frmConfig::CheckLocalStg() {
     //音声エンコーダのチェック (実行ファイル名がない場合はチェックしない)
     if (LocalStg.audEncExeName[fcgCXAudioEncoder->SelectedIndex]->Length) {
         String^ AudioEncoderPath = LocalStg.audEncPath[fcgCXAudioEncoder->SelectedIndex];
-        if (!File::Exists(AudioEncoderPath) 
-            && (fcgCXAudioEncoder->SelectedIndex != sys_dat->exstg->s_aud_faw_index 
+        if (!File::Exists(AudioEncoderPath)
+            && (fcgCXAudioEncoder->SelectedIndex != sys_dat->exstg->s_aud_faw_index
                 || !check_if_faw2aac_exists()) ) {
             //音声実行ファイルがない かつ
             //選択された音声がfawでない または fawであってもfaw2aacがない
@@ -330,7 +330,7 @@ System::Boolean frmConfig::CheckLocalStg() {
             + L"適切に設定する必要があります。\n"
             + L"上限ビットレート、上限ファイルサイズの設定を見なおしてください。";
     }
-    if (error) 
+    if (error)
         MessageBox::Show(this, err, L"エラー", MessageBoxButtons::OK, MessageBoxIcon::Error);
     return error;
 }
@@ -768,7 +768,7 @@ System::Void frmConfig::fcgCXCmdExInsert_SelectedIndexChanged(System::Object^  s
     String^ insertStr;
     if (       0 == fcgCXCmdExInsert->SelectedIndex) {
         //何もしない
-    } else if (1 == fcgCXCmdExInsert->SelectedIndex) {            
+    } else if (1 == fcgCXCmdExInsert->SelectedIndex) {
         //WinXPにおいて、OpenFileDialogはCurrentDirctoryを勝手に変更しやがるので、
         //一度保存し、あとから再適用する
         String^ CurrentDir = Directory::GetCurrentDirectory();
@@ -901,7 +901,7 @@ System::Void frmConfig::AudioEncodeModeChanged() {
     fcgCBAudio2pass->Enabled = astg->mode[index].enc_2pass != 0;
     if (!fcgCBAudio2pass->Enabled) fcgCBAudio2pass->Checked = false;
     SetfbcBTABEnable(fcgNUAudioBitrate->Visible, (int)fcgNUAudioBitrate->Maximum);
-    
+
     bool delay_cut_available = astg->mode[index].delay > 0;
     fcgLBAudioDelayCut->Visible = delay_cut_available;
     fcgCXAudioDelayCut->Visible = delay_cut_available;
@@ -960,8 +960,8 @@ ToolStripMenuItem^ frmConfig::fcgTSSettingsSearchItem(String^ stgPath, ToolStrip
         if (item != nullptr)
             return item;
         item = dynamic_cast<ToolStripMenuItem^>(DropDownItem->DropDownItems[i]);
-        if (item      != nullptr && 
-            item->Tag != nullptr && 
+        if (item      != nullptr &&
+            item->Tag != nullptr &&
             0 == String::Compare(item->Tag->ToString(), stgPath, true))
             return item;
     }
@@ -973,7 +973,7 @@ ToolStripMenuItem^ frmConfig::fcgTSSettingsSearchItem(String^ stgPath) {
 }
 
 System::Void frmConfig::SaveToStgFile(String^ stgName) {
-    size_t nameLen = CountStringBytes(stgName) + 1; 
+    size_t nameLen = CountStringBytes(stgName) + 1;
     char *stg_name = (char *)malloc(nameLen);
     GetCHARfromString(stg_name, nameLen, stgName);
     init_CONF_GUIEX(cnf_stgSelected, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
@@ -1019,7 +1019,7 @@ System::Void frmConfig::fcgTSBSaveNew_Click(System::Object^  sender, System::Eve
 System::Void frmConfig::DeleteStgFile(ToolStripMenuItem^ mItem) {
     if (System::Windows::Forms::DialogResult::OK ==
         MessageBox::Show(L"設定ファイル " + mItem->Text + L" を削除してよろしいですか?",
-        L"エラー", MessageBoxButtons::OKCancel, MessageBoxIcon::Exclamation)) 
+        L"エラー", MessageBoxButtons::OKCancel, MessageBoxIcon::Exclamation))
     {
         File::Delete(mItem->Tag->ToString());
         RebuildStgFileDropDown(nullptr);
@@ -1097,7 +1097,7 @@ System::Void frmConfig::InitComboBox() {
     setComboBox(fcgCXAudioTempDir,   audtempdir_desc);
     setComboBox(fcgCXMP4BoxTempDir,  mp4boxtempdir_desc);
     setComboBox(fcgCXTempDir,        tempdir_desc);
-    
+
     //x265
     setComboBox(fcgCXBitDepth,       bit_depth_desc);
     setComboBox(fcgCXCSP,            list_output_csp_x265);
@@ -1350,7 +1350,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetCXIndex(fcgCXPreset,           cx265->preset);
     SetCXIndex(fcgCXTune,             cx265->tune);
     SetCXIndex(fcgCXProfile,          cx265->profile);
-    
+
     if (cx265->sar.x * cx265->sar.y < 0)
         cx265->sar.x = cx265->sar.y = 0;
     fcgCXAspectRatio->SelectedIndex= (cx265->sar.x < 0);
@@ -1358,10 +1358,10 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUAspectRatioY, abs(cx265->sar.y));
 
     SetCXIndex(fcgCXInterlaced,       cx265->interlaced);
-    
+
     SetCXIndex(fcgCXVideoFormat,      cx265->videoformat);
     SetCXIndex(fcgCXCSP,              x265_outputcsp_map[clamp(cx265->output_csp, 0, _countof(x265_outputcsp_map) - 1)]);
-    
+
     SetCXIndex(fcgCXColorMatrix,      cx265->colormatrix);
     SetCXIndex(fcgCXColorPrim,        cx265->colorprim);
     SetCXIndex(fcgCXTransfer,         cx265->transfer);
@@ -1378,7 +1378,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     fcgCBBpyramid->Checked          = cx265->b_pyramid != 0;
     fcgCBWeightB->Checked           = cx265->weight_b != 0;
     fcgCBWeightP->Checked           = cx265->weight_p != 0;
-    
+
     SetNUValue(fcgNUVBVbuf,           cx265->vbv_bufsize);
     SetNUValue(fcgNUVBVmax,           cx265->vbv_maxrate);
     SetNUValue(fcgNUQComp,            cx265->qp_compress * 100);
@@ -1387,6 +1387,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetCXIndex(fcgCXAQMode,           cx265->aq_mode);
     SetNUValue(fcgNUAQStrength,       cx265->aq_strength);
     fcgCBAQMotion->Checked          = cx265->aq_motion != 0;
+    fcgCBHEVCAQ->Checked            = cx265->hevc_aq != 0;
     SetNUValue(fcgNUPsyRD,            cx265->psy_rd.x);
     SetNUValue(fcgNUPsyRDOQ,          cx265->psy_rdoq);
     SetNUValue(fcgNURdoqLevel,        cx265->rdoq_level);
@@ -1401,7 +1402,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     fcgCBAsymmetricMP->Checked      = cx265->asymmnteric_mp != 0;
     SetNUValue(fcgNULimitRefs,        cx265->limit_refs);
     fcgCBLimitModes->Checked        = cx265->limit_modes != 0;
-    
+
     SetCXIndex(fcgCXME,               cx265->me);
     SetCXIndex(fcgCXSubME,            cx265->subme);
     SetNUValue(fcgNUMERange,          cx265->me_range);
@@ -1413,7 +1414,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     fcgCBWpp->Checked               = cx265->wpp != 0;
     fcgCBPMode->Checked             = cx265->pmode != 0;
     fcgCBPME->Checked               = cx265->pme != 0;
-    
+
     fcgCBDeblock->Checked           = cx265->use_deblock != 0;
     SetNUValue(fcgNUDeblockStrength,  cx265->deblock.x);
     SetNUValue(fcgNUDeblockThreshold, cx265->deblock.y);
@@ -1427,7 +1428,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     fcgTXAnalysisReuseFile->Text    = (str_has_char(cnf->vid.analysis_file)) ? String(cnf->vid.analysis_file).ToString() : String(DefaultAnalysisFilePath).ToString();
     }
 
-     
+
     if (all) {
         //動画部
         fcgTXStatusFile->Text = (str_has_char(cnf->vid.stats))     ? String(cnf->vid.stats).ToString() : String(DefaultStatusFilePath).ToString();
@@ -1517,7 +1518,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.sar.x                = (int)fcgNUAspectRatioX->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
     cnf->x265.sar.y                = (int)fcgNUAspectRatioY->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
     cnf->x265.interlaced           = fcgCXInterlaced->SelectedIndex;
-    
+
     cnf->x265.videoformat          = fcgCXVideoFormat->SelectedIndex;
     cnf->x265.output_csp           = fcgCXCSP->SelectedIndex;
 
@@ -1541,11 +1542,12 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
     cnf->x265.vbv_maxrate          = (int)fcgNUVBVmax->Value;
     cnf->x265.qp_compress          = (float)(fcgNUQComp->Value * (System::Decimal)0.01);
-    
+
     cnf->x265.rd                   = (int)fcgNURD->Value;
     cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
     cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
     cnf->x265.aq_motion            = fcgCBAQMotion->Checked;
+    cnf->x265.hevc_aq              = fcgCBHEVCAQ->Checked;
     cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
     cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
     cnf->x265.rdoq_level           = (int)fcgNURdoqLevel->Value;
@@ -1566,13 +1568,13 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.me_range             = (int)fcgNUMERange->Value;
     cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
     cnf->x265.recursion_skip       =!fcgCBNoRecusrionSkip->Checked;
-    
+
     cnf->x265.pools                = (int)fcgNUPools->Value;
     cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
     cnf->x265.wpp                  = fcgCBWpp->Checked;
     cnf->x265.pmode                = fcgCBPMode->Checked;
     cnf->x265.pme                  = fcgCBPME->Checked;
-    
+
     cnf->x265.use_deblock          = fcgCBDeblock->Checked;
     cnf->x265.deblock.x            = (int)fcgNUDeblockStrength->Value;
     cnf->x265.deblock.y            = (int)fcgNUDeblockThreshold->Value;
@@ -1626,7 +1628,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->mux.disable_mpgext         = !fcgCBMPGMuxerExt->Checked;
     cnf->mux.mpg_mode               = fcgCXMPGCmdEx->SelectedIndex;
     cnf->mux.priority               = fcgCXMuxPriority->SelectedIndex;
-    
+
     cnf->oth.run_bat                = RUN_BAT_NONE;
     cnf->oth.run_bat               |= (fcgCBRunBatBeforeAudio->Checked) ? RUN_BAT_BEFORE_AUDIO   : NULL;
     cnf->oth.run_bat               |= (fcgCBRunBatAfterAudio->Checked)  ? RUN_BAT_AFTER_AUDIO    : NULL;
@@ -1770,7 +1772,7 @@ System::Void frmConfig::SetHelpToolTips() {
         + L"\n"
         + L"最終的にこの設定による制約が課されます。"
         );
-    
+
     fcgTTX265->SetToolTip(fcgCBNulOut,            L"-o nul");
     fcgTTX265->SetToolTip(fcgCBFastFirstPass,     L"--slow-firstpass (チェックオフ時)");
     fcgTTX265->SetToolTip(fcgTXQuality,           L"--crf / --bitrate / --qp");
@@ -1801,7 +1803,7 @@ System::Void frmConfig::SetHelpToolTips() {
         + L"上限設定はチェックボックスによりオン/オフできます。";
     fcgTTEx->SetToolTip(fcgCBAMPLimitFileSize,     AMP_LimitFileSize);
     fcgTTEx->SetToolTip(fcgNUAMPLimitFileSize,     AMP_LimitFileSize);
-    
+
     //プロファイルとか
     fcgTTX265->SetToolTip(fcgCXTune,              L"--tune");
     fcgTTX265->SetToolTip(fcgCXPreset,            L"--preset");
@@ -1814,7 +1816,7 @@ System::Void frmConfig::SetHelpToolTips() {
         + L"\n"
         + L"をGUIに適用します。"
         );
-    
+
     fcgTTX265->SetToolTip(fcgCXAspectRatio,      L""
         + String(aspect_desc[0]).ToString() + L"\n"
         + L"   --sar を直接指定します。\n"
@@ -1824,7 +1826,7 @@ System::Void frmConfig::SetHelpToolTips() {
         );
     fcgTTX265->SetToolTip(fcgNUAspectRatioX,     L"アスペクト比 横 (幅)");
     fcgTTX265->SetToolTip(fcgNUAspectRatioY,     L"アスペクト比 縦 (高さ)");
-    
+
     fcgTTX265->SetToolTip(fcgCXInterlaced,       L"--interlace");
     fcgTTX265->SetToolTip(fcgCXVideoFormat,      L"--videoformat");
 
@@ -1836,7 +1838,7 @@ System::Void frmConfig::SetHelpToolTips() {
     SetHelpToolTipsColorMatrixX265(fcgCXColorPrim,   "colorprim");
     SetHelpToolTipsColorMatrixX265(fcgCXTransfer,    "transfer");
     fcgTTX265->SetToolTip(fcgCBFullRange,        L"--range");
-    
+
     fcgTTX265->SetToolTip(fcgNUVBVbuf,           L"--vbv-bufsize");
     fcgTTX265->SetToolTip(fcgNUVBVmax,           L"--vbv-maxrate");
     fcgTTX265->SetToolTip(fcgNUQComp,            L"--qcomp");

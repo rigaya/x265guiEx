@@ -856,6 +856,8 @@ private: System::Windows::Forms::Label^  fcgLBAnalysisReuseFile;
 private: System::Windows::Forms::TextBox^  fcgTXAnalysisReuseFile;
 private: System::Windows::Forms::Button^  fcgBTAnalysisReuseFile;
 private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
+private: System::Windows::Forms::CheckBox^  fcgCBHEVCAQ;
+private: System::Windows::Forms::Label^  fcgLBHEVCAQ;
 
 
 
@@ -1255,6 +1257,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
+            this->fcgCBHEVCAQ = (gcnew System::Windows::Forms::CheckBox());
+            this->fcgLBHEVCAQ = (gcnew System::Windows::Forms::Label());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -1363,7 +1367,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageX265Main->Controls->Add(this->fcgLBX265Path);
             this->fcgtabPageX265Main->Location = System::Drawing::Point(4, 23);
             this->fcgtabPageX265Main->Name = L"fcgtabPageX265Main";
-            this->fcgtabPageX265Main->Padding = System::Windows::Forms::Padding(3, 3, 3, 3);
+            this->fcgtabPageX265Main->Padding = System::Windows::Forms::Padding(3);
             this->fcgtabPageX265Main->Size = System::Drawing::Size(608, 493);
             this->fcgtabPageX265Main->TabIndex = 5;
             this->fcgtabPageX265Main->Text = L" x265 (1)";
@@ -2145,6 +2149,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             // fcgtabPageX265Other
             // 
+            this->fcgtabPageX265Other->Controls->Add(this->fcgCBHEVCAQ);
+            this->fcgtabPageX265Other->Controls->Add(this->fcgLBHEVCAQ);
             this->fcgtabPageX265Other->Controls->Add(this->fcgCBSsimRd);
             this->fcgtabPageX265Other->Controls->Add(this->fcgLBSsimRd);
             this->fcgtabPageX265Other->Controls->Add(this->fcgLBAQMotion);
@@ -2261,7 +2267,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgCBDeblock
             // 
             this->fcgCBDeblock->AutoSize = true;
-            this->fcgCBDeblock->Location = System::Drawing::Point(416, 398);
+            this->fcgCBDeblock->Location = System::Drawing::Point(416, 411);
             this->fcgCBDeblock->Name = L"fcgCBDeblock";
             this->fcgCBDeblock->Size = System::Drawing::Size(141, 18);
             this->fcgCBDeblock->TabIndex = 61;
@@ -2275,15 +2281,15 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcggroupBoxDeblock->Controls->Add(this->fcgNUDeblockStrength);
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockThreshold);
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockStrength);
-            this->fcggroupBoxDeblock->Location = System::Drawing::Point(404, 400);
+            this->fcggroupBoxDeblock->Location = System::Drawing::Point(404, 413);
             this->fcggroupBoxDeblock->Name = L"fcggroupBoxDeblock";
-            this->fcggroupBoxDeblock->Size = System::Drawing::Size(194, 85);
+            this->fcggroupBoxDeblock->Size = System::Drawing::Size(194, 75);
             this->fcggroupBoxDeblock->TabIndex = 62;
             this->fcggroupBoxDeblock->TabStop = false;
             // 
             // fcgNUDeblockThreshold
             // 
-            this->fcgNUDeblockThreshold->Location = System::Drawing::Point(118, 53);
+            this->fcgNUDeblockThreshold->Location = System::Drawing::Point(118, 47);
             this->fcgNUDeblockThreshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockThreshold->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockThreshold->Name = L"fcgNUDeblockThreshold";
@@ -2294,7 +2300,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // 
             // fcgNUDeblockStrength
             // 
-            this->fcgNUDeblockStrength->Location = System::Drawing::Point(118, 24);
+            this->fcgNUDeblockStrength->Location = System::Drawing::Point(118, 20);
             this->fcgNUDeblockStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockStrength->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockStrength->Name = L"fcgNUDeblockStrength";
@@ -2306,7 +2312,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgLBDeblockThreshold
             // 
             this->fcgLBDeblockThreshold->AutoSize = true;
-            this->fcgLBDeblockThreshold->Location = System::Drawing::Point(16, 55);
+            this->fcgLBDeblockThreshold->Location = System::Drawing::Point(16, 49);
             this->fcgLBDeblockThreshold->Name = L"fcgLBDeblockThreshold";
             this->fcgLBDeblockThreshold->Size = System::Drawing::Size(68, 14);
             this->fcgLBDeblockThreshold->TabIndex = 1;
@@ -2315,7 +2321,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgLBDeblockStrength
             // 
             this->fcgLBDeblockStrength->AutoSize = true;
-            this->fcgLBDeblockStrength->Location = System::Drawing::Point(16, 26);
+            this->fcgLBDeblockStrength->Location = System::Drawing::Point(16, 22);
             this->fcgLBDeblockStrength->Name = L"fcgLBDeblockStrength";
             this->fcgLBDeblockStrength->Size = System::Drawing::Size(68, 14);
             this->fcgLBDeblockStrength->TabIndex = 0;
@@ -2611,7 +2617,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgCBCUTree
             // 
             this->fcgCBCUTree->AutoSize = true;
-            this->fcgCBCUTree->Location = System::Drawing::Point(109, 439);
+            this->fcgCBCUTree->Location = System::Drawing::Point(556, 382);
             this->fcgCBCUTree->Name = L"fcgCBCUTree";
             this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
             this->fcgCBCUTree->TabIndex = 43;
@@ -2621,7 +2627,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgLBCUTree
             // 
             this->fcgLBCUTree->AutoSize = true;
-            this->fcgLBCUTree->Location = System::Drawing::Point(9, 438);
+            this->fcgLBCUTree->Location = System::Drawing::Point(424, 381);
             this->fcgLBCUTree->Name = L"fcgLBCUTree";
             this->fcgLBCUTree->Size = System::Drawing::Size(45, 14);
             this->fcgLBCUTree->TabIndex = 100;
@@ -2977,7 +2983,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             // fcgLBSAO
             // 
             this->fcgLBSAO->AutoSize = true;
-            this->fcgLBSAO->Location = System::Drawing::Point(412, 355);
+            this->fcgLBSAO->Location = System::Drawing::Point(423, 355);
             this->fcgLBSAO->Name = L"fcgLBSAO";
             this->fcgLBSAO->Size = System::Drawing::Size(121, 14);
             this->fcgLBSAO->TabIndex = 39;
@@ -3574,7 +3580,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMP4->Controls->Add(this->fcgLBMP4BoxTempDir);
             this->fcgtabPageMP4->Location = System::Drawing::Point(4, 23);
             this->fcgtabPageMP4->Name = L"fcgtabPageMP4";
-            this->fcgtabPageMP4->Padding = System::Windows::Forms::Padding(3, 3, 3, 3);
+            this->fcgtabPageMP4->Padding = System::Windows::Forms::Padding(3);
             this->fcgtabPageMP4->Size = System::Drawing::Size(376, 187);
             this->fcgtabPageMP4->TabIndex = 0;
             this->fcgtabPageMP4->Text = L"mp4";
@@ -3759,7 +3765,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageMKV->Controls->Add(this->fcgCBMKVMuxerExt);
             this->fcgtabPageMKV->Location = System::Drawing::Point(4, 23);
             this->fcgtabPageMKV->Name = L"fcgtabPageMKV";
-            this->fcgtabPageMKV->Padding = System::Windows::Forms::Padding(3, 3, 3, 3);
+            this->fcgtabPageMKV->Padding = System::Windows::Forms::Padding(3);
             this->fcgtabPageMKV->Size = System::Drawing::Size(376, 187);
             this->fcgtabPageMKV->TabIndex = 1;
             this->fcgtabPageMKV->Text = L"mkv";
@@ -4273,7 +4279,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageAudioMain->Controls->Add(this->fcgLBAudioTemp);
             this->fcgtabPageAudioMain->Location = System::Drawing::Point(4, 23);
             this->fcgtabPageAudioMain->Name = L"fcgtabPageAudioMain";
-            this->fcgtabPageAudioMain->Padding = System::Windows::Forms::Padding(3, 3, 3, 3);
+            this->fcgtabPageAudioMain->Padding = System::Windows::Forms::Padding(3);
             this->fcgtabPageAudioMain->Size = System::Drawing::Size(376, 269);
             this->fcgtabPageAudioMain->TabIndex = 0;
             this->fcgtabPageAudioMain->Text = L"音声";
@@ -4507,7 +4513,7 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgtabPageAudioOther->Controls->Add(this->fcgLBAudioPriority);
             this->fcgtabPageAudioOther->Location = System::Drawing::Point(4, 23);
             this->fcgtabPageAudioOther->Name = L"fcgtabPageAudioOther";
-            this->fcgtabPageAudioOther->Padding = System::Windows::Forms::Padding(3, 3, 3, 3);
+            this->fcgtabPageAudioOther->Padding = System::Windows::Forms::Padding(3);
             this->fcgtabPageAudioOther->Size = System::Drawing::Size(376, 269);
             this->fcgtabPageAudioOther->TabIndex = 1;
             this->fcgtabPageAudioOther->Text = L"その他";
@@ -4657,6 +4663,25 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
             this->fcgLBAudioPriority->Size = System::Drawing::Size(62, 14);
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
+            // 
+            // fcgCBHEVCAQ
+            // 
+            this->fcgCBHEVCAQ->AutoSize = true;
+            this->fcgCBHEVCAQ->Location = System::Drawing::Point(109, 437);
+            this->fcgCBHEVCAQ->Name = L"fcgCBHEVCAQ";
+            this->fcgCBHEVCAQ->Size = System::Drawing::Size(15, 14);
+            this->fcgCBHEVCAQ->TabIndex = 116;
+            this->fcgCBHEVCAQ->Tag = L"reCmd";
+            this->fcgCBHEVCAQ->UseVisualStyleBackColor = true;
+            // 
+            // fcgLBHEVCAQ
+            // 
+            this->fcgLBHEVCAQ->AutoSize = true;
+            this->fcgLBHEVCAQ->Location = System::Drawing::Point(9, 436);
+            this->fcgLBHEVCAQ->Name = L"fcgLBHEVCAQ";
+            this->fcgLBHEVCAQ->Size = System::Drawing::Size(50, 14);
+            this->fcgLBHEVCAQ->TabIndex = 117;
+            this->fcgLBHEVCAQ->Text = L"hevc-aq";
             // 
             // frmConfig
             // 
