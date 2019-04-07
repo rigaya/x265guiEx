@@ -1,7 +1,7 @@
 # x265guiEx
 # continuous integration settings
 
-image: Visual Studio 2015
+image: Visual Studio 2019
 
 platform: Win32
 configuration: Release
