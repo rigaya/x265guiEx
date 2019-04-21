@@ -1,5 +1,6 @@
 ﻿#include <Windows.h>
 #include <string>
+#include <regex>
 #include <shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 #include "auo_pipe.h"
@@ -35,6 +36,28 @@ std::string ver_string(int ver[4]) {
     return str;
 }
 
+int get_x265ver_regex(const char *txt, int v[4]) {
+    std::string str = txt;
+    std::regex re(R"((\d+).(\d+)(_[0-9A-Za-z]+)*(\+(\d+))?([-][A-Za-z0-9]+)*)"); // 正規表現
+    //matched:[0] = 3.12_Au+24, [1]=3, [2]=12, [3]=_Au, [4]=+24, [5]=24
+    std::smatch match;
+    int ret = 1;
+    memset(v, 0, sizeof(v[0]) * 4);
+    if (std::regex_match(str, match, re)) {
+        try {
+            v[0] = std::stol(match[1]);
+            v[1] = std::stol(match[2]);
+            ret = 0;
+            if (match[5].length() > 0) {
+                v[3] = std::stol(match[5]);
+            }
+        } catch (...) {
+            //次に進む
+        }
+    }
+    return ret;
+}
+
 int get_exe_version_info(const char *exe_path, int version[4]) {
     #pragma comment(lib, "version.lib")
     int ret = -1;
@@ -59,18 +82,25 @@ int get_exe_version_info(const char *exe_path, int version[4]) {
                 buf = nullptr;
                 buf_len = 0;
                 int ver[4] = { 0 };
-                if (VerQueryValue(data_ver_info, sub_block, (void **)&buf, &buf_len)
-                    && buf
-                    && (   4 == sscanf_s(buf, "%d.%d.%d.%d", &ver[0], &ver[1], &ver[2], &ver[3])
+                if (VerQueryValue(data_ver_info, sub_block, (void **)&buf, &buf_len) && buf) {
+                    if (   4 == sscanf_s(buf, "%d.%d.%d.%d", &ver[0], &ver[1], &ver[2], &ver[3])
                         || 4 == sscanf_s(buf, "%d.%d.%d+%d", &ver[0], &ver[1], &ver[2], &ver[3])
                         || 3 == sscanf_s(buf, "%d.%d.%d",    &ver[0], &ver[1], &ver[2]         )
                         || 3 == sscanf_s(buf, "%d.%d+%d",    &ver[0], &ver[1],          &ver[3])
                         || 2 == sscanf_s(buf, "%d.%d",       &ver[0], &ver[1]                  )
                         || 2 == sscanf_s(buf, "%d+%d",       &ver[0],                   &ver[3])
-                        || 1 == sscanf_s(buf, "%d",                                     &ver[0]) ) ) {
-                    memcpy(version, ver, sizeof(int) * 4);
-                    ret = 0;
-                    break;
+                        || 1 == sscanf_s(buf, "%d",                                     &ver[0]) ) {
+                        memcpy(version, ver, sizeof(int) * 4);
+                        ret = 0;
+                        if (ver[3] == 0 && get_x265ver_regex(buf, ver) == 0) {
+                            memcpy(version, ver, sizeof(int) * 4);
+                        }
+                        break;
+                    }
+                    if ((ret = get_x265ver_regex(buf, ver)) == 0) {
+                        memcpy(version, ver, sizeof(int) * 4);
+                        break;
+                    }
                 }
             }
             static const WORD wCodePageID[] = { 0, 932, 949, 950, 1200, 1250, 1251, 1252, 1253, 1254, 1255, 1256 };
@@ -86,18 +116,25 @@ int get_exe_version_info(const char *exe_path, int version[4]) {
                     buf = nullptr;
                     buf_len = 0;
                     int ver[4] = { 0 };
-                    if (VerQueryValue(data_ver_info, sub_block, (void **)&buf, &buf_len)
-                        && buf
-                        && (   4 == sscanf_s(buf, "%d.%d.%d.%d", &ver[0], &ver[1], &ver[2], &ver[3])
+                    if (VerQueryValue(data_ver_info, sub_block, (void **)&buf, &buf_len) && buf) {
+                        if (   4 == sscanf_s(buf, "%d.%d.%d.%d", &ver[0], &ver[1], &ver[2], &ver[3])
                             || 4 == sscanf_s(buf, "%d.%d.%d+%d", &ver[0], &ver[1], &ver[2], &ver[3])
                             || 3 == sscanf_s(buf, "%d.%d.%d",    &ver[0], &ver[1], &ver[2]         )
                             || 3 == sscanf_s(buf, "%d.%d+%d",    &ver[0], &ver[1],          &ver[3])
                             || 2 == sscanf_s(buf, "%d.%d",       &ver[0], &ver[1]                  )
                             || 2 == sscanf_s(buf, "%d+%d",       &ver[0],                   &ver[3])
-                            || 1 == sscanf_s(buf, "%d",                                     &ver[0]) ) ) {
-                        memcpy(version, ver, sizeof(int) * 4);
-                        ret = 0;
-                        break;
+                            || 1 == sscanf_s(buf, "%d", &ver[0])) {
+                            memcpy(version, ver, sizeof(int) * 4);
+                            ret = 0;
+                            if (ver[3] == 0 && get_x265ver_regex(buf, ver) == 0) {
+                                memcpy(version, ver, sizeof(int) * 4);
+                            }
+                            break;
+                        }
+                        if ((ret = get_x265ver_regex(buf, ver)) == 0) {
+                            memcpy(version, ver, sizeof(int) * 4);
+                            break;
+                        }
                     }
                 }
             }
@@ -150,6 +187,13 @@ int get_exe_version_from_cmd(const char *exe_path, const char *cmd_ver, int vers
                         || 1 == sscanf_s(ptr, "%d",          &ver[0]                           )) {
                         memcpy(version, ver, sizeof(int) * 4);
                         ret = 0;
+                        if (ver[3] == 0 && get_x265ver_regex(ptr, ver) == 0) {
+                            memcpy(version, ver, sizeof(int) * 4);
+                        }
+                        break;
+                    }
+                    if ((ret = get_x265ver_regex(ptr, ver)) == 0) {
+                        memcpy(version, ver, sizeof(int) * 4);
                         break;
                     }
                 }
@@ -185,9 +229,15 @@ int get_x265ver_from_txt(const char *txt, int v[4]) {
         && 2 != sscanf_s(txt, "%d.%d",       &v[0], &v[1]              )
         && 2 != sscanf_s(txt, "%d+%d",       &v[0],               &v[3])
         && 1 != sscanf_s(txt, "%d",          &v[0]                     )) {
-        v[0] = v[1] = v[2] = v[3] = 0;
+        if ((ret = get_x265ver_regex(txt, v)) != 0) {
+            memset(v, 0, sizeof(v[0]) * 4);
+        }
     } else {
         ret = 0;
+        int test[4] = { 0 };
+        if (v[3] == 0 && get_x265ver_regex(txt, test) == 0) {
+            memcpy(v, test, sizeof(int) * 4);
+        }
     }
     return ret;
 }
