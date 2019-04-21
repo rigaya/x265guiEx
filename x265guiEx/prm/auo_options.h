@@ -417,6 +417,7 @@ typedef struct CONF_X265 {
     int     refine_intra;
     int     refine_inter;
     int     hevc_aq;
+    BOOL    svt;
 } CONF_X265;
 #pragma pack(pop)
 

@@ -1420,6 +1420,8 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUDeblockThreshold, cx265->deblock.y);
     fcgCBSAO->Checked               = cx265->sao != 0;
 
+    fcgCBSVT->Checked               = cx265->svt != 0;
+
     fcgCBAnalysisReuse->Checked     = cx265->analysis_reuse != 0;
     SetNUValue(fcgNUAnalysisReuseLevel, cx265->analysis_reuse_level);
     SetNUValue(fcgNURefineInter,        cx265->refine_inter);
@@ -1584,6 +1586,8 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.pb_ratio             = 0.0f;
 
     GetCHARfromString(cnf->vid.stats, fcgTXStatusFile->Text);
+
+    cnf->x265.svt                  = fcgCBSVT->Checked;
 
     cnf->x265.analysis_reuse       = fcgCBAnalysisReuse->Checked;
     cnf->x265.analysis_reuse_level = (int)fcgNUAnalysisReuseLevel->Value;
@@ -1897,6 +1901,8 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgTXAnalysisReuseFile,  L"--analysis-reuse-file");
     fcgTTX265->SetToolTip(fcgNURefineIntra,        L"--refine-intra");
     fcgTTX265->SetToolTip(fcgNURefineInter,        L"--refine-inter");
+
+    fcgTTX265->SetToolTip(fcgCBSVT,                L"--svt");
 
     //拡張
     fcgTTEx->SetToolTip(fcgCBAFS,                L""

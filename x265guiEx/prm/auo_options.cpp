@@ -220,6 +220,8 @@ static X265_OPTIONS x265_options_table[] = {
     //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
     { "no-hevc-aq",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hevc_aq) },
     { "hevc-aq",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hevc_aq) },
+    { "no-svt",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, svt) },
+    { "svt",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, svt) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 
