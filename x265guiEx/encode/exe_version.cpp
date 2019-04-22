@@ -38,6 +38,9 @@ std::string ver_string(int ver[4]) {
 
 int get_x265ver_regex(const char *txt, int v[4]) {
     std::string str = txt;
+    while (str.back() == '\r' || str.back() == '\n' || str.back() == ' ') {
+        str.pop_back();
+    }
     std::regex re(R"((\d+).(\d+)(_[0-9A-Za-z]+)*(\+(\d+))?([-][A-Za-z0-9]+)*)"); // 正規表現
     //matched:[0] = 3.12_Au+24, [1]=3, [2]=12, [3]=_Au, [4]=+24, [5]=24
     std::smatch match;
