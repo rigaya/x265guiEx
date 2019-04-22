@@ -859,6 +859,8 @@ private: System::Windows::Forms::NumericUpDown^  fcgNUAnalysisReuseLevel;
 private: System::Windows::Forms::CheckBox^  fcgCBHEVCAQ;
 private: System::Windows::Forms::Label^  fcgLBHEVCAQ;
 private: System::Windows::Forms::CheckBox ^fcgCBSVT;
+private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
+
 
 
 
@@ -1106,6 +1108,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             this->fcgCBSAO = (gcnew System::Windows::Forms::CheckBox());
             this->fcgLBSAO = (gcnew System::Windows::Forms::Label());
             this->fcgtabPageX2652pass = (gcnew System::Windows::Forms::TabPage());
+            this->fcgCBSVT = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBAnalysisReuse = (gcnew System::Windows::Forms::CheckBox());
             this->fcggroupBoxAnalysisReuse = (gcnew System::Windows::Forms::GroupBox());
             this->fcgNURefineInter = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1260,7 +1263,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
-            this->fcgCBSVT = (gcnew System::Windows::Forms::CheckBox());
+            this->fcgCBSyncProcessAffinity = (gcnew System::Windows::Forms::CheckBox());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -3022,6 +3025,17 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             this->fcgtabPageX2652pass->Text = L"x265 (3)";
             this->fcgtabPageX2652pass->UseVisualStyleBackColor = true;
             // 
+            // fcgCBSVT
+            // 
+            this->fcgCBSVT->AutoSize = true;
+            this->fcgCBSVT->Location = System::Drawing::Point(17, 14);
+            this->fcgCBSVT->Name = L"fcgCBSVT";
+            this->fcgCBSVT->Size = System::Drawing::Size(73, 18);
+            this->fcgCBSVT->TabIndex = 101;
+            this->fcgCBSVT->Tag = L"reCmd";
+            this->fcgCBSVT->Text = L"SVTモード";
+            this->fcgCBSVT->UseVisualStyleBackColor = true;
+            // 
             // fcgCBAnalysisReuse
             // 
             this->fcgCBAnalysisReuse->AutoSize = true;
@@ -3144,6 +3158,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             // 
             // fcgtabPageExSettings
             // 
+            this->fcgtabPageExSettings->Controls->Add(this->fcgCBSyncProcessAffinity);
             this->fcgtabPageExSettings->Controls->Add(this->fchPNX265Sub);
             this->fcgtabPageExSettings->Controls->Add(this->fcgLBTempDir);
             this->fcgtabPageExSettings->Controls->Add(this->fcgBTCustomTempDir);
@@ -3301,7 +3316,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             // 
             this->fcgCXX264Priority->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXX264Priority->FormattingEnabled = true;
-            this->fcgCXX264Priority->Location = System::Drawing::Point(435, 105);
+            this->fcgCXX264Priority->Location = System::Drawing::Point(435, 84);
             this->fcgCXX264Priority->Name = L"fcgCXX264Priority";
             this->fcgCXX264Priority->Size = System::Drawing::Size(152, 22);
             this->fcgCXX264Priority->TabIndex = 15;
@@ -3310,7 +3325,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             // fcgLBX265Priority
             // 
             this->fcgLBX265Priority->AutoSize = true;
-            this->fcgLBX265Priority->Location = System::Drawing::Point(362, 108);
+            this->fcgLBX265Priority->Location = System::Drawing::Point(362, 87);
             this->fcgLBX265Priority->Name = L"fcgLBX265Priority";
             this->fcgLBX265Priority->Size = System::Drawing::Size(67, 14);
             this->fcgLBX265Priority->TabIndex = 1;
@@ -4686,16 +4701,16 @@ private: System::Windows::Forms::CheckBox ^fcgCBSVT;
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
             // 
-            // fcgCBSVT
+            // fcgCBSyncProcessAffinity
             // 
-            this->fcgCBSVT->AutoSize = true;
-            this->fcgCBSVT->Location = System::Drawing::Point(17, 14);
-            this->fcgCBSVT->Name = L"fcgCBSVT";
-            this->fcgCBSVT->Size = System::Drawing::Size(73, 18);
-            this->fcgCBSVT->TabIndex = 101;
-            this->fcgCBSVT->Tag = L"reCmd";
-            this->fcgCBSVT->Text = L"SVTモード";
-            this->fcgCBSVT->UseVisualStyleBackColor = true;
+            this->fcgCBSyncProcessAffinity->AutoSize = true;
+            this->fcgCBSyncProcessAffinity->Location = System::Drawing::Point(365, 112);
+            this->fcgCBSyncProcessAffinity->Name = L"fcgCBSyncProcessAffinity";
+            this->fcgCBSyncProcessAffinity->Size = System::Drawing::Size(223, 18);
+            this->fcgCBSyncProcessAffinity->TabIndex = 31;
+            this->fcgCBSyncProcessAffinity->Tag = L"chValue";
+            this->fcgCBSyncProcessAffinity->Text = L"x265で使用するCPUコアをAviutlと同期する";
+            this->fcgCBSyncProcessAffinity->UseVisualStyleBackColor = true;
             // 
             // frmConfig
             // 

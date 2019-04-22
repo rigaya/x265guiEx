@@ -31,7 +31,7 @@ static const BOOL   DEFAULT_UPDATE_OVERWRITE      = 0;
 static const BOOL   DEFAULT_UPDATE_CHECK_AUTO     = 1;
 static const BOOL   DEFAULT_SAVE_RELATIVE_PATH    = 0;
 static const BOOL   DEFAULT_CHAP_NERO_TO_UTF8     = 0;
-static const BOOL   DEFAULT_AUDIO_ENCODER         = 8;
+static const int    DEFAULT_AUDIO_ENCODER         = 8;
 static const int    DEFAULT_AMP_RETRY_LIMIT       = 3;
 static const double DEFAULT_AMP_MARGIN            = 0.05;
 static const double DEFAULT_AMP_REENC_AUDIO_MULTI = 0.10;
@@ -328,7 +328,7 @@ private:
     static char  ini_fileName[MAX_PATH_LEN];  //iniファイル(読み込み用)の場所
     static char  conf_fileName[MAX_PATH_LEN]; //configファイル(読み書き用)の場所
     static DWORD ini_filesize;                //iniファイル(読み込み用)のサイズ
-    
+
     void load_x26x_cmd(X264_CMD *x264cmd, int *count, int *default_index, const char *section);  //x264/x265コマンドライン設定の読み込み
 
     void load_aud();          //音声エンコーダ関連の設定の読み込み・更新
@@ -378,7 +378,7 @@ public:
     void save_fbc();          //簡易ビットレート計算機設定の保存
 
     void apply_fn_replace(char *target_filename, DWORD nSize);  //一時ファイル名置換の適用
-    
+
     BOOL get_reset_s_x264_referesh(); //s_x265が更新されたか
     BOOL get_reset_s_x265_referesh(); //s_x265が更新されたか
 

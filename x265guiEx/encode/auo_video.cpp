@@ -639,6 +639,12 @@ static inline void check_enc_priority(HANDLE h_aviutl, HANDLE h_x264, DWORD prio
     SetPriorityClass(h_x264, priority);
 }
 
+static inline void sync_thread_affinity(HANDLE h_aviutl, HANDLE h_x264) {
+    DWORD_PTR mask_process = 0x00, mask_system = 0x00;
+    GetProcessAffinityMask(h_aviutl, &mask_process, &mask_system);
+    SetProcessAffinityMask(h_x264, mask_process);
+}
+
 //並列処理時に音声データを取得する
 static AUO_RESULT aud_parallel_task(const OUTPUT_INFO *oip, PRM_ENC *pe) {
     AUO_RESULT ret = AUO_RESULT_SUCCESS;
@@ -924,6 +930,10 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
                 //x26x優先度
                 check_enc_priority(pe->h_p_aviutl, pi_enc.hProcess, set_priority);
+                //x26xプロセスアフィニティ
+                if (conf->vid.sync_process_affinity) {
+                    sync_thread_affinity(pe->h_p_aviutl, pi_enc.hProcess);
+                }
 
                 //音声同時処理
                 ret |= aud_parallel_task(oip, pe);

@@ -1442,6 +1442,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
         fcgCBSetKeyframeAtChapter->Checked =(cnf->vid.check_keyframe & CHECK_KEYFRAME_CHAPTER) != 0;
         fcgCBInputAsLW48->Checked          = cnf->vid.input_as_lw48 != 0;
         fcgCBRyzenDisableAVX2->Checked     = cnf->vid.ryzen_disable_avx2 != 0;
+        fcgCBSyncProcessAffinity->Checked  = cnf->vid.sync_process_affinity != 0;
 
         SetCXIndex(fcgCXX264Priority,        cnf->vid.priority);
         SetCXIndex(fcgCXTempDir,             cnf->oth.temp_dir);
@@ -1606,6 +1607,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->vid.priority               = fcgCXX264Priority->SelectedIndex;
     cnf->vid.input_as_lw48          = fcgCBInputAsLW48->Checked;
     cnf->vid.ryzen_disable_avx2     = fcgCBRyzenDisableAVX2->Checked;
+    cnf->vid.sync_process_affinity  = fcgCBSyncProcessAffinity->Checked;
     cnf->oth.temp_dir               = fcgCXTempDir->SelectedIndex;
     GetCHARfromString(cnf->vid.cmdex, fcgTXCmdEx->Text);
 
