@@ -841,7 +841,7 @@ private: System::Windows::Forms::CheckBox^  fcgCBAQMotion;
 
 private: System::Windows::Forms::CheckBox^  fcgCBSsimRd;
 private: System::Windows::Forms::Label^  fcgLBSsimRd;
-private: System::Windows::Forms::CheckBox^  fcgCBRyzenDisableAVX2;
+
 private: System::Windows::Forms::TabPage^  fcgtabPageX2652pass;
 private: System::Windows::Forms::CheckBox^  fcgCBAnalysisReuse;
 private: System::Windows::Forms::GroupBox^  fcggroupBoxAnalysisReuse;
@@ -1121,6 +1121,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcgBTAnalysisReuseFile = (gcnew System::Windows::Forms::Button());
             this->fcgNUAnalysisReuseLevel = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgtabPageExSettings = (gcnew System::Windows::Forms::TabPage());
+            this->fcgCBSyncProcessAffinity = (gcnew System::Windows::Forms::CheckBox());
             this->fchPNX265Sub = (gcnew System::Windows::Forms::Panel());
             this->fcgLBX265PathSub = (gcnew System::Windows::Forms::Label());
             this->fcgTXX265PathSub = (gcnew System::Windows::Forms::TextBox());
@@ -1137,7 +1138,6 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcgCXX264Priority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBX265Priority = (gcnew System::Windows::Forms::Label());
             this->fcggroupBoxExSettings = (gcnew System::Windows::Forms::GroupBox());
-            this->fcgCBRyzenDisableAVX2 = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBSetKeyframeAtChapter = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBInputAsLW48 = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCBCheckKeyframes = (gcnew System::Windows::Forms::CheckBox());
@@ -1263,7 +1263,6 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
-            this->fcgCBSyncProcessAffinity = (gcnew System::Windows::Forms::CheckBox());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -3175,6 +3174,17 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcgtabPageExSettings->Text = L"拡張";
             this->fcgtabPageExSettings->UseVisualStyleBackColor = true;
             // 
+            // fcgCBSyncProcessAffinity
+            // 
+            this->fcgCBSyncProcessAffinity->AutoSize = true;
+            this->fcgCBSyncProcessAffinity->Location = System::Drawing::Point(365, 112);
+            this->fcgCBSyncProcessAffinity->Name = L"fcgCBSyncProcessAffinity";
+            this->fcgCBSyncProcessAffinity->Size = System::Drawing::Size(223, 18);
+            this->fcgCBSyncProcessAffinity->TabIndex = 31;
+            this->fcgCBSyncProcessAffinity->Tag = L"chValue";
+            this->fcgCBSyncProcessAffinity->Text = L"x265で使用するCPUコアをAviutlと同期する";
+            this->fcgCBSyncProcessAffinity->UseVisualStyleBackColor = true;
+            // 
             // fchPNX265Sub
             // 
             this->fchPNX265Sub->Controls->Add(this->fcgLBX265PathSub);
@@ -3333,7 +3343,6 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             // 
             // fcggroupBoxExSettings
             // 
-            this->fcggroupBoxExSettings->Controls->Add(this->fcgCBRyzenDisableAVX2);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBSetKeyframeAtChapter);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBInputAsLW48);
             this->fcggroupBoxExSettings->Controls->Add(this->fcgCBCheckKeyframes);
@@ -3346,17 +3355,6 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcggroupBoxExSettings->TabIndex = 0;
             this->fcggroupBoxExSettings->TabStop = false;
             this->fcggroupBoxExSettings->Text = L"拡張設定";
-            // 
-            // fcgCBRyzenDisableAVX2
-            // 
-            this->fcgCBRyzenDisableAVX2->AutoSize = true;
-            this->fcgCBRyzenDisableAVX2->Location = System::Drawing::Point(18, 195);
-            this->fcgCBRyzenDisableAVX2->Name = L"fcgCBRyzenDisableAVX2";
-            this->fcgCBRyzenDisableAVX2->Size = System::Drawing::Size(190, 18);
-            this->fcgCBRyzenDisableAVX2->TabIndex = 7;
-            this->fcgCBRyzenDisableAVX2->Tag = L"chValue";
-            this->fcgCBRyzenDisableAVX2->Text = L"AMD RyzenではAVX2を使用しない";
-            this->fcgCBRyzenDisableAVX2->UseVisualStyleBackColor = true;
             // 
             // fcgCBSetKeyframeAtChapter
             // 
@@ -4700,17 +4698,6 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             this->fcgLBAudioPriority->Size = System::Drawing::Size(62, 14);
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
-            // 
-            // fcgCBSyncProcessAffinity
-            // 
-            this->fcgCBSyncProcessAffinity->AutoSize = true;
-            this->fcgCBSyncProcessAffinity->Location = System::Drawing::Point(365, 112);
-            this->fcgCBSyncProcessAffinity->Name = L"fcgCBSyncProcessAffinity";
-            this->fcgCBSyncProcessAffinity->Size = System::Drawing::Size(223, 18);
-            this->fcgCBSyncProcessAffinity->TabIndex = 31;
-            this->fcgCBSyncProcessAffinity->Tag = L"chValue";
-            this->fcgCBSyncProcessAffinity->Text = L"x265で使用するCPUコアをAviutlと同期する";
-            this->fcgCBSyncProcessAffinity->UseVisualStyleBackColor = true;
             // 
             // frmConfig
             // 

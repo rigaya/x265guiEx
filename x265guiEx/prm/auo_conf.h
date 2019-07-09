@@ -94,7 +94,7 @@ typedef struct {
     char   cqmfile[MAX_PATH_LEN];    //x264 cqmfileの場所
     char   cmdex[CMDEX_MAX_LEN];     //追加コマンドライン
     DWORD  amp_check;                //自動マルチパス時のチェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
-    int    ryzen_disable_avx2;       //AMD RyzenではAVX2を使用しない
+    int    reserved3;                //
     double amp_limit_file_size;      //自動マルチパス時のファイルサイズ制限(MB)
     double amp_limit_bitrate;        //自動マルチパス時のビットレート制限(kbps)
     BOOL   input_as_lw48;            //LW48モード
