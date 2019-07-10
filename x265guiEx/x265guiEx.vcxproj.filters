@@ -136,6 +136,9 @@
       <Filter>ソース ファイル</Filter>
     </None>
     <None Include="x265guiEx.ini" />
+    <None Include="prm\cpu_info.asm">
+      <Filter>ソース ファイル\prm</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auo.h">
