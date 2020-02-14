@@ -2015,7 +2015,7 @@ private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
             // 
             this->fcgNUAMPLimitBitrate->DecimalPlaces = 1;
             this->fcgNUAMPLimitBitrate->Location = System::Drawing::Point(290, 100);
-            this->fcgNUAMPLimitBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 128000, 0, 0, 0 });
+            this->fcgNUAMPLimitBitrate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 65536000, 0, 0, 0 });
             this->fcgNUAMPLimitBitrate->Name = L"fcgNUAMPLimitBitrate";
             this->fcgNUAMPLimitBitrate->Size = System::Drawing::Size(78, 21);
             this->fcgNUAMPLimitBitrate->TabIndex = 11;

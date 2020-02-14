@@ -74,7 +74,7 @@ namespace x265guiEx {
         }
     };
 
-    ref class LocalSettings 
+    ref class LocalSettings
     {
     public:
         String^ x265ExeName;
@@ -123,14 +123,15 @@ namespace x265guiEx {
         }
     public:
         TBValueBitrateConvert() {
-            data = gcnew array<TBData> { 
-                {     0,       5,   0 }, //    0 - 1000 までのstepは  5単位
-                {  1000,      50,   0 }, // 1000 - 2000 までのstepは 50単位
-                {  2000,     100,   0 }, //以下同様
-                {  4000,     200,   0 },
-                {  8000,    1000,   0 },
-                { 54000, INT_MAX,   0 },
-                { 54000, INT_MAX,   0 }
+            data = gcnew array<TBData> {
+                {      0,       5,   0 }, //    0 - 1000 までのstepは  5単位
+                {   1000,      50,   0 }, // 1000 - 2000 までのstepは 50単位
+                {   2000,     100,   0 }, //以下同様
+                {   4000,     200,   0 },
+                {   8000,    1000,   0 },
+                {  64000,    4000,   0 },
+                { 256000,   32000,   0 },
+                { 256000, INT_MAX,   0 }
             };
             //そこまでのカウント数を計算しておく
             for (int i = 0; i < data->Length - 2; i++)
@@ -182,7 +183,7 @@ namespace x265guiEx {
         String^ auoSetupDir;              //auoSetupを入れたフォルダのひとつ上のフォルダ
         StringBuilder^ exeMesBuffer;      //auoSetupの出力を更新チェック時に受け取るバッファ
         HANDLE hEventAbort;               //auoSetupを停止するためのイベント
-        
+
         static initonly array<String^>^ TARGET_LIST = { L"x264", L"x265", L"qaac", L"l-smash" };
         static initonly String^ VERSION_SAME_AS_CURRENT = L" ⇐";
         static initonly array<String^>^ RESULT_MES = {
@@ -310,7 +311,7 @@ namespace x265guiEx {
             dataTableVersionInfo->Columns->Add(L"実行ファイル");
             dataTableVersionInfo->Columns->Add(L"現在のバージョン");
             dataTableVersionInfo->Columns->Add(L"最新バージョン");
-            
+
             char aviutldir[MAX_PATH_LEN] = { 0 };
             get_aviutl_dir(aviutldir, _countof(aviutldir));
             aviutlDir = String(aviutldir).ToString();
@@ -607,18 +608,18 @@ namespace x265guiEx {
 //        }
 //
 //    public:
-//        stgFileController(String^ _stgDir) 
+//        stgFileController(String^ _stgDir)
 //        {
 //            stgDir = _stgDir;
 //            stgPath = gcnew List<String^>();
 //            stgName = gcnew List<String^>();
 //        }
-//        ~stgFileController() 
+//        ~stgFileController()
 //        {
 //            delete stgPath;
 //            delete stgName;
 //        }
-//        System::Void ReLoad() 
+//        System::Void ReLoad()
 //        {
 //            Clear();
 //            if (CheckStgDir()) {
@@ -627,7 +628,7 @@ namespace x265guiEx {
 //                    stgName->Add(Path::GetFileNameWithoutExtension(stgPath[i]));
 //            }
 //        }
-//        System::Void ReLoad(String^ _stgDir) 
+//        System::Void ReLoad(String^ _stgDir)
 //        {
 //            stgDir = _stgDir;
 //            ReLoad();
