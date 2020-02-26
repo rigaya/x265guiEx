@@ -136,9 +136,6 @@
       <Filter>ソース ファイル</Filter>
     </None>
     <None Include="x265guiEx.ini" />
-    <None Include="prm\cpu_info.asm">
-      <Filter>ソース ファイル\prm</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auo.h">
@@ -261,9 +258,6 @@
     <ClInclude Include="encode\convert_simd.h">
       <Filter>ヘッダー ファイル\encode</Filter>
     </ClInclude>
-    <ClInclude Include="frm\frmUpdate.h">
-      <Filter>フォーム</Filter>
-    </ClInclude>
     <ClInclude Include="encode\exe_version.h">
       <Filter>ヘッダー ファイル\encode</Filter>
     </ClInclude>
@@ -307,5 +301,10 @@
     <EmbeddedResource Include="frm\frmUpdate.resx">
       <Filter>リソース ファイル</Filter>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="prm\cpu_info_x86.asm">
+      <Filter>ソース ファイル</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -73,11 +73,6 @@ typedef struct X265_OPTION_STR {
     WCHAR *desc; //GUIでの表示用
 } X265_OPTION_STR;
 
-static const WCHAR *UPDATE_X265[] ={
-    L"標準ビルド (8bit + 10bit + 12bit)",
-    L"PGOビルド(高速) (8bit + 10bit)"
-};
-
 const int FAW_INDEX_ERROR = -1;
 
 const int AUTO_SAVE_LOG_OUTPUT_DIR = 0;
