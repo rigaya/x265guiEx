@@ -1305,7 +1305,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetCXIndex(fcgCXSubME,            cx265->subme);
     SetNUValue(fcgNUMERange,          cx265->me_range);
     SetNUValue(fcgNUMaxMerge,         cx265->max_merge);
-    fcgCBNoRecusrionSkip->Checked   = cx265->recursion_skip == 0;
+    SetNUValue(fcgNURskip,            cx265->recursion_skip);
 
     SetNUValue(fcgNUPools,            cx265->pools);
     SetNUValue(fcgNUFrameThreads,     cx265->frame_threads);
@@ -1467,7 +1467,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.subme                = fcgCXSubME->SelectedIndex;
     cnf->x265.me_range             = (int)fcgNUMERange->Value;
     cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
-    cnf->x265.recursion_skip       =!fcgCBNoRecusrionSkip->Checked;
+    cnf->x265.recursion_skip       = (int)fcgNURskip->Value;
 
     cnf->x265.pools                = (int)fcgNUPools->Value;
     cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
@@ -1779,7 +1779,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgCXSubME,            L"--subme");
     fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
     fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
-    fcgTTX265->SetToolTip(fcgCBNoRecusrionSkip,  L"--no-rskip");
+    fcgTTX265->SetToolTip(fcgNURskip,            L"--rskip");
 
     fcgTTX265->SetToolTip(fcgNUPools,            L"--pools\n"
         + L"\"0\" で自動です。"
