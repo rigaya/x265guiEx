@@ -305,6 +305,11 @@ const int x265_encmode_to_passint[] = {
     3,
     NULL
 };
+const WCHAR *const x265_scenecut_mode_desc[] = {
+    L"デフォルト",
+    L"ヒストグラム",
+    NULL
+};
 
 const WCHAR * const aspect_desc[] = {
     L"SAR比を指定 (デフォルト)",

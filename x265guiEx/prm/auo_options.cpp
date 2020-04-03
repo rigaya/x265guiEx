@@ -221,6 +221,11 @@ static X265_OPTIONS x265_options_table[] = {
     { "hevc-aq",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hevc_aq) },
     { "no-svt",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, svt) },
     { "svt",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, svt) },
+    { "fades",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, fades) },
+    { "no-fades",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, fades) },
+    { "hist-scenecut",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hist_scenecut) },
+    { "no-hist-scenecut", "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hist_scenecut) },
+    { "hist-threshold",   "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, hist_threshold) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 

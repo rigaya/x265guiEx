@@ -1030,6 +1030,7 @@ System::Void frmConfig::InitComboBox() {
     setComboBox(fcgCXAQMode,         list_aq);
     setComboBox(fcgCXAspectRatio,    aspect_desc);
     setComboBox(fcgCXX265Mode,       x265_encodemode_desc);
+    setComboBox(fcgCXSceneCutMode,   x265_scenecut_mode_desc);
     setComboBox(fcgCXME,             list_me_x265);
     setComboBox(fcgCXSubME,          list_subme_x265);
     setComboBox(fcgCXBadapt,         list_b_adpat);
@@ -1040,6 +1041,7 @@ System::Void frmConfig::InitComboBox() {
     setComboBox(fcgCXTransfer,       list_transfer);
     setComboBox(fcgCXColorMatrix,    list_colormatrix);
     setComboBox(fcgCXColorPrim,      list_colorprim);
+    setComboBox(fcgCXVideoFormat,    list_videoformat);
     setComboBox(fcgCXVideoFormat,    list_videoformat);
 
     setComboBox(fcgCXAudioEncTiming, audio_enc_timing_desc);
@@ -1265,9 +1267,12 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetCXIndex(fcgCXTransfer,         cx265->transfer);
     fcgCBFullRange->Checked         = cx265->input_range != 0;
 
+    fcgCXSceneCutMode->SelectedIndex = cx265->hist_scenecut ? 1 : 0;
     SetNUValue(fcgNUScenecut,         cx265->scenecut);
+    SetNUValue(fcgNUHistThreshold,    cx265->hist_threshold);
     SetNUValue(fcgNUKeyintMin,        cx265->keyint_min);
     SetNUValue(fcgNUKeyintMax,        cx265->keyint_max);
+    fcgCBFade->Checked              = cx265->fades != 0;
     fcgCBOpenGOP->Checked           = cx265->open_gop != 0;
     SetNUValue(fcgNURCLookahead,      cx265->rc_lookahead);
     SetNUValue(fcgNURef,              cx265->ref_frames);
@@ -1427,9 +1432,12 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.transfer             = fcgCXTransfer->SelectedIndex;
     cnf->x265.input_range          = fcgCBFullRange->Checked;
 
+    cnf->x265.hist_scenecut        = fcgCXSceneCutMode->SelectedIndex > 0 ? TRUE : FALSE;
     cnf->x265.scenecut             = (int)fcgNUScenecut->Value;
+    cnf->x265.hist_threshold       = (float)fcgNUHistThreshold->Value;
     cnf->x265.keyint_min           = (int)fcgNUKeyintMin->Value;
     cnf->x265.keyint_max           = (int)fcgNUKeyintMax->Value;
+    cnf->x265.fades                = fcgCBFade->Checked;
     cnf->x265.open_gop             = fcgCBOpenGOP->Checked;
     cnf->x265.rc_lookahead         = (int)fcgNURCLookahead->Value;
     cnf->x265.ref_frames           = (int)fcgNURef->Value;
@@ -1744,7 +1752,10 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgNUVBVbuf,           L"--vbv-bufsize");
     fcgTTX265->SetToolTip(fcgNUVBVmax,           L"--vbv-maxrate");
     fcgTTX265->SetToolTip(fcgNUQComp,            L"--qcomp");
+    fcgTTX265->SetToolTip(fcgCXSceneCutMode,     L"--hist-scenecut / --no-hist-scenecut");
     fcgTTX265->SetToolTip(fcgNUScenecut,         L"--scenecut");
+    fcgTTX265->SetToolTip(fcgNUHistThreshold,    L"--hist-threshold");
+    fcgTTX265->SetToolTip(fcgCBFade,             L"--fades");
     fcgTTX265->SetToolTip(fcgNUKeyintMin,        L"--min-keyint");
     fcgTTX265->SetToolTip(fcgNUKeyintMax,        L"--keyint");
     fcgTTX265->SetToolTip(fcgCBOpenGOP,          L"--open-gop");

@@ -418,6 +418,9 @@ typedef struct CONF_X265 {
     int     refine_inter;
     int     hevc_aq;
     BOOL    svt;
+    BOOL    fades;
+    BOOL    hist_scenecut;
+    float   hist_threshold;
 } CONF_X265;
 #pragma pack(pop)
 

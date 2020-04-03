@@ -854,6 +854,13 @@ private: System::Windows::Forms::Label^  fcgLBHEVCAQ;
 private: System::Windows::Forms::CheckBox ^fcgCBSVT;
 private: System::Windows::Forms::CheckBox ^fcgCBSyncProcessAffinity;
 private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
+private: System::Windows::Forms::Label ^fcgLBFade;
+private: System::Windows::Forms::CheckBox ^fcgCBFade;
+private: System::Windows::Forms::Label ^fcgLBSceneCutMode;
+private: System::Windows::Forms::ComboBox ^fcgCXSceneCutMode;
+private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
+
+
 
 
 
@@ -944,7 +951,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
         void InitializeComponent(void)
         {
             this->components = (gcnew System::ComponentModel::Container());
-            System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(frmConfig::typeid));
+            System::ComponentModel::ComponentResourceManager ^resources = (gcnew System::ComponentModel::ComponentResourceManager(frmConfig::typeid));
             this->fcgtabControlVideo = (gcnew System::Windows::Forms::TabControl());
             this->fcgtabPageX265Main = (gcnew System::Windows::Forms::TabPage());
             this->fcgCXBitDepth = (gcnew System::Windows::Forms::ComboBox());
@@ -1043,6 +1050,11 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgNUPsyRD = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgLBPsyRD = (gcnew System::Windows::Forms::Label());
             this->fcggroupBoxFrame = (gcnew System::Windows::Forms::GroupBox());
+            this->fcgNUHistThreshold = (gcnew System::Windows::Forms::NumericUpDown());
+            this->fcgLBFade = (gcnew System::Windows::Forms::Label());
+            this->fcgCBFade = (gcnew System::Windows::Forms::CheckBox());
+            this->fcgLBSceneCutMode = (gcnew System::Windows::Forms::Label());
+            this->fcgCXSceneCutMode = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBWeightB = (gcnew System::Windows::Forms::Label());
             this->fcgCBWeightB = (gcnew System::Windows::Forms::CheckBox());
             this->fcgLBScenecut = (gcnew System::Windows::Forms::Label());
@@ -1074,6 +1086,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgLBAQMode = (gcnew System::Windows::Forms::Label());
             this->fcgLBRD = (gcnew System::Windows::Forms::Label());
             this->fcgGroupBoxME = (gcnew System::Windows::Forms::GroupBox());
+            this->fcgNURskip = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgLBNoRecusrionSkip = (gcnew System::Windows::Forms::Label());
             this->fcgLBME = (gcnew System::Windows::Forms::Label());
             this->fcgLBSubME = (gcnew System::Windows::Forms::Label());
@@ -1254,59 +1267,60 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
-            this->fcgNURskip = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUFrameThreads))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUFrameThreads))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPools))->BeginInit();
             this->fcggroupBoxVUIColor->SuspendLayout();
             this->fcggroupBoxSAR->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAspectRatioY))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAspectRatioX))->BeginInit();
             this->fcggroupBoxRateControl->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUQComp))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUVBVbuf))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUVBVmax))->BeginInit();
             this->fcggroupBoxPreset->SuspendLayout();
             this->fcgPNStatusFile->SuspendLayout();
             this->fcgPNBitrate->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgTBQuality))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgTBQuality))->BeginInit();
             this->fcgPNX265Mode->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAMPLimitBitrate))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAMPLimitFileSize))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAutoNPass))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAMPLimitBitrate))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAMPLimitFileSize))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAutoNPass))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgpictureBoxX265))->BeginInit();
             this->fcgtabPageX265Other->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQGSize))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURdoqLevel))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUQGSize))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURdoqLevel))->BeginInit();
             this->fcggroupBoxDeblock->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockThreshold))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockStrength))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUDeblockThreshold))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUDeblockStrength))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPsyRDOQ))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPsyRD))->BeginInit();
             this->fcggroupBoxFrame->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURef))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUBframes))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUKeyintMax))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURCLookahead))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUScenecut))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUKeyintMin))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURD))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAQStrength))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUHistThreshold))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURef))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUBframes))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUKeyintMax))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURCLookahead))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUScenecut))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUKeyintMin))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURD))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAQStrength))->BeginInit();
             this->fcgGroupBoxME->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUMaxMerge))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUMERange))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURskip))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUMaxMerge))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUMERange))->BeginInit();
             this->fcgGroupBoxCTU->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNULimitRefs))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUCtu))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUTuInterDepth))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUTuIntraDepth))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNULimitRefs))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUCtu))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUTuInterDepth))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUTuIntraDepth))->BeginInit();
             this->fcgtabPageX2652pass->SuspendLayout();
             this->fcggroupBoxAnalysisReuse->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineInter))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineIntra))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAnalysisReuseLevel))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURefineInter))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURefineIntra))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAnalysisReuseLevel))->BeginInit();
             this->fcgtabPageExSettings->SuspendLayout();
             this->fchPNX265Sub->SuspendLayout();
             this->fcggroupBoxCmdEx->SuspendLayout();
@@ -1321,9 +1335,8 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgCSExeFiles->SuspendLayout();
             this->fcgtabControlAudio->SuspendLayout();
             this->fcgtabPageAudioMain->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAudioBitrate))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAudioBitrate))->BeginInit();
             this->fcgtabPageAudioOther->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURskip))->BeginInit();
             this->SuspendLayout();
             // 
             // fcgtabControlVideo
@@ -1953,7 +1966,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgBTTBQualitySubtract
             // 
-            this->fcgBTTBQualitySubtract->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgBTTBQualitySubtract.Image")));
+            this->fcgBTTBQualitySubtract->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgBTTBQualitySubtract.Image")));
             this->fcgBTTBQualitySubtract->Location = System::Drawing::Point(0, 33);
             this->fcgBTTBQualitySubtract->Name = L"fcgBTTBQualitySubtract";
             this->fcgBTTBQualitySubtract->Size = System::Drawing::Size(21, 23);
@@ -1965,7 +1978,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgBTTBQualityAdd
             // 
-            this->fcgBTTBQualityAdd->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgBTTBQualityAdd.Image")));
+            this->fcgBTTBQualityAdd->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgBTTBQualityAdd.Image")));
             this->fcgBTTBQualityAdd->Location = System::Drawing::Point(352, 34);
             this->fcgBTTBQualityAdd->Name = L"fcgBTTBQualityAdd";
             this->fcgBTTBQualityAdd->Size = System::Drawing::Size(21, 23);
@@ -2105,7 +2118,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgpictureBoxX265
             // 
-            this->fcgpictureBoxX265->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgpictureBoxX265.Image")));
+            this->fcgpictureBoxX265->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgpictureBoxX265.Image")));
             this->fcgpictureBoxX265->Location = System::Drawing::Point(4, 12);
             this->fcgpictureBoxX265->Name = L"fcgpictureBoxX265";
             this->fcgpictureBoxX265->Size = System::Drawing::Size(110, 44);
@@ -2387,6 +2400,11 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcggroupBoxFrame
             // 
+            this->fcggroupBoxFrame->Controls->Add(this->fcgNUHistThreshold);
+            this->fcggroupBoxFrame->Controls->Add(this->fcgLBFade);
+            this->fcggroupBoxFrame->Controls->Add(this->fcgCBFade);
+            this->fcggroupBoxFrame->Controls->Add(this->fcgLBSceneCutMode);
+            this->fcggroupBoxFrame->Controls->Add(this->fcgCXSceneCutMode);
             this->fcggroupBoxFrame->Controls->Add(this->fcgLBWeightB);
             this->fcggroupBoxFrame->Controls->Add(this->fcgCBWeightB);
             this->fcggroupBoxFrame->Controls->Add(this->fcgLBScenecut);
@@ -2415,10 +2433,61 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcggroupBoxFrame->TabIndex = 20;
             this->fcggroupBoxFrame->TabStop = false;
             // 
+            // fcgNUHistThreshold
+            // 
+            this->fcgNUHistThreshold->DecimalPlaces = 3;
+            this->fcgNUHistThreshold->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 196608 });
+            this->fcgNUHistThreshold->Location = System::Drawing::Point(146, 41);
+            this->fcgNUHistThreshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+            this->fcgNUHistThreshold->Name = L"fcgNUHistThreshold";
+            this->fcgNUHistThreshold->Size = System::Drawing::Size(65, 21);
+            this->fcgNUHistThreshold->TabIndex = 99;
+            this->fcgNUHistThreshold->Tag = L"reCmd";
+            this->fcgNUHistThreshold->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+            // 
+            // fcgLBFade
+            // 
+            this->fcgLBFade->AutoSize = true;
+            this->fcgLBFade->Location = System::Drawing::Point(17, 68);
+            this->fcgLBFade->Name = L"fcgLBFade";
+            this->fcgLBFade->Size = System::Drawing::Size(60, 14);
+            this->fcgLBFade->TabIndex = 98;
+            this->fcgLBFade->Text = L"フェード検出";
+            // 
+            // fcgCBFade
+            // 
+            this->fcgCBFade->AutoSize = true;
+            this->fcgCBFade->Location = System::Drawing::Point(188, 69);
+            this->fcgCBFade->Name = L"fcgCBFade";
+            this->fcgCBFade->Size = System::Drawing::Size(15, 14);
+            this->fcgCBFade->TabIndex = 97;
+            this->fcgCBFade->Tag = L"reCmd";
+            this->fcgCBFade->UseVisualStyleBackColor = true;
+            // 
+            // fcgLBSceneCutMode
+            // 
+            this->fcgLBSceneCutMode->AutoSize = true;
+            this->fcgLBSceneCutMode->Location = System::Drawing::Point(18, 16);
+            this->fcgLBSceneCutMode->Name = L"fcgLBSceneCutMode";
+            this->fcgLBSceneCutMode->Size = System::Drawing::Size(55, 14);
+            this->fcgLBSceneCutMode->TabIndex = 96;
+            this->fcgLBSceneCutMode->Text = L"シーンカット";
+            // 
+            // fcgCXSceneCutMode
+            // 
+            this->fcgCXSceneCutMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+            this->fcgCXSceneCutMode->FormattingEnabled = true;
+            this->fcgCXSceneCutMode->Location = System::Drawing::Point(126, 13);
+            this->fcgCXSceneCutMode->Name = L"fcgCXSceneCutMode";
+            this->fcgCXSceneCutMode->Size = System::Drawing::Size(88, 22);
+            this->fcgCXSceneCutMode->TabIndex = 95;
+            this->fcgCXSceneCutMode->Tag = L"reCmd";
+            this->fcgCXSceneCutMode->SelectedIndexChanged += gcnew System::EventHandler(this, &frmConfig::fcgCXSceneCutMode_SelectedIndexChanged);
+            // 
             // fcgLBWeightB
             // 
             this->fcgLBWeightB->AutoSize = true;
-            this->fcgLBWeightB->Location = System::Drawing::Point(17, 266);
+            this->fcgLBWeightB->Location = System::Drawing::Point(17, 293);
             this->fcgLBWeightB->Name = L"fcgLBWeightB";
             this->fcgLBWeightB->Size = System::Drawing::Size(87, 14);
             this->fcgLBWeightB->TabIndex = 94;
@@ -2427,7 +2496,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgCBWeightB
             // 
             this->fcgCBWeightB->AutoSize = true;
-            this->fcgCBWeightB->Location = System::Drawing::Point(188, 267);
+            this->fcgCBWeightB->Location = System::Drawing::Point(188, 294);
             this->fcgCBWeightB->Name = L"fcgCBWeightB";
             this->fcgCBWeightB->Size = System::Drawing::Size(15, 14);
             this->fcgCBWeightB->TabIndex = 30;
@@ -2437,7 +2506,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBScenecut
             // 
             this->fcgLBScenecut->AutoSize = true;
-            this->fcgLBScenecut->Location = System::Drawing::Point(17, 15);
+            this->fcgLBScenecut->Location = System::Drawing::Point(17, 43);
             this->fcgLBScenecut->Name = L"fcgLBScenecut";
             this->fcgLBScenecut->Size = System::Drawing::Size(77, 14);
             this->fcgLBScenecut->TabIndex = 90;
@@ -2446,7 +2515,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBRef
             // 
             this->fcgLBRef->AutoSize = true;
-            this->fcgLBRef->Location = System::Drawing::Point(17, 159);
+            this->fcgLBRef->Location = System::Drawing::Point(17, 192);
             this->fcgLBRef->Name = L"fcgLBRef";
             this->fcgLBRef->Size = System::Drawing::Size(51, 14);
             this->fcgLBRef->TabIndex = 78;
@@ -2454,7 +2523,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgNURef
             // 
-            this->fcgNURef->Location = System::Drawing::Point(146, 157);
+            this->fcgNURef->Location = System::Drawing::Point(146, 190);
             this->fcgNURef->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNURef->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNURef->Name = L"fcgNURef";
@@ -2467,7 +2536,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBBframes
             // 
             this->fcgLBBframes->AutoSize = true;
-            this->fcgLBBframes->Location = System::Drawing::Point(17, 186);
+            this->fcgLBBframes->Location = System::Drawing::Point(17, 218);
             this->fcgLBBframes->Name = L"fcgLBBframes";
             this->fcgLBBframes->Size = System::Drawing::Size(102, 14);
             this->fcgLBBframes->TabIndex = 80;
@@ -2475,7 +2544,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgNUBframes
             // 
-            this->fcgNUBframes->Location = System::Drawing::Point(146, 184);
+            this->fcgNUBframes->Location = System::Drawing::Point(146, 216);
             this->fcgNUBframes->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNUBframes->Name = L"fcgNUBframes";
             this->fcgNUBframes->Size = System::Drawing::Size(65, 21);
@@ -2486,7 +2555,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBBadapt
             // 
             this->fcgLBBadapt->AutoSize = true;
-            this->fcgLBBadapt->Location = System::Drawing::Point(17, 215);
+            this->fcgLBBadapt->Location = System::Drawing::Point(17, 245);
             this->fcgLBBadapt->Name = L"fcgLBBadapt";
             this->fcgLBBadapt->Size = System::Drawing::Size(102, 14);
             this->fcgLBBadapt->TabIndex = 82;
@@ -2495,7 +2564,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBKeyintMax
             // 
             this->fcgLBKeyintMax->AutoSize = true;
-            this->fcgLBKeyintMax->Location = System::Drawing::Point(17, 65);
+            this->fcgLBKeyintMax->Location = System::Drawing::Point(17, 117);
             this->fcgLBKeyintMax->Name = L"fcgLBKeyintMax";
             this->fcgLBKeyintMax->Size = System::Drawing::Size(102, 14);
             this->fcgLBKeyintMax->TabIndex = 74;
@@ -2504,7 +2573,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgNUKeyintMax
             // 
             this->fcgNUKeyintMax->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            this->fcgNUKeyintMax->Location = System::Drawing::Point(146, 63);
+            this->fcgNUKeyintMax->Location = System::Drawing::Point(146, 115);
             this->fcgNUKeyintMax->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
             this->fcgNUKeyintMax->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, System::Int32::MinValue });
             this->fcgNUKeyintMax->Name = L"fcgNUKeyintMax";
@@ -2516,7 +2585,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBRcLookAhead
             // 
             this->fcgLBRcLookAhead->AutoSize = true;
-            this->fcgLBRcLookAhead->Location = System::Drawing::Point(17, 124);
+            this->fcgLBRcLookAhead->Location = System::Drawing::Point(17, 166);
             this->fcgLBRcLookAhead->Name = L"fcgLBRcLookAhead";
             this->fcgLBRcLookAhead->Size = System::Drawing::Size(95, 14);
             this->fcgLBRcLookAhead->TabIndex = 76;
@@ -2525,7 +2594,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgCBWeightP
             // 
             this->fcgCBWeightP->AutoSize = true;
-            this->fcgCBWeightP->Location = System::Drawing::Point(188, 291);
+            this->fcgCBWeightP->Location = System::Drawing::Point(188, 317);
             this->fcgCBWeightP->Name = L"fcgCBWeightP";
             this->fcgCBWeightP->Size = System::Drawing::Size(15, 14);
             this->fcgCBWeightP->TabIndex = 31;
@@ -2535,7 +2604,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgNURCLookahead
             // 
             this->fcgNURCLookahead->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            this->fcgNURCLookahead->Location = System::Drawing::Point(146, 122);
+            this->fcgNURCLookahead->Location = System::Drawing::Point(146, 164);
             this->fcgNURCLookahead->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 250, 0, 0, 0 });
             this->fcgNURCLookahead->Name = L"fcgNURCLookahead";
             this->fcgNURCLookahead->Size = System::Drawing::Size(65, 21);
@@ -2546,7 +2615,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBWeightP
             // 
             this->fcgLBWeightP->AutoSize = true;
-            this->fcgLBWeightP->Location = System::Drawing::Point(17, 290);
+            this->fcgLBWeightP->Location = System::Drawing::Point(17, 316);
             this->fcgLBWeightP->Name = L"fcgLBWeightP";
             this->fcgLBWeightP->Size = System::Drawing::Size(87, 14);
             this->fcgLBWeightP->TabIndex = 92;
@@ -2556,7 +2625,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             this->fcgCXBadapt->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXBadapt->FormattingEnabled = true;
-            this->fcgCXBadapt->Location = System::Drawing::Point(125, 212);
+            this->fcgCXBadapt->Location = System::Drawing::Point(125, 242);
             this->fcgCXBadapt->Name = L"fcgCXBadapt";
             this->fcgCXBadapt->Size = System::Drawing::Size(88, 22);
             this->fcgCXBadapt->TabIndex = 28;
@@ -2565,7 +2634,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgNUScenecut
             // 
             this->fcgNUScenecut->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            this->fcgNUScenecut->Location = System::Drawing::Point(146, 13);
+            this->fcgNUScenecut->Location = System::Drawing::Point(146, 41);
             this->fcgNUScenecut->Name = L"fcgNUScenecut";
             this->fcgNUScenecut->Size = System::Drawing::Size(65, 21);
             this->fcgNUScenecut->TabIndex = 21;
@@ -2575,7 +2644,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBBpyramid
             // 
             this->fcgLBBpyramid->AutoSize = true;
-            this->fcgLBBpyramid->Location = System::Drawing::Point(17, 242);
+            this->fcgLBBpyramid->Location = System::Drawing::Point(17, 270);
             this->fcgLBBpyramid->Name = L"fcgLBBpyramid";
             this->fcgLBBpyramid->Size = System::Drawing::Size(66, 14);
             this->fcgLBBpyramid->TabIndex = 84;
@@ -2584,7 +2653,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgCBBpyramid
             // 
             this->fcgCBBpyramid->AutoSize = true;
-            this->fcgCBBpyramid->Location = System::Drawing::Point(188, 243);
+            this->fcgCBBpyramid->Location = System::Drawing::Point(188, 271);
             this->fcgCBBpyramid->Name = L"fcgCBBpyramid";
             this->fcgCBBpyramid->Size = System::Drawing::Size(15, 14);
             this->fcgCBBpyramid->TabIndex = 29;
@@ -2594,7 +2663,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgNUKeyintMin
             // 
             this->fcgNUKeyintMin->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            this->fcgNUKeyintMin->Location = System::Drawing::Point(146, 38);
+            this->fcgNUKeyintMin->Location = System::Drawing::Point(146, 89);
             this->fcgNUKeyintMin->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3000, 0, 0, 0 });
             this->fcgNUKeyintMin->Name = L"fcgNUKeyintMin";
             this->fcgNUKeyintMin->Size = System::Drawing::Size(65, 21);
@@ -2605,7 +2674,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBOpenGOP
             // 
             this->fcgLBOpenGOP->AutoSize = true;
-            this->fcgLBOpenGOP->Location = System::Drawing::Point(17, 91);
+            this->fcgLBOpenGOP->Location = System::Drawing::Point(17, 142);
             this->fcgLBOpenGOP->Name = L"fcgLBOpenGOP";
             this->fcgLBOpenGOP->Size = System::Drawing::Size(62, 14);
             this->fcgLBOpenGOP->TabIndex = 86;
@@ -2614,7 +2683,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgLBKeyintMin
             // 
             this->fcgLBKeyintMin->AutoSize = true;
-            this->fcgLBKeyintMin->Location = System::Drawing::Point(17, 40);
+            this->fcgLBKeyintMin->Location = System::Drawing::Point(17, 91);
             this->fcgLBKeyintMin->Name = L"fcgLBKeyintMin";
             this->fcgLBKeyintMin->Size = System::Drawing::Size(102, 14);
             this->fcgLBKeyintMin->TabIndex = 88;
@@ -2623,7 +2692,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgCBOpenGOP
             // 
             this->fcgCBOpenGOP->AutoSize = true;
-            this->fcgCBOpenGOP->Location = System::Drawing::Point(188, 92);
+            this->fcgCBOpenGOP->Location = System::Drawing::Point(188, 143);
             this->fcgCBOpenGOP->Name = L"fcgCBOpenGOP";
             this->fcgCBOpenGOP->Size = System::Drawing::Size(15, 14);
             this->fcgCBOpenGOP->TabIndex = 24;
@@ -2725,6 +2794,17 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgGroupBoxME->Size = System::Drawing::Size(345, 146);
             this->fcgGroupBoxME->TabIndex = 10;
             this->fcgGroupBoxME->TabStop = false;
+            // 
+            // fcgNURskip
+            // 
+            this->fcgNURskip->Location = System::Drawing::Point(153, 120);
+            this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+            this->fcgNURskip->Name = L"fcgNURskip";
+            this->fcgNURskip->Size = System::Drawing::Size(65, 21);
+            this->fcgNURskip->TabIndex = 83;
+            this->fcgNURskip->Tag = L"reCmd";
+            this->fcgNURskip->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+            this->fcgNURskip->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             // 
             // fcgLBNoRecusrionSkip
             // 
@@ -3411,7 +3491,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgtoolStripSettings->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(128)));
             this->fcgtoolStripSettings->ImageScalingSize = System::Drawing::Size(18, 18);
-            this->fcgtoolStripSettings->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(13) {
+            this->fcgtoolStripSettings->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem ^  >(13) {
                 this->fcgTSBSave,
                     this->fcgTSBSaveNew, this->fcgTSBDelete, this->fcgtoolStripSeparator1, this->fcgTSSettings, this->fcgTSBCMDOnly, this->toolStripSeparator3,
                     this->fcgTSBBitrateCalc, this->toolStripSeparator6, this->fcgTSBOtherSettings, this->fcgTSLSettingsNotes, this->fcgTSTSettingsNotes,
@@ -3426,7 +3506,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgTSBSave
             // 
-            this->fcgTSBSave->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBSave.Image")));
+            this->fcgTSBSave->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBSave.Image")));
             this->fcgTSBSave->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSBSave->Name = L"fcgTSBSave";
             this->fcgTSBSave->Size = System::Drawing::Size(86, 22);
@@ -3435,7 +3515,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgTSBSaveNew
             // 
-            this->fcgTSBSaveNew->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBSaveNew.Image")));
+            this->fcgTSBSaveNew->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBSaveNew.Image")));
             this->fcgTSBSaveNew->ImageTransparentColor = System::Drawing::Color::Black;
             this->fcgTSBSaveNew->Name = L"fcgTSBSaveNew";
             this->fcgTSBSaveNew->Size = System::Drawing::Size(77, 22);
@@ -3444,7 +3524,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgTSBDelete
             // 
-            this->fcgTSBDelete->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBDelete.Image")));
+            this->fcgTSBDelete->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBDelete.Image")));
             this->fcgTSBDelete->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSBDelete->Name = L"fcgTSBDelete";
             this->fcgTSBDelete->Size = System::Drawing::Size(53, 22);
@@ -3458,7 +3538,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             // fcgTSSettings
             // 
-            this->fcgTSSettings->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSSettings.Image")));
+            this->fcgTSSettings->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSSettings.Image")));
             this->fcgTSSettings->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSSettings->Name = L"fcgTSSettings";
             this->fcgTSSettings->Size = System::Drawing::Size(79, 22);
@@ -3470,7 +3550,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             this->fcgTSBCMDOnly->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
             this->fcgTSBCMDOnly->CheckOnClick = true;
-            this->fcgTSBCMDOnly->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBCMDOnly.Image")));
+            this->fcgTSBCMDOnly->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBCMDOnly.Image")));
             this->fcgTSBCMDOnly->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSBCMDOnly->Name = L"fcgTSBCMDOnly";
             this->fcgTSBCMDOnly->Size = System::Drawing::Size(76, 22);
@@ -3488,7 +3568,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgTSBBitrateCalc->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
             this->fcgTSBBitrateCalc->CheckOnClick = true;
             this->fcgTSBBitrateCalc->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Text;
-            this->fcgTSBBitrateCalc->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBBitrateCalc.Image")));
+            this->fcgTSBBitrateCalc->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBBitrateCalc.Image")));
             this->fcgTSBBitrateCalc->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSBBitrateCalc->Name = L"fcgTSBBitrateCalc";
             this->fcgTSBBitrateCalc->Size = System::Drawing::Size(97, 22);
@@ -3505,7 +3585,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // 
             this->fcgTSBOtherSettings->Alignment = System::Windows::Forms::ToolStripItemAlignment::Right;
             this->fcgTSBOtherSettings->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Text;
-            this->fcgTSBOtherSettings->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"fcgTSBOtherSettings.Image")));
+            this->fcgTSBOtherSettings->Image = (cli::safe_cast<System::Drawing::Image ^>(resources->GetObject(L"fcgTSBOtherSettings.Image")));
             this->fcgTSBOtherSettings->ImageTransparentColor = System::Drawing::Color::Magenta;
             this->fcgTSBOtherSettings->Name = L"fcgTSBOtherSettings";
             this->fcgTSBOtherSettings->Size = System::Drawing::Size(76, 22);
@@ -4232,7 +4312,7 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             // fcgCSExeFiles
             // 
             this->fcgCSExeFiles->ImageScalingSize = System::Drawing::Size(18, 18);
-            this->fcgCSExeFiles->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->fcgTSExeFileshelp });
+            this->fcgCSExeFiles->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem ^  >(1) { this->fcgTSExeFileshelp });
             this->fcgCSExeFiles->Name = L"fcgCSx264";
             this->fcgCSExeFiles->Size = System::Drawing::Size(131, 26);
             // 
@@ -4664,17 +4744,6 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
             // 
-            // fcgNURskip
-            // 
-            this->fcgNURskip->Location = System::Drawing::Point(153, 120);
-            this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
-            this->fcgNURskip->Name = L"fcgNURskip";
-            this->fcgNURskip->Size = System::Drawing::Size(65, 21);
-            this->fcgNURskip->TabIndex = 83;
-            this->fcgNURskip->Tag = L"reCmd";
-            this->fcgNURskip->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-            this->fcgNURskip->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-            // 
             // frmConfig
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -4704,69 +4773,71 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgtabPageX265Main->PerformLayout();
             this->fcggroupBoxThread->ResumeLayout(false);
             this->fcggroupBoxThread->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUFrameThreads))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUFrameThreads))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPools))->EndInit();
             this->fcggroupBoxVUIColor->ResumeLayout(false);
             this->fcggroupBoxVUIColor->PerformLayout();
             this->fcggroupBoxSAR->ResumeLayout(false);
             this->fcggroupBoxSAR->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAspectRatioY))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAspectRatioX))->EndInit();
             this->fcggroupBoxRateControl->ResumeLayout(false);
             this->fcggroupBoxRateControl->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQComp))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVbuf))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUVBVmax))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUQComp))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUVBVbuf))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUVBVmax))->EndInit();
             this->fcggroupBoxPreset->ResumeLayout(false);
             this->fcggroupBoxPreset->PerformLayout();
             this->fcgPNStatusFile->ResumeLayout(false);
             this->fcgPNStatusFile->PerformLayout();
             this->fcgPNBitrate->ResumeLayout(false);
             this->fcgPNBitrate->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgTBQuality))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgTBQuality))->EndInit();
             this->fcgPNX265Mode->ResumeLayout(false);
             this->fcgPNX265Mode->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAMPLimitBitrate))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAMPLimitFileSize))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAutoNPass))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgpictureBoxX265))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAMPLimitBitrate))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAMPLimitFileSize))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAutoNPass))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgpictureBoxX265))->EndInit();
             this->fcgtabPageX265Other->ResumeLayout(false);
             this->fcgtabPageX265Other->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUQGSize))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURdoqLevel))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUQGSize))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURdoqLevel))->EndInit();
             this->fcggroupBoxDeblock->ResumeLayout(false);
             this->fcggroupBoxDeblock->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockThreshold))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUDeblockStrength))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRDOQ))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPsyRD))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUDeblockThreshold))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUDeblockStrength))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPsyRDOQ))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUPsyRD))->EndInit();
             this->fcggroupBoxFrame->ResumeLayout(false);
             this->fcggroupBoxFrame->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURef))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUBframes))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUKeyintMax))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURCLookahead))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUScenecut))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUKeyintMin))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURD))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAQStrength))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUHistThreshold))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURef))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUBframes))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUKeyintMax))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURCLookahead))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUScenecut))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUKeyintMin))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURD))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAQStrength))->EndInit();
             this->fcgGroupBoxME->ResumeLayout(false);
             this->fcgGroupBoxME->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUMaxMerge))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUMERange))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURskip))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUMaxMerge))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUMERange))->EndInit();
             this->fcgGroupBoxCTU->ResumeLayout(false);
             this->fcgGroupBoxCTU->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNULimitRefs))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUCtu))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUTuInterDepth))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUTuIntraDepth))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNULimitRefs))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUCtu))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUTuInterDepth))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUTuIntraDepth))->EndInit();
             this->fcgtabPageX2652pass->ResumeLayout(false);
             this->fcgtabPageX2652pass->PerformLayout();
             this->fcggroupBoxAnalysisReuse->ResumeLayout(false);
             this->fcggroupBoxAnalysisReuse->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineInter))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURefineIntra))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAnalysisReuseLevel))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURefineInter))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURefineIntra))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAnalysisReuseLevel))->EndInit();
             this->fcgtabPageExSettings->ResumeLayout(false);
             this->fcgtabPageExSettings->PerformLayout();
             this->fchPNX265Sub->ResumeLayout(false);
@@ -4792,10 +4863,9 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
             this->fcgtabControlAudio->ResumeLayout(false);
             this->fcgtabPageAudioMain->ResumeLayout(false);
             this->fcgtabPageAudioMain->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAudioBitrate))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAudioBitrate))->EndInit();
             this->fcgtabPageAudioOther->ResumeLayout(false);
             this->fcgtabPageAudioOther->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNURskip))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -5508,6 +5578,12 @@ private: System::Windows::Forms::NumericUpDown^ fcgNURskip;
                 }
                 SetNUValue(senderNU, value_to_set);
             }
+        }
+    private:
+        System::Void fcgCXSceneCutMode_SelectedIndexChanged(System::Object ^sender, System::EventArgs ^e) {
+            const bool hist_scenecut_enabled = fcgCXSceneCutMode->SelectedIndex > 0;
+            fcgNUHistThreshold->Visible = hist_scenecut_enabled;
+            fcgNUScenecut->Visible = !hist_scenecut_enabled;
         }
 };
 }
