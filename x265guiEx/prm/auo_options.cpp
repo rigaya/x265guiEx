@@ -226,6 +226,7 @@ static X265_OPTIONS x265_options_table[] = {
     { "hist-scenecut",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hist_scenecut) },
     { "no-hist-scenecut", "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hist_scenecut) },
     { "hist-threshold",   "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, hist_threshold) },
+    { "rskip-edge-threshold", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, rskip_edge_threshold) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 

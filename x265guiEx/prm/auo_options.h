@@ -421,6 +421,7 @@ typedef struct CONF_X265 {
     BOOL    fades;
     BOOL    hist_scenecut;
     float   hist_threshold;
+    int     rskip_edge_threshold;
 } CONF_X265;
 #pragma pack(pop)
 

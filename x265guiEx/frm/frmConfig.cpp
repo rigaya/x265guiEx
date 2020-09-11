@@ -1311,6 +1311,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     SetNUValue(fcgNUMERange,          cx265->me_range);
     SetNUValue(fcgNUMaxMerge,         cx265->max_merge);
     SetNUValue(fcgNURskip,            cx265->recursion_skip);
+    SetNUValue(fcgNURskipEdgeThreshold, cx265->rskip_edge_threshold);
 
     SetNUValue(fcgNUPools,            cx265->pools);
     SetNUValue(fcgNUFrameThreads,     cx265->frame_threads);
@@ -1476,6 +1477,7 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->x265.me_range             = (int)fcgNUMERange->Value;
     cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
     cnf->x265.recursion_skip       = (int)fcgNURskip->Value;
+    cnf->x265.rskip_edge_threshold = (int)fcgNURskipEdgeThreshold->Value;
 
     cnf->x265.pools                = (int)fcgNUPools->Value;
     cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
@@ -1791,6 +1793,7 @@ System::Void frmConfig::SetHelpToolTips() {
     fcgTTX265->SetToolTip(fcgNUMERange,          L"--merange");
     fcgTTX265->SetToolTip(fcgNUMaxMerge,         L"--max-merge");
     fcgTTX265->SetToolTip(fcgNURskip,            L"--rskip");
+    fcgTTX265->SetToolTip(fcgNURskipEdgeThreshold, L"--rskip-edge-threshold");
 
     fcgTTX265->SetToolTip(fcgNUPools,            L"--pools\n"
         + L"\"0\" で自動です。"

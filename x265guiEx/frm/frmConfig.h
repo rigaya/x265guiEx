@@ -859,6 +859,8 @@ private: System::Windows::Forms::CheckBox ^fcgCBFade;
 private: System::Windows::Forms::Label ^fcgLBSceneCutMode;
 private: System::Windows::Forms::ComboBox ^fcgCXSceneCutMode;
 private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
+private: System::Windows::Forms::NumericUpDown ^fcgNURskipEdgeThreshold;
+private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
 
 
 
@@ -1267,6 +1269,8 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             this->fcgCBRunBatBeforeAudio = (gcnew System::Windows::Forms::CheckBox());
             this->fcgCXAudioPriority = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBAudioPriority = (gcnew System::Windows::Forms::Label());
+            this->fcgLBRskipEdgeThreshold = (gcnew System::Windows::Forms::Label());
+            this->fcgNURskipEdgeThreshold = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgtabControlVideo->SuspendLayout();
             this->fcgtabPageX265Main->SuspendLayout();
             this->fcggroupBoxThread->SuspendLayout();
@@ -1337,6 +1341,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             this->fcgtabPageAudioMain->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAudioBitrate))->BeginInit();
             this->fcgtabPageAudioOther->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURskipEdgeThreshold))->BeginInit();
             this->SuspendLayout();
             // 
             // fcgtabControlVideo
@@ -2779,6 +2784,8 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgGroupBoxME
             // 
+            this->fcgGroupBoxME->Controls->Add(this->fcgNURskipEdgeThreshold);
+            this->fcgGroupBoxME->Controls->Add(this->fcgLBRskipEdgeThreshold);
             this->fcgGroupBoxME->Controls->Add(this->fcgNURskip);
             this->fcgGroupBoxME->Controls->Add(this->fcgLBNoRecusrionSkip);
             this->fcgGroupBoxME->Controls->Add(this->fcgLBME);
@@ -2797,7 +2804,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNURskip
             // 
-            this->fcgNURskip->Location = System::Drawing::Point(153, 120);
+            this->fcgNURskip->Location = System::Drawing::Point(128, 120);
             this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURskip->Name = L"fcgNURskip";
             this->fcgNURskip->Size = System::Drawing::Size(65, 21);
@@ -2813,7 +2820,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             this->fcgLBNoRecusrionSkip->Name = L"fcgLBNoRecusrionSkip";
             this->fcgLBNoRecusrionSkip->Size = System::Drawing::Size(73, 14);
             this->fcgLBNoRecusrionSkip->TabIndex = 82;
-            this->fcgLBNoRecusrionSkip->Text = L"再帰統合分析";
+            this->fcgLBNoRecusrionSkip->Text = L"再帰分析制限";
             // 
             // fcgLBME
             // 
@@ -2835,7 +2842,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNUMaxMerge
             // 
-            this->fcgNUMaxMerge->Location = System::Drawing::Point(153, 96);
+            this->fcgNUMaxMerge->Location = System::Drawing::Point(128, 96);
             this->fcgNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUMaxMerge->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUMaxMerge->Name = L"fcgNUMaxMerge";
@@ -2867,15 +2874,15 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             this->fcgCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXME->FormattingEnabled = true;
-            this->fcgCXME->Location = System::Drawing::Point(153, 15);
+            this->fcgCXME->Location = System::Drawing::Point(128, 15);
             this->fcgCXME->Name = L"fcgCXME";
-            this->fcgCXME->Size = System::Drawing::Size(176, 22);
+            this->fcgCXME->Size = System::Drawing::Size(207, 22);
             this->fcgCXME->TabIndex = 11;
             this->fcgCXME->Tag = L"reCmd";
             // 
             // fcgNUMERange
             // 
-            this->fcgNUMERange->Location = System::Drawing::Point(153, 70);
+            this->fcgNUMERange->Location = System::Drawing::Point(128, 70);
             this->fcgNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32768, 0, 0, 0 });
             this->fcgNUMERange->Name = L"fcgNUMERange";
             this->fcgNUMERange->Size = System::Drawing::Size(65, 21);
@@ -2887,9 +2894,9 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             this->fcgCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXSubME->FormattingEnabled = true;
-            this->fcgCXSubME->Location = System::Drawing::Point(153, 42);
+            this->fcgCXSubME->Location = System::Drawing::Point(128, 42);
             this->fcgCXSubME->Name = L"fcgCXSubME";
-            this->fcgCXSubME->Size = System::Drawing::Size(176, 22);
+            this->fcgCXSubME->Size = System::Drawing::Size(207, 22);
             this->fcgCXSubME->TabIndex = 12;
             this->fcgCXSubME->Tag = L"reCmd";
             // 
@@ -2927,7 +2934,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // fcgCBLimitModes
             // 
             this->fcgCBLimitModes->AutoSize = true;
-            this->fcgCBLimitModes->Location = System::Drawing::Point(191, 165);
+            this->fcgCBLimitModes->Location = System::Drawing::Point(181, 165);
             this->fcgCBLimitModes->Name = L"fcgCBLimitModes";
             this->fcgCBLimitModes->Size = System::Drawing::Size(15, 14);
             this->fcgCBLimitModes->TabIndex = 7;
@@ -2937,7 +2944,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // fcgLBLimitRefs
             // 
             this->fcgLBLimitRefs->AutoSize = true;
-            this->fcgLBLimitRefs->Location = System::Drawing::Point(14, 139);
+            this->fcgLBLimitRefs->Location = System::Drawing::Point(16, 139);
             this->fcgLBLimitRefs->Name = L"fcgLBLimitRefs";
             this->fcgLBLimitRefs->Size = System::Drawing::Size(73, 14);
             this->fcgLBLimitRefs->TabIndex = 80;
@@ -2945,7 +2952,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNULimitRefs
             // 
-            this->fcgNULimitRefs->Location = System::Drawing::Point(153, 137);
+            this->fcgNULimitRefs->Location = System::Drawing::Point(143, 137);
             this->fcgNULimitRefs->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNULimitRefs->Name = L"fcgNULimitRefs";
             this->fcgNULimitRefs->Size = System::Drawing::Size(64, 21);
@@ -2966,7 +2973,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // fcgCBAsymmetricMP
             // 
             this->fcgCBAsymmetricMP->AutoSize = true;
-            this->fcgCBAsymmetricMP->Location = System::Drawing::Point(191, 116);
+            this->fcgCBAsymmetricMP->Location = System::Drawing::Point(181, 116);
             this->fcgCBAsymmetricMP->Name = L"fcgCBAsymmetricMP";
             this->fcgCBAsymmetricMP->Size = System::Drawing::Size(15, 14);
             this->fcgCBAsymmetricMP->TabIndex = 5;
@@ -2985,7 +2992,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // fcgCBRectMP
             // 
             this->fcgCBRectMP->AutoSize = true;
-            this->fcgCBRectMP->Location = System::Drawing::Point(191, 92);
+            this->fcgCBRectMP->Location = System::Drawing::Point(181, 92);
             this->fcgCBRectMP->Name = L"fcgCBRectMP";
             this->fcgCBRectMP->Size = System::Drawing::Size(15, 14);
             this->fcgCBRectMP->TabIndex = 4;
@@ -3012,7 +3019,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNUCtu
             // 
-            this->fcgNUCtu->Location = System::Drawing::Point(153, 13);
+            this->fcgNUCtu->Location = System::Drawing::Point(143, 13);
             this->fcgNUCtu->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
             this->fcgNUCtu->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 16, 0, 0, 0 });
             this->fcgNUCtu->Name = L"fcgNUCtu";
@@ -3034,7 +3041,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNUTuInterDepth
             // 
-            this->fcgNUTuInterDepth->Location = System::Drawing::Point(153, 63);
+            this->fcgNUTuInterDepth->Location = System::Drawing::Point(143, 63);
             this->fcgNUTuInterDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
             this->fcgNUTuInterDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUTuInterDepth->Name = L"fcgNUTuInterDepth";
@@ -3046,7 +3053,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // 
             // fcgNUTuIntraDepth
             // 
-            this->fcgNUTuIntraDepth->Location = System::Drawing::Point(153, 38);
+            this->fcgNUTuIntraDepth->Location = System::Drawing::Point(143, 38);
             this->fcgNUTuIntraDepth->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 4, 0, 0, 0 });
             this->fcgNUTuIntraDepth->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUTuIntraDepth->Name = L"fcgNUTuIntraDepth";
@@ -4744,6 +4751,25 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             this->fcgLBAudioPriority->TabIndex = 46;
             this->fcgLBAudioPriority->Text = L"音声優先度";
             // 
+            // fcgLBRskipEdgeThreshold
+            // 
+            this->fcgLBRskipEdgeThreshold->AutoSize = true;
+            this->fcgLBRskipEdgeThreshold->Location = System::Drawing::Point(212, 123);
+            this->fcgLBRskipEdgeThreshold->Name = L"fcgLBRskipEdgeThreshold";
+            this->fcgLBRskipEdgeThreshold->Size = System::Drawing::Size(52, 14);
+            this->fcgLBRskipEdgeThreshold->TabIndex = 84;
+            this->fcgLBRskipEdgeThreshold->Text = L"エッジ閾値";
+            // 
+            // fcgNURskipEdgeThreshold
+            // 
+            this->fcgNURskipEdgeThreshold->Location = System::Drawing::Point(270, 120);
+            this->fcgNURskipEdgeThreshold->Name = L"fcgNURskipEdgeThreshold";
+            this->fcgNURskipEdgeThreshold->Size = System::Drawing::Size(65, 21);
+            this->fcgNURskipEdgeThreshold->TabIndex = 85;
+            this->fcgNURskipEdgeThreshold->Tag = L"reCmd";
+            this->fcgNURskipEdgeThreshold->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+            this->fcgNURskipEdgeThreshold->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            // 
             // frmConfig
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(96, 96);
@@ -4866,6 +4892,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNUAudioBitrate))->EndInit();
             this->fcgtabPageAudioOther->ResumeLayout(false);
             this->fcgtabPageAudioOther->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize ^>(this->fcgNURskipEdgeThreshold))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
