@@ -2798,7 +2798,7 @@ private: System::Windows::Forms::NumericUpDown ^fcgNUHistThreshold;
             // fcgNURskip
             // 
             this->fcgNURskip->Location = System::Drawing::Point(153, 120);
-            this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
+            this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURskip->Name = L"fcgNURskip";
             this->fcgNURskip->Size = System::Drawing::Size(65, 21);
             this->fcgNURskip->TabIndex = 83;
