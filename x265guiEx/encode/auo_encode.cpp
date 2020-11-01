@@ -32,7 +32,7 @@
 #include "cpu_info.h"
 
 static BOOL check_muxer_exist(const MUXER_SETTINGS *muxer_stg) {
-    if (PathFileExists(muxer_stg->fullpath)) 
+    if (PathFileExists(muxer_stg->fullpath))
         return TRUE;
     error_no_exe_file(muxer_stg->filename, muxer_stg->fullpath);
     return FALSE;
@@ -192,10 +192,10 @@ void open_log_window(const char *savefile, const SYSTEM_DATA *sys_dat, int curre
         sprintf_s(mes, sizeof(mes), "%s%s\r\n[%s]\r\n%s", newLine, SEPARATOR, savefile, SEPARATOR);
     else
         sprintf_s(mes, sizeof(mes), "%s%s\r\n[%s] (%d / %d pass)\r\n%s", newLine, SEPARATOR, savefile, current_pass, total_pass, SEPARATOR);
-    
+
     show_log_window(sys_dat->aviutl_dir, sys_dat->exstg->s_local.disable_visual_styles);
     write_log_line(LOG_INFO, mes);
-    
+
     char cpu_info[256];
     getCPUInfo(cpu_info);
     DWORD buildNumber = 0;
@@ -310,7 +310,7 @@ void set_enc_prm(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SY
     strcpy_s(filename_replace, _countof(filename_replace), PathFindFileName(oip->savefile));
     sys_dat->exstg->apply_fn_replace(filename_replace, _countof(filename_replace));
     PathCombineLong(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, filename_replace);
-    
+
     if (pe->video_out_type != VIDEO_OUTPUT_DISABLED) {
         change_ext(pe->temp_filename, _countof(pe->temp_filename), ".265");
     }
@@ -334,7 +334,7 @@ void set_enc_prm(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SY
             }
         }
     }
-    
+
     //FAWチェックとオーディオディレイの修正
     if (conf->aud.faw_check)
         auo_faw_check(&conf->aud, oip, pe, sys_dat->exstg);
@@ -373,7 +373,7 @@ int get_mux_excmd_mode(const CONF_GUIEX *conf, const PRM_ENC *pe) {
         case MUXER_MKV:     mode = conf->mux.mkv_mode; break;
         case MUXER_MPG:     mode = conf->mux.mpg_mode; break;
         case MUXER_MP4:
-        case MUXER_TC2MP4: 
+        case MUXER_TC2MP4:
         case MUXER_MP4_RAW: mode = conf->mux.mp4_mode; break;
     }
     return mode;
@@ -399,7 +399,7 @@ void get_muxout_filename(char *filename, size_t nSize, const SYSTEM_DATA *sys_da
 }
 
 //チャプターファイル名とapple形式のチャプターファイル名を同時に作成する
-void set_chap_filename(char *chap_file, size_t cf_nSize, char *chap_apple, size_t ca_nSize, const char *chap_base, 
+void set_chap_filename(char *chap_file, size_t cf_nSize, char *chap_apple, size_t ca_nSize, const char *chap_base,
                        const PRM_ENC *pe, const SYSTEM_DATA *sys_dat, const CONF_GUIEX *conf, const OUTPUT_INFO *oip) {
     strcpy_s(chap_file, cf_nSize, chap_base);
     cmd_replace(chap_file, cf_nSize, pe, sys_dat, conf, oip);
@@ -418,7 +418,7 @@ void insert_num_to_replace_key(char *key, size_t nSize, int num) {
 static void replace_aspect_ratio(char *cmd, size_t nSize, const CONF_GUIEX *conf, const OUTPUT_INFO *oip) {
     const int w = oip->w;
     const int h = oip->h;
- 
+
     int sar_x = conf->x265.sar.x;
     int sar_y = conf->x265.sar.y;
     int dar_x = 0;
@@ -546,7 +546,7 @@ void cmd_replace(char *cmd, size_t nSize, const PRM_ENC *pe, const SYSTEM_DATA *
     replace(cmd, nSize, "%{mkvmuxerpath}", GetFullPath(sys_dat->exstg->s_mux[MUXER_MKV].fullpath,         fullpath, _countof(fullpath)));
 }
 
-//一時ファイルの移動・削除を行う 
+//一時ファイルの移動・削除を行う
 // move_from -> move_to
 // temp_filename … 動画ファイルの一時ファイル名。これにappendixをつけてmove_from を作る。
 //                  appndixがNULLのときはこれをそのままmove_fromとみなす。
@@ -676,7 +676,7 @@ BOOL check_output_has_chapter(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat
 int check_muxer_to_be_used(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, const char *temp_filename, int video_output_type, BOOL audio_output) {
     //if (conf.vid.afs)
     //    conf.mux.disable_mp4ext = conf.mux.disable_mkvext = FALSE; //afsなら外部muxerを強制する
-    
+
     int muxer_to_be_used = MUXER_DISABLED;
     if (video_output_type == VIDEO_OUTPUT_MP4 && !conf->mux.disable_mp4ext)
         muxer_to_be_used = (conf->vid.afs) ? MUXER_TC2MP4 : MUXER_MP4;
@@ -684,7 +684,7 @@ int check_muxer_to_be_used(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, c
         muxer_to_be_used = MUXER_MKV;
     else if (video_output_type == VIDEO_OUTPUT_MPEG2 && !conf->mux.disable_mpgext)
         muxer_to_be_used = MUXER_MPG;
-    
+
     //muxerが必要ないかどうかチェック
     BOOL no_muxer = TRUE;
     no_muxer &= !audio_output;
@@ -710,7 +710,7 @@ AUO_RESULT getLogFilePath(char *log_file_path, size_t nSize, const PRM_ENC *pe, 
             //下へフォールスルー
         case AUTO_SAVE_LOG_OUTPUT_DIR:
         default:
-            apply_appendix(log_file_path, nSize, oip->savefile, "_log.txt"); 
+            apply_appendix(log_file_path, nSize, oip->savefile, "_log.txt");
             break;
     }
     return ret;
