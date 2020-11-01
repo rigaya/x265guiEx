@@ -60,7 +60,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: IDRwZWN1uQaTxb64SQnTDNJR5KPtCFPL3Mln9GrdZ7TSiyec/o1KXpOuh/50ZO5A
-  artifact: x265guiEx_%BUILD_VERSION%_%PLATFORM%
+  artifact: x265guiEx_%BUILD_VERSION%
   draft: false
   prerelease: false
   on:
