@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <intrin.h>
 #include <shlwapi.h>
+#include <VersionHelpers.h>
 #pragma comment(lib, "shlwapi.lib")
 
 #include "auo.h"
@@ -414,12 +415,15 @@ static DWORD get_availableSIMD() {
     return simd;
 }
 
-void getOSVersion(OSVERSIONINFO *info);
-
 static BOOL check_OS_Win7orLater() {
-    OSVERSIONINFO info;
-    getOSVersion(&info);
-    return ((info.dwPlatformId == VER_PLATFORM_WIN32_NT) && ((info.dwMajorVersion == 6 && info.dwMinorVersion >= 1) || info.dwMajorVersion > 6));
+#if (_MSC_VER >= 1800)
+    return IsWindowsVersionOrGreater(6, 1, 0);
+#else
+    OSVERSIONINFO osvi = { 0 };
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    GetVersionEx(&osvi);
+    return ((osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) && ((osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1) || osvi.dwMajorVersion > 6));
+#endif
 }
 
 static inline const char *GetFullPath(const char *path, char *buffer, size_t nSize) {
