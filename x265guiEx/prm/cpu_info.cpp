@@ -18,7 +18,7 @@
 #include "cpu_info.h"
 
 static int getCPUName(char *buffer, size_t nSize) {
-    int CPUInfo[4] = {-1};
+    int CPUInfo[4] = { -1 };
     __cpuid(CPUInfo, 0x80000000);
     unsigned int nExIds = CPUInfo[0];
     if (nSize < 0x40)
@@ -29,18 +29,18 @@ static int getCPUName(char *buffer, size_t nSize) {
         __cpuid(CPUInfo, i);
         int offset = 0;
         switch (i) {
-            case 0x80000002: offset =  0; break;
-            case 0x80000003: offset = 16; break;
-            case 0x80000004: offset = 32; break;
-            default:
-                continue;
+        case 0x80000002: offset = 0; break;
+        case 0x80000003: offset = 16; break;
+        case 0x80000004: offset = 32; break;
+        default:
+            continue;
         }
         memcpy(buffer + offset, CPUInfo, sizeof(CPUInfo));
     }
-    auto remove_string =[](char *target_str, const char *remove_str) {
+    auto remove_string = [](char *target_str, const char *remove_str) {
         char *ptr = strstr(target_str, remove_str);
         if (nullptr != ptr) {
-            memmove(ptr, ptr + strlen(remove_str), (strlen(ptr) - strlen(remove_str) + 1) *  sizeof(target_str[0]));
+            memmove(ptr, ptr + strlen(remove_str), (strlen(ptr) - strlen(remove_str) + 1) * sizeof(target_str[0]));
         }
     };
     remove_string(buffer, "(R)");
@@ -58,7 +58,7 @@ static int getCPUName(char *buffer, size_t nSize) {
     for (int i = 0; buffer[i]; i++) {
         if (buffer[i] == ' ') {
             int space_idx = i;
-            while (buffer[i+1] == ' ')
+            while (buffer[i + 1] == ' ')
                 i++;
             if (i != space_idx)
                 memmove(buffer + space_idx + 1, buffer + i + 1, strlen(buffer + i + 1) + 1);
@@ -94,7 +94,7 @@ double getCPUDefaultClockFromCPUName() {
     TCHAR *ptr_ghz = _tcsstr(buffer, _T("GHz"));
     TCHAR *ptr = _tcschr(buffer, _T('@'));
     bool clockInfoAvailable = (NULL != ptr_mhz || ptr_ghz != NULL) && NULL != ptr;
-    if (clockInfoAvailable && 1 == _stscanf_s(ptr+1, _T("%lf"), &defaultClock)) {
+    if (clockInfoAvailable && 1 == _stscanf_s(ptr + 1, _T("%lf"), &defaultClock)) {
         return defaultClock * ((NULL == ptr_ghz) ? 1000.0 : 1.0);
     }
     return 0.0;
@@ -103,10 +103,10 @@ double getCPUDefaultClockFromCPUName() {
 #include <Windows.h>
 #include <process.h>
 
-typedef BOOL (WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
 static DWORD CountSetBits(ULONG_PTR bitMask) {
-    DWORD LSHIFT = sizeof(ULONG_PTR)*8 - 1;
+    DWORD LSHIFT = sizeof(ULONG_PTR) * 8 - 1;
     DWORD bitSetCount = 0;
     for (ULONG_PTR bitTest = (ULONG_PTR)1 << LSHIFT; bitTest; bitTest >>= 1)
         bitSetCount += ((bitMask & bitTest) != 0);
@@ -155,7 +155,7 @@ bool get_cpu_info(cpu_info_t *cpu_info) {
             // Cache data is in ptr->Cache, one CACHE_DESCRIPTOR structure for each cache.
             PCACHE_DESCRIPTOR Cache = &ptr->Cache;
             if (1 <= Cache->Level && Cache->Level <= _countof(cpu_info->caches)) {
-                cache_info_t *cache = &cpu_info->caches[Cache->Level-1];
+                cache_info_t *cache = &cpu_info->caches[Cache->Level - 1];
                 cache->count++;
                 cache->level = Cache->Level;
                 cache->linesize = Cache->LineSize;
@@ -183,21 +183,33 @@ bool get_cpu_info(cpu_info_t *cpu_info) {
 }
 
 const int TEST_COUNT = 5000;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-    extern int runl_por(uint32_t loop_count);
-#ifdef __cplusplus
+__declspec(noinline)
+int64_t runl_por(int loop_count, int& dummy_dep) {
+    unsigned int dummy;
+    const auto ts = __rdtscp(&dummy);
+    int i = loop_count;
+#define ADD_XOR { i += loop_count; i ^= loop_count; }
+#define ADD_XOR4 {ADD_XOR;ADD_XOR;ADD_XOR;ADD_XOR;}
+#define ADD_XOR16 {ADD_XOR4;ADD_XOR4;ADD_XOR4;ADD_XOR4;}
+    do {
+        ADD_XOR16;
+        ADD_XOR16;
+        ADD_XOR16;
+        ADD_XOR16;
+        loop_count--;
+    } while (loop_count > 0);
+    const auto te = __rdtscp(&dummy);
+    dummy_dep = i;
+    return te - ts;
 }
-#endif
 
 static double get_tick_per_clock() {
     const int outer_loop_count = 1000;
     const int inner_loop_count = TEST_COUNT;
-    auto tick_min = runl_por(inner_loop_count);
+    int dummy = 0;
+    auto tick_min = runl_por(inner_loop_count, dummy);
     for (int i = 0; i < outer_loop_count; i++) {
-        auto ret = runl_por(inner_loop_count);
+        auto ret = runl_por(inner_loop_count, dummy);
         tick_min = min(tick_min, ret);
     }
     return tick_min / (128.0 * inner_loop_count);
@@ -206,9 +218,10 @@ static double get_tick_per_clock() {
 static double get_tick_per_sec() {
     const int nMul = 100;
     const int outer_loop_count = TEST_COUNT * nMul;
-    runl_por(outer_loop_count);
+    int dummy = 0;
+    runl_por(outer_loop_count, dummy);
     auto start = std::chrono::high_resolution_clock::now();
-    auto tick = runl_por(outer_loop_count);
+    auto tick = runl_por(outer_loop_count, dummy);
     auto fin = std::chrono::high_resolution_clock::now();
     double second = std::chrono::duration_cast<std::chrono::microseconds>(fin - start).count() * 1e-6;
     return tick / second;
@@ -238,14 +251,14 @@ double getCPUMaxTurboClock() {
     //によれば、Sandy/Ivy/Haswell/Silvermont
     //いずれでもサポートされているのでノーチェックでも良い気がするが...
     //固定クロックのタイマーを持つかチェック (Fn:8000_0007:EDX8)
-    int CPUInfo[4] ={ -1 };
+    int CPUInfo[4] = { -1 };
     __cpuid(CPUInfo, 0x80000007);
-    if (0 == (CPUInfo[3] & (1<<8))) {
+    if (0 == (CPUInfo[3] & (1 << 8))) {
         return defaultClock;
     }
     //rdtscp命令のチェック (Fn:8000_0001:EDX27)
     __cpuid(CPUInfo, 0x80000001);
-    if (0 == (CPUInfo[3] & (1<<27))) {
+    if (0 == (CPUInfo[3] & (1 << 27))) {
         return defaultClock;
     }
     //例外が発生するなら処理を中断する
@@ -307,21 +320,21 @@ int getCPUInfo(TCHAR *buffer, size_t nSize) {
     if (getCPUName(buffer, nSize) || !get_cpu_info(&cpu_info)) {
         ret = 1;
     } else {
-        double defaultClock = getCPUDefaultClockFromCPUName();
+        const double defaultClock = getCPUDefaultClockFromCPUName();
         bool noDefaultClockInCPUName = (0.0 >= defaultClock);
-        if (noDefaultClockInCPUName)
-            defaultClock = getCPUDefaultClockOpenCL();
+        const double maxFrequency = getCPUMaxTurboClock();
         if (defaultClock > 0.0) {
             if (noDefaultClockInCPUName) {
                 _stprintf_s(buffer + _tcslen(buffer), nSize - _tcslen(buffer), _T(" @ %.2fGHz"), defaultClock);
             }
-            double maxFrequency = getCPUMaxTurboClock();
             //大きな違いがなければ、TurboBoostはないものとして表示しない
             if (maxFrequency / defaultClock > 1.01) {
                 _stprintf_s(buffer + _tcslen(buffer), nSize - _tcslen(buffer), _T(" [TB: %.2fGHz]"), maxFrequency);
             }
-            _stprintf_s(buffer + _tcslen(buffer), nSize - _tcslen(buffer), _T(" (%dC/%dT)"), cpu_info.physical_cores, cpu_info.logical_cores);
+        } else if (maxFrequency > 0.0) {
+            _stprintf_s(buffer + _tcslen(buffer), nSize - _tcslen(buffer), _T(" [%.2fGHz]"), maxFrequency);
         }
+        _stprintf_s(buffer + _tcslen(buffer), nSize - _tcslen(buffer), _T(" (%dC/%dT)"), cpu_info.physical_cores, cpu_info.logical_cores);
     }
     return ret;
 }
