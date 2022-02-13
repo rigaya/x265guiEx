@@ -36,6 +36,11 @@ void error_nothing_to_output() {
     write_log_auo_line(LOG_ERROR, "出力すべきものがありません。");
 }
 
+void error_file_is_already_opened_by_aviutl() {
+    write_log_auo_line(LOG_ERROR, "出力ファイルはすでにAviutlで開かれているため、出力できません。");
+    write_log_auo_line(LOG_ERROR, "異なるファイル名を指定してやり直してください。");
+}
+
 void error_amp_bitrate_confliction() {
     write_log_auo_line(LOG_ERROR, "上限ビットレートが、目標ビットレートより小さく設定されています。エンコードできません。");
     write_log_auo_line(LOG_ERROR, "ビットレート設定を見なおしてください。");
