@@ -2151,6 +2151,7 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXX265Path->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXX265Path_TextChanged);
             this->fcgTXX265Path->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXX265Path->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
+            this->fcgTXX265Path->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXX265Path_Enter);
             this->fcgTXX265Path->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXX265Path_Leave);
             // 
             // fcgLBX265Path
@@ -3282,6 +3283,7 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXX265PathSub->Size = System::Drawing::Size(176, 21);
             this->fcgTXX265PathSub->TabIndex = 10;
             this->fcgTXX265PathSub->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXX265PathSub_TextChanged);
+            this->fcgTXX265PathSub->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXX265PathSub_Enter);
             this->fcgTXX265PathSub->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXX265PathSub_Leave);
             // 
             // fcgBTX265PathSub
@@ -3702,6 +3704,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXTC2MP4Path->Size = System::Drawing::Size(202, 21);
             this->fcgTXTC2MP4Path->TabIndex = 5;
             this->fcgTXTC2MP4Path->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXTC2MP4Path_TextChanged);
+            this->fcgTXTC2MP4Path->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXTC2MP4Path_Enter);
+            this->fcgTXTC2MP4Path->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXTC2MP4Path_Leave);
             this->fcgTXTC2MP4Path->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXTC2MP4Path->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -3724,6 +3728,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXMP4MuxerPath->TabIndex = 3;
             this->fcgTXMP4MuxerPath->Tag = L"";
             this->fcgTXMP4MuxerPath->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4MuxerPath_TextChanged);
+            this->fcgTXMP4MuxerPath->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4MuxerPath_Enter);
+            this->fcgTXMP4MuxerPath->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4MuxerPath_Leave);
             this->fcgTXMP4MuxerPath->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXMP4MuxerPath->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -3793,6 +3799,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXMP4RawPath->Size = System::Drawing::Size(202, 21);
             this->fcgTXMP4RawPath->TabIndex = 7;
             this->fcgTXMP4RawPath->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4RawMuxerPath_TextChanged);
+            this->fcgTXMP4RawPath->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4RawPath_Enter);
+            this->fcgTXMP4RawPath->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXMP4RawPath_Leave);
             this->fcgTXMP4RawPath->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXMP4RawPath->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -3875,6 +3883,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXMKVMuxerPath->Size = System::Drawing::Size(207, 21);
             this->fcgTXMKVMuxerPath->TabIndex = 2;
             this->fcgTXMKVMuxerPath->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXMKVMuxerPath_TextChanged);
+            this->fcgTXMKVMuxerPath->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXMKVMuxerPath_Enter);
+            this->fcgTXMKVMuxerPath->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXMKVMuxerPath_Leave);
             this->fcgTXMKVMuxerPath->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXMKVMuxerPath->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -3949,6 +3959,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXMPGMuxerPath->Size = System::Drawing::Size(207, 21);
             this->fcgTXMPGMuxerPath->TabIndex = 22;
             this->fcgTXMPGMuxerPath->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXMPGMuxerPath_TextChanged);
+            this->fcgTXMPGMuxerPath->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXMPGMuxerPath_Enter);
+            this->fcgTXMPGMuxerPath->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXMPGMuxerPath_Leave);
             this->fcgTXMPGMuxerPath->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXMPGMuxerPath->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -4518,6 +4530,8 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
             this->fcgTXAudioEncoderPath->Size = System::Drawing::Size(303, 21);
             this->fcgTXAudioEncoderPath->TabIndex = 40;
             this->fcgTXAudioEncoderPath->TextChanged += gcnew System::EventHandler(this, &frmConfig::fcgTXAudioEncoderPath_TextChanged);
+            this->fcgTXAudioEncoderPath->Enter += gcnew System::EventHandler(this, &frmConfig::fcgTXAudioEncoderPath_Enter);
+            this->fcgTXAudioEncoderPath->Leave += gcnew System::EventHandler(this, &frmConfig::fcgTXAudioEncoderPath_Leave);
             this->fcgTXAudioEncoderPath->DragDrop += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_DragDrop);
             this->fcgTXAudioEncoderPath->DragEnter += gcnew System::Windows::Forms::DragEventHandler(this, &frmConfig::fcgSetDragDropFilename_Enter);
             // 
@@ -5125,12 +5139,102 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
                 SetX265VersionToolTip(fcgTXX265PathSub->Text);
         }
     private:
+        System::Void fcgTXX265Path_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXX265Path->Text == String(use_default_exe_path).ToString()) {
+                fcgTXX265Path->Text = L"";
+            }
+        }
+    private:
         System::Void fcgTXX265Path_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXX265Path->Text->Length == 0) {
+                fcgTXX265Path->Text = String(use_default_exe_path).ToString();
+            }
             SetX265VersionToolTip(fcgTXX265Path->Text);
         }
     private:
+        System::Void fcgTXX265PathSub_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXX265PathSub->Text == String(use_default_exe_path).ToString()) {
+                fcgTXX265PathSub->Text = L"";
+            }
+        }
+    private:
         System::Void fcgTXX265PathSub_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXX265PathSub->Text->Length == 0) {
+                fcgTXX265PathSub->Text = String(use_default_exe_path).ToString();
+            }
             SetX265VersionToolTip(fcgTXX265PathSub->Text);
+        }
+    private:
+        System::Void fcgTXAudioEncoderPath_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXAudioEncoderPath->Text == String(use_default_exe_path).ToString()) {
+                fcgTXAudioEncoderPath->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXAudioEncoderPath_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXAudioEncoderPath->Text->Length == 0) {
+                fcgTXAudioEncoderPath->Text = String(use_default_exe_path).ToString();
+            }
+        }
+    private:
+        System::Void fcgTXMP4MuxerPath_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMP4MuxerPath->Text == String(use_default_exe_path).ToString()) {
+                fcgTXMP4MuxerPath->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXMP4MuxerPath_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMP4MuxerPath->Text->Length == 0) {
+                fcgTXMP4MuxerPath->Text = String(use_default_exe_path).ToString();
+            }
+        }
+    private:
+        System::Void fcgTXTC2MP4Path_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXTC2MP4Path->Text == String(use_default_exe_path).ToString()) {
+                fcgTXTC2MP4Path->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXTC2MP4Path_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXTC2MP4Path->Text->Length == 0) {
+                fcgTXTC2MP4Path->Text = String(use_default_exe_path).ToString();
+            }
+        }
+    private:
+        System::Void fcgTXMP4RawPath_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMP4RawPath->Text == String(use_default_exe_path).ToString()) {
+                fcgTXMP4RawPath->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXMP4RawPath_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMP4RawPath->Text->Length == 0) {
+                fcgTXMP4RawPath->Text = String(use_default_exe_path).ToString();
+            }
+        }
+    private:
+        System::Void fcgTXMKVMuxerPath_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMKVMuxerPath->Text == String(use_default_exe_path).ToString()) {
+                fcgTXMKVMuxerPath->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXMKVMuxerPath_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMKVMuxerPath->Text->Length == 0) {
+                fcgTXMKVMuxerPath->Text = String(use_default_exe_path).ToString();
+            }
+        }
+    private:
+        System::Void fcgTXMPGMuxerPath_Enter(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMPGMuxerPath->Text == String(use_default_exe_path).ToString()) {
+                fcgTXMPGMuxerPath->Text = L"";
+            }
+        }
+    private:
+        System::Void fcgTXMPGMuxerPath_Leave(System::Object^  sender, System::EventArgs^  e) {
+            if (fcgTXMPGMuxerPath->Text->Length == 0) {
+                fcgTXMPGMuxerPath->Text = String(use_default_exe_path).ToString();
+            }
         }
     private:
         System::Void fcgBTMP4MuxerPath_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -5419,54 +5523,103 @@ private: System::Windows::Forms::Label ^fcgLBRskipEdgeThreshold;
         }
     private:
         System::Void fcgTXX265Path_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            int c = fcgTXX265Path->SelectionStart;
-            LocalStg.x265Path      = fcgTXX265Path->Text;
-            fcgTXX265PathSub->Text = LocalStg.x265Path;
-            fcgTXX265PathSub->SelectionStart = fcgTXX265PathSub->Text->Length;
-            fcgTXX265Path->SelectionStart = c;
-            fcgBTX265Path->ContextMenuStrip = (File::Exists(fcgTXX265Path->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXX265Path->Text == String(use_default_exe_path).ToString()) {
+                fcgTXX265PathSub->Text = String(use_default_exe_path).ToString();
+                LocalStg.x265Path = L"";
+                fcgTXX265Path->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                int c = fcgTXX265Path->SelectionStart;
+                LocalStg.x265Path = fcgTXX265Path->Text;
+                fcgTXX265Path->ForeColor = System::Drawing::SystemColors::WindowText;
+                fcgTXX265PathSub->Text = LocalStg.x265Path;
+                fcgTXX265PathSub->SelectionStart = fcgTXX265PathSub->Text->Length;
+                fcgTXX265Path->SelectionStart = c;
+                fcgBTX265Path->ContextMenuStrip = (File::Exists(fcgTXX265Path->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXX265PathSub_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.x265Path   = fcgTXX265PathSub->Text;
-            int c = fcgTXX265PathSub->SelectionStart;
-            fcgTXX265Path->Text = LocalStg.x265Path;
-            fcgTXX265Path->SelectionStart = fcgTXX265Path->Text->Length;
-            fcgTXX265PathSub->SelectionStart = c;
-            fcgBTX265PathSub->ContextMenuStrip = (File::Exists(fcgTXX265PathSub->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXX265PathSub->Text == String(use_default_exe_path).ToString()) {
+                fcgTXX265Path->Text = String(use_default_exe_path).ToString();
+                LocalStg.x265Path = L"";
+                fcgTXX265PathSub->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                LocalStg.x265Path = fcgTXX265PathSub->Text;
+                fcgTXX265PathSub->ForeColor = System::Drawing::SystemColors::WindowText;
+                int c = fcgTXX265PathSub->SelectionStart;
+                fcgTXX265Path->Text = LocalStg.x265Path;
+                fcgTXX265Path->SelectionStart = fcgTXX265Path->Text->Length;
+                fcgTXX265PathSub->SelectionStart = c;
+                fcgBTX265PathSub->ContextMenuStrip = (File::Exists(fcgTXX265PathSub->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXX265PathSubhighbit_Leave(System::Object^  sender, System::EventArgs^  e) {
         }
     private:
         System::Void fcgTXAudioEncoderPath_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.audEncPath[fcgCXAudioEncoder->SelectedIndex] = fcgTXAudioEncoderPath->Text;
-            fcgBTAudioEncoderPath->ContextMenuStrip = (File::Exists(fcgTXAudioEncoderPath->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXAudioEncoderPath->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.audEncPath[fcgCXAudioEncoder->SelectedIndex] = L"";
+                fcgTXAudioEncoderPath->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                fcgTXAudioEncoderPath->ForeColor = System::Drawing::SystemColors::WindowText;
+                LocalStg.audEncPath[fcgCXAudioEncoder->SelectedIndex] = fcgTXAudioEncoderPath->Text;
+                fcgBTAudioEncoderPath->ContextMenuStrip = (File::Exists(fcgTXAudioEncoderPath->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXMP4MuxerPath_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.MP4MuxerPath = fcgTXMP4MuxerPath->Text;
-            fcgBTMP4MuxerPath->ContextMenuStrip = (File::Exists(fcgTXMP4MuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXMP4MuxerPath->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.MP4MuxerPath = L"";
+                fcgTXMP4MuxerPath->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                LocalStg.MP4MuxerPath = fcgTXMP4MuxerPath->Text;
+                fcgBTMP4MuxerPath->ContextMenuStrip = (File::Exists(fcgTXMP4MuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXTC2MP4Path_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.TC2MP4Path = fcgTXTC2MP4Path->Text;
-            fcgBTTC2MP4Path->ContextMenuStrip = (File::Exists(fcgTXTC2MP4Path->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXTC2MP4Path->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.TC2MP4Path = L"";
+                fcgTXTC2MP4Path->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                fcgTXTC2MP4Path->ForeColor = System::Drawing::SystemColors::WindowText;
+                LocalStg.TC2MP4Path = fcgTXTC2MP4Path->Text;
+                fcgBTTC2MP4Path->ContextMenuStrip = (File::Exists(fcgTXTC2MP4Path->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXMP4RawMuxerPath_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.MP4RawPath = fcgTXMP4RawPath->Text;
-            fcgBTMP4RawPath->ContextMenuStrip = (File::Exists(fcgTXMP4RawPath->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXMP4RawPath->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.MP4RawPath = L"";
+                fcgTXMP4RawPath->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                fcgTXMP4RawPath->ForeColor = System::Drawing::SystemColors::WindowText;
+                LocalStg.MP4RawPath = fcgTXMP4RawPath->Text;
+                fcgBTMP4RawPath->ContextMenuStrip = (File::Exists(fcgTXMP4RawPath->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXMKVMuxerPath_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.MKVMuxerPath = fcgTXMKVMuxerPath->Text;
-            fcgBTMKVMuxerPath->ContextMenuStrip = (File::Exists(fcgTXMKVMuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXMKVMuxerPath->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.MKVMuxerPath = L"";
+                fcgTXMKVMuxerPath->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                fcgTXMKVMuxerPath->ForeColor = System::Drawing::SystemColors::WindowText;
+                LocalStg.MKVMuxerPath = fcgTXMKVMuxerPath->Text;
+                fcgBTMKVMuxerPath->ContextMenuStrip = (File::Exists(fcgTXMKVMuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXMPGMuxerPath_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-            LocalStg.MPGMuxerPath = fcgTXMPGMuxerPath->Text;
-            fcgBTMPGMuxerPath->ContextMenuStrip = (File::Exists(fcgTXMPGMuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            if (fcgTXMPGMuxerPath->Text == String(use_default_exe_path).ToString()) {
+                LocalStg.MPGMuxerPath = L"";
+                fcgTXMPGMuxerPath->ForeColor = System::Drawing::SystemColors::ControlDark;
+            } else {
+                fcgTXMPGMuxerPath->ForeColor = System::Drawing::SystemColors::WindowText;
+                LocalStg.MPGMuxerPath = fcgTXMPGMuxerPath->Text;
+                fcgBTMPGMuxerPath->ContextMenuStrip = (File::Exists(fcgTXMPGMuxerPath->Text)) ? fcgCSExeFiles : nullptr;
+            }
         }
     private:
         System::Void fcgTXMP4BoxTempDir_TextChanged(System::Object^  sender, System::EventArgs^  e) {

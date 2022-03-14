@@ -250,6 +250,7 @@ namespace x265guiEx {
     const int fcgCXAudioEncModeLargeWidth = 237;
 };
 
+static const WCHAR *use_default_exe_path = L"exe_files内の実行ファイルを自動選択";
 
 //コンボボックスの表示名
 const WCHAR * const x264_encodemode_desc[] = {

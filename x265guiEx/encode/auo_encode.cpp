@@ -15,6 +15,7 @@
 #pragma comment(lib, "shlwapi.lib")
 #include <vector>
 #include <string>
+#include <filesystem>
 
 #include "auo.h"
 #include "auo_version.h"
@@ -30,13 +31,135 @@
 #include "auo_audio.h"
 #include "auo_faw2aac.h"
 #include "cpu_info.h"
+#include "exe_version.h"
 
 static void create_aviutl_opened_file_list(PRM_ENC *pe);
 static bool check_file_is_aviutl_opened_file(const char *filepath, const PRM_ENC *pe);
 
-static BOOL check_muxer_exist(const MUXER_SETTINGS *muxer_stg) {
-    if (PathFileExists(muxer_stg->fullpath))
+#pragma warning (push)
+#pragma warning (disable: 4244)
+#pragma warning (disable: 4996)
+static inline std::string tolowercase(const std::string& str) {
+    std::string str_copy = str;
+    std::transform(str_copy.cbegin(), str_copy.cend(), str_copy.begin(), tolower);
+    return str_copy;
+}
+#pragma warning (pop)
+
+static std::vector<std::filesystem::path> find_exe_files(const char *target_dir) {
+    std::vector<std::filesystem::path> ret;
+    try {
+        for (const std::filesystem::directory_entry& x : std::filesystem::recursive_directory_iterator(target_dir)) {
+            if (x.path().extension() == ".exe") {
+                ret.push_back(x.path());
+            }
+        }
+    } catch (...) {}
+    return ret;
+}
+
+static std::vector<std::filesystem::path> find_target_exe_files(const char *target_name, const std::vector<std::filesystem::path>& exe_files) {
+    std::vector<std::filesystem::path> ret;
+    const auto targetNameLower = tolowercase(std::filesystem::path(target_name).stem().string());
+    for (const auto& path : exe_files) {
+        if (tolowercase(path.stem().string()).substr(0, targetNameLower.length()) == targetNameLower) {
+            ret.push_back(path);
+        }
+    }
+    return ret;
+}
+
+static bool ends_with(const std::string& s, const std::string& check) {
+    if (s.size() < check.size()) return false;
+    return std::equal(std::rbegin(check), std::rend(check), std::rbegin(s));
+}
+
+static std::vector<std::filesystem::path> select_exe_file(const std::vector<std::filesystem::path>& pathList) {
+    if (pathList.size() <= 1) {
+        return pathList;
+    }
+    std::vector<std::filesystem::path> exe32bit;
+    std::vector<std::filesystem::path> exe64bit;
+    std::vector<std::filesystem::path> exeUnknown;
+    for (const auto& path : pathList) {
+        if (ends_with(tolowercase(path.filename().string()), "_x64.exe")) {
+            exe64bit.push_back(path);
+            continue;
+        } else if (ends_with(tolowercase(path.filename().string()), "_x86.exe")) {
+            exe32bit.push_back(path);
+            continue;
+        }
+        bool checked = false;
+        std::filesystem::path p = path;
+        for (int i = 0; p.string().length() > 0 && i < 10000; i++) {
+            auto parent = p.parent_path();
+            if (parent == p) {
+                break;
+            }
+            if (p.filename().string() == "x64") {
+                exe64bit.push_back(path);
+                checked = true;
+                break;
+            } else if (p.filename().string() == "x86") {
+                exe32bit.push_back(path);
+                checked = true;
+                break;
+            }
+        }
+        if (!checked) {
+            if (ends_with(tolowercase(path.filename().string()), "64.exe")) {
+                exe64bit.push_back(path);
+            } else {
+                exeUnknown.push_back(path);
+            }
+        }
+    }
+    if (is_64bit_os()) {
+        return (exe64bit.size() > 0) ? exe64bit : exeUnknown;
+    } else {
+        return (exe32bit.size() > 0) ? exe32bit : exeUnknown;
+    }
+}
+
+std::filesystem::path find_latest_x265(const std::vector<std::filesystem::path>& pathList) {
+    if (pathList.size() == 0) {
+        return std::filesystem::path();
+    }
+    auto selectedPathList = select_exe_file(pathList);
+    if (selectedPathList.size() == 1) {
+        return selectedPathList.front();
+    }
+    int version[4] = { 0 };
+    std::filesystem::path ret;
+    for (auto& path : selectedPathList) {
+        int value[4] = { 0 };
+        if (get_x265_rev(path.string().c_str(), value) == 0) {
+            if (version_a_larger_than_b(value, version) > 0) {
+                memcpy(version, value, sizeof(version));
+                ret = path;
+            }
+        }
+    }
+    return ret;
+}
+
+static BOOL check_muxer_exist(MUXER_SETTINGS *muxer_stg, const char *aviutl_dir, const BOOL get_relative_path, const std::vector<std::filesystem::path>& exe_files) {
+    if (PathFileExists(muxer_stg->fullpath)) {
+        info_use_exe_found(muxer_stg->dispname, muxer_stg->fullpath);
         return TRUE;
+    }
+    const auto targetExes = select_exe_file(find_target_exe_files(muxer_stg->filename, exe_files));
+    if (targetExes.size() > 0) {
+        if (get_relative_path) {
+            GetRelativePathTo(muxer_stg->fullpath, _countof(muxer_stg->fullpath), targetExes.front().string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
+        } else {
+            strcpy_s(muxer_stg->fullpath, targetExes.front().string().c_str());
+        }
+    }
+    if (PathFileExists(muxer_stg->fullpath)) {
+        info_use_exe_found(muxer_stg->dispname, muxer_stg->fullpath);
+        return TRUE;
+    }
     error_no_exe_file(muxer_stg->filename, muxer_stg->fullpath);
     return FALSE;
 }
@@ -100,7 +223,7 @@ static BOOL check_amp(CONF_GUIEX *conf) {
     return check;
 }
 
-BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, const guiEx_settings *exstg) {
+BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_settings *exstg) {
     BOOL check = TRUE;
 
     //ファイル名長さ
@@ -146,35 +269,123 @@ BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, c
     if (conf->oth.out_audio_only)
         write_log_auo_line(LOG_INFO, "音声のみ出力を行います。");
 
+    char aviutl_dir[MAX_PATH_LEN];
+    get_aviutl_dir(aviutl_dir, _countof(aviutl_dir));
+
+    char defaultExeDir[MAX_PATH_LEN];
+    PathCombineLong(defaultExeDir, _countof(defaultExeDir), aviutl_dir, DEFAULT_EXE_DIR);
+
+    const auto exeFiles = find_exe_files(defaultExeDir);
+
     //必要な実行ファイル
     if (!conf->oth.disable_guicmd) {
         if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(exstg->s_x265.fullpath)) {
-            error_no_exe_file("x265.exe", exstg->s_x265.fullpath);
-            check = FALSE;
+            const auto targetExes = find_target_exe_files("x265", exeFiles);
+            if (targetExes.size() > 0) {
+                const auto latestVidEnc = find_latest_x265(targetExes);
+                if (exstg->s_local.get_relative_path) {
+                    GetRelativePathTo(exstg->s_x265.fullpath, _countof(exstg->s_x265.fullpath), latestVidEnc.string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
+                } else {
+                    strcpy_s(exstg->s_x265.fullpath, latestVidEnc.string().c_str());
+                }
+            }
+            if (!PathFileExists(exstg->s_x265.fullpath)) {
+                error_no_exe_file("x265.exe", exstg->s_x265.fullpath);
+                check = FALSE;
+            }
         }
+        info_use_exe_found("x265エンコーダ", exstg->s_x265.fullpath);
     }
 
     //音声エンコーダ
     if (oip->flag & OUTPUT_INFO_FLAG_AUDIO) {
-        AUDIO_SETTINGS *aud_stg = &exstg->s_aud[conf->aud.encoder];
-        if (str_has_char(aud_stg->filename) && !PathFileExists(aud_stg->fullpath)) {
-            //fawの場合はfaw2aacがあればOKだが、それもなければエラー
-            if (!(conf->aud.encoder == exstg->s_aud_faw_index && check_if_faw2aac_exists())) {
-                error_no_exe_file(aud_stg->filename, aud_stg->fullpath);
-                check = FALSE;
+        const bool default_audenc_cnf_avail = (exstg->s_local.default_audio_encoder < exstg->s_aud_count
+            && str_has_char(exstg->s_aud[exstg->s_local.default_audio_encoder].filename));
+        const bool default_audenc_auo_avail = (DEFAULT_AUDIO_ENCODER < exstg->s_aud_count
+                && str_has_char(exstg->s_aud[DEFAULT_AUDIO_ENCODER].filename));
+        if ((conf->aud.encoder < 0 || exstg->s_aud_count <= conf->aud.encoder)) {
+            if (default_audenc_cnf_avail) {
+                conf->aud.encoder = exstg->s_local.default_audio_encoder;
+                warning_use_default_audio_encoder(exstg->s_aud[conf->aud.encoder].dispname);
+            } else if (default_audenc_auo_avail) {
+                conf->aud.encoder = DEFAULT_AUDIO_ENCODER;
+                warning_use_default_audio_encoder(exstg->s_aud[conf->aud.encoder].dispname);
             }
+        }
+        if (0 <= conf->aud.encoder && conf->aud.encoder < exstg->s_aud_count) {
+            AUDIO_SETTINGS *aud_stg = &exstg->s_aud[conf->aud.encoder];
+            if (str_has_char(aud_stg->filename) && !PathFileExists(aud_stg->fullpath)) {
+                //とりあえず、exe_filesを探す
+                {
+                    const auto targetExes = select_exe_file(find_target_exe_files(aud_stg->filename, exeFiles));
+                    if (targetExes.size() > 0) {
+                        if (exstg->s_local.get_relative_path) {
+                            GetRelativePathTo(aud_stg->fullpath, _countof(aud_stg->fullpath), targetExes.front().string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
+                        } else {
+                            strcpy_s(aud_stg->fullpath, targetExes.front().string().c_str());
+                        }
+                    }
+                }
+                //みつからなければ、デフォルトエンコーダを探す
+                if (!PathFileExists(aud_stg->fullpath) && default_audenc_cnf_avail) {
+                    conf->aud.encoder = exstg->s_local.default_audio_encoder;
+                    aud_stg = &exstg->s_aud[conf->aud.encoder];
+                    if (!PathFileExists(aud_stg->fullpath)) {
+                        const auto targetExes = select_exe_file(find_target_exe_files(aud_stg->filename, exeFiles));
+                        if (targetExes.size() > 0) {
+                            if (exstg->s_local.get_relative_path) {
+                                GetRelativePathTo(aud_stg->fullpath, _countof(aud_stg->fullpath), targetExes.front().string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
+                            } else {
+                                strcpy_s(aud_stg->fullpath, targetExes.front().string().c_str());
+                            }
+                            warning_use_default_audio_encoder(aud_stg->dispname);
+                        }
+                    }
+                }
+                if (!PathFileExists(aud_stg->fullpath) && default_audenc_auo_avail) {
+                    conf->aud.encoder = DEFAULT_AUDIO_ENCODER;
+                    aud_stg = &exstg->s_aud[conf->aud.encoder];
+                    if (!PathFileExists(aud_stg->fullpath)) {
+                        const auto targetExes = select_exe_file(find_target_exe_files(aud_stg->filename, exeFiles));
+                        if (targetExes.size() > 0) {
+                            if (exstg->s_local.get_relative_path) {
+                                GetRelativePathTo(aud_stg->fullpath, _countof(aud_stg->fullpath), targetExes.front().string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
+                            } else {
+                                strcpy_s(aud_stg->fullpath, targetExes.front().string().c_str());
+                            }
+                            warning_use_default_audio_encoder(aud_stg->dispname);
+                        }
+                    }
+                }
+                if (!PathFileExists(aud_stg->fullpath)) {
+                    //fawの場合はfaw2aacがあればOKだが、それもなければエラー
+                    if (!(conf->aud.encoder == exstg->s_aud_faw_index && check_if_faw2aac_exists())) {
+                        error_no_exe_file(aud_stg->filename, aud_stg->fullpath);
+                        check = FALSE;
+                    }
+                }
+            }
+            info_use_exe_found("音声エンコーダ", aud_stg->fullpath);
+        } else {
+            error_invalid_ini_file();
+            check = FALSE;
         }
     }
 
     //muxer
     switch (pe->muxer_to_be_used) {
         case MUXER_TC2MP4:
-            check &= check_muxer_exist(&exstg->s_mux[MUXER_MP4]); //tc2mp4使用時は追加でmp4boxも必要
+            check &= check_muxer_exist(&exstg->s_mux[MUXER_TC2MP4], aviutl_dir, exstg->s_local.get_relative_path, exeFiles); //tc2mp4使用時は追加でmp4boxも必要
             //下へフォールスルー
         case MUXER_MP4:
+            check &= check_muxer_exist(&exstg->s_mux[MUXER_MP4], aviutl_dir, exstg->s_local.get_relative_path, exeFiles);
+            if (str_has_char(exstg->s_mux[MUXER_MP4_RAW].base_cmd)) {
+                check &= check_muxer_exist(&exstg->s_mux[MUXER_MP4_RAW], aviutl_dir, exstg->s_local.get_relative_path, exeFiles);
+            }
             check &= check_muxer_matched_with_ini(exstg->s_mux);
+            break;
         case MUXER_MKV:
-            check &= check_muxer_exist(&exstg->s_mux[pe->muxer_to_be_used]);
+            check &= check_muxer_exist(&exstg->s_mux[pe->muxer_to_be_used], aviutl_dir, exstg->s_local.get_relative_path, exeFiles);
             break;
         default:
             break;
