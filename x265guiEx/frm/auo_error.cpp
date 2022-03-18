@@ -228,17 +228,24 @@ void warning_x265_mp4_output_not_supported() {
         "               mp4出力に対応したx265.exeを使用することを推奨します。\n");
 }
 
-void error_x265_dead() {
-    write_log_auo_line_fmt(LOG_ERROR, "x265が予期せず途中終了しました。x265に不正なパラメータ(オプション)が渡された可能性があります。");
+void error_videnc_dead() {
+    write_log_auo_line_fmt(LOG_ERROR, "%sが予期せず途中終了しました。%sに不正なパラメータ(オプション)が渡された可能性があります。", ENCODER_NAME, ENCODER_NAME);
 }
 
-void error_x265_version(const char *required_ver, const char *current_ver) {
+void error_videnc_dead_and_nodiskspace(const char *drive, uint64_t diskspace) {
+    write_log_auo_line_fmt(LOG_ERROR, "%sが予期せず途中終了しました。", ENCODER_NAME);
+    write_log_auo_line_fmt(LOG_ERROR, "%sドライブの空き容量が残り %.2f MBしかありません。",   drive, (double)diskspace / (1024 * 1024));
+    write_log_auo_line_fmt(LOG_ERROR, "%sドライブの空き容量不足で失敗した可能性があります。", drive);
+    write_log_auo_line_fmt(LOG_ERROR, "%sドライブの空きをつくり、再度実行しなおしてください。", drive);
+}
+
+void error_videnc_version(const char *required_ver, const char *current_ver) {
     write_log_line_fmt(LOG_ERROR, ""
-        "auo [error]: x265のバージョンが古く、エンコードできません。\n"
-        "             最新のx265をダウンロードし、設定画面で最新版に指定しなおしてください。\n"
+        "auo [error]: %sのバージョンが古く、エンコードできません。\n"
+        "             最新の%sをダウンロードし、設定画面で最新版に指定しなおしてください。\n"
         "             必要なバージョン:         %s\n"
         "             実行ファイルのバージョン: %s\n",
-        required_ver, current_ver);
+        ENCODER_NAME, required_ver, current_ver);
 }
 
 void error_afs_get_frame() {
