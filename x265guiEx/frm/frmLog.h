@@ -689,6 +689,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 sw->WriteLine(DateTime::Now.ToString("yyyy年M月d日 H時mm分 エンコード終了"));
                 sw->WriteLine(L"-------------------------------------------------------------------------------------");
                 sw->WriteLine();
+                sw->Close();
             } catch (IOException^ ex) {
                 WriteLogAuoLine("自動ログ保存に失敗しました。", LOG_WARNING);
                 WriteLogAuoLine(ex->Message, LOG_WARNING);
@@ -697,10 +698,6 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 WriteLogAuoLine(ex->Message, LOG_WARNING);
             } catch (...) {
                 WriteLogAuoLine("自動ログ保存に失敗しました。", LOG_WARNING);
-            } finally {
-                if (sw != nullptr) {
-                    sw->Close();
-                }
             }
         }
     public:
