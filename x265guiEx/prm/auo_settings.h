@@ -69,6 +69,7 @@ static const int    DEFAULT_FBC_LAST_TIME_IN_SEC     = 0;
 static const double DEFAULT_FBC_INITIAL_SIZE         = 39.8;
 
 static const char  *DEFAULT_EXE_DIR                  = "exe_files";
+static const char  *AUO_CHECK_FILEOPEN_NAME          = "auo_check_fileopen.exe";
 
 typedef struct X265_OPTION_STR {
     char *name; //x26xでのオプション名
