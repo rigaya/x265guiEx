@@ -1198,6 +1198,14 @@ System::Void frmConfig::InitForm() {
     fcgChangeMuxerVisible(nullptr, nullptr);
     fcgChangeEnabled(nullptr, nullptr);
     fcgCBAFS_CheckedChanged(nullptr, nullptr);
+    fcgTXX265Path_Leave(nullptr, nullptr);
+    fcgTXX265PathSub_Leave(nullptr, nullptr);
+    fcgTXAudioEncoderPath_Leave(nullptr, nullptr);
+    fcgTXMP4MuxerPath_Leave(nullptr, nullptr);
+    fcgTXTC2MP4Path_Leave(nullptr, nullptr);
+    fcgTXMP4RawPath_Leave(nullptr, nullptr);
+    fcgTXMKVMuxerPath_Leave(nullptr, nullptr);
+    fcgTXMPGMuxerPath_Leave(nullptr, nullptr);
     EnableSettingsNoteChange(false);
     //コマンドラインの更新
     fcgRebuildCmd(nullptr, nullptr);
