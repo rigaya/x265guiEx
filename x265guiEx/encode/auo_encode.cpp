@@ -379,7 +379,7 @@ BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, g
     //必要な実行ファイル
     if (!conf->oth.disable_guicmd && pe->video_out_type != VIDEO_OUTPUT_DISABLED) {
         if (!PathFileExists(exstg->s_x265.fullpath)) {
-            const auto targetExes = find_target_exe_files("x265", exeFiles);
+            const auto targetExes = find_target_exe_files(ENCODER_NAME, exeFiles);
             if (targetExes.size() > 0) {
                 const auto latestVidEnc = find_latest_x265(targetExes);
                 if (exstg->s_local.get_relative_path) {
@@ -389,11 +389,11 @@ BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, g
                 }
             }
             if (!PathFileExists(exstg->s_x265.fullpath)) {
-                error_no_exe_file("x265.exe", exstg->s_x265.fullpath);
+                error_no_exe_file(ENCODER_NAME, exstg->s_x265.fullpath);
                 check = FALSE;
             }
         }
-        info_use_exe_found("x265エンコーダ", exstg->s_x265.fullpath);
+        info_use_exe_found(ENCODER_NAME, exstg->s_x265.fullpath);
     }
 
     //音声エンコーダ
