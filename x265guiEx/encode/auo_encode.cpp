@@ -377,8 +377,8 @@ BOOL check_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, const PRM_ENC *pe, g
     const auto exeFiles = find_exe_files(defaultExeDir);
 
     //必要な実行ファイル
-    if (!conf->oth.disable_guicmd) {
-        if (pe->video_out_type != VIDEO_OUTPUT_DISABLED && !PathFileExists(exstg->s_x265.fullpath)) {
+    if (!conf->oth.disable_guicmd && pe->video_out_type != VIDEO_OUTPUT_DISABLED) {
+        if (!PathFileExists(exstg->s_x265.fullpath)) {
             const auto targetExes = find_target_exe_files("x265", exeFiles);
             if (targetExes.size() > 0) {
                 const auto latestVidEnc = find_latest_x265(targetExes);
