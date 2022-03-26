@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <tlhelp32.h>
 #include <vector>
+#include <filesystem>
 #include <tchar.h>
 
 #include "auo_util.h"
@@ -139,6 +140,24 @@ BOOL fix_ImulL_WesternEurope(UINT *code_page) {
     if (*code_page == CODE_PAGE_WEST_EUROPE)
         *code_page = CODE_PAGE_SJIS;
     return TRUE;
+}
+
+std::string GetFullPathFrom(const char *path, const char *baseDir) {
+    if (auto p = std::filesystem::path(path); p.is_absolute()) {
+        return path;
+    }
+    path = (path && strlen(path)) ? path : ".";
+    const auto p = (baseDir) ? std::filesystem::path(baseDir).append(path) : std::filesystem::absolute(std::filesystem::path(path));
+    return p.lexically_normal().string();
+}
+
+std::wstring GetFullPathFrom(const wchar_t *path, const wchar_t *baseDir) {
+    if (auto p = std::filesystem::path(path); p.is_absolute()) {
+        return path;
+    }
+    path = (path && wcslen(path)) ? path : L".";
+    const auto p = (baseDir) ? std::filesystem::path(baseDir).append(path) : std::filesystem::absolute(std::filesystem::path(path));
+    return p.lexically_normal().wstring();
 }
 
 static inline BOOL is_space_or_crlf(int c) {
