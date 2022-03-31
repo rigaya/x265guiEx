@@ -287,11 +287,11 @@ int get_x265_rev(const char *x265fullpath, int version[4]) {
         return ret;
 
     int value[4] = { 0 };
-    memset(version, 0, sizeof(value));
+    memset(value, 0, sizeof(value));
 
-    if (((ret = get_x265_version_from_filename(x265fullpath, version))        != -1 && memcmp(version, value, sizeof(value)) != 0)
-    ||  ((ret = get_exe_version_info(x265fullpath, version))                  != -1 && memcmp(version, value, sizeof(value)) != 0)
-    ||  ((ret = get_exe_version_from_cmd(x265fullpath, "--version", version)) != -1 && memcmp(version, value, sizeof(value)) != 0)) {
+    if (((ret = get_x265_version_from_filename(x265fullpath, value))        != -1 && memcmp(version, value, sizeof(value)) != 0)
+    ||  ((ret = get_exe_version_info(x265fullpath, value))                  != -1 && memcmp(version, value, sizeof(value)) != 0)
+    ||  ((ret = get_exe_version_from_cmd(x265fullpath, "--version", value)) != -1 && memcmp(version, value, sizeof(value)) != 0)) {
         memcpy(version, value, sizeof(value));
         return 0;
     }
