@@ -1,14 +1,14 @@
 
-# 拡張 x265 出力(GUI) Ex  3.xx
+# 拡張 x265 出力(GUI) Ex  
 by rigaya
 
 拡張 x265 出力(GUI) Ex (x265guiEx) は、x265を使用してエンコードを行うAviutlの出力プラグインです。
 
 ## ダウンロード & 更新履歴
-[rigayaの日記兼メモ帳＞＞](http://rigaya34589.blog135.fc2.com/blog-category-5.html)
+[こちら＞＞](https://github.com/rigaya/x265guiEx/releases)
 
 ## 想定動作環境
-Windows 10/11 (x86/x64)  
+Windows 8.1/10/11 (x86/x64)  
 Aviutl 1.00 以降  
 
 ## x265guiEx 使用にあたっての注意事項
@@ -62,6 +62,32 @@ OKをクリックすると使用準備が開始されます。
 ![auo_setup](./data/x265guiEx_4_00_install_11.png)
 
 これで使用準備は完了です。
+
+### 確認
+
+x265guiExがAviutlに認識されているか確認します。
+
+Aviutlの [その他] > [出力プラグイン情報]を選択します。
+
+![出力プラグイン情報](./data/x265guiEx_4_00_install_07.png)
+
+
+x265guiEx 4.xxが表示されていれば成功です。
+
+![確認](./data/x265guiEx_4_00_install_09.png)
+
+
+### エンコード
+[ ファイル ] > [ プラグイン出力 ] > [ 拡張 x265 出力 (GUI) Ex ] を選択し、出力ファイル名を入力して、「保存」をクリックしてください。
+
+![プラグイン出力](./data/x265guiEx_4_00_install_14.webp)
+
+エンコードが開始されます。
+
+![エンコード](./data/x265guiEx_4_00_install_10.webp)
+
+エンコードが完了するまで待ちます。お疲れ様でした。
+
 
 ## iniファイルによる拡張
 x265guiEx.iniを書き換えることにより、音声エンコーダやmuxerのコマンドラインを変更できます。また音声エンコーダを追加することもできます。
