@@ -140,6 +140,7 @@ x265guiEx の Aviutl から削除するには、"plugins" フォルダ内の下�
 
 - [フォルダ] x265guiEx_stg
 - [ファイル] x265guiEx.auo
+- [ファイル] x265guiEx.conf (存在する場合のみ)
 - [ファイル] x265guiEx(.ini)
 - [ファイル] auo_setup.auf
 
