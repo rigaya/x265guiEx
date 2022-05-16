@@ -449,11 +449,14 @@ AUO_RESULT mux(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, cons
                     if (AUO_RESULT_SUCCESS != (ret |= run_mux_as(conf, oip, pe, sys_dat, MUXER_MP4_RAW)))
                         return ret;
         }
-    } else if (pe->muxer_to_be_used == MUXER_MP4 && !(conf->vid.afs || aud_use_remuxer) && str_has_char(sys_dat->exstg->s_mux[MUXER_MP4_RAW].base_cmd)) {
+    }
+#if 0 // なるべくmp4のまま処理するよう、remuxerを優先する
+    else if (pe->muxer_to_be_used == MUXER_MP4 && !(conf->vid.afs || aud_use_remuxer) && str_has_char(sys_dat->exstg->s_mux[MUXER_MP4_RAW].base_cmd)) {
         //自動フィールドシフト(timelineeditor)使用時以外は、remuxerを使用しなくても良くなった
         //なので、単純に使用するmuxerをmuxer.exeに切り替え
         pe->muxer_to_be_used = MUXER_MP4_RAW;
     }
+#endif
 
     //mux処理の開始
     const MUXER_SETTINGS *mux_stg = &sys_dat->exstg->s_mux[pe->muxer_to_be_used];
