@@ -85,6 +85,6 @@ void get_aviutl_dir(WCHAR *aviutl_dir, size_t nSize);
 void get_auo_path(char *auo_path, size_t nSize);
 void get_auo_path(WCHAR *auo_path, size_t nSize);
 
-int create_auoSetup(const char *exePath);
+bool checkIfModuleLoaded(const wchar_t *moduleName);
 
 #endif //_AUO_H_
