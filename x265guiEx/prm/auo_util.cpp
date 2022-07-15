@@ -424,6 +424,18 @@ BOOL SetThreadAffinityForModule(DWORD TargetProcessId, const char *TargetModule,
     return ret;
 }
 
+
+typedef BOOL (WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+
+static DWORD CountSetBits(ULONG_PTR bitMask) {
+    DWORD LSHIFT = sizeof(ULONG_PTR)*8 - 1;
+    DWORD bitSetCount = 0;
+    for (ULONG_PTR bitTest = (ULONG_PTR)1 << LSHIFT; bitTest; bitTest >>= 1)
+        bitSetCount += ((bitMask & bitTest) != 0);
+
+    return bitSetCount;
+}
+
 typedef void (WINAPI *RtlGetVersion_FUNC)(OSVERSIONINFOEXW*);
 
 static int getRealWindowsVersion(DWORD *major, DWORD *minor, DWORD *build) {
@@ -433,7 +445,7 @@ static int getRealWindowsVersion(DWORD *major, DWORD *minor, DWORD *build) {
     HMODULE hModule = NULL;
     RtlGetVersion_FUNC func = NULL;
     int ret = 1;
-    if (NULL != (hModule = LoadLibrary(_T("ntdll.dll")))
+    if (   NULL != (hModule = LoadLibrary(_T("ntdll.dll")))
         && NULL != (func = (RtlGetVersion_FUNC)GetProcAddress(hModule, "RtlGetVersion"))) {
         func(&osver);
         *major = osver.dwMajorVersion;
@@ -501,10 +513,10 @@ const TCHAR *getOSVersion(DWORD *buildNumber) {
         case 6:
             switch (infoex.dwMinorVersion) {
             case 0:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows Vista") : _T("Windows Server 2008");    break;
-            case 1:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 7") : _T("Windows Server 2008 R2"); break;
-            case 2:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 8") : _T("Windows Server 2012");    break;
-            case 3:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 8.1") : _T("Windows Server 2012 R2"); break;
-            case 4:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 10") : _T("Windows Server 2016");    break;
+            case 1:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 7")     : _T("Windows Server 2008 R2"); break;
+            case 2:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 8")     : _T("Windows Server 2012");    break;
+            case 3:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 8.1")   : _T("Windows Server 2012 R2"); break;
+            case 4:  ptr = (infoex.wProductType == VER_NT_WORKSTATION) ? _T("Windows 10")    : _T("Windows Server 2016");    break;
             default:
                 if (5 <= infoex.dwMinorVersion) {
                     ptr = _T("Later than Windows 10");
