@@ -30,7 +30,7 @@
 
 #include "auo_version.h"
 
-using namespace x265guiEx;
+using namespace AUO_NAME_R;
 
 //すべてfrmLog::Instanceを通じてアクセス
 

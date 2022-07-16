@@ -29,6 +29,8 @@
 #define _AUO_H_
 
 #include <Windows.h>
+#include <string>
+#include "auo_version.h"
 
 const int   MAX_PATH_LEN          = 1024; //NTFSでは32768文字らしいが...いらんやろ
 const int   MAX_APPENDIX_LEN      = 63; //適当
@@ -38,8 +40,6 @@ const int   MAX_CMD_LEN           = 8192; //コマンドラインの最大長は
 const DWORD AUDIO_BUFFER_DEFAULT  = 48000;
 const DWORD AUDIO_BUFFER_MAX      = AUDIO_BUFFER_DEFAULT * 30;
 
-static const char *ENCODER_NAME   = "x265";
-
 enum {
     VIDEO_OUTPUT_DISABLED = -2,
     VIDEO_OUTPUT_RAW      = -1,
@@ -48,9 +48,27 @@ enum {
     VIDEO_OUTPUT_MPEG2    = 3,
 };
 
-static const char *const OUTPUT_FILE_EXT[]        = {  ".mp4",     ".mkv",     ".265" };
+#if ENCODER_X264
+static const char *ENCODER_NAME   = "x264";
+static const wchar_t *ENCODER_NAME_W = L"x264";
+static const char *const OUTPUT_FILE_EXT[]        = {  ".mp4",     ".mkv",     ".264"    };
+static const char *const OUTPUT_FILE_EXT_FILTER[] = { "*.mp4",    "*.mkv",    "*.264"    };
+static const char *const OUTPUT_FILE_EXT_DESC[]   = { "mp4 file", "mkv file", "raw file" };
+#elif ENCODER_X265
+static const char *ENCODER_NAME   = "x265";
+static const wchar_t *ENCODER_NAME_W   = L"x265";
+static const char *const OUTPUT_FILE_EXT[]        = {  ".mp4",     ".mkv",     ".265"    };
 static const char *const OUTPUT_FILE_EXT_FILTER[] = { "*.mp4",    "*.mkv",    "*.265"    };
 static const char *const OUTPUT_FILE_EXT_DESC[]   = { "mp4 file", "mkv file", "raw file" };
+#elif ENCODER_SVTAV1
+static const char *ENCODER_NAME   = "svt-av1";
+static const wchar_t *ENCODER_NAME_W   = L"svt-av1";
+static const char *const OUTPUT_FILE_EXT[]        = {  ".mp4",     ".mkv",     ".av1"    };
+static const char *const OUTPUT_FILE_EXT_FILTER[] = { "*.mp4",    "*.mkv",    "*.av1"    };
+static const char *const OUTPUT_FILE_EXT_DESC[]   = { "mp4 file", "mkv file", "raw file" };
+#else
+static_assert(false);
+#endif
 
 enum {
     MUXER_DISABLED = VIDEO_OUTPUT_DISABLED,

@@ -37,7 +37,7 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 
-namespace x265guiEx {
+namespace AUO_NAME_R {
 
     /// <summary>
     /// frmNewFolderName の概要

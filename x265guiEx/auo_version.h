@@ -12,6 +12,7 @@
 
 #define AUO_VERSION           0,4,2,0
 #define AUO_VERSION_STR       "4.02"
+#define AUO_NAME_R             x265guiEx
 #define AUO_NAME_WITHOUT_EXT  "x265guiEx"
 #define AUO_NAME              "x265guiEx.auo"
 #define AUO_NAME_W           L"x265guiEx.auo"
@@ -19,6 +20,13 @@
 #define AUO_VERSION_NAME      "拡張 x265 出力(GUI) Ex " AUO_VERSION_STR
 #define AUO_VERSION_INFO      "拡張 x265 出力(GUI) Ex (x265guiEx) " AUO_VERSION_STR " by rigaya"
 #define AUO_EXT_FILTER        "All Support Formats (*.*)\0*.mp4;*.mkv;*.265;*.mp4\0mp4 file (*.mp4)\0*.mp4\0mkv file (*.mkv)\0*.mkv\0raw file (*.265)\0*.265\0"
+
+
+#define ENCODER_X264 0
+#define ENCODER_X265 1
+#define ENCODER_SVTAV1 0
+#define ENABLE_AMP (ENCODER_x264 != 0)
+#define ENABLE_TCFILE_IN (ENCODER_x264 != 0)
 
 #ifdef DEBUG
 #define VER_DEBUG   VS_FF_DEBUG
