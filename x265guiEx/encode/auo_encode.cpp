@@ -162,7 +162,7 @@ static std::vector<std::filesystem::path> select_exe_file(const std::vector<std:
     }
 }
 
-std::filesystem::path find_latest_x265(const std::vector<std::filesystem::path>& pathList) {
+std::filesystem::path find_latest_videnc(const std::vector<std::filesystem::path>& pathList) {
     if (pathList.size() == 0) {
         return std::filesystem::path();
     }
@@ -174,12 +174,29 @@ std::filesystem::path find_latest_x265(const std::vector<std::filesystem::path>&
     std::filesystem::path ret;
     for (auto& path : selectedPathList) {
         int value[4] = { 0 };
+#if ENCODER_X264
+        value[0] = get_x264_rev(path.string().c_str());
+        if (value[0] >= version[0]) {
+            version[0] = value[0];
+            ret = path;
+    	}
+#elif ENCODER_X265
         if (get_x265_rev(path.string().c_str(), value) == 0) {
             if (version_a_larger_than_b(value, version) > 0) {
                 memcpy(version, value, sizeof(version));
                 ret = path;
             }
         }
+#elif ENCODER_SVTAV1
+        if (get_svtav1_rev(path.string().c_str(), value) == 0) {
+            if (version_a_larger_than_b(value, version) > 0) {
+                memcpy(version, value, sizeof(version));
+                ret = path;
+            }
+        }
+#else
+		static_assert(false);
+#endif
     }
     return ret;
 }
@@ -467,7 +484,7 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
         if (!PathFileExists(exstg->s_x265.fullpath)) {
             const auto targetExes = find_target_exe_files(ENCODER_NAME, exeFiles);
             if (targetExes.size() > 0) {
-                const auto latestVidEnc = find_latest_x265(targetExes);
+                const auto latestVidEnc = find_latest_videnc(targetExes);
                 if (exstg->s_local.get_relative_path) {
                     GetRelativePathTo(exstg->s_x265.fullpath, _countof(exstg->s_x265.fullpath), latestVidEnc.string().c_str(), FILE_ATTRIBUTE_NORMAL, aviutl_dir);
                 } else {
