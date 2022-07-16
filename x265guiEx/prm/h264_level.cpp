@@ -29,7 +29,7 @@
 #include "auo_util.h"
 #include "h264_level.h"
 
-#if 0
+#if ENCODER_X264
 
 const int MAX_REF_FRAMES = 16;
 const int PROGRESSIVE    = 1;
@@ -58,6 +58,9 @@ static const int H264_LEVEL_LIMITS[][LEVEL_COLUMNS] =
     { PROGRESSIVE,    589824,       22080,    110400,        135000,    135000,  NULL}, // 5
     { PROGRESSIVE,    983040,       36864,    184320,        240000,    240000,  NULL}, // 5.1
     { PROGRESSIVE,   2073600,       36864,    184320,        240000,    240000,  NULL}, // 5.2
+    { PROGRESSIVE,   4177920,      139264,    696320,        240000,    240000,  NULL}, // 6
+    { PROGRESSIVE,   8355840,      139264,    696320,        480000,    480000,  NULL}, // 6.1
+    { PROGRESSIVE,  16711680,      139264,    696320,        800000,    800000,  NULL}, // 6.2
     {        NULL,      NULL,        NULL,      NULL,          NULL,      NULL,  NULL}, // end
 };
 
@@ -87,14 +90,14 @@ int calc_auto_level(int width, int height, int ref, BOOL interlaced, int fps_num
 void get_vbv_value(int *vbv_max, int *vbv_buf, int level, int profile_index, int use_highbit, guiEx_settings *ex_stg) {
     if (level > 0 && H264_LEVEL_LIMITS[level][1] > 0) {
         //high10 profileを使うかどうか
-        if (use_highbit && _stricmp(ex_stg->s_x264.profile.name[profile_index].name, "high") == NULL) {
-            for (int i = 0; i < ex_stg->s_x264.profile_count; i++)
-                if (_stricmp(ex_stg->s_x264.profile.name[i].name, "high10") == NULL) {
+        if (use_highbit && _stricmp(ex_stg->s_enc.profile.name[profile_index].name, "high") == NULL) {
+            for (int i = 0; i < ex_stg->s_enc.profile_count; i++)
+                if (_stricmp(ex_stg->s_enc.profile.name[i].name, "high10") == NULL) {
                     profile_index = i;
                     break;
                 }
         }
-        float profile_multi = ex_stg->s_x264.profile_vbv_multi[profile_index];
+        float profile_multi = ex_stg->s_enc.profile_vbv_multi[profile_index];
 
         if (vbv_max)
             *vbv_max = (int)(H264_LEVEL_LIMITS[level][COLUMN_VBVMAX] * profile_multi);
