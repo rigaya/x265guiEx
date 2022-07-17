@@ -29,6 +29,9 @@
 #define _AUO_CONF_H_
 
 #include <Windows.h>
+#if (_MSC_VER >= 1910)
+#include <intrin.h>
+#endif
 #include "auo.h"
 #include "auo_options.h"
 
@@ -54,18 +57,29 @@ static inline int get_run_bat_idx(DWORD flag) {
     return (int)ret;
 }
 
-static const char *const CONF_NAME_OLD1 = "x265guiEx ConfigFile";
-static const char *const CONF_NAME_OLD2 = "x264/x265guiEx ConfigFile";
-static const char *const CONF_NAME_OLD3 = "x265guiEx ConfigFile v2";
-static const char *const CONF_NAME_OLD4 = "x265guiEx ConfigFile v3";
-static const char *const CONF_NAME_OLD5 = "x265guiEx ConfigFile v4";
-static const char *const CONF_NAME      = CONF_NAME_OLD5;
-const int CONF_NAME_BLOCK_LEN          = 32;
-const int CONF_BLOCK_MAX               = 32;
-const int CONF_BLOCK_COUNT             = 5; //最大 CONF_BLOCK_MAXまで
-const int CONF_HEAD_SIZE               = (3 + CONF_BLOCK_MAX) * sizeof(int) + CONF_BLOCK_MAX * sizeof(size_t) + CONF_NAME_BLOCK_LEN;
+#if ENCODER_X264
+static const char *const CONF_NAME_OLD_1 = "x264guiEx ConfigFile";
+static const char *const CONF_NAME_OLD_2 = "x264guiEx ConfigFile v2";
+static const char *const CONF_NAME       = CONF_NAME_OLD_2;
+#elif ENCODER_X265
+static const char *const CONF_NAME_OLD1  = "x265guiEx ConfigFile";
+static const char *const CONF_NAME_OLD2  = "x264/x265guiEx ConfigFile";
+static const char *const CONF_NAME_OLD3  = "x265guiEx ConfigFile v2";
+static const char *const CONF_NAME_OLD4  = "x265guiEx ConfigFile v3";
+static const char *const CONF_NAME_OLD5  = "x265guiEx ConfigFile v4";
+static const char *const CONF_NAME       = CONF_NAME_OLD5;
+#elif ENCODER_SVTAV1
+static const char *const CONF_NAME_OLD_1 = "svtAV1guiEx ConfigFile v1";
+static const char *const CONF_NAME       = CONF_NAME_OLD_1;
+#else
+static_assert(false);
+#endif
+const int CONF_NAME_BLOCK_LEN            = 32;
+const int CONF_BLOCK_MAX                 = 32;
+const int CONF_BLOCK_COUNT               = 5; //最大 CONF_BLOCK_MAXまで
+const int CONF_HEAD_SIZE                 = (3 + CONF_BLOCK_MAX) * sizeof(int) + CONF_BLOCK_MAX * sizeof(size_t) + CONF_NAME_BLOCK_LEN;
 
-static const char *const CONF_LAST_OUT = "前回出力.stg";
+static const char *const CONF_LAST_OUT   = "前回出力.stg";
 
 enum {
     CONF_ERROR_NONE = 0,
@@ -79,6 +93,7 @@ const int CMDEX_MAX_LEN = 2048;    //追加コマンドラインの最大長
 enum {
     AMPLIMIT_FILE_SIZE     = 0x01, //自動マルチパス時、ファイルサイズのチェックを行う
     AMPLIMIT_BITRATE_UPPER = 0x02, //自動マルチパス時、ビットレート上限のチェックを行う
+    AMPLIMIT_BITRATE_LOWER = 0x04, //自動マルチパス時、ビットレート下限のチェックを行う
 };
 
 enum {
@@ -125,17 +140,17 @@ typedef struct CONF_VIDEO {
 #pragma pack(pop)
 
 typedef struct CONF_AUDIO {
-    int  encoder;             //使用する音声エンコーダ
-    int  enc_mode;            //使用する音声エンコーダの設定
-    int  bitrate;             //ビットレート指定モード
-    BOOL use_2pass;           //音声2passエンコードを行う
-    BOOL use_wav;             //パイプを使用せず、wavを出力してエンコードを行う
-    BOOL faw_check;           //FAWCheckを行う
-    int  priority;            //音声エンコーダのCPU優先度(インデックス)
-    BOOL minimized;           //音声エンコーダを最小化で実行
-    int  aud_temp_dir;        //音声専用一時フォルダ
-    int  audio_encode_timing; //音声を先にエンコード
-    int  delay_cut;           //エンコード遅延の削除
+    int   encoder;             //使用する音声エンコーダ
+    int   enc_mode;            //使用する音声エンコーダの設定
+    int   bitrate;             //ビットレート指定モード
+    BOOL  use_2pass;           //音声2passエンコードを行う
+    BOOL  use_wav;             //パイプを使用せず、wavを出力してエンコードを行う
+    BOOL  faw_check;           //FAWCheckを行う
+    int   priority;            //音声エンコーダのCPU優先度(インデックス)
+    BOOL  minimized;           //音声エンコーダを最小化で実行
+    int   aud_temp_dir;        //音声専用一時フォルダ
+    int   audio_encode_timing; //音声を先にエンコード
+    int   delay_cut;           //エンコード遅延の削除
 } CONF_AUDIO; //音声用設定
 
 typedef struct CONF_MUX {
