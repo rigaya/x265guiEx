@@ -280,9 +280,9 @@ static BOOL check_amp(CONF_GUIEX *conf) {
     if (!conf->enc.use_auto_npass)
         return check;
     if (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) {
-        //if (conf->x264.bitrate > conf->vid.amp_limit_bitrate) {
+        //if (conf->x264.bitrate > conf->vid.amp_limit_bitrate_upper) {
         //    check = FALSE; error_amp_bitrate_confliction();
-        //} else if (conf->vid.amp_limit_bitrate <= 0.0)
+        //} else if (conf->vid.amp_limit_bitrate_upper <= 0.0)
         //    conf->vid.amp_check &= ~AMPLIMIT_BITRATE; //フラグを折る
         if (conf->vid.amp_limit_bitrate_upper <= 0.0)
             conf->vid.amp_check &= ~AMPLIMIT_BITRATE_UPPER; //フラグを折る
