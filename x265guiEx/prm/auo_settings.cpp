@@ -244,6 +244,10 @@ void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, con
 }
 
 guiEx_settings::~guiEx_settings() {
+    clear_all();
+}
+
+void guiEx_settings::clear_all() {
     clear_aud();
     clear_mux();
     clear_enc();
@@ -789,7 +793,6 @@ void guiEx_settings::apply_fn_replace(char *target_filename, DWORD nSize) {
     for (auto i_rep : fn_rep)
         replace(target_filename, nSize, i_rep.from, i_rep.to);
 }
-
 
 ColorRGB DarkenWindowStgNamedColor::parseColor(const std::string& colorStr) const {
     if (colorStr.length() == 0) return ColorRGB();

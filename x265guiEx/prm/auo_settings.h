@@ -380,6 +380,7 @@ public:
     guiEx_settings(BOOL disable_loading);
     guiEx_settings(BOOL disable_loading, const char *_auo_path, const char *main_section);
     ~guiEx_settings();
+    void clear_all();
 
     BOOL get_init_success();                 //iniファイルが存在し、正しいバージョンだったか
     BOOL get_init_success(BOOL no_message);  //iniファイルが存在し、正しいバージョンだったか
