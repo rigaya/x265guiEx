@@ -100,6 +100,13 @@ static std::vector<std::filesystem::path> find_exe_files(const char *target_dir)
     return ret;
 }
 
+static std::vector<std::filesystem::path> find_exe_files(const char *target_dir, const char *target_dir2) {
+    auto list1 = find_exe_files(target_dir);
+    auto list2 = find_exe_files(target_dir2);
+    list1.insert(list1.end(), list2.begin(), list2.end());
+    return list1;
+}
+
 static std::vector<std::filesystem::path> find_target_exe_files(const char *target_name, const std::vector<std::filesystem::path>& exe_files) {
     std::vector<std::filesystem::path> ret;
     const auto targetNameLower = tolowercase(std::filesystem::path(target_name).stem().string());
@@ -435,11 +442,11 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
     if (!PathIsDirectory(savedir)) {
         error_savdir_do_not_exist(oip->savefile, savedir);
         check = FALSE;
-        //出力フォルダにファイルを開けるかどうか
-    } else if (!check_temp_file_open(savedir, defaultExeDir, true, true)) {
+    //出力フォルダにファイルを開けるかどうか
+    } else if (!check_temp_file_open(savedir, auo_check_fileopen_path, true, true)) {
         check = FALSE;
-        //一時ファイルを開けるかどうか
-    } else if (!check_temp_file_open(pe->temp_filename, defaultExeDir, false, false)) {
+    //一時ファイルを開けるかどうか
+    } else if (!check_temp_file_open(pe->temp_filename, auo_check_fileopen_path, false, false)) {
         check = FALSE;
     }
 
@@ -486,7 +493,7 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
     if (conf->oth.out_audio_only)
         write_log_auo_line(LOG_INFO, "音声のみ出力を行います。");
 
-    const auto exeFiles = find_exe_files(defaultExeDir);
+    const auto exeFiles = find_exe_files(defaultExeDir, defaultExeDir2);
 
     //必要な実行ファイル
     if (!conf->oth.disable_guicmd && pe->video_out_type != VIDEO_OUTPUT_DISABLED) {
@@ -679,7 +686,7 @@ static void set_tmpdir(PRM_ENC *pe, int tmp_dir_index, const char *savefile, con
 
             const auto auo_check_fileopen_path = find_auo_check_fileopen(defaultExeDir, defaultExeDir2);
 
-            if (check_temp_file_open(pe->temp_filename, defaultExeDir, true, false)) {
+            if (check_temp_file_open(pe->temp_filename, auo_check_fileopen_path, true, false)) {
                 write_log_auo_line_fmt(LOG_INFO, "一時フォルダ : %s", pe->temp_filename);
             } else {
                 warning_unable_to_open_tempfile(sys_dat->exstg->s_local.custom_tmp_dir);
