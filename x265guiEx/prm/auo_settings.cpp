@@ -563,9 +563,6 @@ void guiEx_settings::load_local() {
     s_local.disable_tooltip_help       = GetPrivateProfileInt(   ini_section_main, "disable_tooltip_help",       DEFAULT_DISABLE_TOOLTIP_HELP,  conf_fileName);
     s_local.disable_visual_styles      = GetPrivateProfileInt(   ini_section_main, "disable_visual_styles",      DEFAULT_DISABLE_VISUAL_STYLES, conf_fileName);
     s_local.enable_stg_esc_key         = GetPrivateProfileInt(   ini_section_main, "enable_stg_esc_key",         DEFAULT_ENABLE_STG_ESC_KEY,    conf_fileName);
-    s_local.update_check_auto          = GetPrivateProfileInt(   ini_section_main, "update_check_auto",          DEFAULT_UPDATE_CHECK_AUTO,     conf_fileName);
-    s_local.update_x265_pgo            = GetPrivateProfileInt(   ini_section_main, "update_x265_pgo",            DEFAULT_UPDATE_X265_PGO,       conf_fileName);
-    s_local.update_overwrite           = GetPrivateProfileInt(   ini_section_main, "update_overwrite",           DEFAULT_UPDATE_OVERWRITE,      conf_fileName);
     s_local.chap_nero_convert_to_utf8  = GetPrivateProfileInt(   ini_section_main, "chap_nero_convert_to_utf8",  DEFAULT_CHAP_NERO_TO_UTF8,     conf_fileName);
     s_local.get_relative_path          = GetPrivateProfileInt(   ini_section_main, "get_relative_path",          DEFAULT_SAVE_RELATIVE_PATH,    conf_fileName);
     s_local.run_bat_minimized          = GetPrivateProfileInt(   ini_section_main, "run_bat_minimized",          DEFAULT_RUN_BAT_MINIMIZED,     conf_fileName);
@@ -582,7 +579,6 @@ void guiEx_settings::load_local() {
     
     GetFontInfo(ini_section_main, "conf_font", &s_local.conf_font, conf_fileName);
 
-    GetPrivateProfileString(ini_section_main, "last_update_check",     "", s_local.last_update_check,     _countof(s_local.last_update_check),     conf_fileName);
     GetPrivateProfileString(ini_section_main, "custom_tmp_dir",        "", s_local.custom_tmp_dir,        _countof(s_local.custom_tmp_dir),        conf_fileName);
     GetPrivateProfileString(ini_section_main, "custom_audio_tmp_dir",  "", s_local.custom_audio_tmp_dir,  _countof(s_local.custom_audio_tmp_dir),  conf_fileName);
     GetPrivateProfileString(ini_section_main, "custom_mp4box_tmp_dir", "", s_local.custom_mp4box_tmp_dir, _countof(s_local.custom_mp4box_tmp_dir), conf_fileName);
@@ -659,9 +655,6 @@ void guiEx_settings::save_local() {
     WritePrivateProfileIntWithDefault(   ini_section_main, "disable_tooltip_help",       s_local.disable_tooltip_help,       DEFAULT_DISABLE_TOOLTIP_HELP,  conf_fileName);
     WritePrivateProfileIntWithDefault(   ini_section_main, "disable_visual_styles",      s_local.disable_visual_styles,      DEFAULT_DISABLE_VISUAL_STYLES, conf_fileName);
     WritePrivateProfileIntWithDefault(   ini_section_main, "enable_stg_esc_key",         s_local.enable_stg_esc_key,         DEFAULT_ENABLE_STG_ESC_KEY,    conf_fileName);
-    WritePrivateProfileIntWithDefault(   ini_section_main, "update_check_auto",          s_local.update_check_auto,          DEFAULT_UPDATE_CHECK_AUTO,     conf_fileName);
-    WritePrivateProfileIntWithDefault(   ini_section_main, "update_x265_pgo",            s_local.update_x265_pgo,            DEFAULT_UPDATE_X265_PGO,       conf_fileName);
-    WritePrivateProfileIntWithDefault(   ini_section_main, "update_overwrite",           s_local.update_overwrite,           DEFAULT_UPDATE_OVERWRITE,      conf_fileName);
     WritePrivateProfileIntWithDefault(   ini_section_main, "chap_nero_convert_to_utf8",  s_local.chap_nero_convert_to_utf8,  DEFAULT_CHAP_NERO_TO_UTF8,     conf_fileName);
     WritePrivateProfileIntWithDefault(   ini_section_main, "get_relative_path",          s_local.get_relative_path,          DEFAULT_SAVE_RELATIVE_PATH,    conf_fileName);
     WritePrivateProfileIntWithDefault(   ini_section_main, "run_bat_minimized",          s_local.run_bat_minimized,          DEFAULT_RUN_BAT_MINIMIZED,     conf_fileName);
@@ -676,8 +669,6 @@ void guiEx_settings::save_local() {
     WritePrivateProfileIntWithDefault(   INI_SECTION_AMP,  "amp_keep_old_file",          s_local.amp_keep_old_file,          DEFAULT_AMP_KEEP_OLD_FILE,     conf_fileName);
 
     WriteFontInfo(ini_section_main, "conf_font", &s_local.conf_font, conf_fileName);
-
-    WritePrivateProfileString(ini_section_main, "last_update_check",     s_local.last_update_check,     conf_fileName);
 
     PathRemoveBlanks(s_local.custom_tmp_dir);
     PathRemoveBackslash(s_local.custom_tmp_dir);
