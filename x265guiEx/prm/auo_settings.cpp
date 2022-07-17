@@ -202,6 +202,7 @@ void guiEx_settings::initialize(BOOL disable_loading) {
 }
 
 void guiEx_settings::convert_conf_if_necessary() {
+#if ENCODER_X265
     if (0 == strcmp(ini_section_main, INI_SECTION_MAIN)) {
         char buffer[32 * 1024] = { 0 };
         if (   0 == GetPrivateProfileSection(INI_SECTION_MAIN,     buffer, sizeof(buffer), conf_fileName)
@@ -210,6 +211,7 @@ void guiEx_settings::convert_conf_if_necessary() {
             WritePrivateProfileSection(INI_SECTION_MAIN_OLD, NULL, conf_fileName);
         }
     }
+#endif //#if ENCODER_X265
 }
 
 void guiEx_settings::initialize(BOOL disable_loading, const char *_auo_path, const char *main_section) {
