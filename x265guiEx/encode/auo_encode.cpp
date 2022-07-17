@@ -26,7 +26,7 @@
 // --------------------------------------------------------------------------------------------
 
 #include <Windows.h>
-#include <Math.h>
+#include <cmath>
 #include <float.h>
 #include <stdio.h>
 #include <shlwapi.h>
@@ -415,7 +415,6 @@ BOOL audio_encoder_exe_exists(const CONF_GUIEX *conf, const guiEx_settings *exst
 
 BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_settings *exstg) {
     BOOL check = TRUE;
-
     //ファイル名長さ
     if (strlen(oip->savefile) > (MAX_PATH_LEN - MAX_APPENDIX_LEN - 1)) {
         error_filename_too_long();
