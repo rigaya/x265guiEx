@@ -203,6 +203,12 @@ void error_log_line_cache() {
     write_log_auo_line(LOG_ERROR, "ログ保存キャッシュ用メモリ確保に失敗しました。");
 }
 
+void error_tc2mp4_afs_not_supported() {
+    write_log_auo_line(LOG_ERROR, "mp4出力ではafsでのVFR出力に対応していません。");
+    write_log_auo_line(LOG_ERROR, "mkv出力を検討してください。");
+    write_log_auo_line(LOG_ERROR, "なお、デフォルトの出力形式は、設定画面右上の[その他の設定]から変更できます。");
+}
+
 void error_no_exe_file(const char *name, const char *path) {
     if (strlen(path))
         write_log_auo_line_fmt(LOG_ERROR, "指定された %s が %s にありません。", name, path);
