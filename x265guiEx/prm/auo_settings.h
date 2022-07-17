@@ -244,7 +244,6 @@ typedef struct ENC_CMD {
 typedef struct ENC_SETTINGS {
     char *filename;                      //動画エンコーダのファイル名
     char fullpath[MAX_PATH_LEN];         //動画エンコーダの場所(フルパス)
-    char fullpath_highbit[MAX_PATH_LEN]; //x264/x265の場所(フルパス) highbit用
     char *default_cmd;                   //デフォルト設定用コマンドライン
     char *default_cmd_highbit;           //highbit depthデフォルト設定用追加コマンドライン
     char *help_cmd;                      //ヘルプ表示用cmd
