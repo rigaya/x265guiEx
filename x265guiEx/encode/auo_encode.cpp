@@ -1420,7 +1420,7 @@ static bool check_parent(size_t check_pid, const size_t target_pid, const std::u
     return false;
 };
 
-std::vector<size_t> createChildProcessIDList(const size_t target_pid) {
+static std::vector<size_t> createChildProcessIDList(const size_t target_pid) {
     auto h = unique_handle(CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0), [](HANDLE h) { if (h != INVALID_HANDLE_VALUE) CloseHandle(h); });
     if (h.get() == INVALID_HANDLE_VALUE) {
         return std::vector<size_t>();
