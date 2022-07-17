@@ -261,7 +261,7 @@ static BOOL check_muxer_matched_with_ini(const MUXER_SETTINGS *mux_stg) {
 
 static BOOL check_amp(CONF_GUIEX *conf) {
     BOOL check = TRUE;
-    if (!conf->x265.use_auto_npass)
+    if (!conf->enc.use_auto_npass)
         return check;
     if (conf->vid.amp_check & AMPLIMIT_BITRATE) {
         //if (conf->x264.bitrate > conf->vid.amp_limit_bitrate) {
@@ -441,7 +441,7 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
 
     //解像度
     int w_mul = 1, h_mul = 1;
-    switch (conf->x265.output_csp) {
+    switch (conf->enc.output_csp) {
         case OUT_CSP_YUV444:
         case OUT_CSP_RGB:
             w_mul = 1, h_mul = 1; break;
@@ -452,7 +452,7 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
         default:
             w_mul = 2; h_mul = 2; break;
     }
-    if (conf->x265.interlaced) h_mul *= 2;
+    if (conf->enc.interlaced) h_mul *= 2;
     if (oip->w % w_mul) {
         error_invalid_resolution(TRUE,  w_mul, oip->w, oip->h);
         check = FALSE;
@@ -689,10 +689,10 @@ static void set_tmpdir(PRM_ENC *pe, int tmp_dir_index, const char *savefile, con
 }
 
 int get_total_path(const CONF_GUIEX *conf) {
-    return (conf->x265.use_auto_npass
-         && conf->x265.rc_mode == X265_RC_BITRATE
+    return (conf->enc.use_auto_npass
+         && conf->enc.rc_mode == X265_RC_BITRATE
          && !conf->oth.disable_guicmd)
-         ? conf->x265.auto_npass : 1;
+         ? conf->enc.auto_npass : 1;
 }
 
 static void set_aud_delay_cut(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SYSTEM_DATA *sys_dat) {
@@ -885,8 +885,8 @@ static void replace_aspect_ratio(char *cmd, size_t nSize, const CONF_GUIEX *conf
     const int w = oip->w;
     const int h = oip->h;
 
-    int sar_x = conf->x265.sar.x;
-    int sar_y = conf->x265.sar.y;
+    int sar_x = conf->enc.sar.x;
+    int sar_y = conf->enc.sar.y;
     int dar_x = 0;
     int dar_y = 0;
     if (sar_x * sar_y > 0) {
@@ -1081,7 +1081,7 @@ AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const
         }
     }
     //ステータスファイル
-    if (conf->x265.use_auto_npass && sys_dat->exstg->s_local.auto_del_stats) {
+    if (conf->enc.use_auto_npass && sys_dat->exstg->s_local.auto_del_stats) {
         char stats[MAX_PATH_LEN];
         strcpy_s(stats, sizeof(stats), conf->vid.stats);
         cmd_replace(stats, sizeof(stats), pe, sys_dat, conf, oip);
@@ -1089,7 +1089,7 @@ AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const
         strcat_s(stats, sizeof(stats), ".cutree");
         move_temp_file(NULL, stats, NULL, ret, TRUE, "mbtree ステータス", FALSE);
 
-        if (conf->x265.analysis_reuse) {
+        if (conf->enc.analysis_reuse) {
             strcpy_s(stats, sizeof(stats), conf->vid.analysis_file);
             cmd_replace(stats, sizeof(stats), pe, sys_dat, conf, oip);
             move_temp_file(NULL, stats, NULL, ret, TRUE, "解析結果", FALSE);
@@ -1232,9 +1232,9 @@ double get_duration(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, const PR
     //Aviutlから再生時間情報を取得
     double duration = (((double)(oip->n + pe->delay_cut_additional_vframe) * (double)oip->scale) / (double)oip->rate);
     //tcfile-inなら、動画の長さはタイムコードから取得する
-    if (conf->x265.use_tcfilein || 0 == get_option_value(conf->vid.cmdex, "--tcfile-in", buffer, sizeof(buffer))) {
+    if (conf->enc.use_tcfilein || 0 == get_option_value(conf->vid.cmdex, "--tcfile-in", buffer, sizeof(buffer))) {
         double duration_tmp = 0.0;
-        if (conf->x265.use_tcfilein)
+        if (conf->enc.use_tcfilein)
             strcpy_s(buffer, sizeof(buffer), conf->vid.tcfile_in);
         cmd_replace(buffer, sizeof(buffer), pe, sys_dat, conf, oip);
         if (AUO_RESULT_SUCCESS == get_duration_from_timecode(&duration_tmp, buffer, oip->rate / (double)oip->scale))
@@ -1267,7 +1267,7 @@ static AUO_RESULT amp_move_old_file(const char *muxout, const char *savefile) {
 //  1 … 動画を再エンコ
 //  2 … 音声を再エンコ
 int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, const OUTPUT_INFO *oip) {
-    if (!conf->x265.use_auto_npass || !conf->vid.amp_check || conf->oth.out_audio_only)
+    if (!conf->enc.use_auto_npass || !conf->vid.amp_check || conf->oth.out_audio_only)
         return 0;
     //チェックするファイル名を取得
     char muxout[MAX_PATH_LEN];
@@ -1336,32 +1336,32 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
             //動画の再エンコードで修正
             amp_result = 1;
             pe->total_pass++;
-            if (conf->x265.rc_mode == X265_RC_CRF) {
+            if (conf->enc.rc_mode == X265_RC_CRF) {
                 //上限確認付 品質基準VBR(可変レート)の場合、自動的に再設定
                 pe->amp_pass_limit++;
                 pe->current_pass = 1;
-                conf->x265.rc_mode = X265_RC_BITRATE;
-                conf->x265.slow_first_pass = FALSE;
-                conf->x265.nul_out = TRUE;
+                conf->enc.rc_mode = X265_RC_BITRATE;
+                conf->enc.slow_first_pass = FALSE;
+                conf->enc.nul_out = TRUE;
                 //ここでは目標ビットレートには-1を指定しておき、
                 //後段で上限設定をもとに修正させる
-                conf->x265.bitrate = -1;
+                conf->enc.bitrate = -1;
                 //自動マルチパスの1pass目には本来ヘッダーが表示されないので、 ここで表示しておく
                 show_header = TRUE;
             } else {
                 //再エンコ時は現在の目標ビットレートより少し下げたレートでエンコーダを行う
                 //3通りの方法で計算してみる
-                double margin_bitrate = get_amp_margin_bitrate(conf->x265.bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi * 0.5);
-                double bitrate_limit  = (conf->vid.amp_check & AMPLIMIT_BITRATE)   ? conf->x265.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate) : conf->x265.bitrate;
-                double filesize_limit = (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) ? conf->x265.bitrate - 0.5 * ((filesize - conf->vid.amp_limit_file_size*1024*1024))* 8.0/1000.0 / get_duration(conf, sys_dat, pe, oip) : conf->x265.bitrate;
-                conf->x265.bitrate = (int)(0.5 + min(margin_bitrate, min(bitrate_limit, filesize_limit)));
+                double margin_bitrate = get_amp_margin_bitrate(conf->enc.bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi * 0.5);
+                double bitrate_limit  = (conf->vid.amp_check & AMPLIMIT_BITRATE)   ? conf->enc.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate) : conf->enc.bitrate;
+                double filesize_limit = (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) ? conf->enc.bitrate - 0.5 * ((filesize - conf->vid.amp_limit_file_size*1024*1024))* 8.0/1000.0 / get_duration(conf, sys_dat, pe, oip) : conf->enc.bitrate;
+                conf->enc.bitrate = (int)(0.5 + min(margin_bitrate, min(bitrate_limit, filesize_limit)));
             }
             //必要なら、今回作成した動画を待避
             if (sys_dat->exstg->s_local.amp_keep_old_file)
                 amp_move_old_file(muxout, oip->savefile);
         }
     }
-    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate, pe->current_pass - conf->x265.use_auto_npass, (amp_result == 2) ? conf->aud.bitrate : conf->x265.bitrate);
+    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate, pe->current_pass - conf->enc.use_auto_npass, (amp_result == 2) ? conf->aud.bitrate : conf->enc.bitrate);
 
     if (show_header)
         open_log_window(oip->savefile, sys_dat, pe->current_pass, pe->total_pass);

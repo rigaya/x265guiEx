@@ -51,7 +51,7 @@ void guiEx_config::convert_x26xstg_to_x265stgv4(CONF_GUIEX *conf, const void *da
 
     //まずそのままコピーするブロックはそうする
 #define COPY_BLOCK(block, block_idx) { memcpy(&conf->block, ((BYTE *)old_data) + old_data->block_head_p[block_idx], min(sizeof(conf->block), old_data->block_size[block_idx])); }
-    COPY_BLOCK(x265, 2);
+    COPY_BLOCK(enc, 2);
     COPY_BLOCK(aud, 3);
     COPY_BLOCK(mux, 4);
     COPY_BLOCK(oth, 5);
@@ -83,7 +83,7 @@ void guiEx_config::convert_x26xstg_to_x265stgv4(CONF_GUIEX *conf, const void *da
 }
 
 void guiEx_config::convert_x265stgv2_to_x265stgv4(CONF_GUIEX *conf) {
-    conf->x265.qp_compress = 0.60f;
+    conf->enc.qp_compress = 0.60f;
     strcpy_s(conf->conf_name, CONF_NAME_OLD4);
 
     convert_x265stgv3_to_x265stgv4(conf);

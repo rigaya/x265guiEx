@@ -5497,10 +5497,10 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
         System::Void fcgBTApplyPreset_Click(System::Object^  sender, System::EventArgs^  e) {
             CONF_GUIEX cnf;
             init_CONF_GUIEX(&cnf, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
-            cnf.x265.preset = fcgCXPreset->SelectedIndex;
-            cnf.x265.tune = fcgCXTune->SelectedIndex;
-            cnf.x265.profile = fcgCXProfile->SelectedIndex;
-            apply_presets(&cnf.x265);
+            cnf.enc.preset = fcgCXPreset->SelectedIndex;
+            cnf.enc.tune = fcgCXTune->SelectedIndex;
+            cnf.enc.profile = fcgCXProfile->SelectedIndex;
+            apply_presets(&cnf.enc);
             ConfToFrm(&cnf, false);
         }
     private:
@@ -5510,7 +5510,7 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
             FrmToConf(&cnf);
             char cmdex[2048] = { 0 };
             GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
-            set_cmd_to_conf(cmdex, &cnf.x265);
+            set_cmd_to_conf(cmdex, &cnf.enc);
             ConfToFrm(&cnf, false);
         }
     private:
@@ -5551,7 +5551,7 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
             init_CONF_GUIEX(&rebuild, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
             FrmToConf(&rebuild);
             if (!rebuild.oth.disable_guicmd) {
-                build_cmd_from_conf(re_cmd, sizeof(re_cmd), &rebuild.x265, &rebuild.vid, FALSE);
+                build_cmd_from_conf(re_cmd, sizeof(re_cmd), &rebuild.enc, &rebuild.vid, FALSE);
             }
             fcgTXCmd->Text = String(re_cmd).ToString();
             if (CheckedStgMenuItem != nullptr)

@@ -45,7 +45,7 @@ const int guiEx_config::conf_block_data[CONF_BLOCK_COUNT] = {
 
 const size_t guiEx_config::conf_block_pointer[CONF_BLOCK_COUNT] = {
     offsetof(CONF_GUIEX, vid),
-    offsetof(CONF_GUIEX, x265),
+    offsetof(CONF_GUIEX, enc),
     offsetof(CONF_GUIEX, aud),
     offsetof(CONF_GUIEX, mux),
     offsetof(CONF_GUIEX, oth),
@@ -175,7 +175,7 @@ int guiEx_config::load_guiEx_conf(CONF_GUIEX *conf, const char *stg_file) {
 
     //x264/x265のオプション群はコマンドから設定を作る
     char *all_cmd = ((char *)dat) + ((CONF_GUIEX *)dat)->block_head_p[CONF_BLOCK_COUNT];
-    set_cmd_to_conf(all_cmd, &conf->x265);
+    set_cmd_to_conf(all_cmd, &conf->enc);
 
     //初期化するかどうかで使うので。
     conf->size_all = CONF_INITIALIZED;
@@ -190,7 +190,7 @@ int guiEx_config::save_guiEx_conf(const CONF_GUIEX *conf, const char *stg_file) 
 
     //展開したコマンドライン
     char cmd_all[MAX_CMD_LEN] = { 0 };
-    build_cmd_from_conf(cmd_all, sizeof(cmd_all), &conf->x265, &conf->vid, TRUE);
+    build_cmd_from_conf(cmd_all, sizeof(cmd_all), &conf->enc, &conf->vid, TRUE);
     const DWORD cmd_all_len = strlen(cmd_all) + 1;
 
     //設定ファイルのブロックごとの大きさを書き込み

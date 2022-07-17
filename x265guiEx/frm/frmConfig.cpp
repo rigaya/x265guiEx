@@ -263,7 +263,7 @@ System::Boolean frmConfig::CheckLocalStg() {
         init_CONF_GUIEX(&cnf, FALSE);
         char cmdex[2048] = { 0 };
         GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
-        set_cmd_to_conf(cmdex, &cnf.x265);
+        set_cmd_to_conf(cmdex, &cnf.enc);
     }
     if (LocalStg.x265Path->Length > 0
         && !File::Exists(LocalStg.x265Path)) {
@@ -1282,7 +1282,7 @@ System::Void frmConfig::InitForm() {
 System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     {
     //x265
-    CONF_X265 *cx265 = &cnf->x265;
+    CONF_X265 *cx265 = &cnf->enc;
     memcpy(cnf_fcgTemp, cx265, sizeof(CONF_X265)); //一時保存用
     fcgCXBitDepth->SelectedIndex = get_bit_depth_idx(cx265->bit_depth);
     switch (cx265->rc_mode) {
@@ -1416,7 +1416,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 
         fcgTXCmdEx->Text            = String(cnf->vid.cmdex).ToString();
         if (cnf->oth.disable_guicmd)
-            fcgCBNulOutCLI->Checked        = cnf->x265.nul_out != 0;
+            fcgCBNulOutCLI->Checked        = cnf->enc.nul_out != 0;
 
         //音声
         fcgCBAudioOnly->Checked            = cnf->oth.out_audio_only != 0;
@@ -1466,105 +1466,105 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
 System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     //これもひたすら書くだけ。めんどい
     //x265
-    cnf->x265.bit_depth            = get_bit_depth(fcgCXBitDepth->SelectedIndex);
-    cnf->x265.rc_mode              = cnf_fcgTemp->rc_mode;
-    cnf->x265.bitrate              = cnf_fcgTemp->bitrate;
-    cnf->x265.qp                   = cnf_fcgTemp->qp;
-    cnf->x265.crf                  = cnf_fcgTemp->crf;
-    cnf->x265.nul_out              = fcgCBNulOut->Checked;
-    cnf->x265.pass                 = cnf_fcgTemp->pass;
-    cnf->x265.slow_first_pass      = cnf_fcgTemp->slow_first_pass;
-    cnf->x265.use_auto_npass       = cnf_fcgTemp->use_auto_npass;
-    cnf->x265.auto_npass           = (int)fcgNUAutoNPass->Value;
+    cnf->enc.bit_depth            = get_bit_depth(fcgCXBitDepth->SelectedIndex);
+    cnf->enc.rc_mode              = cnf_fcgTemp->rc_mode;
+    cnf->enc.bitrate              = cnf_fcgTemp->bitrate;
+    cnf->enc.qp                   = cnf_fcgTemp->qp;
+    cnf->enc.crf                  = cnf_fcgTemp->crf;
+    cnf->enc.nul_out              = fcgCBNulOut->Checked;
+    cnf->enc.pass                 = cnf_fcgTemp->pass;
+    cnf->enc.slow_first_pass      = cnf_fcgTemp->slow_first_pass;
+    cnf->enc.use_auto_npass       = cnf_fcgTemp->use_auto_npass;
+    cnf->enc.auto_npass           = (int)fcgNUAutoNPass->Value;
     cnf->vid.amp_check             = NULL;
     cnf->vid.amp_check            |= fcgCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE : NULL;
     cnf->vid.amp_check            |= fcgCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
     cnf->vid.amp_limit_bitrate     = (double)fcgNUAMPLimitBitrate->Value;
     cnf->vid.amp_limit_file_size   = (double)fcgNUAMPLimitFileSize->Value;
-    cnf->x265.preset               = fcgCXPreset->SelectedIndex;
-    cnf->x265.tune                 = fcgCXTune->SelectedIndex;
-    cnf->x265.profile              = fcgCXProfile->SelectedIndex;
+    cnf->enc.preset               = fcgCXPreset->SelectedIndex;
+    cnf->enc.tune                 = fcgCXTune->SelectedIndex;
+    cnf->enc.profile              = fcgCXProfile->SelectedIndex;
 
-    cnf->x265.sar.x                = (int)fcgNUAspectRatioX->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-    cnf->x265.sar.y                = (int)fcgNUAspectRatioY->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
-    cnf->x265.interlaced           = fcgCXInterlaced->SelectedIndex;
+    cnf->enc.sar.x                = (int)fcgNUAspectRatioX->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+    cnf->enc.sar.y                = (int)fcgNUAspectRatioY->Value * ((fcgCXAspectRatio->SelectedIndex != 1) ? 1 : -1);
+    cnf->enc.interlaced           = fcgCXInterlaced->SelectedIndex;
 
-    cnf->x265.videoformat          = fcgCXVideoFormat->SelectedIndex;
-    cnf->x265.output_csp           = fcgCXCSP->SelectedIndex;
+    cnf->enc.videoformat          = fcgCXVideoFormat->SelectedIndex;
+    cnf->enc.output_csp           = fcgCXCSP->SelectedIndex;
 
-    cnf->x265.colormatrix          = fcgCXColorMatrix->SelectedIndex;
-    cnf->x265.colorprim            = fcgCXColorPrim->SelectedIndex;
-    cnf->x265.transfer             = fcgCXTransfer->SelectedIndex;
-    cnf->x265.input_range          = fcgCBFullRange->Checked;
+    cnf->enc.colormatrix          = fcgCXColorMatrix->SelectedIndex;
+    cnf->enc.colorprim            = fcgCXColorPrim->SelectedIndex;
+    cnf->enc.transfer             = fcgCXTransfer->SelectedIndex;
+    cnf->enc.input_range          = fcgCBFullRange->Checked;
 
-    cnf->x265.hist_scenecut        = fcgCXSceneCutMode->SelectedIndex > 0 ? TRUE : FALSE;
-    cnf->x265.scenecut             = (int)fcgNUScenecut->Value;
-    cnf->x265.hist_threshold       = (float)fcgNUHistThreshold->Value;
-    cnf->x265.keyint_min           = (int)fcgNUKeyintMin->Value;
-    cnf->x265.keyint_max           = (int)fcgNUKeyintMax->Value;
-    cnf->x265.fades                = fcgCBFade->Checked;
-    cnf->x265.open_gop             = fcgCBOpenGOP->Checked;
-    cnf->x265.rc_lookahead         = (int)fcgNURCLookahead->Value;
-    cnf->x265.ref_frames           = (int)fcgNURef->Value;
-    cnf->x265.bframes              = (int)fcgNUBframes->Value;
-    cnf->x265.b_adapt              = fcgCXBadapt->SelectedIndex;
-    cnf->x265.b_pyramid            = fcgCBBpyramid->Checked;
-    cnf->x265.weight_b             = fcgCBWeightB->Checked;
-    cnf->x265.weight_p             = fcgCBWeightP->Checked;
+    cnf->enc.hist_scenecut        = fcgCXSceneCutMode->SelectedIndex > 0 ? TRUE : FALSE;
+    cnf->enc.scenecut             = (int)fcgNUScenecut->Value;
+    cnf->enc.hist_threshold       = (float)fcgNUHistThreshold->Value;
+    cnf->enc.keyint_min           = (int)fcgNUKeyintMin->Value;
+    cnf->enc.keyint_max           = (int)fcgNUKeyintMax->Value;
+    cnf->enc.fades                = fcgCBFade->Checked;
+    cnf->enc.open_gop             = fcgCBOpenGOP->Checked;
+    cnf->enc.rc_lookahead         = (int)fcgNURCLookahead->Value;
+    cnf->enc.ref_frames           = (int)fcgNURef->Value;
+    cnf->enc.bframes              = (int)fcgNUBframes->Value;
+    cnf->enc.b_adapt              = fcgCXBadapt->SelectedIndex;
+    cnf->enc.b_pyramid            = fcgCBBpyramid->Checked;
+    cnf->enc.weight_b             = fcgCBWeightB->Checked;
+    cnf->enc.weight_p             = fcgCBWeightP->Checked;
 
-    cnf->x265.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
-    cnf->x265.vbv_maxrate          = (int)fcgNUVBVmax->Value;
-    cnf->x265.qp_compress          = (float)(fcgNUQComp->Value * (System::Decimal)0.01);
+    cnf->enc.vbv_bufsize          = (int)fcgNUVBVbuf->Value;
+    cnf->enc.vbv_maxrate          = (int)fcgNUVBVmax->Value;
+    cnf->enc.qp_compress          = (float)(fcgNUQComp->Value * (System::Decimal)0.01);
 
-    cnf->x265.rd                   = (int)fcgNURD->Value;
-    cnf->x265.aq_mode              = fcgCXAQMode->SelectedIndex;
-    cnf->x265.aq_strength          = (float)fcgNUAQStrength->Value;
-    cnf->x265.aq_motion            = fcgCBAQMotion->Checked;
-    cnf->x265.hevc_aq              = fcgCBHEVCAQ->Checked;
-    cnf->x265.psy_rd.x             = (float)fcgNUPsyRD->Value;
-    cnf->x265.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
-    cnf->x265.rdoq_level           = (int)fcgNURdoqLevel->Value;
-    cnf->x265.ssim_rd              = fcgCBSsimRd->Checked;
-    cnf->x265.cutree               = fcgCBCUTree->Checked;
-    cnf->x265.qg_size              = (int)fcgNUQGSize->Value;
+    cnf->enc.rd                   = (int)fcgNURD->Value;
+    cnf->enc.aq_mode              = fcgCXAQMode->SelectedIndex;
+    cnf->enc.aq_strength          = (float)fcgNUAQStrength->Value;
+    cnf->enc.aq_motion            = fcgCBAQMotion->Checked;
+    cnf->enc.hevc_aq              = fcgCBHEVCAQ->Checked;
+    cnf->enc.psy_rd.x             = (float)fcgNUPsyRD->Value;
+    cnf->enc.psy_rdoq             = (float)fcgNUPsyRDOQ->Value;
+    cnf->enc.rdoq_level           = (int)fcgNURdoqLevel->Value;
+    cnf->enc.ssim_rd              = fcgCBSsimRd->Checked;
+    cnf->enc.cutree               = fcgCBCUTree->Checked;
+    cnf->enc.qg_size              = (int)fcgNUQGSize->Value;
 
-    cnf->x265.ctu                  = (int)fcgNUCtu->Value;
-    cnf->x265.tu_intra_depth       = (int)fcgNUTuIntraDepth->Value;
-    cnf->x265.tu_inter_depth       = (int)fcgNUTuInterDepth->Value;
-    cnf->x265.rect_mp              = fcgCBRectMP->Checked;
-    cnf->x265.asymmnteric_mp       = fcgCBAsymmetricMP->Checked;
-    cnf->x265.limit_refs           = (int)fcgNULimitRefs->Value;
-    cnf->x265.limit_modes          = fcgCBLimitModes->Checked;
+    cnf->enc.ctu                  = (int)fcgNUCtu->Value;
+    cnf->enc.tu_intra_depth       = (int)fcgNUTuIntraDepth->Value;
+    cnf->enc.tu_inter_depth       = (int)fcgNUTuInterDepth->Value;
+    cnf->enc.rect_mp              = fcgCBRectMP->Checked;
+    cnf->enc.asymmnteric_mp       = fcgCBAsymmetricMP->Checked;
+    cnf->enc.limit_refs           = (int)fcgNULimitRefs->Value;
+    cnf->enc.limit_modes          = fcgCBLimitModes->Checked;
 
-    cnf->x265.me                   = fcgCXME->SelectedIndex;
-    cnf->x265.subme                = fcgCXSubME->SelectedIndex;
-    cnf->x265.me_range             = (int)fcgNUMERange->Value;
-    cnf->x265.max_merge            = (int)fcgNUMaxMerge->Value;
-    cnf->x265.recursion_skip       = (int)fcgNURskip->Value;
-    cnf->x265.rskip_edge_threshold = (int)fcgNURskipEdgeThreshold->Value;
+    cnf->enc.me                   = fcgCXME->SelectedIndex;
+    cnf->enc.subme                = fcgCXSubME->SelectedIndex;
+    cnf->enc.me_range             = (int)fcgNUMERange->Value;
+    cnf->enc.max_merge            = (int)fcgNUMaxMerge->Value;
+    cnf->enc.recursion_skip       = (int)fcgNURskip->Value;
+    cnf->enc.rskip_edge_threshold = (int)fcgNURskipEdgeThreshold->Value;
 
-    cnf->x265.pools                = (int)fcgNUPools->Value;
-    cnf->x265.frame_threads        = (int)fcgNUFrameThreads->Value;
-    cnf->x265.wpp                  = fcgCBWpp->Checked;
-    cnf->x265.pmode                = fcgCBPMode->Checked;
-    cnf->x265.pme                  = fcgCBPME->Checked;
+    cnf->enc.pools                = (int)fcgNUPools->Value;
+    cnf->enc.frame_threads        = (int)fcgNUFrameThreads->Value;
+    cnf->enc.wpp                  = fcgCBWpp->Checked;
+    cnf->enc.pmode                = fcgCBPMode->Checked;
+    cnf->enc.pme                  = fcgCBPME->Checked;
 
-    cnf->x265.use_deblock          = fcgCBDeblock->Checked;
-    cnf->x265.deblock.x            = (int)fcgNUDeblockStrength->Value;
-    cnf->x265.deblock.y            = (int)fcgNUDeblockThreshold->Value;
-    cnf->x265.sao                  = fcgCBSAO->Checked;
+    cnf->enc.use_deblock          = fcgCBDeblock->Checked;
+    cnf->enc.deblock.x            = (int)fcgNUDeblockStrength->Value;
+    cnf->enc.deblock.y            = (int)fcgNUDeblockThreshold->Value;
+    cnf->enc.sao                  = fcgCBSAO->Checked;
 
-    cnf->x265.ip_ratio             = 0.0f;
-    cnf->x265.pb_ratio             = 0.0f;
+    cnf->enc.ip_ratio             = 0.0f;
+    cnf->enc.pb_ratio             = 0.0f;
 
     GetCHARfromString(cnf->vid.stats, fcgTXStatusFile->Text);
 
-    cnf->x265.svt                  = fcgCBSVT->Checked;
+    cnf->enc.svt                  = fcgCBSVT->Checked;
 
-    cnf->x265.analysis_reuse       = fcgCBAnalysisReuse->Checked;
-    cnf->x265.analysis_reuse_level = (int)fcgNUAnalysisReuseLevel->Value;
-    cnf->x265.refine_intra         = (int)fcgNURefineIntra->Value;
-    cnf->x265.refine_inter         = (int)fcgNURefineInter->Value;
+    cnf->enc.analysis_reuse       = fcgCBAnalysisReuse->Checked;
+    cnf->enc.analysis_reuse_level = (int)fcgNUAnalysisReuseLevel->Value;
+    cnf->enc.refine_intra         = (int)fcgNURefineIntra->Value;
+    cnf->enc.refine_inter         = (int)fcgNURefineInter->Value;
 
     GetCHARfromString(cnf->vid.analysis_file, fcgTXAnalysisReuseFile->Text);
 
@@ -1623,11 +1623,11 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     //cli mode
     cnf->oth.disable_guicmd         = fcgTSBCMDOnly->Checked;
     if (cnf->oth.disable_guicmd) {
-        cnf->x265.nul_out           = fcgCBNulOutCLI->Checked;
+        cnf->enc.nul_out           = fcgCBNulOutCLI->Checked;
     }
 
     //制約条件として適用
-    set_profile_to_conf(&cnf->x265, cnf->x265.profile);
+    set_profile_to_conf(&cnf->enc, cnf->enc.profile);
 }
 
 System::Void frmConfig::GetfcgTSLSettingsNotes(char *notes, int nSize) {
