@@ -276,21 +276,6 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
     conf->aud.bitrate = aud_stg->mode[conf->aud.enc_mode].bitrate_default;
     conf->size_all = CONF_INITIALIZED;
 }
-//最後に"\"なしで戻る
-void get_aviutl_dir(char *aviutl_dir, size_t nSize) {
-    GetModuleFileNameA(NULL, aviutl_dir, (DWORD)nSize);
-    PathRemoveFileSpecFixed(aviutl_dir);
-}
-void get_aviutl_dir(WCHAR *aviutl_dir, size_t nSize) {
-    GetModuleFileNameW(NULL, aviutl_dir, (DWORD)nSize);
-    PathRemoveFileSpecFixed(aviutl_dir);
-}
-void get_auo_path(char *auo_path, size_t nSize) {
-    GetModuleFileNameA(GetModuleHandleA(AUO_NAME), auo_path, (DWORD)nSize);
-}
-void get_auo_path(WCHAR *auo_path, size_t nSize) {
-    GetModuleFileNameW(GetModuleHandleW(AUO_NAME_W), auo_path, (DWORD)nSize);
-}
 void write_log_line_fmt(int log_type_index, const char *format, ...) {
     va_list args;
     int len;
