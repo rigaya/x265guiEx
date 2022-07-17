@@ -391,42 +391,6 @@ static AUO_RESULT set_keyframe(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, c
     return ret;
 }
 
-static int create_x265_ver_string(char *str, size_t nSize, const int *version) {
-    int len = sprintf_s(str, nSize, "%d", version[0]);
-    for (int i = 1; i < 4; i++) {
-        if (version[i])
-            len += sprintf_s(str + len, nSize - len, ".%d", version[i]);
-    }
-    len += sprintf_s(str + len, nSize - len, "+%d", version[4]);
-    return len;
-}
-
-static AUO_RESULT write_log_x265_version(const char *x265fullpath) {
-    AUO_RESULT ret = AUO_RESULT_WARNING;
-    static const int REQUIRED_X265_VER[4] = { 0, 7, 0, 225 };
-    int current_version[4] = { 0 };
-    if (   0 == get_exe_version_info(x265fullpath, current_version)
-        || 0 == get_exe_version_from_cmd(x265fullpath, "--version", current_version)) {
-        if (current_version[0] >= 0) {
-            for (int i = 0; i < _countof(REQUIRED_X265_VER); i++) {
-                if (REQUIRED_X265_VER[i] != current_version[i]) {
-                    ret = (REQUIRED_X265_VER[i] < current_version[i]) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
-                    break;
-                }
-            }
-            if (ret == AUO_RESULT_WARNING) ret = AUO_RESULT_SUCCESS;
-        }
-        if (ret & AUO_RESULT_ERROR) {
-            char required_ver[128] = { 0 };
-            char current_ver[128] = { 0 };
-            create_x265_ver_string(required_ver, _countof(required_ver), REQUIRED_X265_VER);
-            create_x265_ver_string(current_ver,  _countof(current_ver),  current_version);
-            error_videnc_version(required_ver, current_ver);
-        }
-    }
-    return ret;
-}
-
 //auo_pipe.cppのread_from_pipeの特別版
 template <bool for_stderr>
 inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames) {
@@ -886,12 +850,6 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
     pipes.stdOut.mode = AUO_PIPE_ENABLE;
     pipes.stdIn.bufferSize = pixel_data.total_size * 2;
     const func_read_log_enc ReadLogEnc = read_log_enc_list[((!!pipes.stdErr.mode)<<1) + !!pipes.stdOut.mode];
-
-    //x264/x265のバージョン情報表示・チェック
-    if (!sys_dat->exstg->s_local.disable_x265_version_check
-        && AUO_RESULT_ERROR == write_log_x265_version(sys_dat->exstg->s_enc.fullpath)) {
-        return (ret | AUO_RESULT_ERROR);
-    }
 
     //コマンドライン生成
     build_full_cmd(x265cmd, _countof(x265cmd), conf, oip, pe, sys_dat, PIPE_FN);

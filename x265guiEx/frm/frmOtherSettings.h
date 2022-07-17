@@ -136,7 +136,6 @@ namespace AUO_NAME_R {
     private: System::Windows::Forms::ComboBox^  fosCXDefaultOutExt;
     private: System::Windows::Forms::CheckBox^  fosCBRunBatMinimized;
     private: System::Windows::Forms::CheckBox^  fosCBKeepQPFile;
-    private: System::Windows::Forms::CheckBox^  fosCBDisableX265VersionCheck;
     private: System::Windows::Forms::TabPage^  fostabPageGUI;
     private: System::Windows::Forms::CheckBox^  fosCBGetRelativePath;
     private: System::Windows::Forms::Button^  fosBTSetFont;
@@ -214,7 +213,6 @@ private: System::Windows::Forms::Panel^  fosPNHideTabPage;
             this->fosLBDefaultAudioEncoder = (gcnew System::Windows::Forms::Label());
             this->fosCBAutoRefLimitByLevel = (gcnew System::Windows::Forms::CheckBox());
             this->fosCBChapConvertToUTF8 = (gcnew System::Windows::Forms::CheckBox());
-            this->fosCBDisableX265VersionCheck = (gcnew System::Windows::Forms::CheckBox());
             this->fosCBKeepQPFile = (gcnew System::Windows::Forms::CheckBox());
             this->fosCBRunBatMinimized = (gcnew System::Windows::Forms::CheckBox());
             this->fosLBDefaultOutExt2 = (gcnew System::Windows::Forms::Label());
@@ -335,7 +333,6 @@ private: System::Windows::Forms::Panel^  fosPNHideTabPage;
             this->fostabPageGeneral->Controls->Add(this->fosLBDefaultAudioEncoder);
             this->fostabPageGeneral->Controls->Add(this->fosCBAutoRefLimitByLevel);
             this->fostabPageGeneral->Controls->Add(this->fosCBChapConvertToUTF8);
-            this->fostabPageGeneral->Controls->Add(this->fosCBDisableX265VersionCheck);
             this->fostabPageGeneral->Controls->Add(this->fosCBKeepQPFile);
             this->fostabPageGeneral->Controls->Add(this->fosCBRunBatMinimized);
             this->fostabPageGeneral->Controls->Add(this->fosLBDefaultOutExt2);
@@ -389,17 +386,6 @@ private: System::Windows::Forms::Panel^  fosPNHideTabPage;
             this->fosCBChapConvertToUTF8->TabIndex = 18;
             this->fosCBChapConvertToUTF8->Text = L"チャプターmux時、UTF-8に変換する";
             this->fosCBChapConvertToUTF8->UseVisualStyleBackColor = true;
-            // 
-            // fosCBDisableX265VersionCheck
-            // 
-            this->fosCBDisableX265VersionCheck->AutoSize = true;
-            this->fosCBDisableX265VersionCheck->ForeColor = System::Drawing::SystemColors::ControlDarkDark;
-            this->fosCBDisableX265VersionCheck->Location = System::Drawing::Point(16, 337);
-            this->fosCBDisableX265VersionCheck->Name = L"fosCBDisableX265VersionCheck";
-            this->fosCBDisableX265VersionCheck->Size = System::Drawing::Size(263, 19);
-            this->fosCBDisableX265VersionCheck->TabIndex = 17;
-            this->fosCBDisableX265VersionCheck->Text = L"エンコーダのバージョンチェックをスキップ (デバッグ用)";
-            this->fosCBDisableX265VersionCheck->UseVisualStyleBackColor = true;
             // 
             // fosCBKeepQPFile
             // 
@@ -893,7 +879,6 @@ private: System::Windows::Forms::Panel^  fosPNHideTabPage;
             fos_ex_stg->s_local.get_relative_path          = fosCBGetRelativePath->Checked;
             fos_ex_stg->s_local.default_output_ext         = fosCXDefaultOutExt->SelectedIndex;
             fos_ex_stg->s_local.run_bat_minimized          = fosCBRunBatMinimized->Checked;
-            fos_ex_stg->s_local.disable_x265_version_check = fosCBDisableX265VersionCheck->Checked;
             fos_ex_stg->s_local.default_audio_encoder      = fosCXDefaultAudioEncoder->SelectedIndex;
             fos_ex_stg->save_local();
             fos_ex_stg->save_log_win();
@@ -939,7 +924,6 @@ private: System::Windows::Forms::Panel^  fosPNHideTabPage;
             fosCBGetRelativePath->Checked           = fos_ex_stg->s_local.get_relative_path != 0;
             fosCXDefaultOutExt->SelectedIndex       = fos_ex_stg->s_local.default_output_ext;
             fosCBRunBatMinimized->Checked           = fos_ex_stg->s_local.run_bat_minimized != 0;
-            fosCBDisableX265VersionCheck->Checked   = fos_ex_stg->s_local.disable_x265_version_check != 0;
             fosCXDefaultAudioEncoder->SelectedIndex = clamp(fos_ex_stg->s_local.default_audio_encoder, 0, fosCXDefaultAudioEncoder->Items->Count);
             if (str_has_char(fos_ex_stg->s_local.conf_font.name))
                 SetFontFamilyToForm(this, gcnew FontFamily(String(fos_ex_stg->s_local.conf_font.name).ToString()), this->Font->FontFamily);
