@@ -1124,6 +1124,11 @@ BOOL check_x265_mp4_output(const char *exe_path, const char *temp_filename) {
     return ret;
 }
 
+BOOL check_videnc_mp4_output(const char *exe_path, const char *temp_filename) {
+    UNREFERENCED_PARAMETER(exe_path);
+    UNREFERENCED_PARAMETER(temp_filename);
+    return FALSE;
+}
 
 static void set_window_title_x265(const PRM_ENC *pe) {
     char mes[256] = { 0 };
