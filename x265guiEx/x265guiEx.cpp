@@ -178,11 +178,13 @@ BOOL func_output( OUTPUT_INFO *oip )
         for (int i = 0; !ret && i < 2; i++)
             ret |= task[conf_out.aud.audio_encode_timing][i](&conf_out, oip, &pe, &g_sys_dat);
 
+#if ENABLE_AMP
         int amp_result = 1;
         do {
             if (!ret) ret |= task[0][amp_result-1](&conf_out, oip, &pe, &g_sys_dat); //再エンコ、ただしもう終了している場合、再エンコされない
             if (!ret) ret |= mux(&conf_out, oip, &pe, &g_sys_dat);
         } while (!ret && 0 < (amp_result = amp_check_file(&conf_out, &g_sys_dat, &pe, oip))); //再エンコードの必要があるかをチェック
+#endif
 
         ret |= move_temporary_files(&conf_out, &pe, &g_sys_dat, oip, ret);
 

@@ -277,6 +277,7 @@ bool is_afsvfr(const CONF_GUIEX *conf) {
 
 static BOOL check_amp(CONF_GUIEX *conf) {
     BOOL check = TRUE;
+#if ENABLE_AMP
     if (!conf->enc.use_auto_npass)
         return check;
     if (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) {
@@ -294,6 +295,7 @@ static BOOL check_amp(CONF_GUIEX *conf) {
     if (conf->vid.amp_check && conf->vid.afs && AUDIO_DELAY_CUT_ADD_VIDEO == conf->aud.delay_cut) {
         check = FALSE; error_amp_afs_audio_delay_confliction();
     }
+#endif
     return check;
 }
 
@@ -647,9 +649,9 @@ BOOL check_output(CONF_GUIEX *conf, OUTPUT_INFO *oip, const PRM_ENC *pe, guiEx_s
     return check;
 }
 
-void open_log_window(const char *savefile, const SYSTEM_DATA *sys_dat, int current_pass, int total_pass) {
+void open_log_window(const char *savefile, const SYSTEM_DATA *sys_dat, int current_pass, int total_pass, bool amp_crf_reenc) {
     char mes[MAX_PATH_LEN + 512];
-    char *newLine = (get_current_log_len(current_pass)) ? "\r\n\r\n" : ""; //必要なら行送り
+    char *newLine = (get_current_log_len(current_pass == 1 && !amp_crf_reenc)) ? "\r\n\r\n" : ""; //必要なら行送り
     static const char *SEPARATOR = "------------------------------------------------------------------------------------------------------------------------------";
     if (total_pass < 2 || current_pass > total_pass)
         sprintf_s(mes, sizeof(mes), "%s%s\r\n[%s]\r\n%s", newLine, SEPARATOR, savefile, SEPARATOR);
@@ -1140,9 +1142,11 @@ static BOOL move_temp_file(const char *appendix, const char *temp_filename, cons
 
 AUO_RESULT move_temporary_files(const CONF_GUIEX *conf, const PRM_ENC *pe, const SYSTEM_DATA *sys_dat, const OUTPUT_INFO *oip, DWORD ret) {
     //動画ファイル
-    if (!conf->oth.out_audio_only)
-        if (!move_temp_file(PathFindExtension((pe->muxer_to_be_used >= 0) ? oip->savefile : pe->temp_filename), pe->temp_filename, oip->savefile, ret, FALSE, "出力", !ret))
+    if (!conf->oth.out_audio_only) {
+        if (!move_temp_file(PathFindExtension((pe->muxer_to_be_used >= 0) ? oip->savefile : pe->temp_filename), pe->temp_filename, oip->savefile, ret, FALSE, "出力", !ret)) {
             ret |= AUO_RESULT_ERROR;
+        }
+    }
     //動画のみファイル
     if (str_has_char(pe->muxed_vid_filename) && PathFileExists(pe->muxed_vid_filename))
         remove(pe->muxed_vid_filename);
@@ -1328,6 +1332,7 @@ double get_duration(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, const PR
     char buffer[MAX_PATH_LEN];
     //Aviutlから再生時間情報を取得
     double duration = (((double)(oip->n + pe->delay_cut_additional_vframe) * (double)oip->scale) / (double)oip->rate);
+#if ENABLE_TCFILE_IN
     //tcfile-inなら、動画の長さはタイムコードから取得する
     if (conf->enc.use_tcfilein || 0 == get_option_value(conf->vid.cmdex, "--tcfile-in", buffer, sizeof(buffer))) {
         double duration_tmp = 0.0;
@@ -1339,11 +1344,15 @@ double get_duration(const CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, const PR
         else
             warning_failed_to_get_duration_from_timecode();
     }
+#endif
     return duration;
 }
 
+#if ENABLE_AMP
+
 double get_amp_margin_bitrate(double base_bitrate, double margin_multi) {
-    return base_bitrate * clamp(1.0 - margin_multi / sqrt(base_bitrate / 100.0), 0.8, 1.0);
+    double clamp_offset = (margin_multi < 0.0) ? 0.2 : 0.0;
+    return base_bitrate * clamp(1.0 - margin_multi / sqrt(max(base_bitrate, 1.0) / 100.0), 0.8 + clamp_offset, 1.0 + clamp_offset);
 }
 
 static AUO_RESULT amp_move_old_file(const char *muxout, const char *savefile) {
@@ -1356,6 +1365,171 @@ static AUO_RESULT amp_move_old_file(const char *muxout, const char *savefile) {
         apply_appendix(filename, _countof(filename), savefile, appendix);
     }
     return (rename(muxout, filename) == 0) ? AUO_RESULT_SUCCESS : AUO_RESULT_ERROR;
+}
+
+static double get_vid_ratio(double actual_vid_bitrate, double vid_lower_limit_bitrate) {
+    double vid_rate = actual_vid_bitrate / vid_lower_limit_bitrate;
+    if (vid_lower_limit_bitrate < 1600) {
+        //下限ビットレートが低い場合は、割り引いて考える
+        vid_rate = 1.0 - (1.0 - vid_rate) / std::sqrt(1600.0 / vid_lower_limit_bitrate);
+    }
+    return vid_rate;
+}
+
+static double get_audio_bitrate(const PRM_ENC *pe, const OUTPUT_INFO *oip, double duration) {
+    UINT64 aud_filesize = 0;
+    if (oip->flag & OUTPUT_INFO_FLAG_AUDIO) {
+        for (int i_aud = 0; i_aud < pe->aud_count; i_aud++) {
+            char aud_file[MAX_PATH_LEN];
+            apply_appendix(aud_file, _countof(aud_file), pe->temp_filename, pe->append.aud[i_aud]);
+            if (!PathFileExists(aud_file)) {
+                error_no_aud_file();
+                return AUO_RESULT_ERROR;
+            }
+            UINT64 filesize_tmp = 0;
+            if (!GetFileSizeUInt64(aud_file, &filesize_tmp)) {
+                warning_failed_get_aud_size(); warning_amp_failed();
+                return AUO_RESULT_ERROR;
+            }
+            aud_filesize += filesize_tmp;
+        }
+    }
+    return (aud_filesize * 8.0) / 1000.0 / duration;
+}
+
+static void amp_adjust_lower_bitrate_set_default(CONF_ENCODER *cnf_x264) {
+    CONF_ENCODER x264_default = { 0 };
+    get_default_conf_x264(&x264_default, cnf_x264->use_highbit_depth);
+    //すべてをデフォルトに戻すとcolormatrixなどのパラメータも戻ってしまうので、
+    //エンコード速度に関係していそうなパラメータのみをデフォルトに戻す
+    cnf_x264->me = (std::min)(cnf_x264->me, x264_default.me);
+    cnf_x264->me_range = (std::min)(cnf_x264->me_range, x264_default.me_range);
+    cnf_x264->subme = (std::min)(cnf_x264->subme, x264_default.subme);
+    cnf_x264->ref_frames = (std::min)(cnf_x264->ref_frames, x264_default.ref_frames);
+    cnf_x264->trellis = (std::min)(cnf_x264->trellis, x264_default.trellis);
+    cnf_x264->mb_partition &= x264_default.mb_partition;
+    cnf_x264->no_dct_decimate = x264_default.no_dct_decimate;
+    cnf_x264->no_fast_pskip = x264_default.no_fast_pskip;
+}
+
+static void amp_adjust_lower_bitrate_keyint(CONF_ENCODER *cnf_x264, int keyint_div, int min_keyint) {
+#define CEIL5(x) ((x >= 30) ? ((((x) + 4) / 5) * 5) : (x))
+    min_keyint = (std::max)((std::min)(min_keyint, cnf_x264->keyint_max / 2), 1);
+    cnf_x264->keyint_max = (std::max)((min_keyint), CEIL5(cnf_x264->keyint_max / keyint_div));
+#undef CEIL5
+}
+
+static void amp_adjust_lower_bitrate(CONF_ENCODER *cnf_x264, int preset_idx, int preset_offset, int keyint_div, int min_keyint, const SYSTEM_DATA *sys_dat) {
+    const int old_keyint = cnf_x264->keyint_max;
+    const int preset_new = (std::max)((std::min)((preset_idx), cnf_x264->preset + (preset_offset)), 0);
+    if (cnf_x264->preset > preset_new) {
+        amp_adjust_lower_bitrate_keyint(cnf_x264, keyint_div, min_keyint);
+        if (old_keyint != cnf_x264->keyint_max) {
+            cnf_x264->preset = preset_new;
+            write_log_auo_line_fmt(LOG_WARNING, "下限ビットレートに対し実ビットレートが低いため、プリセット:%s, キーフレーム間隔:%d を適用します。",
+                sys_dat->exstg->s_enc.preset.name[preset_new].name, cnf_x264->keyint_max);
+        } else {
+            const int preset_adjust_new = (std::max)(preset_idx, 0);
+            if (cnf_x264->preset > preset_adjust_new) {
+                cnf_x264->preset = preset_adjust_new;
+                write_log_auo_line_fmt(LOG_WARNING, "下限ビットレートに対し実ビットレートが低いため、プリセット:%s を適用します。",
+                    sys_dat->exstg->s_enc.preset.name[cnf_x264->preset].name);
+            }
+        }
+    } else {
+        amp_adjust_lower_bitrate_keyint(cnf_x264, keyint_div, min_keyint);
+        if (old_keyint != cnf_x264->keyint_max) {
+            write_log_auo_line_fmt(LOG_WARNING, "下限ビットレートに対し実ビットレートが低いため、keyint:%d を適用します。", cnf_x264->keyint_max);
+        }
+    }
+}
+
+static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_ENCODER *cnf_x264, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, const PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
+    //もし、もう設定を下げる余地がなければエラーを返す
+    if (cnf_x264->keyint_max == 1 && cnf_x264->preset == 0) {
+        return AUO_RESULT_ERROR;
+    }
+    const double aud_bitrate = get_audio_bitrate(pe, oip, duration);
+    const double vid_bitrate = file_bitrate - aud_bitrate;
+    //ビットレート倍率 = 今回のビットレート / 下限ビットレート
+    const double vid_ratio = get_vid_ratio(vid_bitrate, (std::max)(1.0, conf_vid->amp_limit_bitrate_lower - aud_bitrate));
+    //QPをいっぱいまで下げた時、このままの設定で下限ビットレートをクリアできそうなビットレート倍率
+    //実際には動画によってcrfとビットレートの関係は異なるので、2次関数だと思って適当に近似計算
+    const double est_max_vid_ratio = (std::min)(0.99, pow2(51.0 - cnf_x264->crf * 0.01) / pow2(51.0));
+    //QPを最大限引き下げられるように
+    cnf_x264->qp_min = 0;
+    //デフォルトパラメータの一部を反映し、設定を軽くする
+    if (vid_ratio < est_max_vid_ratio) {
+        amp_adjust_lower_bitrate_set_default(cnf_x264);
+    }
+    //キーフレーム間隔自動を反映
+    if (cnf_x264->keyint_max <= 0) {
+        cnf_x264->keyint_max = -1; //set_guiEx_auto_keyint()は -1 としておかないと自動設定を行わない
+        set_guiEx_auto_keyint(cnf_x264, oip->rate, oip->scale);
+    }
+#define ADJUST(preset_idx, preset_offset, keyint_div, min_keyint) amp_adjust_lower_bitrate(cnf_x264, (preset_idx), (preset_offset), (keyint_div), (min_keyint), sys_dat)
+    //HD解像度の静止画動画では、キーフレームの比重が大きいため、キーフレーム追加はやや控えめに
+    bool bHD = oip->w * oip->h >= 1280 * 720;
+    //「いい感じ」(試行錯誤の結果)(つまり適当) にプリセットとキーフレーム間隔を調整する
+    if (       vid_ratio < est_max_vid_ratio * 0.05) {
+        ADJUST(0, -3, 100, 2);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.08 : 0.10)) {
+        ADJUST(0, -3, 60, 3);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.12 : 0.15)) {
+        ADJUST(0, -3, 30, 5);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.15 : 0.20)) {
+        ADJUST(0, -3, 25, 10);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.20 : 0.30)) {
+        ADJUST(0, -3, 20, 10);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.30 : 0.50)) {
+        ADJUST(0, -3, 15, 10);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.50 : 0.60)) {
+        ADJUST(1, -3, 15, 15);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.60 : 0.70)) {
+        ADJUST(1, -3, 12, 15);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.67 : 0.75)) {
+        ADJUST(1, -3, 10, 15);
+    } else if (vid_ratio < est_max_vid_ratio * ((bHD) ? 0.75 : 0.80)) {
+        ADJUST(1, -3, 5, 15);
+    } else if (vid_ratio < est_max_vid_ratio * 0.90) {
+        ADJUST(1, -2, 5, 15);
+    } else if (vid_ratio < est_max_vid_ratio * 0.95) {
+        ADJUST(1, -2, 4, 15);
+    } else if (vid_ratio < est_max_vid_ratio) {
+        ADJUST(2, -1, 4, 15);
+    } else {
+        ADJUST(3, -1, 4, 30);
+    }
+#undef ADJUST
+    apply_presets(cnf_x264);
+    cnf_x264->qp_min = (std::min)(cnf_x264->qp_min, 0);
+    return AUO_RESULT_SUCCESS;
+}
+
+static AUO_RESULT amp_adjust_lower_bitrate_from_bitrate(CONF_ENCODER *cnf_x264, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
+    const double aud_bitrate = get_audio_bitrate(pe, oip, duration);
+    const double vid_bitrate = file_bitrate - aud_bitrate;
+    //ビットレート倍率 = 今回のビットレート / 下限ビットレート
+    const double vid_ratio = get_vid_ratio(vid_bitrate, (std::max)(1.0, conf_vid->amp_limit_bitrate_lower - aud_bitrate));
+    if (vid_ratio < 0.98) {
+        amp_adjust_lower_bitrate_set_default(cnf_x264);
+    }
+    AUO_RESULT ret = AUO_RESULT_SUCCESS;
+    //キーフレーム数を増やして1pass目からやり直す
+    pe->amp_reset_pass_count++;
+    pe->total_pass--;
+    pe->current_pass = 1;
+    cnf_x264->qp_min = (std::min)(cnf_x264->qp_min, 0);
+    cnf_x264->slow_first_pass = FALSE;
+    cnf_x264->nul_out = TRUE;
+    //ここでは目標ビットレートを0に指定しておき、後段のcheck_ampで上限/下限設定をもとに修正させる
+    cnf_x264->bitrate = 0;
+    cnf_x264->crf = 2;
+    ret = amp_adjust_lower_bitrate_from_crf(cnf_x264, conf_vid, sys_dat, pe, oip, duration, file_bitrate);
+    if (ret == AUO_RESULT_SUCCESS) {
+        ret = AUO_RESULT_WARNING;
+    }
+    return ret;
 }
 
 //戻り値
@@ -1386,37 +1560,61 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
     }
     const double duration = get_duration(conf, sys_dat, pe, oip);
     double file_bitrate = (filesize * 8.0) / 1000.0 / duration;
-    DWORD status = NULL;
+    DWORD status = 0x00;
     //ファイルサイズのチェックを行う
     if ((conf->vid.amp_check & AMPLIMIT_FILE_SIZE) && filesize > conf->vid.amp_limit_file_size * 1024*1024)
         status |= AMPLIMIT_FILE_SIZE;
     //ビットレートのチェックを行う
     if ((conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) && file_bitrate > conf->vid.amp_limit_bitrate_upper)
         status |= AMPLIMIT_BITRATE_UPPER;
+    if ((conf->vid.amp_check & AMPLIMIT_BITRATE_LOWER) && file_bitrate < conf->vid.amp_limit_bitrate_lower)
+        status |= AMPLIMIT_BITRATE_LOWER;
 
-    BOOL retry = (status && pe->current_pass < pe->amp_pass_limit);
+    BOOL retry = (status && pe->current_pass < pe->amp_pass_limit && pe->amp_reset_pass_count < pe->amp_reset_pass_limit);
     BOOL show_header = FALSE;
     int amp_result = 0;
+    bool amp_crf_reenc = false;
     //再エンコードを行う
     if (retry) {
         //muxerを再設定する
         pe->muxer_to_be_used = check_muxer_to_be_used(conf, sys_dat, pe->temp_filename, pe->video_out_type, (oip->flag & OUTPUT_INFO_FLAG_AUDIO) != 0);
-        //音声がビットレートモードなら音声再エンコによる調整を検討する
+
+        //まずビットレートの上限を計算
         double limit_bitrate_upper = DBL_MAX;
         if (status & AMPLIMIT_FILE_SIZE)
             limit_bitrate_upper = min(limit_bitrate_upper, (conf->vid.amp_limit_file_size * 1024*1024)*8.0/1000 / duration);
         if (status & AMPLIMIT_BITRATE_UPPER)
             limit_bitrate_upper = min(limit_bitrate_upper, conf->vid.amp_limit_bitrate_upper);
-        const double bitrate_delta = file_bitrate - limit_bitrate_upper;
+        //次にビットレートの下限を計算
+        double limit_bitrate_lower = (status & AMPLIMIT_BITRATE_LOWER) ? conf->vid.amp_limit_bitrate_lower : 0.0;
+        //上限・下限チェック
+        if (limit_bitrate_lower > limit_bitrate_upper) {
+            warning_amp_bitrate_confliction((int)limit_bitrate_lower, (int)limit_bitrate_upper);
+            conf->vid.amp_check &= ~AMPLIMIT_BITRATE_LOWER;
+            limit_bitrate_lower = 0.0;
+        }
+        //必要な修正量を算出
+        //deltaは上げる必要があれば正、下げる必要があれば負
+        double bitrate_delta = 0.0;
+        if (file_bitrate > limit_bitrate_upper) {
+            bitrate_delta = limit_bitrate_upper - file_bitrate;
+        }
+        if (file_bitrate < limit_bitrate_lower) {
+            bitrate_delta = limit_bitrate_lower - file_bitrate;
+        }
+        //音声がビットレートモードなら音声再エンコによる調整を検討する
         const AUDIO_SETTINGS *aud_stg = &sys_dat->exstg->s_aud[conf->aud.encoder];
         if ((oip->flag & OUTPUT_INFO_FLAG_AUDIO)
+            && bitrate_delta < 0.0 //ビットレートを上げるのに音声再エンコするのはうまくいかないことが多い
             && aud_stg->mode[conf->aud.enc_mode].bitrate
-            && bitrate_delta + 1.0 < conf->aud.bitrate * sys_dat->exstg->s_local.amp_reenc_audio_multi
+            && 16.0 < conf->aud.bitrate * sys_dat->exstg->s_local.amp_reenc_audio_multi //最低でも16kbpsは動かしたほうが良い
+            && std::abs(bitrate_delta) + 1.0 < conf->aud.bitrate * sys_dat->exstg->s_local.amp_reenc_audio_multi //ビットレート変化は閾値の範囲内
             && str_has_char(pe->muxed_vid_filename)
             && PathFileExists(pe->muxed_vid_filename)) {
             //音声の再エンコードで修正
             amp_result = 2;
-            conf->aud.bitrate -= (int)(bitrate_delta + 1.5);
+            const int delta_sign = (bitrate_delta >= 0.0) ? 1 : -1;
+            conf->aud.bitrate += (int)((std::max)(std::abs(bitrate_delta), (std::min)(15.0, conf->aud.bitrate * (1.0 / 8.0))) + 1.5) * delta_sign;
 
             //動画のみファイルをもとの位置へ
             remove(pe->temp_filename);
@@ -1433,38 +1631,62 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
             //動画の再エンコードで修正
             amp_result = 1;
             pe->total_pass++;
-            if (conf->enc.rc_mode == X265_RC_CRF) {
+            if (conf->enc.rc_mode == X264_RC_CRF) {
                 //上限確認付 品質基準VBR(可変レート)の場合、自動的に再設定
                 pe->amp_pass_limit++;
                 pe->current_pass = 1;
-                conf->enc.rc_mode = X265_RC_BITRATE;
+                conf->enc.rc_mode = X264_RC_BITRATE;
                 conf->enc.slow_first_pass = FALSE;
                 conf->enc.nul_out = TRUE;
-                //ここでは目標ビットレートには-1を指定しておき、
-                //後段で上限設定をもとに修正させる
-                conf->enc.bitrate = -1;
+                //ここでは目標ビットレートを上限を上回った場合には-1、下限を下回った場合には0に指定しておき、
+                //後段のcheck_ampで上限/下限設定をもとに修正させる
+                conf->enc.bitrate = (bitrate_delta < 0) ? -1 : 0;
                 //自動マルチパスの1pass目には本来ヘッダーが表示されないので、 ここで表示しておく
                 show_header = TRUE;
+                amp_crf_reenc = true;
+                //下限を下回った場合
+                if (bitrate_delta > 0) {
+                    //下限を大きく下回っていたら、単に2passエンコするだけでは不十分
+                    pe->amp_reset_pass_count++;
+                    if (amp_adjust_lower_bitrate_from_crf(&conf->enc, &conf->vid, sys_dat, pe, oip, duration, file_bitrate) != AUO_RESULT_SUCCESS) {
+                        retry = FALSE;
+                        amp_result = 0;
+                    }
+                }
             } else {
                 //再エンコ時は現在の目標ビットレートより少し下げたレートでエンコーダを行う
-                //3通りの方法で計算してみる
-                double margin_bitrate = get_amp_margin_bitrate(conf->enc.bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi * 0.5);
-                double bitrate_limit  = (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER)   ? conf->enc.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate_upper) : conf->enc.bitrate;
+                //新しい目標ビットレートを4通りの方法で計算してみる
+                double margin_bitrate = get_amp_margin_bitrate(conf->enc.bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi * (status & (AMPLIMIT_FILE_SIZE | AMPLIMIT_BITRATE_UPPER)) ? 0.5 : -4.0);
+                double bitrate_limit_upper = (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) ? conf->enc.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate_upper) : conf->enc.bitrate;
+                double bitrate_limit_lower = (conf->vid.amp_check & AMPLIMIT_BITRATE_LOWER) ? conf->enc.bitrate + 0.5 * (conf->vid.amp_limit_bitrate_lower - file_bitrate) : conf->enc.bitrate;
                 double filesize_limit = (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) ? conf->enc.bitrate - 0.5 * ((filesize - conf->vid.amp_limit_file_size*1024*1024))* 8.0/1000.0 / get_duration(conf, sys_dat, pe, oip) : conf->enc.bitrate;
-                conf->enc.bitrate = (int)(0.5 + min(margin_bitrate, min(bitrate_limit, filesize_limit)));
+                conf->enc.bitrate = (int)(0.5 + max(min(margin_bitrate, min(filesize_limit, bitrate_limit_upper)), bitrate_limit_lower));
+                if (conf->vid.amp_check & AMPLIMIT_BITRATE_LOWER) {
+                    AUO_RESULT ret = amp_adjust_lower_bitrate_from_bitrate(&conf->enc, &conf->vid, sys_dat, pe, oip, duration, file_bitrate);
+                    if (ret == AUO_RESULT_WARNING) {
+                        //1pass目からやり直し
+                        show_header = TRUE;
+                        amp_crf_reenc = true;
+                    } else if (ret != AUO_RESULT_SUCCESS) {
+                        retry = FALSE;
+                        amp_result = 0;
+                    }
+                }
             }
             //必要なら、今回作成した動画を待避
             if (sys_dat->exstg->s_local.amp_keep_old_file)
                 amp_move_old_file(muxout, oip->savefile);
         }
     }
-    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate_upper, pe->current_pass - conf->enc.use_auto_npass, (amp_result == 2) ? conf->aud.bitrate : conf->enc.bitrate);
+    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate_upper, conf->vid.amp_limit_bitrate_lower, (std::max)(pe->amp_reset_pass_count, pe->current_pass - conf->enc.auto_npass), (amp_result == 2) ? conf->aud.bitrate : conf->enc.bitrate);
 
     if (show_header)
-        open_log_window(oip->savefile, sys_dat, pe->current_pass, pe->total_pass);
+        open_log_window(oip->savefile, sys_dat, pe->current_pass, pe->total_pass, amp_crf_reenc);
 
     return amp_result;
 }
+
+#endif
 
 int ReadLogExe(PIPE_SET *pipes, const char *exename, LOG_CACHE *log_line_cache) {
     DWORD pipe_read = 0;
