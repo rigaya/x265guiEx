@@ -697,13 +697,6 @@ static void set_tmpdir(PRM_ENC *pe, int tmp_dir_index, const char *savefile, con
     }
 }
 
-int get_total_path(const CONF_GUIEX *conf) {
-    return (conf->enc.use_auto_npass
-         && conf->enc.rc_mode == X265_RC_BITRATE
-         && !conf->oth.disable_guicmd)
-         ? conf->enc.auto_npass : 1;
-}
-
 static void set_aud_delay_cut(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SYSTEM_DATA *sys_dat) {
     pe->delay_cut_additional_vframe = 0;
     pe->delay_cut_additional_aframe = 0;
@@ -729,6 +722,13 @@ static void set_aud_delay_cut(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *
             conf->aud.delay_cut = AUDIO_DELAY_CUT_NONE;
         }
     }
+}
+
+int get_total_path(const CONF_GUIEX *conf) {
+    return (conf->enc.use_auto_npass
+         && conf->enc.rc_mode == X265_RC_BITRATE
+         && !conf->oth.disable_guicmd)
+         ? conf->enc.auto_npass : 1;
 }
 
 void free_enc_prm(PRM_ENC *pe) {
