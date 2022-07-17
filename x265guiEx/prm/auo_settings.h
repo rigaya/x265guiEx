@@ -333,10 +333,6 @@ typedef struct FILE_APPENDIX {
     char wav[MAX_APPENDIX_LEN];        //一時wavファイル名に追加する文字列
 } FILE_APPENDIX;
 
-typedef ENC_SETTINGS   X264_SETTINGS;
-typedef ENC_OPTION_STR X264_OPTION_STR;
-typedef ENC_CMD        X264_CMD;
-
 class guiEx_settings {
 private:
     mem_cutter s_enc_mc;
@@ -359,7 +355,6 @@ private:
     void load_local();        //ファイルの場所等の設定の読み込み・更新
 
     int get_faw_index();             //FAWのインデックスを取得する
-    BOOL s_x264_refresh;             //x265設定の再ロード
     BOOL s_enc_refresh;             //動画エンコーダ関連設定の再ロード
 
     void make_default_stg_dir(char *default_stg_dir, DWORD nSize); //プロファイル設定ファイルの保存場所の作成
@@ -372,7 +367,6 @@ public:
     int s_mux_count;                 //muxerの数 (基本3固定)
     AUDIO_SETTINGS *s_aud;           //音声エンコーダの設定
     MUXER_SETTINGS *s_mux;           //muxerの設定
-    X264_SETTINGS  s_x264;           //x264関連の設定
     ENC_SETTINGS  s_enc;             //動画エンコーダ関連の設定
     LOCAL_SETTINGS s_local;          //ファイルの場所等
     std::vector<FILENAME_REPLACE> fn_rep;  //一時ファイル名置換
@@ -401,7 +395,6 @@ public:
 
     void apply_fn_replace(char *target_filename, DWORD nSize);  //一時ファイル名置換の適用
 
-    BOOL get_reset_s_x264_referesh(); //s_x265が更新されたか
     BOOL get_reset_s_enc_referesh(); //s_encが更新されたか
 
 private:
