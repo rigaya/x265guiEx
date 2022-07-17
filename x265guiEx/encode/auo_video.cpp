@@ -393,7 +393,7 @@ static AUO_RESULT set_keyframe(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, c
 
 //auo_pipe.cppのread_from_pipeの特別版
 template <bool for_stderr>
-inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames) {
+inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames) {
     DWORD pipe_read = 0;
     HANDLE h_read = (for_stderr) ? pipes->stdErr.h_read : pipes->stdOut.h_read;
     if (!PeekNamedPipe(h_read, NULL, 0, NULL, &pipe_read, NULL))
@@ -401,7 +401,7 @@ inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames) {
     if (pipe_read) {
         ReadFile(h_read, pipes->read_buf + pipes->buf_len, sizeof(pipes->read_buf) - pipes->buf_len - 1, &pipe_read, NULL);
         pipes->buf_len += pipe_read;
-        write_log_enc_mes(pipes->read_buf, &pipes->buf_len, total_drop, current_frames);
+        write_log_enc_mes(pipes->read_buf, &pipes->buf_len, total_drop, current_frames, total_frames);
     } else {
         log_process_events();
     }
@@ -410,31 +410,31 @@ inline int read_log_enc(PIPE_SET *pipes, int total_drop, int current_frames) {
 
 #pragma warning( push )
 #pragma warning( disable: 4100 ) //C4100 : 引数は関数の本体部で 1 度も参照されません。
-static int read_log_enc_none(PIPE_SET *pipes, int total_drop, int current_frames) {
+static int read_log_enc_none(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames) {
     return 0;
 }
 #pragma warning( pop )
 
-static int read_log_enc_stderr(PIPE_SET *pipes, int total_drop, int current_frames) {
-    return read_log_enc<true>(pipes, total_drop, current_frames);
+static int read_log_enc_stderr(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames) {
+    return read_log_enc<true>(pipes, total_drop, current_frames, total_frames);
 }
 
-static int read_log_enc_stdout(PIPE_SET *pipes, int total_drop, int current_frames) {
-    return read_log_enc<false>(pipes, total_drop, current_frames);
+static int read_log_enc_stdout(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames) {
+    return read_log_enc<false>(pipes, total_drop, current_frames, total_frames);
 }
 
-static int read_log_enc_all(PIPE_SET *pipes, int total_drop, int current_frames) {
+static int read_log_enc_all(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames) {
     int pipe_read, pipe_read_total = 0;
-    while (0 < (pipe_read = read_log_enc_stderr(pipes, total_drop, current_frames)))
+    while (0 < (pipe_read = read_log_enc_stderr(pipes, total_drop, current_frames, total_frames)))
         pipe_read_total += pipe_read;
     pipe_read_total += pipe_read;
-    while (0 < (pipe_read = read_log_enc_stdout(pipes, total_drop, current_frames)))
+    while (0 < (pipe_read = read_log_enc_stdout(pipes, total_drop, current_frames, total_frames)))
         pipe_read_total += pipe_read;
     pipe_read_total += pipe_read;
     return pipe_read_total;
 }
 
-typedef int (*func_read_log_enc)(PIPE_SET *pipes, int total_drop, int current_frames);
+typedef int (*func_read_log_enc)(PIPE_SET *pipes, int total_drop, int current_frames, int total_frames);
 static const func_read_log_enc read_log_enc_list[] = { read_log_enc_none, read_log_enc_stdout, read_log_enc_stderr, read_log_enc_all };
 
 //cmdexのうち、guiから発行されるオプションとの衝突をチェックして、読み取られなかったコマンドを追加する
@@ -914,7 +914,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
             ret |= (oip->func_is_abort()) ? AUO_RESULT_ABORT : AUO_RESULT_SUCCESS;
 
             //x26xが実行中なら、メッセージを取得・ログウィンドウに表示
-            if (ReadLogEnc(&pipes, pe->drop_count, i) < 0) {
+            if (ReadLogEnc(&pipes, pe->drop_count, i, oip->n) < 0) {
                 //勝手に死んだ...
                 ret |= AUO_RESULT_ERROR; error_videnc_failed(pe);
                 break;
@@ -1022,12 +1022,12 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
         //エンコーダ終了待機
         while (WaitForSingleObject(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
-            read_log_enc_all(&pipes, pe->drop_count, i);
+            read_log_enc_all(&pipes, pe->drop_count, i, oip->n);
 
         DWORD tm_vid_enc_fin = timeGetTime();
 
         //最後にメッセージを取得
-        while (read_log_enc_all(&pipes, pe->drop_count, i) > 0);
+        while (read_log_enc_all(&pipes, pe->drop_count, i, oip->n) > 0);
 
         if (!(ret & AUO_RESULT_ERROR) && afs)
             write_log_auo_line_fmt(LOG_INFO, "drop %d / %d frames", pe->drop_count, i);
