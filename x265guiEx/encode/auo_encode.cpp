@@ -746,6 +746,8 @@ void set_enc_prm(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SY
     pe->video_out_type = check_video_ouput(conf, oip);
     pe->total_pass = get_total_path(conf);
     pe->amp_pass_limit = pe->total_pass + sys_dat->exstg->s_local.amp_retry_limit;
+    pe->amp_reset_pass_count = 0;
+    pe->amp_reset_pass_limit = sys_dat->exstg->s_local.amp_retry_limit;
     pe->current_pass = 1;
     pe->drop_count = 0;
     memcpy(&pe->append, &sys_dat->exstg->s_append, sizeof(FILE_APPENDIX));

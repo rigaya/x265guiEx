@@ -56,9 +56,11 @@ typedef struct {
     AUD_PARALLEL_ENC aud_parallel;         //音声並列処理の管理
     int video_out_type;                    //出力する動画のフォーマット(拡張子により判断)
     int muxer_to_be_used;                  //使用するmuxerのインデックス
-    int current_pass;                      //現在の動画エンコパス数
-    int total_pass;                        //最大動画エンコパス数
+    int current_pass;                      //現在の動画エンコーダのパス数
+    int total_pass;                        //最大動画エンコーダパス数
     int amp_pass_limit;                    //自動マルチパス時に再エンコードをトライするときのパス数上限
+    int amp_reset_pass_count;              //下限ビットレート指定で再設定をやり直した回数
+    int amp_reset_pass_limit;              //下限ビットレート指定で再設定をやり直す上限
     int drop_count;                        //ドロップ数
     BOOL afs_init;                         //動画入力の準備ができているか
     HANDLE h_p_aviutl;                     //優先度取得用のAviutlのハンドル
@@ -76,7 +78,7 @@ typedef struct {
 
 typedef struct {
     BOOL init;
-    char auo_path[MAX_PATH_LEN];    //x265guiEx.auoのフルパス
+    char auo_path[MAX_PATH_LEN];    //auoのフルパス
     char aviutl_dir[MAX_PATH_LEN];  //Aviutlのディレクトリ(\無し)
     guiEx_settings *exstg;          //ini設定
 } SYSTEM_DATA;
