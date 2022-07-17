@@ -94,14 +94,14 @@ static const char * const specify_csp[] = {
 };
 //文字列を引数にとるオプションの引数リスト
 //OUT_CSP_NV12, OUT_CSP_YUV444, OUT_CSP_RGB に合わせる
-const X265_OPTION_STR list_output_csp_x264[] = {
+const ENC_OPTION_STR list_output_csp_x264[] = {
     { "i420", L"i420" },
     { "i422", L"i422" },
     { "i444", L"i444" },
     { "rgb",  L"rgb"  },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_output_csp_x265[] = {
+const ENC_OPTION_STR list_output_csp_x265[] = {
     { "i420", L"i420" },
     { "i422", L"i422" },
     { "i444", L"i444" },
@@ -111,32 +111,32 @@ const X265_OPTION_STR list_output_csp_x265[] = {
     { "i422", L"i422" },
     { NULL, NULL },
 };
-const X265_OPTION_STR list_aq[] = {
+const ENC_OPTION_STR list_aq[] = {
     { NULL, L"none"              },
     { NULL, L"VAQ"               },
     { NULL, L"AutoVAQ"           },
     { NULL, L"AutoVAQ(暗部保護)" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_weightp[] = {
+const ENC_OPTION_STR list_weightp[] = {
     { NULL, L"Disabled" },
     { NULL, L"Simple"   },
     { NULL, L"Smart"    },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_b_adpat[] = {
+const ENC_OPTION_STR list_b_adpat[] = {
     { NULL, L"無効" },
     { NULL, L"簡易" },
     { NULL, L"完全" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_trellis[] = {
+const ENC_OPTION_STR list_trellis[] = {
     { NULL, L"Disabled"        },
     { NULL, L"Final MB encode" },
     { NULL, L"All"             },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_me_x264[] = {
+const ENC_OPTION_STR list_me_x264[] = {
     { "dia",  L"Diamond Search (高速)" },
     { "hex",  L"Hexagonal Search"      },
     { "umh",  L"Uneven Multi-Hexagon"  },
@@ -144,7 +144,7 @@ const X265_OPTION_STR list_me_x264[] = {
     { "tesa", L"Hadamard ESA (低速)"   },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_subme[] = {
+const ENC_OPTION_STR list_subme[] = {
     { NULL, L" 0 (fullpell only)"                },
     { NULL, L" 1 (高速)"                         },
     { NULL, L" 2"                                },
@@ -159,31 +159,31 @@ const X265_OPTION_STR list_subme[] = {
     { NULL, L"11 (Full RD)"                      },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_direct[] = {
+const ENC_OPTION_STR list_direct[] = {
     { "none",     L"none"     },
     { "spatial",  L"spatial"  },
     { "temporal", L"temporal" },
     { "auto",     L"auto"     },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_cqm[] = {
+const ENC_OPTION_STR list_cqm[] = {
     { "flat", NULL },
     { "jvt",  NULL },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_input_range[] = {
+const ENC_OPTION_STR list_input_range[] = {
     { "auto", L"auto" },
     { "pc",   L"pc" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_interlace_x265[] = {
+const ENC_OPTION_STR list_interlace_x265[] = {
     { "prog", L"progressive" },
     { "tff",  L"tff" },
     { "bff",  L"bff" },
     { NULL, NULL }
 };
 
-const X265_OPTION_STR list_colorprim[] = {
+const ENC_OPTION_STR list_colorprim[] = {
     { "undef",     L"指定なし"  },
     { "auto",      L"自動"      },
     { "bt709",     L"bt709"     },
@@ -198,7 +198,7 @@ const X265_OPTION_STR list_colorprim[] = {
     { "smpte432",  L"smpte432"  },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_transfer[] = {
+const ENC_OPTION_STR list_transfer[] = {
     { "undef",        L"指定なし"     },
     { "auto",         L"自動"         },
     { "bt709",        L"bt709"        },
@@ -219,12 +219,12 @@ const X265_OPTION_STR list_transfer[] = {
     { "arib-std-b67", L"arib-std-b67" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_range[] = {
+const ENC_OPTION_STR list_range[] = {
     { "limited",      L"limited"     },
     { "full",         L"full"         },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_colormatrix[] = {
+const ENC_OPTION_STR list_colormatrix[] = {
     { "undef",     L"指定なし"  },
     { "auto",      L"自動"      },
     { "bt709",     L"bt709"     },
@@ -242,7 +242,7 @@ const X265_OPTION_STR list_colormatrix[] = {
     { "ictcp",     L"ictcp" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_videoformat[] = {
+const ENC_OPTION_STR list_videoformat[] = {
     { "undef",     L"指定なし"  },
     { "ntsc",      L"ntsc"      },
     { "component", L"component" },
@@ -251,7 +251,7 @@ const X265_OPTION_STR list_videoformat[] = {
     { "mac",       L"mac"       },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_sar_x265[] = {
+const ENC_OPTION_STR list_sar_x265[] = {
     { "undef",     L"undef"     },
     { "1:1",       L"1:1"       },
     { "12:11",     L"12:11"     },
@@ -271,7 +271,7 @@ const X265_OPTION_STR list_sar_x265[] = {
     { "2:1",       L"2:1"       },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_log_type[] = {
+const ENC_OPTION_STR list_log_type[] = {
     { "none",    L"none"    },
     { "error",   L"error"   },
     { "warning", L"warning" },
@@ -279,26 +279,26 @@ const X265_OPTION_STR list_log_type[] = {
     { "debug",   L"debug"   },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_b_pyramid[] = {
+const ENC_OPTION_STR list_b_pyramid[] = {
     { "none",   L"none"   },
     { "strict", L"strict" },
     { "normal", L"normal" },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_nal_hrd[] = {
+const ENC_OPTION_STR list_nal_hrd[] = {
     { "none",   L"使用しない" },
     { "vbr",    L"vbr"        },
     { "cbr",    L"cbr"        },
     { NULL, NULL }
 };
 
-const X265_OPTION_STR list_rd[] = {
+const ENC_OPTION_STR list_rd[] = {
     { NULL, L" 0 - least" },
     { NULL, L" 1" },
     { NULL, L" 2 - full"  },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_me_x265[] = {
+const ENC_OPTION_STR list_me_x265[] = {
     { "dia",  L"Diamond Search (高速)" },
     { "hex",  L"Hexagonal Search"      },
     { "umh",  L"Uneven Multi-Hexagon"  },
@@ -307,7 +307,7 @@ const X265_OPTION_STR list_me_x265[] = {
     { "full", L"Full Search (低速)"    },
     { NULL, NULL }
 };
-const X265_OPTION_STR list_subme_x265[] = {
+const ENC_OPTION_STR list_subme_x265[] = {
     { NULL, L" 0 (高速)"   },
     { NULL, L" 1"          },
     { NULL, L" 2"          },
@@ -447,7 +447,7 @@ typedef struct X265_OPTIONS {
     char *long_name;
     char *short_name;
     DWORD type;
-    const X265_OPTION_STR *list;
+    const ENC_OPTION_STR *list;
     size_t p_offset;
 } X265_OPTIONS;
 
@@ -479,7 +479,7 @@ void build_cmd_from_conf_x264(char *cmd, size_t nSize, const CONF_X265 *conf, co
 void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void set_guiEx_auto_sar(int *sar_x, int *sar_y, int width, int height);
 void apply_guiEx_auto_settings(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level);
-const X265_OPTION_STR * get_option_list_x265(const char *option_name);
+const ENC_OPTION_STR * get_option_list_x265(const char *option_name);
 void set_ex_stg_ptr(guiEx_settings *_ex_stg);
 int get_option_value(const char *cmd_src, const char *target_option_name, char *buffer, size_t nSize);
 

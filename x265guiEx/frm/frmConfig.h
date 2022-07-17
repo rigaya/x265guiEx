@@ -5115,7 +5115,7 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
             NU->Select(0, NU->Text->Length);
         }
     private:
-        System::Void setComboBox(ComboBox^ CX, const X265_OPTION_STR * list) {
+        System::Void setComboBox(ComboBox^ CX, const ENC_OPTION_STR * list) {
             CX->BeginUpdate();
             CX->Items->Clear();
             for (int i = 0; list[i].desc; i++)

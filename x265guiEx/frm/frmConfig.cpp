@@ -1786,7 +1786,7 @@ System::Void frmConfig::SetAllCheckChangedEvents(Control ^top) {
 }
 
 System::Void frmConfig::SetHelpToolTipsColorMatrixX265(Control^ control, const char *type) {
-    const X265_OPTION_STR *list = get_option_list_x265(type);
+    const ENC_OPTION_STR *list = get_option_list_x265(type);
     fcgTTX265->SetToolTip(control,      L"--" + String(type).ToString() + L"\n"
         + L"auto とするとAviutlの色空間「自動」に合わせ\n"
         + L"以下のように設定します。\n"

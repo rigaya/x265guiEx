@@ -474,8 +474,8 @@ void guiEx_settings::load_x26x_cmd(X265_CMD *x26xcmd, int *count, int *default_i
     char *name = s_x26x_mc.SetPrivateProfileString(section, "name", "", ini_fileName);
     s_x26x_mc.CutMem(sizeof(key[0]));
     *count = countchr(name, ',') + 1;
-    x26xcmd->name = (X265_OPTION_STR *)s_x26x_mc.CutMem(sizeof(X265_OPTION_STR) * (*count + 1));
-    ZeroMemory(x26xcmd->name, sizeof(X265_OPTION_STR) * (*count + 1));
+    x26xcmd->name = (ENC_OPTION_STR *)s_x26x_mc.CutMem(sizeof(ENC_OPTION_STR) * (*count + 1));
+    ZeroMemory(x26xcmd->name, sizeof(ENC_OPTION_STR) * (*count + 1));
     x26xcmd->cmd = (char **)s_x26x_mc.CutMem(sizeof(char *) * (*count + 1));
 
     x26xcmd->name[0].name = name;
