@@ -509,6 +509,10 @@ AUO_RESULT audio_output(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, c
     //使用するエンコーダの設定を選択
     const AUDIO_SETTINGS *aud_stg = &sys_dat->exstg->s_aud[conf->aud.encoder];
     pe->aud_count = (aud_stg->mode[conf->aud.enc_mode].use_8bit == 2) ? 2 : 1;
+    //ビットレートモードで指定値が0の場合はデフォルト値を使用する
+    if (aud_stg->mode[conf->aud.enc_mode].bitrate && conf->aud.bitrate == 0) {
+        conf->aud.bitrate = aud_stg->mode[conf->aud.enc_mode].bitrate_default;
+    }
 
     //もし必要なら、オーディオディレイカット用の追加sample数を再計算する
     recalculate_audio_delay_cut_for_afs(conf, oip, pe, aud_stg);
