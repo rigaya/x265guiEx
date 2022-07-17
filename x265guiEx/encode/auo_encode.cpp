@@ -1406,7 +1406,6 @@ void write_cached_lines(int log_level, const char *exename, LOG_CACHE *log_line_
     if (buffer) free(buffer);
 }
 
-
 #include <tlhelp32.h>
 
 static bool check_parent(size_t check_pid, const size_t target_pid, const std::unordered_map<size_t, size_t>& map_pid) {
@@ -1615,8 +1614,6 @@ static std::vector<unique_handle> createProcessHandleList(const std::vector<size
     return handle_list;
 }
 
-#include <filesystem>
-
 static std::vector<std::basic_string<TCHAR>> createProcessOpenedFileList(const std::vector<size_t>& list_pid) {
     const auto list_handle = createProcessHandleList(list_pid, L"File");
     std::vector<std::basic_string<TCHAR>> list_file;
@@ -1642,6 +1639,34 @@ static std::vector<std::basic_string<TCHAR>> createProcessOpenedFileList(const s
     // 不要になった要素を削除
     list_file.erase(result, list_file.end());
     return list_file;
+}
+
+static std::vector<std::wstring> createProcessModuleList() {
+    std::vector<std::wstring> moduleList;
+    const auto currentPID = GetCurrentProcessId();
+    std::unique_ptr<std::remove_pointer<HANDLE>::type, decltype(&CloseHandle)> hProcess(OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, currentPID), CloseHandle);
+    HMODULE hMods[1024];
+    DWORD cbNeeded = 0;
+    if (EnumProcessModules(hProcess.get(), hMods, sizeof(hMods), &cbNeeded)) {
+        for (size_t i = 0; i < (cbNeeded / sizeof(HMODULE)); i++) {
+            wchar_t moduleName[MAX_PATH_LEN] = { 0 };
+            if (GetModuleFileNameExW(hProcess.get(), hMods[i], moduleName, _countof(moduleName))) {
+                moduleList.push_back(moduleName);
+            }
+        }
+    }
+    return moduleList;
+}
+
+bool checkIfModuleLoaded(const wchar_t *moduleName) {
+    const auto moduleList = createProcessModuleList();
+    for (const auto& modulePath : moduleList) {
+        const auto moduleFilename = std::filesystem::path(modulePath).filename().wstring();
+        if (_wcsicmp(moduleName, moduleFilename.c_str()) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 static bool rgy_path_is_same(const TCHAR *path1, const TCHAR *path2) {
@@ -1673,34 +1698,6 @@ static void create_aviutl_opened_file_list(PRM_ENC *pe) {
 static bool check_file_is_aviutl_opened_file(const char *filepath, const PRM_ENC *pe) {
     for (int i = 0; i < pe->n_opened_aviutl_files; i++) {
         if (rgy_path_is_same(filepath, pe->opened_aviutl_files[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-static std::vector<std::wstring> createProcessModuleList() {
-    std::vector<std::wstring> moduleList;
-    const auto currentPID = GetCurrentProcessId();
-    std::unique_ptr<std::remove_pointer<HANDLE>::type, decltype(&CloseHandle)> hProcess(OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, currentPID), CloseHandle);
-    HMODULE hMods[1024];
-    DWORD cbNeeded = 0;
-    if (EnumProcessModules(hProcess.get(), hMods, sizeof(hMods), &cbNeeded)) {
-        for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++) {
-            wchar_t moduleName[MAX_PATH_LEN] = { 0 };
-            if (GetModuleFileNameExW(hProcess.get(), hMods[i], moduleName, _countof(moduleName))) {
-                moduleList.push_back(moduleName);
-            }
-        }
-    }
-    return moduleList;
-}
-
-bool checkIfModuleLoaded(const wchar_t *moduleName) {
-    const auto moduleList = createProcessModuleList();
-    for (const auto& modulePath : moduleList) {
-        const auto moduleFilename = std::filesystem::path(modulePath).filename().wstring();
-        if (_wcsicmp(moduleName, moduleFilename.c_str()) == 0) {
             return true;
         }
     }
