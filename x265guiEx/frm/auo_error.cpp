@@ -159,11 +159,11 @@ void info_afs_audio_delay_confliction() {
 static const char *get_target_limit_name(DWORD target_limit) {
     const char *str_limit = "";
     switch (target_limit) {
-        case AMPLIMIT_BITRATE:
+        case AMPLIMIT_BITRATE_UPPER:
             str_limit = "ビットレート";   break;
         case AMPLIMIT_FILE_SIZE:
             str_limit = "ファイルサイズ"; break;
-        case (AMPLIMIT_BITRATE & AMPLIMIT_FILE_SIZE):
+        case (AMPLIMIT_BITRATE_UPPER & AMPLIMIT_FILE_SIZE):
             str_limit = "ファイルサイズ/ビットレート";   break;
         default: break;
     }
@@ -531,7 +531,7 @@ void info_amp_result(DWORD status, int amp_result, UINT64 filesize, double file_
     write_log_auo_line_fmt(    log_index, "出力ファイルサイズ %.2f MB, ファイルビットレート %.2f kbps", filesize / (double)(1024*1024), file_bitrate);
     if (status & AMPLIMIT_FILE_SIZE)
         write_log_auo_line_fmt(log_index, "上限ファイルサイズ %.2f MB を上回ってしまいました。", limit_filesize);
-    if (status & AMPLIMIT_BITRATE)
+    if (status & AMPLIMIT_BITRATE_UPPER)
         write_log_auo_line_fmt(log_index, "上限ファイルビットレート %.2f kbps を上回ってしまいました。", limit_filebitrate);
     if (status && amp_result)
         if (amp_result == 2)

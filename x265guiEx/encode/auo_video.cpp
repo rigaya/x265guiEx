@@ -707,9 +707,9 @@ static UINT64 get_amp_filesize_limit(const CONF_GUIEX *conf, const OUTPUT_INFO *
             filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp_limit_file_size*1024*1024));
         }
         //上限ビットレートのチェック
-        if (conf->vid.amp_check & AMPLIMIT_BITRATE) {
+        if (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) {
             const double duration = get_duration(conf, sys_dat, pe, oip);
-            filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp_limit_bitrate * 1000 / 8 * duration));
+            filesize_limit = min(filesize_limit, (UINT64)(conf->vid.amp_limit_bitrate_upper * 1000 / 8 * duration));
         }
     }
     //音声のサイズはここでは考慮しない
@@ -1176,9 +1176,9 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
             return AUO_RESULT_ERROR;
         }
         aud_bitrate = aud_filesize * 8.0 / 1000.0 / duration;
-        if ((conf->vid.amp_check & AMPLIMIT_BITRATE) &&
-            aud_bitrate >= conf->vid.amp_limit_bitrate) {
-            error_amp_aud_too_big(AMPLIMIT_BITRATE);
+        if ((conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) &&
+            aud_bitrate >= conf->vid.amp_limit_bitrate_upper) {
+            error_amp_aud_too_big(AMPLIMIT_BITRATE_UPPER);
             return AUO_RESULT_ERROR;
         }
     }
@@ -1191,10 +1191,10 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
         target_limit = AMPLIMIT_FILE_SIZE;
     }
     //上限ビットレートのチェック
-    if ((conf->vid.amp_check & AMPLIMIT_BITRATE) &&
-        required_file_bitrate > conf->vid.amp_limit_bitrate) {
-        required_file_bitrate = conf->vid.amp_limit_bitrate;
-        target_limit = AMPLIMIT_BITRATE;
+    if ((conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) &&
+        required_file_bitrate > conf->vid.amp_limit_bitrate_upper) {
+        required_file_bitrate = conf->vid.amp_limit_bitrate_upper;
+        target_limit = AMPLIMIT_BITRATE_UPPER;
     }
     double required_vid_bitrate = get_amp_margin_bitrate(required_file_bitrate - aud_bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi);
     //あまりにも計算したビットレートが小さすぎたらエラーを出す

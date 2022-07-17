@@ -18,7 +18,7 @@
 typedef struct {
     DWORD amp_check;            //チェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
     double amp_limit_file_size; //ファイルサイズ制限(MB)
-    double amp_limit_bitrate;   //ビットレート制限(kbps)
+    double amp_limit_bitrate_upper;   //ビットレート制限(kbps)
 } CONF_AMP;
 
 typedef struct {
@@ -74,7 +74,7 @@ void guiEx_config::convert_x26xstg_to_x265stgv4(CONF_GUIEX *conf, const void *da
     COPY_VID_STR(cmdex);
     COPY_AMP_VALUE(amp_check);
     COPY_AMP_VALUE(amp_limit_file_size);
-    COPY_AMP_VALUE(amp_limit_bitrate);
+    COPY_AMP_VALUE(amp_limit_bitrate_upper);
     COPY_VID_VALUE(input_as_lw48);
 #undef COPY_VID_VALUE
 #undef COPY_AMP_VALUE

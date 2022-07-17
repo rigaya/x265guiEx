@@ -77,8 +77,8 @@ enum {
 const int CMDEX_MAX_LEN = 2048;    //追加コマンドラインの最大長
 
 enum {
-    AMPLIMIT_FILE_SIZE = 0x01, //自動マルチパス時、ファイルサイズのチェックを行う
-    AMPLIMIT_BITRATE   = 0x02, //自動マルチパス時、ビットレートのチェックを行う
+    AMPLIMIT_FILE_SIZE     = 0x01, //自動マルチパス時、ファイルサイズのチェックを行う
+    AMPLIMIT_BITRATE_UPPER = 0x02, //自動マルチパス時、ビットレート上限のチェックを行う
 };
 
 enum {
@@ -103,7 +103,7 @@ static const char *const AUDIO_DELAY_CUT_MODE[] = {
 };
 
 #pragma pack(push,4)
-typedef struct {
+typedef struct CONF_VIDEO {
     BOOL   afs;                      //自動フィールドシフトの使用
     BOOL   afs_bitrate_correction;   //afs & 2pass時、ドロップ数に応じてビットレートを補正
     BOOL   auo_tcfile_out;           //auo側でタイムコードを出力する
@@ -116,7 +116,7 @@ typedef struct {
     DWORD  amp_check;                //自動マルチパス時のチェックの種類(AMPLIMIT_FILE_SIZE/AMPLIMIT_BITRATE)
     int    reserved3;                //
     double amp_limit_file_size;      //自動マルチパス時のファイルサイズ制限(MB)
-    double amp_limit_bitrate;        //自動マルチパス時のビットレート制限(kbps)
+    double amp_limit_bitrate_upper;  //自動マルチパス時のビットレート制限(kbps)
     BOOL   input_as_lw48;            //LW48モード
     char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
     char   analysis_file[MAX_PATH_LEN]; //x265用ステータスファイルの場所
@@ -200,7 +200,6 @@ public:
     static int  save_guiEx_conf(const CONF_GUIEX *conf, const char *stg_file); //設定をstgファイルとして保存
 };
 
-//定義はx265guiEx.cpp
 void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit); //初期化し、x264設定のデフォルトを設定
 
 //出力ファイルの拡張子フィルタを作成

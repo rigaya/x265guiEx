@@ -279,13 +279,13 @@ static BOOL check_amp(CONF_GUIEX *conf) {
     BOOL check = TRUE;
     if (!conf->enc.use_auto_npass)
         return check;
-    if (conf->vid.amp_check & AMPLIMIT_BITRATE) {
+    if (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) {
         //if (conf->x264.bitrate > conf->vid.amp_limit_bitrate) {
         //    check = FALSE; error_amp_bitrate_confliction();
         //} else if (conf->vid.amp_limit_bitrate <= 0.0)
         //    conf->vid.amp_check &= ~AMPLIMIT_BITRATE; //フラグを折る
-        if (conf->vid.amp_limit_bitrate <= 0.0)
-            conf->vid.amp_check &= ~AMPLIMIT_BITRATE; //フラグを折る
+        if (conf->vid.amp_limit_bitrate_upper <= 0.0)
+            conf->vid.amp_check &= ~AMPLIMIT_BITRATE_UPPER; //フラグを折る
     }
     if (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) {
         if (conf->vid.amp_limit_file_size <= 0.0)
@@ -1322,8 +1322,8 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
     if ((conf->vid.amp_check & AMPLIMIT_FILE_SIZE) && filesize > conf->vid.amp_limit_file_size * 1024*1024)
         status |= AMPLIMIT_FILE_SIZE;
     //ビットレートのチェックを行う
-    if ((conf->vid.amp_check & AMPLIMIT_BITRATE) && file_bitrate > conf->vid.amp_limit_bitrate)
-        status |= AMPLIMIT_BITRATE;
+    if ((conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) && file_bitrate > conf->vid.amp_limit_bitrate_upper)
+        status |= AMPLIMIT_BITRATE_UPPER;
 
     BOOL retry = (status && pe->current_pass < pe->amp_pass_limit);
     BOOL show_header = FALSE;
@@ -1333,12 +1333,12 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
         //muxerを再設定する
         pe->muxer_to_be_used = check_muxer_to_be_used(conf, sys_dat, pe->temp_filename, pe->video_out_type, (oip->flag & OUTPUT_INFO_FLAG_AUDIO) != 0);
         //音声がビットレートモードなら音声再エンコによる調整を検討する
-        double limit_bitrate = DBL_MAX;
+        double limit_bitrate_upper = DBL_MAX;
         if (status & AMPLIMIT_FILE_SIZE)
-            limit_bitrate = min(limit_bitrate, (conf->vid.amp_limit_file_size * 1024*1024)*8.0/1000 / duration);
-        if (status & AMPLIMIT_BITRATE)
-            limit_bitrate = min(limit_bitrate, conf->vid.amp_limit_bitrate);
-        const double bitrate_delta = file_bitrate - limit_bitrate;
+            limit_bitrate_upper = min(limit_bitrate_upper, (conf->vid.amp_limit_file_size * 1024*1024)*8.0/1000 / duration);
+        if (status & AMPLIMIT_BITRATE_UPPER)
+            limit_bitrate_upper = min(limit_bitrate_upper, conf->vid.amp_limit_bitrate_upper);
+        const double bitrate_delta = file_bitrate - limit_bitrate_upper;
         const AUDIO_SETTINGS *aud_stg = &sys_dat->exstg->s_aud[conf->aud.encoder];
         if ((oip->flag & OUTPUT_INFO_FLAG_AUDIO)
             && aud_stg->mode[conf->aud.enc_mode].bitrate
@@ -1380,7 +1380,7 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
                 //再エンコ時は現在の目標ビットレートより少し下げたレートでエンコーダを行う
                 //3通りの方法で計算してみる
                 double margin_bitrate = get_amp_margin_bitrate(conf->enc.bitrate, sys_dat->exstg->s_local.amp_bitrate_margin_multi * 0.5);
-                double bitrate_limit  = (conf->vid.amp_check & AMPLIMIT_BITRATE)   ? conf->enc.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate) : conf->enc.bitrate;
+                double bitrate_limit  = (conf->vid.amp_check & AMPLIMIT_BITRATE_UPPER)   ? conf->enc.bitrate - 0.5 * (file_bitrate - conf->vid.amp_limit_bitrate_upper) : conf->enc.bitrate;
                 double filesize_limit = (conf->vid.amp_check & AMPLIMIT_FILE_SIZE) ? conf->enc.bitrate - 0.5 * ((filesize - conf->vid.amp_limit_file_size*1024*1024))* 8.0/1000.0 / get_duration(conf, sys_dat, pe, oip) : conf->enc.bitrate;
                 conf->enc.bitrate = (int)(0.5 + min(margin_bitrate, min(bitrate_limit, filesize_limit)));
             }
@@ -1389,7 +1389,7 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
                 amp_move_old_file(muxout, oip->savefile);
         }
     }
-    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate, pe->current_pass - conf->enc.use_auto_npass, (amp_result == 2) ? conf->aud.bitrate : conf->enc.bitrate);
+    info_amp_result(status, amp_result, filesize, file_bitrate, conf->vid.amp_limit_file_size, conf->vid.amp_limit_bitrate_upper, pe->current_pass - conf->enc.use_auto_npass, (amp_result == 2) ? conf->aud.bitrate : conf->enc.bitrate);
 
     if (show_header)
         open_log_window(oip->savefile, sys_dat, pe->current_pass, pe->total_pass);

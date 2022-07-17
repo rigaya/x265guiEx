@@ -1306,10 +1306,10 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
             break;
     }
     fcgCXX265Mode_SelectedIndexChanged(nullptr, nullptr); //こいつをやっとかないと更新されないこともある
-    fcgCBAMPLimitBitrate->Checked  = (cnf->vid.amp_check & AMPLIMIT_BITRATE) != 0;
+    fcgCBAMPLimitBitrate->Checked  = (cnf->vid.amp_check & AMPLIMIT_BITRATE_UPPER) != 0;
     fcgCBAMPLimitFileSize->Checked = (cnf->vid.amp_check & AMPLIMIT_FILE_SIZE) != 0;
     SetNUValue(fcgNUAMPLimitFileSize, cnf->vid.amp_limit_file_size);
-    SetNUValue(fcgNUAMPLimitBitrate,  cnf->vid.amp_limit_bitrate);
+    SetNUValue(fcgNUAMPLimitBitrate,  cnf->vid.amp_limit_bitrate_upper);
 
     SetCXIndex(fcgCXPreset,           cx265->preset);
     SetCXIndex(fcgCXTune,             cx265->tune);
@@ -1477,9 +1477,9 @@ System::Void frmConfig::FrmToConf(CONF_GUIEX *cnf) {
     cnf->enc.use_auto_npass       = cnf_fcgTemp->use_auto_npass;
     cnf->enc.auto_npass           = (int)fcgNUAutoNPass->Value;
     cnf->vid.amp_check             = NULL;
-    cnf->vid.amp_check            |= fcgCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE : NULL;
+    cnf->vid.amp_check            |= fcgCBAMPLimitBitrate->Checked ? AMPLIMIT_BITRATE_UPPER : NULL;
     cnf->vid.amp_check            |= fcgCBAMPLimitFileSize->Checked ? AMPLIMIT_FILE_SIZE : NULL;
-    cnf->vid.amp_limit_bitrate     = (double)fcgNUAMPLimitBitrate->Value;
+    cnf->vid.amp_limit_bitrate_upper     = (double)fcgNUAMPLimitBitrate->Value;
     cnf->vid.amp_limit_file_size   = (double)fcgNUAMPLimitFileSize->Value;
     cnf->enc.preset               = fcgCXPreset->SelectedIndex;
     cnf->enc.tune                 = fcgCXTune->SelectedIndex;
