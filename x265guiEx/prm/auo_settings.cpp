@@ -469,7 +469,7 @@ void guiEx_settings::load_fn_replace() {
     }
 }
 
-void guiEx_settings::load_x26x_cmd(X265_CMD *x26xcmd, int *count, int *default_index, const char *section) {
+void guiEx_settings::load_x26x_cmd(ENC_CMD *x26xcmd, int *count, int *default_index, const char *section) {
     char key[INI_KEY_MAX_LEN];
     char *name = s_x26x_mc.SetPrivateProfileString(section, "name", "", ini_fileName);
     s_x26x_mc.CutMem(sizeof(key[0]));
@@ -514,7 +514,7 @@ void guiEx_settings::load_x26x() {
     static const char *INI_SECTION_X26X_TUNE[2]    = { INI_SECTION_X264_TUNE,    INI_SECTION_X265_TUNE    };
     static const char *INI_SECTION_X26X_PROFILE[2] = { INI_SECTION_X264_PROFILE, INI_SECTION_X265_PROFILE };
 
-    X265_SETTINGS *s_x26x[2] = { &s_x264, &s_x265 };
+    ENC_SETTINGS *s_x26x[2] = { &s_x264, &s_x265 };
 
     for (int i_enctype = 0; i_enctype < 2; i_enctype++) {
         s_x26x[i_enctype]->filename            = s_x26x_mc.SetPrivateProfileString(INI_SECTION_X26X_DEFAULT[i_enctype], "filename", (i_enctype) ? "x265" : "x264", ini_fileName);

@@ -236,14 +236,14 @@ typedef struct MUXER_SETTINGS {
     int post_mux;                 //muxerを実行したあとに別のmuxerを実行する
 } MUXER_SETTINGS;
 
-typedef struct X265_CMD {
-    ENC_OPTION_STR *name;  //各種設定用x265コマンドの名前(配列、最後はnull)
-    char **cmd;   //各種設定用x265コマンド(配列、最後はnull)
-} X265_CMD;
+typedef struct ENC_CMD {
+    ENC_OPTION_STR *name;  //各種設定用動画エンコーダのコマンドの名前(配列、最後はnull)
+    char **cmd;   //各種設定用動画エンコーダのコマンド(配列、最後はnull)
+} ENC_CMD;
 
-typedef struct X265_SETTINGS {
-    char *filename;                      //x264/x265のファイル名
-    char fullpath[MAX_PATH_LEN];         //x264/x265の場所(フルパス)
+typedef struct ENC_SETTINGS {
+    char *filename;                      //動画エンコーダのファイル名
+    char fullpath[MAX_PATH_LEN];         //動画エンコーダの場所(フルパス)
     char fullpath_highbit[MAX_PATH_LEN]; //x264/x265の場所(フルパス) highbit用
     char *default_cmd;                   //デフォルト設定用コマンドライン
     char *default_cmd_highbit;           //highbit depthデフォルト設定用追加コマンドライン
@@ -254,11 +254,11 @@ typedef struct X265_SETTINGS {
     int default_preset;                  //デフォルトpresetのインデックス
     int default_tune;                    //デフォルトtuneのインデックス
     int default_profile;                 //デフォルトprofileのインデックス
-    X265_CMD preset;                     //presetコマンドライン集
-    X265_CMD tune;                       //tuneコマンドライン集
-    X265_CMD profile;                    //profileコマンドライン集
+    ENC_CMD preset;                     //presetコマンドライン集
+    ENC_CMD tune;                       //tuneコマンドライン集
+    ENC_CMD profile;                    //profileコマンドライン集
     float *profile_vbv_multi;            //profileによるvbv倍率
-} X265_SETTINGS;
+} ENC_SETTINGS;
 
 typedef struct FILENAME_REPLACE {
     char *from; //置換元文字列
@@ -334,9 +334,9 @@ typedef struct FILE_APPENDIX {
     char wav[MAX_APPENDIX_LEN];        //一時wavファイル名に追加する文字列
 } FILE_APPENDIX;
 
-typedef X265_SETTINGS   X264_SETTINGS;
+typedef ENC_SETTINGS   X264_SETTINGS;
 typedef ENC_OPTION_STR X264_OPTION_STR;
-typedef X265_CMD        X264_CMD;
+typedef ENC_CMD        X264_CMD;
 
 class guiEx_settings {
 private:
@@ -374,7 +374,7 @@ public:
     AUDIO_SETTINGS *s_aud;           //音声エンコーダの設定
     MUXER_SETTINGS *s_mux;           //muxerの設定
     X264_SETTINGS  s_x264;           //x264関連の設定
-    X265_SETTINGS  s_x265;           //x265関連の設定
+    ENC_SETTINGS  s_x265;           //x265関連の設定
     LOCAL_SETTINGS s_local;          //ファイルの場所等
     std::vector<FILENAME_REPLACE> fn_rep;  //一時ファイル名置換
     LOG_WINDOW_SETTINGS s_log;       //ログウィンドウ関連の設定
