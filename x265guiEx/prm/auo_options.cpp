@@ -1012,14 +1012,14 @@ static void parse_arg(char *cmd, size_t cmd_len, std::vector<CMD_ARG> &cmd_arg_l
 }
 
 static void set_setting_list() {
-    if (ex_stg->get_reset_s_x265_referesh()) {
+    if (ex_stg->get_reset_s_enc_referesh()) {
         for (DWORD i = 0, check = 0x00; check != (0x04|0x02|0x01) && x265_options_table[i].long_name; i++) {
             if        (!(check & 0x01) && strcmp(x265_options_table[i].long_name, "preset") == NULL) {
-                check |= 0x01; x265_options_table[i].list = ex_stg->s_x265.preset.name;
+                check |= 0x01; x265_options_table[i].list = ex_stg->s_enc.preset.name;
             } else if (!(check & 0x02) && strcmp(x265_options_table[i].long_name, "tune") == NULL) {
-                check |= 0x02; x265_options_table[i].list = ex_stg->s_x265.tune.name;
+                check |= 0x02; x265_options_table[i].list = ex_stg->s_enc.tune.name;
             } else if (!(check & 0x04) && strcmp(x265_options_table[i].long_name, "profile") == NULL) {
-                check |= 0x04; x265_options_table[i].list = ex_stg->s_x265.profile.name;
+                check |= 0x04; x265_options_table[i].list = ex_stg->s_enc.profile.name;
             }
         }
     }
@@ -1121,26 +1121,26 @@ void set_cmd_to_conf(const char *cmd_src, CONF_X265 *conf_set) {
 
 void get_default_conf(CONF_X265 *conf_set, BOOL use_highbit) {
     ZeroMemory(conf_set, sizeof(CONF_X265));
-    set_cmd_to_conf(ex_stg->s_x265.default_cmd, conf_set);
+    set_cmd_to_conf(ex_stg->s_enc.default_cmd, conf_set);
     if (use_highbit)
-        set_cmd_to_conf(ex_stg->s_x265.default_cmd_highbit, conf_set);
+        set_cmd_to_conf(ex_stg->s_enc.default_cmd_highbit, conf_set);
 
     apply_presets(conf_set);
 }
 
 void set_preset_to_conf(CONF_X265 *conf_set, int preset_index) {
-    if (ex_stg->s_x265.preset.name[preset_index].name)
-        set_cmd_to_conf(ex_stg->s_x265.preset.cmd[preset_index], conf_set);
+    if (ex_stg->s_enc.preset.name[preset_index].name)
+        set_cmd_to_conf(ex_stg->s_enc.preset.cmd[preset_index], conf_set);
 }
 
 void set_tune_to_conf(CONF_X265 *conf_set, int tune_index) {
-    if (ex_stg->s_x265.tune.name[tune_index].name)
-        set_cmd_to_conf(ex_stg->s_x265.tune.cmd[tune_index], conf_set);
+    if (ex_stg->s_enc.tune.name[tune_index].name)
+        set_cmd_to_conf(ex_stg->s_enc.tune.cmd[tune_index], conf_set);
 }
 
 void set_profile_to_conf(CONF_X265 *conf_set, int profile_index) {
-    if (ex_stg->s_x265.profile.name[profile_index].name)
-        set_cmd_to_conf(ex_stg->s_x265.profile.cmd[profile_index], conf_set);
+    if (ex_stg->s_enc.profile.name[profile_index].name)
+        set_cmd_to_conf(ex_stg->s_enc.profile.cmd[profile_index], conf_set);
 }
 
 void apply_presets(CONF_X265 *conf_set) {
