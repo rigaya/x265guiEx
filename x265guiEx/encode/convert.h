@@ -27,8 +27,11 @@ typedef struct {
 typedef struct {
     int   count;       //planarの枚数。packedなら1
     BYTE *data[3];     //planarの先頭へのポインタ
-    int   w[3], h[3], pitch[3], size[3];  //planarのサイズ
+    int   size[3];     //planarのサイズ
+#if ENCODER_X265
+    int   w[3], h[3], pitch[3];
     int byte_per_pixel;
+#endif
     int   total_size;  //全planarのサイズの総和
 } CONVERT_CF_DATA;
 
