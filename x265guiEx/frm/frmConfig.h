@@ -5432,7 +5432,9 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
         }
     private:
         System::Void SetCXIndex(ComboBox^ CX, int index) {
-            CX->SelectedIndex = clamp(index, 0, CX->Items->Count - 1);
+            if (CX->Items->Count > 0) {
+                CX->SelectedIndex = clamp(index, 0, CX->Items->Count - 1);
+            }
         }
     private:
         System::Void SetNUValue(NumericUpDown^ NU, Decimal d) {
@@ -5648,6 +5650,7 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
                 LocalStg.MP4MuxerPath = L"";
                 fcgTXMP4MuxerPath->ForeColor = getTextBoxForeColor(themeMode, dwStgReader, DarkenWindowState::Disabled);
             } else {
+                fcgTXMP4MuxerPath->ForeColor = getTextBoxForeColor(themeMode, dwStgReader, DarkenWindowState::Normal);
                 LocalStg.MP4MuxerPath = fcgTXMP4MuxerPath->Text;
                 fcgBTMP4MuxerPath->ContextMenuStrip = (File::Exists(fcgTXMP4MuxerPath->Text)) ? fcgCSExeFiles : nullptr;
             }
@@ -5726,10 +5729,10 @@ private: System::Windows::Forms::Panel^  fcgPNHideToolStripBorder;
     private:
         System::Void fcgInsertDragDropFilename_Enter(System::Object^  sender, DragEventArgs^  e) {
             e->Effect = (   e->Data->GetDataPresent(DataFormats::FileDrop)
-                || e->Data->GetDataPresent(DataFormats::Text)
-                || e->Data->GetDataPresent(DataFormats::UnicodeText)
-                || e->Data->GetDataPresent(DataFormats::Rtf)
-                || e->Data->GetDataPresent(DataFormats::Html)) ? DragDropEffects::Copy : DragDropEffects::None;
+                         || e->Data->GetDataPresent(DataFormats::Text)
+                         || e->Data->GetDataPresent(DataFormats::UnicodeText)
+                         || e->Data->GetDataPresent(DataFormats::Rtf)
+                         || e->Data->GetDataPresent(DataFormats::Html)) ? DragDropEffects::Copy : DragDropEffects::None;
         }
     private:
         System::Void fcgInsertDragDropFilename_DragOver(System::Object^  sender, DragEventArgs^  e) {
