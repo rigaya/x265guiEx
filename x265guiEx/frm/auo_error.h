@@ -43,7 +43,6 @@ void error_failed_to_open_tempdir(const char *temp_dir, const char *mesBuffer, c
 void error_failed_to_open_tempfile(const char *temp_filename, const char *mesBuffer, const DWORD err);
 void error_nothing_to_output();
 void error_output_zero_frames();
-void error_file_is_already_opened_by_aviutl();
 void error_amp_bitrate_confliction();
 void error_amp_afs_audio_delay_confliction();
 void info_afs_audio_delay_confliction();
