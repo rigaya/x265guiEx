@@ -57,6 +57,7 @@
 #include "auo_system.h"
 #include "auo_version.h"
 #include "auo_chapter.h"
+#include "auo_mes.h"
 
 #include "auo_encode.h"
 #include "auo_video.h"
@@ -95,6 +96,7 @@ int get_aviutl_color_format(int bit_depth, int output_csp, int input_as_lw48) {
         case OUT_CSP_YUY2:
         case OUT_CSP_YV12:
         case OUT_CSP_YUV422:
+        case OUT_CSP_YUV400:
         default:
             return (bit_depth > 8) ? cf_aviutl_pixel48 : CF_YUY2;
     }
@@ -211,7 +213,7 @@ static AUO_RESULT tcfile_out(int *jitter, int frame_n, double fps, BOOL afs, con
 static AUO_RESULT set_keyframe_from_aviutl(std::vector<int> *keyframe_list, const OUTPUT_INFO *oip) {
     AUO_RESULT ret = AUO_RESULT_SUCCESS;
     const int prev_chap_count = keyframe_list->size();
-    const char * const MES_SEARCH_KEYFRAME = "Aviutl キーフレーム検出中…";
+    const wchar_t * const MES_SEARCH_KEYFRAME = g_auo_mes.get(AUO_VIDEO_KEY_FRAME_DETECTION_START);
     DWORD tm = 0, tm_prev = 0;
     set_window_title(MES_SEARCH_KEYFRAME, PROGRESSBAR_CONTINUOUS);
 
@@ -219,7 +221,7 @@ static AUO_RESULT set_keyframe_from_aviutl(std::vector<int> *keyframe_list, cons
     for (int i = 0; i < oip->n; i++) {
         //中断
         if (oip->func_is_abort()) {
-            ret |= AUO_RESULT_ABORT; write_log_auo_line(LOG_INFO, "Aviutl キーフレーム検出を中断しました。");
+            ret |= AUO_RESULT_ABORT; write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_KEY_FRAME_ABORT));
             break;
         }
         //フラグ検出
@@ -232,7 +234,7 @@ static AUO_RESULT set_keyframe_from_aviutl(std::vector<int> *keyframe_list, cons
         }
     }
     set_window_title(MES_SEARCH_KEYFRAME, PROGRESSBAR_DISABLED);
-    write_log_auo_line_fmt(LOG_INFO, "Aviutlから %d箇所 キーフレーム設定を検出しました。", keyframe_list->size() - prev_chap_count);
+    write_log_auo_line_fmt(LOG_INFO, g_auo_mes.get(AUO_VIDEO_KEY_FRAME_DETECT_RESULT), keyframe_list->size() - prev_chap_count);
     return ret;
 }
 
@@ -241,7 +243,7 @@ static AUO_RESULT set_keyframe_from_chapter(std::vector<int> *keyframe_list, con
     //mux設定がなければスキップ
     if (pe->muxer_to_be_used == MUXER_DISABLED) {
         //スキップ
-        write_log_auo_line(LOG_INFO, "使用するmuxerが設定されていないため、チャプターからのキーフレーム検出は行いません。");
+        write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_NO_MUXER));
     } else {
         //チャプターファイル名作成
         char chap_file[MAX_PATH_LEN] = { 0 };
@@ -252,13 +254,13 @@ static AUO_RESULT set_keyframe_from_chapter(std::vector<int> *keyframe_list, con
 
         chapter_file chapter;
         if (!str_has_char(chap_file) || !PathFileExists(chap_file)) {
-            write_log_auo_line(LOG_INFO, "チャプターファイルが存在しません。");
+            write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_NO_CHAPTER));
         //チャプターリストを取得
         } else if (AUO_CHAP_ERR_NONE != chapter.read_file(chap_file, CODE_PAGE_UNSET, 0.0)) {
-            ret |= AUO_RESULT_ERROR; write_log_auo_line(LOG_WARNING, "チャプターファイルからチャプター設定を読み取れませんでした。");
+            ret |= AUO_RESULT_ERROR; write_log_auo_line(LOG_WARNING, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_NO_CHAPTER));
         //チャプターがない場合
         } else if (0 == chapter.chapters.size()) {
-            write_log_auo_line(LOG_WARNING, "チャプターファイルからチャプター設定を読み取れませんでした。");
+            write_log_auo_line(LOG_WARNING, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_CHAPTER_READ_ERROR));
         } else {
             const double fps = oip->rate / (double)oip->scale;
             //QPファイルを出力
@@ -267,7 +269,7 @@ static AUO_RESULT set_keyframe_from_chapter(std::vector<int> *keyframe_list, con
                 int i_frame = (int)(chap_time_s * fps + 0.5);
                 keyframe_list->push_back(i_frame);
             }
-            write_log_auo_line_fmt(LOG_INFO, "チャプターファイルから %d箇所 キーフレーム設定を行いました。", chapter.chapters.size());
+            write_log_auo_line_fmt(LOG_INFO, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_RESULT), chapter.chapters.size());
         }
     }
     return ret;
@@ -306,7 +308,7 @@ static AUO_RESULT adjust_keyframe_as_afs_24fps(std::vector<int> &keyframe_list, 
 #endif
     //24fps化を仮定して設定し直す
     keyframe_list.clear();
-    const char * const MES_CHAPTER_AFS_ADJUST = "チャプター 補正計算中(afs 24fps化)...";
+    const wchar_t * const MES_CHAPTER_AFS_ADJUST = g_auo_mes.get(AUO_VIDEO_CHAPTER_AFS_ADJUST_START);
     set_window_title(MES_CHAPTER_AFS_ADJUST, PROGRESSBAR_CONTINUOUS);
 
     int last_chapter = 0;
@@ -319,7 +321,7 @@ static AUO_RESULT adjust_keyframe_as_afs_24fps(std::vector<int> &keyframe_list, 
             drop_count += !!drop;
             //中断
             if (oip->func_is_abort()) {
-                ret |= AUO_RESULT_ABORT; write_log_auo_line(LOG_INFO, "Aviutl キーフレーム検出を中断しました。");
+                ret |= AUO_RESULT_ABORT; write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_KEY_FRAME_ABORT));
                 break;
             }
             //進捗表示
@@ -335,7 +337,7 @@ static AUO_RESULT adjust_keyframe_as_afs_24fps(std::vector<int> &keyframe_list, 
         keyframe_list.push_back(4*check_start/5 + (keyframe - check_start) - drop_count);
     }
     set_window_title(MES_CHAPTER_AFS_ADJUST, PROGRESSBAR_DISABLED);
-    write_log_auo_line(LOG_INFO, "チャプター 補正計算(afs 24fps化)が完了しました。");
+    write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_CHAPTER_AFS_ADJUST_FIN));
     return ret;
 }
 
@@ -365,7 +367,7 @@ static AUO_RESULT set_keyframe(const CONF_GUIEX *conf, const OUTPUT_INFO *oip, c
     if (ret) {
         //エラーないし中断
     } else if (!keyframe_list.size()) {
-        write_log_auo_line(LOG_INFO, "キーフレーム探索を行いましたが、キーフレーム設定を検出できませんでした。");
+        write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_SET_KEYFRAME_NOT_DETECTED));
     } else {
         //重複要素削除 + ソートを自動でやってくれる
         std::set<int> keyframe_set(keyframe_list.begin(), keyframe_list.end());
@@ -483,11 +485,10 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
         append_cmdex(cmd, nSize, prm.vid.cmdex, prm.oth.disable_guicmd, conf);
     //メッセージの発行
     if ((conf->enc.vbv_bufsize != 0 || conf->enc.vbv_maxrate != 0) && prm.vid.afs)
-        write_log_auo_line(LOG_INFO, "自動フィールドシフト使用時はvbv設定は正確に反映されません。");
+        write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_AFS_VBV_WARN));
     //キーフレーム検出を行い、そのQPファイルが存在し、かつ--qpfileの指定がなければ、それをqpfileで読み込む
     char auoqpfile[MAX_PATH_LEN];
     apply_appendix(auoqpfile, _countof(auoqpfile), pe->temp_filename, pe->append.qp);
-    //x264用のコード
     BOOL disable_keyframe_afs = conf->vid.afs && !sys_dat->exstg->s_local.set_keyframe_as_afs_24fps;
     if (prm.vid.check_keyframe && !disable_keyframe_afs && PathFileExists(auoqpfile) && strstr(cmd, "--qpfile") == NULL)
         sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --qpfile \"%s\"", auoqpfile);
@@ -663,7 +664,7 @@ static AUO_RESULT finish_aud_parallel_task(const OUTPUT_INFO *oip, PRM_ENC *pe, 
         for (int wait_for_audio_count = 0; pe->aud_parallel.he_vid_start; wait_for_audio_count++) {
             vid_ret |= aud_parallel_task(oip, pe);
             if (wait_for_audio_count == 5)
-                write_log_auo_line(LOG_INFO, "音声処理の終了を待機しています...");
+                write_log_auo_line(LOG_INFO, g_auo_mes.get(AUO_VIDEO_AUDIO_PROC_WAIT));
         }
     }
     return vid_ret;
@@ -680,14 +681,14 @@ static AUO_RESULT exit_audio_parallel_control(const OUTPUT_INFO *oip, PRM_ENC *p
         int wait_for_audio_count = 0;
         while (WaitForSingleObject(pe->aud_parallel.th_aud, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT) {
             if (wait_for_audio_count == 10)
-                set_window_title("音声処理の終了を待機しています...", PROGRESSBAR_MARQUEE);
+                set_window_title(g_auo_mes.get(AUO_VIDEO_AUDIO_PROC_WAIT), PROGRESSBAR_MARQUEE);
             pe->aud_parallel.abort |= oip->func_is_abort();
             log_process_events();
             wait_for_audio_count++;
         }
         flush_audio_log();
         if (wait_for_audio_count > 10)
-            set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
+            set_window_title(g_auo_mes.get(AUO_GUIEX_FULL_NAME), PROGRESSBAR_DISABLED);
 
         DWORD exit_code = 0;
         //GetExitCodeThreadの返り値がNULLならエラー
@@ -828,7 +829,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
     //プロセス用情報準備
     if (!PathFileExists(sys_dat->exstg->s_enc.fullpath)) {
-        ret |= AUO_RESULT_ERROR; error_no_exe_file("x265", sys_dat->exstg->s_enc.fullpath);
+        ret |= AUO_RESULT_ERROR; error_no_exe_file(ENCODER_NAME_W, sys_dat->exstg->s_enc.fullpath);
         return ret;
     }
     PathGetDirectory(x265dir, _countof(x265dir), sys_dat->exstg->s_enc.fullpath);
@@ -855,7 +856,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
 
     //コマンドライン生成
     build_full_cmd(x265cmd, _countof(x265cmd), conf, oip, pe, sys_dat, PIPE_FN);
-    write_log_auo_line_fmt(LOG_INFO, "%s options...", "x265");
+    write_log_auo_line_fmt(LOG_INFO, L"%s options...", ENCODER_NAME_W);
     write_args(x265cmd);
     sprintf_s(x265args, _countof(x265args), "\"%s\" %s", sys_dat->exstg->s_enc.fullpath, x265cmd);
     remove(pe->temp_filename); //ファイルサイズチェックの時に旧ファイルを参照してしまうのを回避
@@ -873,7 +874,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
         ret |= AUO_RESULT_ERROR; //Aviutl(afs)からのフレーム読み込みに失敗
     //x265プロセス開始
     } else if ((rp_ret = RunProcess(x265args, x265dir, &pi_enc, &pipes, (set_priority == AVIUTLSYNC_PRIORITY_CLASS) ? GetPriorityClass(pe->h_p_aviutl) : set_priority, TRUE, FALSE)) != RP_SUCCESS) {
-        ret |= AUO_RESULT_ERROR; error_run_process("x265", rp_ret);
+        ret |= AUO_RESULT_ERROR; error_run_process(ENCODER_NAME_W, rp_ret);
     //書き込みスレッドを開始
     } else if (video_output_create_thread(&thread_data, &pixel_data, conf->enc.interlaced, pipes.f_stdin)) {
         ret |= AUO_RESULT_ERROR; error_video_output_thread_start();
@@ -1030,11 +1031,11 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
         while (read_log_enc_all(&pipes, pe->drop_count, i, oip->n) > 0);
 
         if (!(ret & AUO_RESULT_ERROR) && afs)
-            write_log_auo_line_fmt(LOG_INFO, "drop %d / %d frames", pe->drop_count, i);
+            write_log_auo_line_fmt(LOG_INFO, L"drop %d / %d frames", pe->drop_count, i);
 
-        write_log_auo_line_fmt(LOG_INFO, "CPU使用率: Aviutl: %.2f%% / x265: %.2f%%", GetProcessAvgCPUUsage(pe->h_p_aviutl, &time_aviutl), GetProcessAvgCPUUsage(pi_enc.hProcess));
-        write_log_auo_line_fmt(LOG_INFO, "Aviutl 平均フレーム取得時間: %.3f ms", time_get_frame * 1000.0 / i);
-        write_log_auo_enc_time("x265エンコード時間", tm_vid_enc_fin - tm_vid_enc_start);
+        write_log_auo_line_fmt(LOG_INFO, L"%s: Aviutl: %.2f%% / x264: %.2f%%", g_auo_mes.get(AUO_VIDEO_CPU_USAGE), GetProcessAvgCPUUsage(pe->h_p_aviutl, &time_aviutl), GetProcessAvgCPUUsage(pi_enc.hProcess));
+        write_log_auo_line_fmt(LOG_INFO, L"Aviutl %s: %.3f ms", g_auo_mes.get(AUO_VIDEO_AVIUTL_PROC_AVG_TIME), time_get_frame * 1000.0 / i);
+        write_log_auo_enc_time(g_auo_mes.get(AUO_VIDEO_ENCODE_TIME), tm_vid_enc_fin - tm_vid_enc_start);
     }
 
     //解放処理
@@ -1058,12 +1059,14 @@ BOOL check_videnc_mp4_output(const char *exe_path, const char *temp_filename) {
 }
 
 static void set_window_title_x265(const PRM_ENC *pe) {
-    char mes[256] = { 0 };
-    strcpy_s(mes, _countof(mes), "x265エンコード");
+    wchar_t mes[256] = { 0 };
+    swprintf_s(mes, _countof(mes), L"%s%s", ENCODER_NAME_W, g_auo_mes.get(AUO_VIDEO_ENCODE));
     if (pe->total_pass > 1)
-        sprintf_s(mes + strlen(mes), _countof(mes) - strlen(mes), "   %d / %d pass", pe->current_pass, pe->total_pass);
-    if (pe->aud_parallel.th_aud)
-        strcat_s(mes, _countof(mes), " + 音声エンコード");
+        swprintf_s(mes + wcslen(mes), _countof(mes) - wcslen(mes), L"   %d / %d pass", pe->current_pass, pe->total_pass);
+    if (pe->aud_parallel.th_aud) {
+        wcscat_s(mes, _countof(mes), L" + ");
+        wcscat_s(mes, _countof(mes), g_auo_mes.get(AUO_VIDEO_AUDIO_ENCODE));
+    }
     set_window_title(mes, PROGRESSBAR_CONTINUOUS);
 }
 
@@ -1191,7 +1194,7 @@ static AUO_RESULT video_output_inside(CONF_GUIEX *conf, const OUTPUT_INFO *oip, 
         ret |= x265_out(conf, oip, pe, sys_dat);
     }
 
-    set_window_title(AUO_FULL_NAME, PROGRESSBAR_DISABLED);
+    set_window_title(g_auo_mes.get(AUO_GUIEX_FULL_NAME), PROGRESSBAR_DISABLED);
     return ret;
 }
 

@@ -1,22 +1,43 @@
-﻿//  -----------------------------------------------------------------------------------------
-//    拡張 x264/x265 出力(GUI) Ex  v1.xx/2.xx/3.xx by rigaya
-//  -----------------------------------------------------------------------------------------
-//   ソースコードについて
-//   ・無保証です。
-//   ・本ソースコードを使用したことによるいかなる損害・トラブルについてrigayaは責任を負いません。
-//   以上に了解して頂ける場合、本ソースコードの使用、複製、改変、再頒布を行って頂いて構いません。
-//  -----------------------------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------------------------
+// x264guiEx/x265guiEx/svtAV1guiEx by rigaya
+// -----------------------------------------------------------------------------------------
+// The MIT License
+//
+// Copyright (c) 2010-2022 rigaya
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// --------------------------------------------------------------------------------------------
 
 #ifndef _AUO_VERSION_H_
 #define _AUO_VERSION_H_
 
 #define AUO_VERSION           0,4,2,0
 #define AUO_VERSION_STR       "4.02"
+#define AUO_VERSION_STR_W    L"4.02"
 #define AUO_NAME_R             x265guiEx
 #define AUO_NAME_WITHOUT_EXT  "x265guiEx"
+#define AUO_NAME_WITHOUT_EXT_W L"x265guiEx"
 #define AUO_NAME              "x265guiEx.auo"
 #define AUO_NAME_W           L"x265guiEx.auo"
 #define AUO_FULL_NAME         "拡張 x265 出力(GUI) Ex"
+#define AUO_FULL_NAME_W      L"拡張 x265 出力(GUI) Ex"
 #define AUO_VERSION_NAME      "拡張 x265 出力(GUI) Ex " AUO_VERSION_STR
 #define AUO_VERSION_INFO      "拡張 x265 出力(GUI) Ex (x265guiEx) " AUO_VERSION_STR " by rigaya"
 #define AUO_EXT_FILTER        "All Support Formats (*.*)\0*.mp4;*.mkv;*.265;*.mp4\0mp4 file (*.mp4)\0*.mp4\0mkv file (*.mkv)\0*.mkv\0raw file (*.265)\0*.265\0"
@@ -25,8 +46,8 @@
 #define ENCODER_X264 0
 #define ENCODER_X265 1
 #define ENCODER_SVTAV1 0
-#define ENABLE_AMP (ENCODER_x264 != 0)
-#define ENABLE_TCFILE_IN (ENCODER_x264 != 0)
+#define ENABLE_AMP (ENCODER_X264 != 0)
+#define ENABLE_TCFILE_IN (ENCODER_X264 == 0)
 
 #ifdef DEBUG
 #define VER_DEBUG   VS_FF_DEBUG
@@ -44,7 +65,7 @@
 #define VER_STR_INTERNALNAME     AUO_FULL_NAME
 #define VER_STR_ORIGINALFILENAME AUO_NAME
 #define VER_STR_LEGALCOPYRIGHT   AUO_FULL_NAME" by rigaya"
-#define VER_STR_PRODUCTNAME      AUO_NAME
+#define VER_STR_PRODUCTNAME      AUO_NAME_WITHOUT_EXT
 #define VER_PRODUCTVERSION       VER_FILEVERSION
 #define VER_STR_PRODUCTVERSION   VER_STR_FILEVERSION
 

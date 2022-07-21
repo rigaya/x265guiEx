@@ -36,6 +36,7 @@
 #include "auo_version.h"
 #include "auo_settings.h"
 #include "auo_win7_taskbar.h"
+#include "auo_mes.h"
 
 
 //以下部分的にwarning C4100を黙らせる
@@ -100,8 +101,16 @@ namespace AUO_NAME_R {
             for (int i = 0; priority_table[i].text; i++) {
                 if (wcscmp(priority_table[i].text, L"") != NULL) {
                     System::Windows::Forms::ToolStripMenuItem^ x264_priority = gcnew System::Windows::Forms::ToolStripMenuItem();
-                    x264_priority->Name = L"ToolStripItem" + String(priority_table[i].text).ToString();
-                    x264_priority->Text = String(priority_table[i].text).ToString();
+
+                    String^ priority_name = nullptr;
+                    if (priority_table[i].mes != AUO_MES_UNKNOWN) {
+                        priority_name = LOAD_CLI_STRING(priority_table[i].mes);
+                    }
+                    if (priority_name == nullptr || priority_name->Length == 0) {
+                        priority_name = String(priority_table[i].text).ToString();
+                    }
+                    x264_priority->Name = L"ToolStripItem" + priority_name;
+                    x264_priority->Text = priority_name;
                     x264_priority->Checked = (_x264_priority != NULL && *_x264_priority == priority_table[i].value) ? true : false;
                     this->ToolStripMenuItemx264Priority->DropDownItems->Add(x264_priority);
                 } else {
@@ -176,8 +185,8 @@ namespace AUO_NAME_R {
         bool closed; //このウィンドウが閉じているか、開いているか
         bool prevent_log_closing; //ログウィンドウを閉じるを無効化するか・設定保存イベントのフラグでもある
         bool wine_compatible_mode; //wine互換モード
-        int  log_level; //表示するログの範囲
         bool add_progress;
+        int log_level;
         array<String^>^ log_type;
         array<Color>^ log_color_text;
         int LastLogLen;  //ひとつ前のエンコードブロックの終わり
@@ -286,7 +295,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 this->toolStripMenuItemAutoSave, this->toolStripMenuItemAutoSaveSettings, this->toolStripMenuItemShowStatus, this->toolStripMenuItemTaskBarProgress,
                 this->toolStripMenuItemWindowFont});
             this->contextMenuStripLog->Name = L"contextMenuStrip1";
-            this->contextMenuStripLog->Size = System::Drawing::Size(245, 312);
+            this->contextMenuStripLog->Size = System::Drawing::Size(245, 334);
             //
             // toolStripMenuItemFileOpen
             //
@@ -308,7 +317,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             //
             this->ToolStripMenuItemx264Priority->Name = L"ToolStripMenuItemx264Priority";
             this->ToolStripMenuItemx264Priority->Size = System::Drawing::Size(244, 22);
-            this->ToolStripMenuItemx264Priority->Text = L"x265優先度";
+            this->ToolStripMenuItemx264Priority->Text = L"エンコーダ優先度";
             this->ToolStripMenuItemx264Priority->DropDownItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &frmLog::ToolStripMenuItemx264Priority_DropDownItemClicked);
             //
             // ToolStripMenuItemEncPause
@@ -448,8 +457,8 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             this->fontDialogLog->Font = (gcnew System::Drawing::Font(L"Meiryo UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
                 static_cast<System::Byte>(0)));
             this->fontDialogLog->FontMustExist = true;
-            this->fontDialogLog->MaxSize = 9;
-            this->fontDialogLog->MinSize = 9;
+            this->fontDialogLog->MaxSize = 32;
+            this->fontDialogLog->MinSize = 6;
             this->fontDialogLog->ShowEffects = false;
             //
             // frmLog
@@ -464,7 +473,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             this->KeyPreview = true;
             this->Name = L"frmLog";
             this->ShowIcon = false;
-            this->Text = L"x265guiEx Log";
+            this->Text = L"guiEx Log";
             this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &frmLog::frmLog_FormClosing);
             this->Load += gcnew System::EventHandler(this, &frmLog::frmLog_Load);
             this->ClientSizeChanged += gcnew System::EventHandler(this, &frmLog::frmLog_ClientSizeChanged);
@@ -478,15 +487,39 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
 
         }
 #pragma endregion
-    private: 
+    private:
+        System::Void LoadLangText() {
+            LOAD_CLI_TEXT(richTextLog);
+            LOAD_CLI_TEXT(toolStripMenuItemFileOpen);
+            LOAD_CLI_TEXT(toolStripMenuItemFilePathOpen);
+            LOAD_CLI_TEXT(ToolStripMenuItemx264Priority);
+            LOAD_CLI_TEXT(ToolStripMenuItemEncPause);
+            LOAD_CLI_TEXT(ToolStripMenuItemTransparent);
+            LOAD_CLI_TEXT(toolStripMenuItemTransparentValue);
+            LOAD_CLI_TEXT(toolStripMenuItemSetLogColor);
+            LOAD_CLI_TEXT(ToolStripMenuItemStartMinimized);
+            LOAD_CLI_TEXT(toolStripMenuItemSaveLogSize);
+            LOAD_CLI_TEXT(toolStripMenuItemAutoSave);
+            LOAD_CLI_TEXT(toolStripMenuItemAutoSaveSettings);
+            LOAD_CLI_TEXT(toolStripMenuItemShowStatus);
+            LOAD_CLI_TEXT(toolStripMenuItemTaskBarProgress);
+            LOAD_CLI_TEXT(toolStripMenuItemWindowFont);
+            LOAD_CLI_TEXT(statusStripLog);
+            LOAD_CLI_TEXT(toolStripStatusCurrentTask);
+            LOAD_CLI_TEXT(toolStripStatusElapsedTime);
+            LOAD_CLI_TEXT(toolStripStatusCurrentProgress);
+            LOAD_CLI_MAIN_TEXT(FrmLogMain);
+        }
+    private:
         System::Void frmLog_Load(System::Object^  sender, System::EventArgs^  e) {
             closed = false;
             pause_start = NULL;
-            
+
             guiEx_settings exstg(true);
             exstg.load_log_win();
             SetWindowPos(exstg.s_log.log_pos[0], exstg.s_log.log_pos[1]);
 
+            LoadLangText();
             //timerの初期化
             timerResizeOrPos = gcnew System::Threading::Timer(
                 gcnew System::Threading::TimerCallback(this, &frmLog::timerResizeOrPosChange),
@@ -533,14 +566,15 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             toolStripMenuItemShowStatus->Checked     = exstg.s_log.show_status_bar != 0;
             ToolStripMenuItemStartMinimized->Checked = exstg.s_log.minimized != 0;
             toolStripMenuItemSaveLogSize->Checked    = exstg.s_log.save_log_size != 0;
+            LoadLangText();
         }
     public:
-        System::Void SetWindowTitle(const char *chr) {
+        System::Void SetWindowTitle(const wchar_t *chr) {
             LogTitle = String(chr).ToString();
             this->Text = LogTitle;
         }
     public:
-        System::Void SetWindowTitle(const char *chr, int progress_mode) {
+        System::Void SetWindowTitle(const wchar_t *chr, int progress_mode) {
             LogTitle = String(chr).ToString();
             this->Text = LogTitle;
             bool show_progress = (progress_mode != PROGRESSBAR_DISABLED);
@@ -557,19 +591,19 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             taskbar_progress->set_mode(progress_mode);
         }
     public:
-        System::Void SetTaskName(const char *chr) {
+        System::Void SetTaskName(const wchar_t *chr) {
             toolStripStatusCurrentTask->Text = String(chr).ToString();
         }
     public:
         System::Void SetProgress(double progress) {
             toolStripCurrentProgress->Value = clamp((int)(progress * toolStripCurrentProgress->Maximum + 0.5), toolStripCurrentProgress->Minimum, toolStripCurrentProgress->Maximum);
-            toolStripStatusCurrentProgress->Text = (progress).ToString("P1");
+            toolStripStatusCurrentProgress->Text = (progress).ToString(L"P1");
             toolStripStatusElapsedTime->Text = L"";
             this->Text = L"[" + toolStripStatusCurrentProgress->Text + L"] " + LogTitle;
             taskbar_progress->set_progress(progress);
         }
     public:
-        System::Void SetWindowTitleX264Mes(const char *chr, int total_drop, int frame_n) {
+        System::Void SetWindowTitleX264Mes(const wchar_t *chr, int total_drop, int frame_n) {
             String^ title = String(chr).ToString();
             double progress = frame_n / (double)total_frame;
             String^ ProgressPercent = (progress).ToString("P1");
@@ -584,19 +618,36 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 SB->Append(frame_n);
                 if (add_progress) {
                     DWORD time_remain = (DWORD)(time_elapsed * ((double)(total_frame - frame_n) / (double)frame_n)) / 1000;
-                    SB->Insert(0, L"[" + ProgressPercent + "] ");
+                    if (!ENCODER_SVTAV1) SB->Insert(0, L"[" + ProgressPercent + "] ");
 
                     t = (int)(time_remain / 3600);
-                    SB->Append(", eta ");
-                    SB->Append(t.ToString("D2"));
+                    SB->Append(L", eta ");
+                    SB->Append(t.ToString(L"D2"));
                     SB->Append(L":");
                     time_remain -= t * 3600;
                     t = (int)(time_remain / 60);
-                    SB->Append(t.ToString("D2"));
+                    SB->Append(t.ToString(L"D2"));
                     SB->Append(L":");
                     time_remain -= t * 60;
-                    SB->Append(time_remain.ToString("D2"));
+                    SB->Append(time_remain.ToString(L"D2"));
                 }
+                title = SB->ToString();
+            } else if (ENCODER_SVTAV1 && add_progress) {
+                StringBuilder ^SB = gcnew StringBuilder();
+                SB->Append(title);
+                DWORD time_remain = (DWORD)(time_elapsed * ((double)(total_frame - frame_n) / (double)frame_n)) / 1000;
+                //SB->Insert(0, L"[" + ProgressPercent + "] ");
+
+                t = (int)(time_remain / 3600);
+                SB->Append(L", eta ");
+                SB->Append(t.ToString(L"D2"));
+                SB->Append(L":");
+                time_remain -= t * 3600;
+                t = (int)(time_remain / 60);
+                SB->Append(t.ToString(L"D2"));
+                SB->Append(L":");
+                time_remain -= t * 60;
+                SB->Append(time_remain.ToString(L"D2"));
                 title = SB->ToString();
             }
             toolStripCurrentProgress->Value = clamp((int)(progress * toolStripCurrentProgress->Maximum + 0.5), toolStripCurrentProgress->Minimum, toolStripCurrentProgress->Maximum);
@@ -607,14 +658,14 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
             t = (int)(time_elapsed / 3600);
             StringBuilder^ SBE = gcnew StringBuilder();
             //SBE->Append(L"経過時間 ");
-            SBE->Append(t.ToString("D2"));
+            SBE->Append(t.ToString(L"D2"));
             SBE->Append(L":");
             time_elapsed -= t * 3600;
             t = (int)(time_elapsed / 60);
-            SBE->Append(t.ToString("D2"));
+            SBE->Append(t.ToString(L"D2"));
             SBE->Append(L":");
             time_elapsed -= t * 60;
-            SBE->Append(time_elapsed.ToString("D2"));
+            SBE->Append(time_elapsed.ToString(L"D2"));
 
             toolStripStatusElapsedTime->Text = SBE->ToString();
 
@@ -707,24 +758,25 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
         }
     private:
         System::Void SaveLog(String^ SaveLogName) {
-            StreamWriter^ sw;
+            System::String^ LogSaveError = LOAD_CLI_STRING(AUO_LOG_ERR_SAVE_LOG);
+            StreamWriter^ sw = nullptr;
             try {
                 sw = gcnew StreamWriter(SaveLogName, true, System::Text::Encoding::GetEncoding("shift_jis"));
                 System::Text::StringBuilder^ sb = gcnew System::Text::StringBuilder(richTextLog->Text->Substring(LastLogLen));
                 sb->Replace(L"\n", L"\r\n");//改行コード変換
                 sw->WriteLine(sb->ToString());
-                sw->WriteLine(DateTime::Now.ToString("yyyy年M月d日 H時mm分 エンコード終了"));
+                sw->WriteLine(DateTime::Now.ToString(LOAD_CLI_STRING(AUO_LOG_ENCODE_FIN_TIME)));
                 sw->WriteLine(L"-------------------------------------------------------------------------------------");
                 sw->WriteLine();
                 sw->Close();
             } catch (IOException^ ex) {
-                WriteLogAuoLine("自動ログ保存に失敗しました。", LOG_WARNING);
+                WriteLogAuoLine(LogSaveError, LOG_WARNING);
                 WriteLogAuoLine(ex->Message, LOG_WARNING);
-            }  catch (UnauthorizedAccessException^ ex) {
-                WriteLogAuoLine("自動ログ保存に失敗しました。", LOG_WARNING);
+            } catch (UnauthorizedAccessException^ ex) {
+                WriteLogAuoLine(LogSaveError, LOG_WARNING);
                 WriteLogAuoLine(ex->Message, LOG_WARNING);
             } catch (...) {
-                WriteLogAuoLine("自動ログ保存に失敗しました。", LOG_WARNING);
+                WriteLogAuoLine(LogSaveError, LOG_WARNING);
             }
         }
     public:
@@ -1051,7 +1103,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 try {
                     System::Diagnostics::Process::Start(selectedPathbyMouse);
                 } catch (...) {
-                    MessageBox::Show(L"ファイルオープンでエラーが発生しました。", String(AUO_NAME_W).ToString(), MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+                    MessageBox::Show(LOAD_CLI_STRING(AUO_LOG_ERR_FILE_OPEN), AUO_NAME_W, MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
                 }
             }
         }
@@ -1061,7 +1113,7 @@ private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemFilePathOp
                 try {
                     System::Diagnostics::Process::Start(L"explorer.exe", L"/select," + selectedPathbyMouse);
                 } catch (...) {
-                    MessageBox::Show(L"ファイルの表示でエラーが発生しました。", String(AUO_NAME_W).ToString(), MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+                    MessageBox::Show(LOAD_CLI_STRING(AUO_LOG_ERR_SHOW_FILE_PATH), AUO_NAME_W, MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
                 }
             }
         }

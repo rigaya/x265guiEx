@@ -1,11 +1,29 @@
-﻿//  -----------------------------------------------------------------------------------------
-//    拡張 x264/x265 出力(GUI) Ex  v1.xx/2.xx/3.xx by rigaya
-//  -----------------------------------------------------------------------------------------
-//   ソースコードについて
-//   ・無保証です。
-//   ・本ソースコードを使用したことによるいかなる損害・トラブルについてrigayaは責任を負いません。
-//   以上に了解して頂ける場合、本ソースコードの使用、複製、改変、再頒布を行って頂いて構いません。
-//  -----------------------------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------------------------
+// x264guiEx/x265guiEx/svtAV1guiEx by rigaya
+// -----------------------------------------------------------------------------------------
+// The MIT License
+//
+// Copyright (c) 2010-2022 rigaya
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// --------------------------------------------------------------------------------------------
 #define AUO_MAIN
 #include <windows.h>
 #include <stdio.h>
@@ -29,15 +47,19 @@
 #include "auo_mux.h"
 #include "auo_encode.h"
 #include "auo_runbat.h"
+#include "auo_mes.h"
 
 //---------------------------------------------------------------------
 //        出力プラグイン内部変数
 //---------------------------------------------------------------------
 
+static HMODULE g_dll_module = NULL;
 static CONF_GUIEX g_conf = { 0 };
 static SYSTEM_DATA g_sys_dat = { 0 };
 static char g_auo_filefilter[1024] = { 0 };
-static char g_auo_path[MAX_PATH_LEN] = { 0 };
+static char g_auo_fullname[1024] = { 0 };
+static char g_auo_version_info[1024] = { 0 };
+AuoMessages g_auo_mes;
 
 //---------------------------------------------------------------------
 //        出力プラグイン構造体定義
@@ -64,6 +86,7 @@ EXTERN_C OUTPUT_PLUGIN_TABLE __declspec(dllexport) * __stdcall GetOutputPluginTa
     make_file_filter(NULL, 0, g_sys_dat.exstg->s_local.default_output_ext);
     overwrite_aviutl_ini_file_filter(g_sys_dat.exstg->s_local.default_output_ext);
     output_plugin_table.filefilter = g_auo_filefilter;
+    overwrite_aviutl_ini_auo_info();
     return &output_plugin_table;
 }
 
@@ -123,6 +146,16 @@ EXTERN_C OUTPUT_PLUGIN_TABLE __declspec(dllexport) * __stdcall GetOutputPluginTa
     //                        //    戻り値    : データへのポインタ
     //                        //              画像データポインタの内容は次に外部関数を使うかメインに処理を戻すまで有効
 
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved) {
+    UNREFERENCED_PARAMETER(lpReserved);
+    switch (ul_reason_for_call) {
+    case DLL_PROCESS_ATTACH:
+        g_dll_module = hModule;
+        break;
+    }
+    return TRUE;
+}
+
 BOOL func_init()
 {
     return TRUE;
@@ -149,7 +182,13 @@ BOOL func_output( OUTPUT_INFO *oip )
 
     const bool conf_not_initialized = memcmp(&conf_out, &g_conf, sizeof(g_conf)) == 0;
     if (conf_not_initialized) {
-        PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, CONF_LAST_OUT);
+        PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, g_sys_dat.exstg->get_last_out_stg());
+        if (!PathFileExists(default_stg_file)) {
+            PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, get_last_out_stg_appendix().c_str());
+        }
+        if (!PathFileExists(default_stg_file)) {
+            PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, CONF_LAST_OUT);
+        }
         if (!PathFileExists(default_stg_file)
             || guiEx_config::load_guiEx_conf(&g_conf, default_stg_file) != CONF_ERROR_NONE) {
             //前回出力した設定ファイルがない場合は、デフォルト設定をロード
@@ -177,23 +216,24 @@ BOOL func_output( OUTPUT_INFO *oip )
 
         for (int i = 0; !ret && i < 2; i++)
             ret |= task[conf_out.aud.audio_encode_timing][i](&conf_out, oip, &pe, &g_sys_dat);
-
 #if ENABLE_AMP
         int amp_result = 1;
         do {
             if (!ret) ret |= task[0][amp_result-1](&conf_out, oip, &pe, &g_sys_dat); //再エンコ、ただしもう終了している場合、再エンコされない
             if (!ret) ret |= mux(&conf_out, oip, &pe, &g_sys_dat);
         } while (!ret && 0 < (amp_result = amp_check_file(&conf_out, &g_sys_dat, &pe, oip))); //再エンコードの必要があるかをチェック
+#else
+        if (!ret) ret |= mux(&conf_out, oip, &pe, &g_sys_dat);
 #endif
 
         ret |= move_temporary_files(&conf_out, &pe, &g_sys_dat, oip, ret);
 
-        write_log_auo_enc_time("総エンコード時間  ", timeGetTime() - tm_start_enc);
+        write_log_auo_enc_time(g_auo_mes.get(AUO_GUIEX_TOTAL_TIME), timeGetTime() - tm_start_enc);
 
         close_afsvideo(&pe); //※3 end
 
     } else {
-        if (!ret) ret |= AUO_RESULT_ERROR;
+        ret |= AUO_RESULT_ERROR;
     }
 
     if (ret & AUO_RESULT_ABORT) info_encoding_aborted();
@@ -209,10 +249,13 @@ BOOL func_output( OUTPUT_INFO *oip )
     // エラーが発生しなかった場合は設定を保存
     if (ret == AUO_RESULT_SUCCESS) {
         memset(default_stg_file, 0, sizeof(default_stg_file));
-        PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, CONF_LAST_OUT);
+        PathCombine(default_stg_file, g_sys_dat.exstg->s_local.stg_dir, get_last_out_stg_appendix().c_str());
         guiEx_config::save_guiEx_conf(&conf_out, default_stg_file);
+        g_sys_dat.exstg->set_last_out_stg(PathFindFileName(default_stg_file));
+        g_sys_dat.exstg->save_last_out_stg();
     }
     free_enc_prm(&pe);
+
     return (ret & AUO_RESULT_ERROR) ? FALSE : TRUE;
 }
 
@@ -239,7 +282,7 @@ int func_config_get(void *data, int size)
     return sizeof(g_conf);
 }
 
-int func_config_set(void *data,int size)
+int func_config_set(void *data, int size)
 {
     init_SYSTEM_DATA(&g_sys_dat);
     if (!g_sys_dat.exstg->get_init_success(TRUE))
@@ -259,6 +302,7 @@ void init_SYSTEM_DATA(SYSTEM_DATA *sys_dat) {
     get_aviutl_dir(sys_dat->aviutl_dir, _countof(sys_dat->aviutl_dir));
     sys_dat->exstg = new guiEx_settings();
     set_ex_stg_ptr(sys_dat->exstg);
+    load_lng(g_sys_dat.exstg->get_lang());
     sys_dat->init = TRUE;
 }
 void delete_SYSTEM_DATA(SYSTEM_DATA *sys_dat) {
@@ -278,37 +322,38 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit) {
     conf->aud.bitrate = aud_stg->mode[conf->aud.enc_mode].bitrate_default;
     conf->size_all = CONF_INITIALIZED;
 }
-void write_log_line_fmt(int log_type_index, const char *format, ...) {
+void write_log_line_fmt(int log_type_index, const wchar_t *format, ...) {
     va_list args;
     int len;
-    char *buffer;
+    wchar_t *buffer;
     va_start(args, format);
-    len = _vscprintf(format, args) + 1; // _vscprintf doesn't count terminating '\0'
-    buffer = (char *)malloc(len * sizeof(buffer[0]));
-    vsprintf_s(buffer, len, format, args);
+    len = _vscwprintf(format, args) + 1; // _vscprintf doesn't count terminating '\0'
+    buffer = (wchar_t *)malloc(len * sizeof(buffer[0]));
+    vswprintf_s(buffer, len, format, args);
     write_log_line(log_type_index, buffer);
     free(buffer);
 }
-void write_log_auo_line_fmt(int log_type_index, const char *format, ... ) {
+void write_log_auo_line_fmt(int log_type_index, const wchar_t *format, ... ) {
     va_list args;
     int len;
-    char *buffer;
+    wchar_t *buffer;
     va_start(args, format);
-    len = _vscprintf(format, args) + 1; // _vscprintf doesn't count terminating '\0'
-    buffer = (char *)malloc(len * sizeof(buffer[0]));
-    vsprintf_s(buffer, len, format, args);
+    len = _vscwprintf(format, args) // _vscprintf doesn't count
+                              + 1; // terminating '\0'
+    buffer = (wchar_t *)malloc(len * sizeof(buffer[0]));
+    vswprintf_s(buffer, len, format, args);
     write_log_auo_line(log_type_index, buffer);
     free(buffer);
 }
 //エンコード時間の表示
-void write_log_auo_enc_time(const char *mes, DWORD time) {
+void write_log_auo_enc_time(const wchar_t *mes, DWORD time) {
     time = ((time + 50) / 100) * 100; //四捨五入
-    write_log_auo_line_fmt(LOG_INFO, "%s : %d時間%2d分%2d.%1d秒",
+    write_log_auo_line_fmt(LOG_INFO, L"%s : %d%s%2d%s%2d.%1d%s",
         mes,
-        time / (60*60*1000),
-        (time % (60*60*1000)) / (60*1000),
+        time / (60*60*1000), g_auo_mes.get(AUO_GUIEX_TIME_HOUR),
+        (time % (60*60*1000)) / (60*1000), g_auo_mes.get(AUO_GUIEX_TIME_MIN),
         (time % (60*1000)) / 1000,
-        ((time % 1000)) / 100);
+        ((time % 1000)) / 100, g_auo_mes.get(AUO_GUIEX_TIME_SEC));
 }
 
 void overwrite_aviutl_ini_file_filter(int idx) {
@@ -322,8 +367,39 @@ void overwrite_aviutl_ini_file_filter(int idx) {
     WritePrivateProfileString(AUO_NAME, "filefilter", filefilter_ini, ini_file);
 }
 
+void overwrite_aviutl_ini_auo_info() {
+    char ini_file[1024];
+    get_aviutl_dir(ini_file, _countof(ini_file));
+    PathAddBackSlashLong(ini_file);
+    strcat_s(ini_file, _countof(ini_file), "aviutl.ini");
+
+    const auto auo_full_name = wstring_to_string(g_auo_mes.get(AUO_GUIEX_FULL_NAME));
+    if (auo_full_name.length() > 0 && strcmp(auo_full_name.c_str(), output_plugin_table.name) != 0) {
+        strcpy_s(g_auo_fullname, auo_full_name.c_str());
+        output_plugin_table.name = g_auo_fullname;
+        if (strcmp(auo_full_name.c_str(), AUO_NAME_WITHOUT_EXT) != 0) {
+            sprintf_s(g_auo_version_info, "%s (%s) %s by rigaya", auo_full_name.c_str(), AUO_NAME_WITHOUT_EXT, AUO_VERSION_STR);
+        } else {
+            sprintf_s(g_auo_version_info, "%s %s by rigaya", AUO_NAME_WITHOUT_EXT, AUO_VERSION_STR);
+        }
+        output_plugin_table.information = g_auo_version_info;
+        WritePrivateProfileString(AUO_NAME, "name", output_plugin_table.name, ini_file);
+        WritePrivateProfileString(AUO_NAME, "information", output_plugin_table.information, ini_file);
+    }
+}
+
+std::string get_last_out_stg_appendix() {
+    const auto appendix = wstring_to_string(g_auo_mes.get(AUO_CONF_LAST_OUT_STG));
+    return (appendix.length() > 0) ? appendix : CONF_LAST_OUT;
+}
+
+const char *get_auo_version_info() {
+    return output_plugin_table.information;
+}
+
 void make_file_filter(char *filter, size_t nSize, int default_index) {
-    static const char *const TOP = "All Support Formats (*.*)";
+    char TOP[256];
+    sprintf_s(TOP, "%s (*.*)", wstring_to_string(g_auo_mes.get(AUO_GUIEX_ALL_SUPPORT_FORMATS)).c_str());
     const char separator = (filter) ? '\\' : '\0';
     if (filter == NULL) {
         filter = g_auo_filefilter;
@@ -364,4 +440,59 @@ void make_file_filter(char *filter, size_t nSize, int default_index) {
         if (idx != default_index)
             add_desc(idx);
     ptr[0] = '\0';
+}
+
+static int getEmbeddedResource(void **data, const TCHAR *name, const TCHAR *type, HMODULE hModule) {
+    *data = nullptr;
+    //埋め込みデータを使用する
+    if (hModule == NULL) {
+        hModule = GetModuleHandle(NULL);
+    }
+    if (hModule == NULL) {
+        return 0;
+    }
+    HRSRC hResource = FindResource(hModule, name, type);
+    if (hResource == NULL) {
+        return 0;
+    }
+    HGLOBAL hResourceData = LoadResource(hModule, hResource);
+    if (hResourceData == NULL) {
+        return 0;
+    }
+    *data = LockResource(hResourceData);
+    return (int)SizeofResource(hModule, hResource);
+}
+
+int load_lng(const char *lang) {
+    if (g_auo_mes.isLang(lang)) {
+        return 0;
+    }
+    const char *resource = list_auo_languages[0].resouce;
+    if (lang && str_has_char(lang)) {
+        char auo_path[MAX_PATH_LEN];
+        get_auo_path(auo_path, _countof(auo_path));
+        char auo_dir[MAX_PATH_LEN];
+        strcpy_s(auo_dir, auo_path);
+        PathRemoveFileSpecFixed(auo_dir);
+        char lng_path[MAX_PATH_LEN];
+        PathCombineLong(lng_path, _countof(lng_path), auo_dir, lang);
+        if (PathFileExists(lng_path)) {
+            return g_auo_mes.read(lng_path);
+        }
+        for (const auto& auo_lang : list_auo_languages) {
+            if (stricmp(auo_lang.code, lang) == 0) {
+                resource = auo_lang.resouce;
+                break;
+            }
+        }
+    }
+    char *data = nullptr;
+    int size = getEmbeddedResource((void **)&data, resource, "EXE_DATA", g_dll_module);
+    if (size == 0) {
+        return 1;
+    }
+    if (g_auo_mes.read(lang, data, size)) {
+        return 1;
+    }
+    return 0;
 }

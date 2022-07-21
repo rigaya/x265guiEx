@@ -127,6 +127,9 @@
     <ClCompile Include="prm\cpu_info.cpp">
       <Filter>ソース ファイル\prm</Filter>
     </ClCompile>
+    <ClCompile Include="frm\auo_mes.cpp">
+      <Filter>ソース ファイル\frm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="image\folder_open.ico">
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="prm\cpu_info.h">
       <Filter>ヘッダー ファイル\prm</Filter>
+    </ClInclude>
+    <ClInclude Include="frm\auo_mes.h">
+      <Filter>ヘッダー ファイル\frm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

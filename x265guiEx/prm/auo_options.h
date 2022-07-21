@@ -67,6 +67,7 @@ enum {
     OUT_CSP_YUY2,
     OUT_CSP_YV12,
     OUT_CSP_YUV422,
+    OUT_CSP_YUV400,
 };
 
 enum {
@@ -95,228 +96,205 @@ static const char * const specify_csp[] = {
 //文字列を引数にとるオプションの引数リスト
 //OUT_CSP_NV12, OUT_CSP_YUV444, OUT_CSP_RGB に合わせる
 const ENC_OPTION_STR list_output_csp_x264[] = {
-    { "i420", L"i420" },
-    { "i422", L"i422" },
-    { "i444", L"i444" },
-    { "rgb",  L"rgb"  },
-    { NULL, NULL }
+    { "i420", AUO_MES_UNKNOWN, L"i420" },
+    { "i422", AUO_MES_UNKNOWN, L"i422" },
+    { "i444", AUO_MES_UNKNOWN, L"i444" },
+    { "rgb",  AUO_MES_UNKNOWN, L"rgb"  },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_output_csp_x265[] = {
-    { "i420", L"i420" },
-    { "i422", L"i422" },
-    { "i444", L"i444" },
-    { NULL, NULL },
-    { NULL, NULL },
-    { "i420", L"i420" },
-    { "i422", L"i422" },
-    { NULL, NULL },
+    { "i420", AUO_MES_UNKNOWN, L"i420" },
+    { "i422", AUO_MES_UNKNOWN, L"i422" },
+    { "i444", AUO_MES_UNKNOWN, L"i444" },
+    { NULL, AUO_MES_UNKNOWN, NULL },
+    { NULL, AUO_MES_UNKNOWN, NULL },
+    { "i420", AUO_MES_UNKNOWN, L"i420" },
+    { "i422", AUO_MES_UNKNOWN, L"i422" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_aq[] = {
-    { NULL, L"none"              },
-    { NULL, L"VAQ"               },
-    { NULL, L"AutoVAQ"           },
-    { NULL, L"AutoVAQ(暗部保護)" },
-    { NULL, NULL }
+    { NULL, AUO_OPTION_AQ_NONE,         L"none"              },
+    { NULL, AUO_OPTION_AQ_VAQ,          L"VAQ"               },
+    { NULL, AUO_OPTION_AQ_AUTOVAQ,      L"AutoVAQ"           },
+    { NULL, AUO_OPTION_AQ_AUTOVAQ_DARK, L"AutoVAQ(暗部保護)" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_weightp[] = {
-    { NULL, L"Disabled" },
-    { NULL, L"Simple"   },
-    { NULL, L"Smart"    },
-    { NULL, NULL }
+    { NULL, AUO_MES_UNKNOWN, L"Disabled" },
+    { NULL, AUO_MES_UNKNOWN, L"Simple"   },
+    { NULL, AUO_MES_UNKNOWN, L"Smart"    },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_b_adpat[] = {
-    { NULL, L"無効" },
-    { NULL, L"簡易" },
-    { NULL, L"完全" },
-    { NULL, NULL }
+    { NULL, AUO_OPTION_BADAPT_DISABLED, L"無効" },
+    { NULL, AUO_OPTION_BADAPT_SIMPLE,   L"簡易" },
+    { NULL, AUO_OPTION_BADAPT_FULL,     L"完全" },
+    { NULL, AUO_MES_UNKNOWN,            NULL }
 };
 const ENC_OPTION_STR list_trellis[] = {
-    { NULL, L"Disabled"        },
-    { NULL, L"Final MB encode" },
-    { NULL, L"All"             },
-    { NULL, NULL }
-};
-const ENC_OPTION_STR list_me_x264[] = {
-    { "dia",  L"Diamond Search (高速)" },
-    { "hex",  L"Hexagonal Search"      },
-    { "umh",  L"Uneven Multi-Hexagon"  },
-    { "esa",  L"Exaustive Search"      },
-    { "tesa", L"Hadamard ESA (低速)"   },
-    { NULL, NULL }
-};
-const ENC_OPTION_STR list_subme[] = {
-    { NULL, L" 0 (fullpell only)"                },
-    { NULL, L" 1 (高速)"                         },
-    { NULL, L" 2"                                },
-    { NULL, L" 3"                                },
-    { NULL, L" 4"                                },
-    { NULL, L" 5"                                },
-    { NULL, L" 6 (RDO for I/P frames)"           },
-    { NULL, L" 7 (RDO for all frames)"           },
-    { NULL, L" 8 (RD refinement for I/P frames)" },
-    { NULL, L" 9 (RD refinement for all frames)" },
-    { NULL, L"10 (QP-RD)"                        },
-    { NULL, L"11 (Full RD)"                      },
-    { NULL, NULL }
+    { NULL, AUO_MES_UNKNOWN, L"Disabled"        },
+    { NULL, AUO_MES_UNKNOWN, L"Final MB encode" },
+    { NULL, AUO_MES_UNKNOWN, L"All"             },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_direct[] = {
-    { "none",     L"none"     },
-    { "spatial",  L"spatial"  },
-    { "temporal", L"temporal" },
-    { "auto",     L"auto"     },
-    { NULL, NULL }
+    { "none",     AUO_MES_UNKNOWN, L"none"     },
+    { "spatial",  AUO_MES_UNKNOWN, L"spatial"  },
+    { "temporal", AUO_MES_UNKNOWN, L"temporal" },
+    { "auto",     AUO_MES_UNKNOWN, L"auto"     },
+    { NULL,       AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_cqm[] = {
-    { "flat", NULL },
-    { "jvt",  NULL },
-    { NULL, NULL }
+    { "flat", AUO_MES_UNKNOWN, NULL },
+    { "jvt",  AUO_MES_UNKNOWN, NULL },
+    { NULL,   AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_input_range[] = {
-    { "auto", L"auto" },
-    { "pc",   L"pc" },
-    { NULL, NULL }
+    { "auto", AUO_MES_UNKNOWN, L"auto" },
+    { "pc",   AUO_MES_UNKNOWN, L"pc" },
+    { NULL,   AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_interlace_x265[] = {
-    { "prog", L"progressive" },
-    { "tff",  L"tff" },
-    { "bff",  L"bff" },
-    { NULL, NULL }
+    { "prog", AUO_MES_UNKNOWN, L"progressive" },
+    { "tff",  AUO_MES_UNKNOWN, L"tff" },
+    { "bff",  AUO_MES_UNKNOWN, L"bff" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 
 const ENC_OPTION_STR list_colorprim[] = {
-    { "undef",     L"指定なし"  },
-    { "auto",      L"自動"      },
-    { "bt709",     L"bt709"     },
-    { "smpte170m", L"smpte170m" },
-    { "bt470m",    L"bt470m"    },
-    { "bt470bg",   L"bt470bg"   },
-    { "smpte240m", L"smpte240m" },
-    { "film",      L"film"      },
-    { "bt2020",    L"bt2020"    },
-    { "smpte428",  L"smpte428"  },
-    { "smpte431",  L"smpte431"  },
-    { "smpte432",  L"smpte432"  },
-    { NULL, NULL }
+    { "undef",     AUO_OPTION_VUI_UNDEF, L"指定なし"  },
+    { "auto",      AUO_OPTION_VUI_AUTO, L"自動"      },
+    { "bt709",     AUO_MES_UNKNOWN, L"bt709"     },
+    { "smpte170m", AUO_MES_UNKNOWN, L"smpte170m" },
+    { "bt470m",    AUO_MES_UNKNOWN, L"bt470m"    },
+    { "bt470bg",   AUO_MES_UNKNOWN, L"bt470bg"   },
+    { "smpte240m", AUO_MES_UNKNOWN, L"smpte240m" },
+    { "film",      AUO_MES_UNKNOWN, L"film"      },
+    { "bt2020",    AUO_MES_UNKNOWN, L"bt2020"    },
+    { "smpte428",  AUO_MES_UNKNOWN, L"smpte428"  },
+    { "smpte431",  AUO_MES_UNKNOWN, L"smpte431"  },
+    { "smpte432",  AUO_MES_UNKNOWN, L"smpte432"  },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_transfer[] = {
-    { "undef",        L"指定なし"     },
-    { "auto",         L"自動"         },
-    { "bt709",        L"bt709"        },
-    { "smpte170m",    L"smpte170m"    },
-    { "bt470m",       L"bt470m"       },
-    { "bt470bg",      L"bt470bg"      },
-    { "smpte240m",    L"smpte240m"    },
-    { "linear",       L"linear"       },
-    { "log100",       L"log100"       },
-    { "log316",       L"log316"       },
-    { "iec61966-2-4", L"iec61966-2-4" },
-    { "bt1361e",      L"bt1361e"      },
-    { "iec61966-2-1", L"iec61966-2-1" },
-    { "bt2020-10",    L"bt2020-10"    },
-    { "bt2020-12",    L"bt2020-12"    },
-    { "smpte2084",    L"smpte2084"},
-    { "smpte428",     L"smpte428" },
-    { "arib-std-b67", L"arib-std-b67" },
-    { NULL, NULL }
+    { "undef",        AUO_OPTION_VUI_UNDEF, L"指定なし"     },
+    { "auto",         AUO_OPTION_VUI_AUTO, L"自動"         },
+    { "bt709",        AUO_MES_UNKNOWN, L"bt709"        },
+    { "smpte170m",    AUO_MES_UNKNOWN, L"smpte170m"    },
+    { "bt470m",       AUO_MES_UNKNOWN, L"bt470m"       },
+    { "bt470bg",      AUO_MES_UNKNOWN, L"bt470bg"      },
+    { "smpte240m",    AUO_MES_UNKNOWN, L"smpte240m"    },
+    { "linear",       AUO_MES_UNKNOWN, L"linear"       },
+    { "log100",       AUO_MES_UNKNOWN, L"log100"       },
+    { "log316",       AUO_MES_UNKNOWN, L"log316"       },
+    { "iec61966-2-4", AUO_MES_UNKNOWN, L"iec61966-2-4" },
+    { "bt1361e",      AUO_MES_UNKNOWN, L"bt1361e"      },
+    { "iec61966-2-1", AUO_MES_UNKNOWN, L"iec61966-2-1" },
+    { "bt2020-10",    AUO_MES_UNKNOWN, L"bt2020-10"    },
+    { "bt2020-12",    AUO_MES_UNKNOWN, L"bt2020-12"    },
+    { "smpte2084",    AUO_MES_UNKNOWN, L"smpte2084"},
+    { "smpte428",     AUO_MES_UNKNOWN, L"smpte428" },
+    { "arib-std-b67", AUO_MES_UNKNOWN, L"arib-std-b67" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_range[] = {
-    { "limited",      L"limited"     },
-    { "full",         L"full"         },
-    { NULL, NULL }
+    { "limited",  AUO_MES_UNKNOWN,    L"limited"     },
+    { "full",     AUO_MES_UNKNOWN,    L"full"        },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_colormatrix[] = {
-    { "undef",     L"指定なし"  },
-    { "auto",      L"自動"      },
-    { "bt709",     L"bt709"     },
-    { "smpte170m", L"smpte170m" },
-    { "bt470bg",   L"bt470bg"   },
-    { "smpte240m", L"smpte240m" },
-    { "ycgco",     L"ycgco"     },
-    { "fcc",       L"fcc"       },
-    { "gbr",       L"gbr"       },
-    { "bt2020nc",  L"bt2020nc"  },
-    { "bt2020c",   L"bt2020c"   },
-    { "smpte2085", L"smpte2085" },
-    { "chroma-derived-nc", L"chroma-derived-nc" },
-    { "chroma-derived-c",  L"chroma-derived-c"  },
-    { "ictcp",     L"ictcp" },
-    { NULL, NULL }
+    { "undef",     AUO_OPTION_VUI_UNDEF, L"指定なし"  },
+    { "auto",      AUO_OPTION_VUI_AUTO, L"自動"      },
+    { "bt709",     AUO_MES_UNKNOWN, L"bt709"     },
+    { "smpte170m", AUO_MES_UNKNOWN, L"smpte170m" },
+    { "bt470bg",   AUO_MES_UNKNOWN, L"bt470bg"   },
+    { "smpte240m", AUO_MES_UNKNOWN, L"smpte240m" },
+    { "ycgco",     AUO_MES_UNKNOWN, L"ycgco"     },
+    { "fcc",       AUO_MES_UNKNOWN, L"fcc"       },
+    { "gbr",       AUO_MES_UNKNOWN, L"gbr"       },
+    { "bt2020nc",  AUO_MES_UNKNOWN, L"bt2020nc"  },
+    { "bt2020c",   AUO_MES_UNKNOWN, L"bt2020c"   },
+    { "smpte2085", AUO_MES_UNKNOWN, L"smpte2085" },
+    { "chroma-derived-nc", AUO_MES_UNKNOWN, L"chroma-derived-nc" },
+    { "chroma-derived-c",  AUO_MES_UNKNOWN, L"chroma-derived-c"  },
+    { "ictcp",     AUO_MES_UNKNOWN, L"ictcp" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_videoformat[] = {
-    { "undef",     L"指定なし"  },
-    { "ntsc",      L"ntsc"      },
-    { "component", L"component" },
-    { "pal",       L"pal"       },
-    { "secam",     L"secam"     },
-    { "mac",       L"mac"       },
-    { NULL, NULL }
+    { "undef",     AUO_OPTION_VUI_UNDEF, L"指定なし"  },
+    { "ntsc",      AUO_MES_UNKNOWN, L"ntsc"      },
+    { "component", AUO_MES_UNKNOWN, L"component" },
+    { "pal",       AUO_MES_UNKNOWN, L"pal"       },
+    { "secam",     AUO_MES_UNKNOWN, L"secam"     },
+    { "mac",       AUO_MES_UNKNOWN, L"mac"       },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_sar_x265[] = {
-    { "undef",     L"undef"     },
-    { "1:1",       L"1:1"       },
-    { "12:11",     L"12:11"     },
-    { "10:11",     L"10:11"     },
-    { "16:11",     L"16:11"     },
-    { "40:33",     L"40:33"     },
-    { "24:11",     L"24:11"     },
-    { "20:11",     L"20:11"     },
-    { "32:11",     L"32:11"     },
-    { "80:33",     L"80:33"     },
-    { "18:11",     L"18:11"     },
-    { "15:11",     L"15:11"     },
-    { "64:33",     L"64:33"     },
-    { "160:99",    L"160:99"    },
-    { "4:3",       L"4:3"       },
-    { "3:2",       L"3:2"       },
-    { "2:1",       L"2:1"       },
-    { NULL, NULL }
+    { "undef",     AUO_OPTION_VUI_UNDEF, L"undef"     },
+    { "1:1",       AUO_MES_UNKNOWN, L"1:1"       },
+    { "12:11",     AUO_MES_UNKNOWN, L"12:11"     },
+    { "10:11",     AUO_MES_UNKNOWN, L"10:11"     },
+    { "16:11",     AUO_MES_UNKNOWN, L"16:11"     },
+    { "40:33",     AUO_MES_UNKNOWN, L"40:33"     },
+    { "24:11",     AUO_MES_UNKNOWN, L"24:11"     },
+    { "20:11",     AUO_MES_UNKNOWN, L"20:11"     },
+    { "32:11",     AUO_MES_UNKNOWN, L"32:11"     },
+    { "80:33",     AUO_MES_UNKNOWN, L"80:33"     },
+    { "18:11",     AUO_MES_UNKNOWN, L"18:11"     },
+    { "15:11",     AUO_MES_UNKNOWN, L"15:11"     },
+    { "64:33",     AUO_MES_UNKNOWN, L"64:33"     },
+    { "160:99",    AUO_MES_UNKNOWN, L"160:99"    },
+    { "4:3",       AUO_MES_UNKNOWN, L"4:3"       },
+    { "3:2",       AUO_MES_UNKNOWN, L"3:2"       },
+    { "2:1",       AUO_MES_UNKNOWN, L"2:1"       },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_log_type[] = {
-    { "none",    L"none"    },
-    { "error",   L"error"   },
-    { "warning", L"warning" },
-    { "info",    L"info"    },
-    { "debug",   L"debug"   },
-    { NULL, NULL }
+    { "none",    AUO_MES_UNKNOWN, L"none"    },
+    { "error",   AUO_MES_UNKNOWN, L"error"   },
+    { "warning", AUO_MES_UNKNOWN, L"warning" },
+    { "info",    AUO_MES_UNKNOWN, L"info"    },
+    { "debug",   AUO_MES_UNKNOWN, L"debug"   },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_b_pyramid[] = {
-    { "none",   L"none"   },
-    { "strict", L"strict" },
-    { "normal", L"normal" },
-    { NULL, NULL }
+    { "none",   AUO_MES_UNKNOWN, L"none"   },
+    { "strict", AUO_MES_UNKNOWN, L"strict" },
+    { "normal", AUO_MES_UNKNOWN, L"normal" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_nal_hrd[] = {
-    { "none",   L"使用しない" },
-    { "vbr",    L"vbr"        },
-    { "cbr",    L"cbr"        },
-    { NULL, NULL }
+    { "none",   AUO_MES_UNKNOWN, L"none" },
+    { "vbr",    AUO_MES_UNKNOWN, L"vbr"  },
+    { "cbr",    AUO_MES_UNKNOWN, L"cbr"  },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 
 const ENC_OPTION_STR list_rd[] = {
-    { NULL, L" 0 - least" },
-    { NULL, L" 1" },
-    { NULL, L" 2 - full"  },
-    { NULL, NULL }
+    { NULL, AUO_OPTION_RD_0, L" 0 - least" },
+    { NULL, AUO_OPTION_RD_1, L" 1" },
+    { NULL, AUO_OPTION_RD_2, L" 2 - full"  },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_me_x265[] = {
-    { "dia",  L"Diamond Search (高速)" },
-    { "hex",  L"Hexagonal Search"      },
-    { "umh",  L"Uneven Multi-Hexagon"  },
-    { "star", L"Star Search"           },
-    { "sea",  L"SEA Search"            },
-    { "full", L"Full Search (低速)"    },
-    { NULL, NULL }
+    { "dia",  AUO_OPTION_ME_DIA,  L"Diamond Search (高速)" },
+    { "hex",  AUO_OPTION_ME_HEX,  L"Hexagonal Search"      },
+    { "umh",  AUO_OPTION_ME_UMH,  L"Uneven Multi-Hexagon"  },
+    { "star", AUO_OPTION_ME_STAR, L"Star Search"           },
+    { "sea",  AUO_OPTION_ME_SEA,  L"SEA Search"            },
+    { "full", AUO_OPTION_ME_FULL, L"Full Search (低速)"    },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 const ENC_OPTION_STR list_subme_x265[] = {
-    { NULL, L" 0 (高速)"   },
-    { NULL, L" 1"          },
-    { NULL, L" 2"          },
-    { NULL, L" 3"          },
-    { NULL, L" 4"          },
-    { NULL, L" 5"          },
-    { NULL, L" 6"          },
-    { NULL, L" 7 (高品質)" },
-    { NULL, NULL }
+    { NULL, AUO_OPTION_SUBME_00, L" 0 (高速)"   },
+    { NULL, AUO_OPTION_SUBME_01, L" 1"          },
+    { NULL, AUO_OPTION_SUBME_02, L" 2"          },
+    { NULL, AUO_OPTION_SUBME_03, L" 3"          },
+    { NULL, AUO_OPTION_SUBME_04, L" 4"          },
+    { NULL, AUO_OPTION_SUBME_05, L" 5"          },
+    { NULL, AUO_OPTION_SUBME_06, L" 6"          },
+    { NULL, AUO_OPTION_SUBME_07, L" 7 (高品質)" },
+    { NULL, AUO_MES_UNKNOWN, NULL }
 };
 
 

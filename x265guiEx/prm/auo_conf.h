@@ -33,6 +33,7 @@
 #include <intrin.h>
 #endif
 #include "auo.h"
+#include "auo_mes.h"
 #include "auo_options.h"
 
 const int CONF_INITIALIZED = 1;
@@ -81,6 +82,26 @@ const int CONF_HEAD_SIZE                 = (3 + CONF_BLOCK_MAX) * sizeof(int) + 
 
 static const char *const CONF_LAST_OUT   = "前回出力.stg";
 
+typedef struct {
+    WCHAR *text;
+    AuoMes mes;
+    DWORD value;
+} PRIORITY_CLASS;
+
+const DWORD AVIUTLSYNC_PRIORITY_CLASS = 0;
+
+const PRIORITY_CLASS priority_table[] = {
+    {L"AviutlSync",       AUO_CONF_PRIORITY_AVIUTLSYNC, AVIUTLSYNC_PRIORITY_CLASS   },
+    {L"higher",           AUO_CONF_PRIORITY_HIGHER,     HIGH_PRIORITY_CLASS         },
+    {L"high",             AUO_CONF_PRIORITY_HIGH,       ABOVE_NORMAL_PRIORITY_CLASS },
+    {L"normal",           AUO_CONF_PRIORITY_NORMAL,     NORMAL_PRIORITY_CLASS       },
+    {L"low",              AUO_CONF_PRIORITY_LOW,        BELOW_NORMAL_PRIORITY_CLASS },
+    {L"lower",            AUO_CONF_PRIORITY_LOWER,      IDLE_PRIORITY_CLASS         },
+    {L"",                 AUO_MES_UNKNOWN,              NORMAL_PRIORITY_CLASS       },
+    {L"realtime(非推奨)", AUO_CONF_PRIORITY_REALTIME,   REALTIME_PRIORITY_CLASS     },
+    {NULL,                AUO_MES_UNKNOWN, 0                           }
+};
+
 enum {
     CONF_ERROR_NONE = 0,
     CONF_ERROR_FILE_OPEN,
@@ -109,12 +130,12 @@ enum {
     AUDIO_DELAY_CUT_EDTS         = 3, //音声エンコード遅延の削除をedtsを用いて行う
 };
 
-static const char *const AUDIO_DELAY_CUT_MODE[] = {
-    "補正なし",
-    "音声カット",
-    "映像追加",
-    "edts",
-    NULL
+static const ENC_OPTION_STR AUDIO_DELAY_CUT_MODE[] = {
+    { NULL, AUO_CONF_AUDIO_DELAY_NONE,      L"補正なし"   },
+    { NULL, AUO_CONF_AUDIO_DELAY_CUT_AUDIO, L"音声カット" },
+    { NULL, AUO_CONF_AUDIO_DELAY_ADD_VIDEO, L"映像追加"   },
+    { NULL, AUO_CONF_AUDIO_DELAY_EDTS,      L"edts"       },
+    { NULL, AUO_MES_UNKNOWN,                NULL          },
 };
 
 #pragma pack(push,4)
@@ -222,5 +243,6 @@ void init_CONF_GUIEX(CONF_GUIEX *conf, BOOL use_highbit); //初期化し、x264�
 void make_file_filter(char *filter, size_t nSize, int default_index);
 
 void overwrite_aviutl_ini_file_filter(int idx);
+void overwrite_aviutl_ini_auo_info();
 
 #endif //_AUO_CONF_H_

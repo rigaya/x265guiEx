@@ -30,8 +30,9 @@
 
 #include <Windows.h>
 #include <vector>
-#include <string>
 #include "auo.h"
+#include "auo_mes.h"
+#include "auo_util.h"
 
 //----    デフォルト値    ---------------------------------------------------
 
@@ -100,6 +101,7 @@ static const char  *AUO_CHECK_FILEOPEN_NAME          = "auo_check_fileopen.exe";
 
 typedef struct ENC_OPTION_STR {
     char *name; //エンコーダでのオプション名
+    AuoMes mes;  //GUIでの表示用
     WCHAR *desc; //GUIでの表示用
 } ENC_OPTION_STR;
 
@@ -113,6 +115,31 @@ enum {
     DISABLE_LOG_NORMAL     = 0x02,
     DISABLE_LOG_ALL        = DISABLE_LOG_PIPE_INPUT | DISABLE_LOG_NORMAL,
 };
+
+static size_t GetPrivateProfileStringStg(const char *section, const char *keyname, const char *defaultString, char *buf, size_t bufSize, const char *ini_file, const DWORD codepage) {
+    if (bufSize == 0) {
+        return 0;
+    }
+    size_t len = GetPrivateProfileString(section, keyname, defaultString, buf, (DWORD)bufSize, ini_file);
+    if (codepage == CP_THREAD_ACP) {
+        return len;
+    }
+    const auto str_thread_acp = wstring_to_string(char_to_wstring(buf, codepage), CP_THREAD_ACP);
+    strcpy_s(buf, bufSize, str_thread_acp.c_str());
+    return str_thread_acp.length();
+}
+static size_t GetPrivateProfileWStringStg(const char *section, const char *keyname, const char *defaultString, char *buf, size_t bufSize, const char *ini_file, const DWORD codepage) {
+    if (bufSize == 0) {
+        return 0;
+    }
+    size_t len = GetPrivateProfileString(section, keyname, defaultString, buf, (DWORD)bufSize, ini_file);
+    if (codepage == CP_THREAD_ACP) {
+        return len;
+    }
+    const auto wstr = char_to_wstring(buf, codepage);
+    wcscpy_s((wchar_t *)buf, bufSize / sizeof(wchar_t), wstr.c_str());
+    return wstr.length();
+}
 
 //メモリーを切り刻みます。
 class mem_cutter {
@@ -151,13 +178,23 @@ public:
         mp_size -= size;
         return ptr;
     };
-    char *SetPrivateProfileString(const char *section, const char *keyname, const char *defaultString, const char *ini_file) {
+    char *SetPrivateProfileString(const char *section, const char *keyname, const char *defaultString, const char *ini_file, const DWORD codepage) {
         char *ptr = NULL;
         if (mp_size > 0) {
-            size_t len = GetPrivateProfileString(section, keyname, defaultString, mp, (DWORD)mp_size, ini_file);
+            size_t len = GetPrivateProfileStringStg(section, keyname, defaultString, mp, (DWORD)mp_size, ini_file, codepage);
             ptr = mp;
             mp += len + 1;
             mp_size -= len + 1;
+        }
+        return ptr;
+    };
+    wchar_t *SetPrivateProfileWString(const char *section, const char *keyname, const char *defaultString, const char *ini_file, const DWORD codepage) {
+        wchar_t *ptr = NULL;
+        if (mp_size > 0) {
+            size_t len = GetPrivateProfileWStringStg(section, keyname, defaultString, mp, (DWORD)mp_size, ini_file, codepage);
+            ptr = (wchar_t *)mp;
+            mp += (len + 1) * sizeof(wchar_t);
+            mp_size -= (len + 1) * sizeof(wchar_t);
         }
         return ptr;
     };
@@ -168,14 +205,19 @@ public:
         return mp_size;
     };
     void CutString(int sizeof_chr) {
-        size_t cut_size = (strlen(mp) + 1) * sizeof_chr;
+        size_t cut_size = 0;
+        if (sizeof_chr == sizeof(char)) {
+            cut_size = (strlen(mp) + 1) * sizeof_chr;
+        } else if (sizeof_chr == sizeof(wchar_t)) {
+            cut_size = (wcslen((wchar_t*)mp) + 1) * sizeof_chr;
+        }
         mp += cut_size;
         mp_size -= cut_size;
     };
 };
 
 typedef struct AUDIO_ENC_MODE {
-    char *name;          //名前
+    wchar_t *name;       //名前
     char *cmd;           //コマンドライン
     BOOL bitrate;        //ビットレート指定モード
     int bitrate_min;     //ビットレートの最小値
@@ -186,13 +228,13 @@ typedef struct AUDIO_ENC_MODE {
     int enc_2pass;       //2passエンコを行う
     int use_8bit;        //8bitwavを入力する
     int use_remuxer;     //remuxerが必要
-    char *disp_list;     //表示名のリスト
+    wchar_t *disp_list;  //表示名のリスト
     char *cmd_list;      //コマンドラインのリスト
 } AUDIO_ENC_MODE;
 
 typedef struct AUDIO_SETTINGS {
     char *keyName;               //iniファイルでのセクション名
-    char *dispname;              //名前
+    wchar_t *dispname;           //名前
     char *filename;              //拡張子付き名前
     char fullpath[MAX_PATH_LEN]; //エンコーダの場所(フルパス)
     char *aud_appendix;          //作成する音声ファイル名に追加する文字列
@@ -210,7 +252,7 @@ typedef struct AUDIO_SETTINGS {
 } AUDIO_SETTINGS;
 
 typedef struct MUXER_CMD_EX {
-    char *name;      //拡張オプションの名前
+    wchar_t *name;   //拡張オプションの名前
     char *cmd;       //拡張オプションのコマンドライン
     char *cmd_apple; //Apple用モードの時のコマンドライン
     char *chap_file; //チャプターファイル
@@ -218,7 +260,7 @@ typedef struct MUXER_CMD_EX {
 
 typedef struct MUXER_SETTINGS {
     char *keyName;                //iniファイルでのセクション名
-    char *dispname;               //名前
+    wchar_t *dispname;            //名前
     char *filename;               //拡張子付き名前
     char fullpath[MAX_PATH_LEN];  //エンコーダの場所(フルパス)
     char *out_ext;                //mux後ファイルの拡張子
@@ -344,6 +386,12 @@ private:
     static char  ini_fileName[MAX_PATH_LEN];  //iniファイル(読み込み用)の場所
     static char  conf_fileName[MAX_PATH_LEN]; //configファイル(読み書き用)の場所
     static DWORD ini_filesize;                //iniファイル(読み込み用)のサイズ
+    static char  default_lang[4];             //デフォルトの言語
+    static int  ini_ver;                      //iniファイルのバージョン
+    static DWORD codepage_ini;                //iniファイルの文字コード
+    static DWORD codepage_cnf;                //confファイルの文字コード
+    static char language[MAX_PATH_LEN];       //言語設定
+    char last_out_stg[MAX_PATH_LEN];          //前回出力のstgファイル(多言語対応のため、デフォルトのCONF_LAST_OUTに加え、これも探す)
 
     void load_enc_cmd(ENC_CMD *vidcmd, int *count, int *default_index, const char *section);  //動画エンコーダコマンドライン設定の読み込み
 
@@ -387,15 +435,23 @@ public:
     void load_log_win();                     //ログウィンドウ等の設定の読み込み・更新
     void load_append();                      //各種ファイルの設定の読み込み・更新
     void load_fbc();                         //簡易ビットレート計算機設定の読み込み・更新
+    void load_lang();                        //言語設定をロード
+    void load_last_out_stg();                //last_out_stgのロード
 
     void save_local();        //ファイルの場所等の設定の保存
     void save_log_win();      //ログウィンドウ等の設定の保存
     void save_fbc();          //簡易ビットレート計算機設定の保存
+    void save_lang();         //言語設定の保存
+    void save_last_out_stg(); //last_out_stgの保存
 
     void apply_fn_replace(char *target_filename, DWORD nSize);  //一時ファイル名置換の適用
 
     BOOL get_reset_s_enc_referesh(); //s_encが更新されたか
-
+    const char *get_lang() const;
+    const char *get_last_out_stg() const;
+    void set_and_save_lang(const char *lang);
+    void get_default_lang();
+    void set_last_out_stg(const char *stg);
 private:
     void initialize(BOOL disable_loading);
     void initialize(BOOL disable_loading, const char *_auo_path, const char *main_section);

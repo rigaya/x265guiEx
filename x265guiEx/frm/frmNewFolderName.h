@@ -28,6 +28,7 @@
 #pragma once
 
 #include "auo_settings.h"
+#include "auo_mes.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -153,11 +154,18 @@ namespace AUO_NAME_R {
         String^ NewFolder;
         AuoTheme themeMode;
         const DarkenWindowStgReader *dwStgReader;
+    private:
+        System::Void LoadLangText() {
+            LOAD_CLI_MAIN_TEXT(fnfMain);
+            LOAD_CLI_TEXT(fnfBTOK);
+            LOAD_CLI_TEXT(fnfBTCancel);
+        }
     private: 
         System::Void frmNewFolderName_Load(System::Object^  sender, System::EventArgs^  e) {
             NewFolder = L"";
             fnfTXNewFolderName->Select();
-            
+
+            LoadLangText();
             //フォントの設定
             guiEx_settings exstg;
             exstg.load_encode_stg();
@@ -167,7 +175,7 @@ namespace AUO_NAME_R {
     private:
         System::Void fnfBTOK_Click(System::Object^  sender, System::EventArgs^  e) {
             if (!ValidiateFileName(fnfTXNewFolderName->Text)) {
-                MessageBox::Show(L"フォルダ名に使用できない文字が含まれています。", L"エラー", MessageBoxButtons::OK, MessageBoxIcon::Error);
+                MessageBox::Show(LOAD_CLI_STRING(AUO_NEW_FOLDER_NAME_ERR_FOLDER_PATH), LOAD_CLI_STRING(AUO_GUIEX_ERROR), MessageBoxButtons::OK, MessageBoxIcon::Error);
                 return;
             }
             NewFolder = fnfTXNewFolderName->Text;
