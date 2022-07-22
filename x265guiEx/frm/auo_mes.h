@@ -865,7 +865,7 @@ enum AuoMes {
         AuorichTextLog,
         AuotoolStripMenuItemFileOpen,
         AuotoolStripMenuItemFilePathOpen,
-        AuoToolStripMenuItemx264Priority,
+        AuoToolStripMenuItemVidEncPriority,
         AuoToolStripMenuItemEncPause,
         AuoToolStripMenuItemTransparent,
         AuotoolStripMenuItemTransparentValue,
