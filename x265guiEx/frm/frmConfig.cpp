@@ -1326,8 +1326,16 @@ System::Void frmConfig::InitForm() {
     fcgLBVersionDate->Text = L"build " + String(__DATE__).ToString() + L" " + String(__TIME__).ToString();
     //タイマーの初期化
     InitTimer();
-    //ツールチップ
-    ActivateToolTip(sys_dat->exstg->s_local.disable_tooltip_help == FALSE);
+    //デフォルトの出力拡張子によってデフォルトのタブを変更
+    switch (sys_dat->exstg->s_local.default_output_ext) {
+    case 0: //mp4
+        fcgtabControlMux->SelectedTab = fcgtabPageMP4;
+        break;
+    case 1: //mkv
+    default:
+        fcgtabControlMux->SelectedTab = fcgtabPageMKV;
+        break;
+    }
     //パラメータセット
     ConfToFrm(conf, true);
     //イベントセット
