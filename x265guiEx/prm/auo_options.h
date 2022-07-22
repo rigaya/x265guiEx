@@ -456,6 +456,7 @@ void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_X265 *conf, const v
 void build_cmd_from_conf_x264(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all);
 void set_guiEx_auto_sar(int *sar_x, int *sar_y, int width, int height);
+void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den);
 void apply_guiEx_auto_settings(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level);
 const ENC_OPTION_STR * get_option_list_x265(const char *option_name);
 void set_ex_stg_ptr(guiEx_settings *_ex_stg);

@@ -157,6 +157,7 @@ typedef struct CONF_VIDEO {
     char   parallel_div_info[64];    //プロセス並列モード時に使用する情報
     char   analysis_file[MAX_PATH_LEN]; //x265用ステータスファイルの場所
     BOOL   sync_process_affinity;     //プロセスアフィニティをAviutlと同期
+    double amp_limit_bitrate_lower;
 } CONF_VIDEO; //動画用設定(x264以外)
 #pragma pack(pop)
 

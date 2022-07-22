@@ -1317,13 +1317,6 @@ System::Void frmConfig::InitForm() {
     InitStgFileList();
     //コンボボックスの値を設定
     InitComboBox();
-    //タイムコードのappendix(後付修飾子)を反映
-    fcgCBAuoTcfileout->Text = L"タイムコード出力 (" + String(sys_dat->exstg->s_append.tc).ToString() + L")";
-    //タイトル表示
-    this->Text = String(AUO_FULL_NAME).ToString();
-    //バージョン情報,コンパイル日時
-    fcgLBVersion->Text     = String(AUO_VERSION_NAME).ToString();
-    fcgLBVersionDate->Text = L"build " + String(__DATE__).ToString() + L" " + String(__TIME__).ToString();
     //タイマーの初期化
     InitTimer();
     //デフォルトの出力拡張子によってデフォルトのタブを変更
@@ -2170,7 +2163,7 @@ System::Void frmConfig::SetHelpToolTips() {
 
     fcgTTX265->SetToolTip(fcgCXBitDepth,         L"--input-depth / --output-depth");
     fcgTTX265->SetToolTip(fcgCXCSP,              L"--input-csp\n"
-        + L"通常は i420 を使用します。"
+        + LOAD_CLI_STRING(AuofrmTTfcgCXOutputCsp)
         );
     SetHelpToolTipsColorMatrixX265(fcgCXColorMatrix, "colormatrix");
     SetHelpToolTipsColorMatrixX265(fcgCXColorPrim,   "colorprim");
