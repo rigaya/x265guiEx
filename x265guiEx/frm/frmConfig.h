@@ -2244,7 +2244,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBHEVCAQ
             // 
             this->fcgCBHEVCAQ->AutoSize = true;
-            this->fcgCBHEVCAQ->Location = System::Drawing::Point(109, 437);
+            this->fcgCBHEVCAQ->Location = System::Drawing::Point(102, 437);
             this->fcgCBHEVCAQ->Name = L"fcgCBHEVCAQ";
             this->fcgCBHEVCAQ->Size = System::Drawing::Size(15, 14);
             this->fcgCBHEVCAQ->TabIndex = 116;
@@ -2254,7 +2254,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBHEVCAQ
             // 
             this->fcgLBHEVCAQ->AutoSize = true;
-            this->fcgLBHEVCAQ->Location = System::Drawing::Point(9, 436);
+            this->fcgLBHEVCAQ->Location = System::Drawing::Point(6, 436);
             this->fcgLBHEVCAQ->Name = L"fcgLBHEVCAQ";
             this->fcgLBHEVCAQ->Size = System::Drawing::Size(50, 14);
             this->fcgLBHEVCAQ->TabIndex = 117;
@@ -2263,7 +2263,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBSsimRd
             // 
             this->fcgCBSsimRd->AutoSize = true;
-            this->fcgCBSsimRd->Location = System::Drawing::Point(359, 466);
+            this->fcgCBSsimRd->Location = System::Drawing::Point(414, 466);
             this->fcgCBSsimRd->Name = L"fcgCBSsimRd";
             this->fcgCBSsimRd->Size = System::Drawing::Size(15, 14);
             this->fcgCBSsimRd->TabIndex = 54;
@@ -2273,7 +2273,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBSsimRd
             // 
             this->fcgLBSsimRd->AutoSize = true;
-            this->fcgLBSsimRd->Location = System::Drawing::Point(254, 465);
+            this->fcgLBSsimRd->Location = System::Drawing::Point(255, 465);
             this->fcgLBSsimRd->Name = L"fcgLBSsimRd";
             this->fcgLBSsimRd->Size = System::Drawing::Size(48, 14);
             this->fcgLBSsimRd->TabIndex = 115;
@@ -2282,7 +2282,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBAQMotion
             // 
             this->fcgLBAQMotion->AutoSize = true;
-            this->fcgLBAQMotion->Location = System::Drawing::Point(9, 412);
+            this->fcgLBAQMotion->Location = System::Drawing::Point(6, 412);
             this->fcgLBAQMotion->Name = L"fcgLBAQMotion";
             this->fcgLBAQMotion->Size = System::Drawing::Size(63, 14);
             this->fcgLBAQMotion->TabIndex = 113;
@@ -2291,7 +2291,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBAQMotion
             // 
             this->fcgCBAQMotion->AutoSize = true;
-            this->fcgCBAQMotion->Location = System::Drawing::Point(109, 413);
+            this->fcgCBAQMotion->Location = System::Drawing::Point(102, 413);
             this->fcgCBAQMotion->Name = L"fcgCBAQMotion";
             this->fcgCBAQMotion->Size = System::Drawing::Size(15, 14);
             this->fcgCBAQMotion->TabIndex = 42;
@@ -2301,7 +2301,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBQGSize
             // 
             this->fcgLBQGSize->AutoSize = true;
-            this->fcgLBQGSize->Location = System::Drawing::Point(9, 465);
+            this->fcgLBQGSize->Location = System::Drawing::Point(6, 465);
             this->fcgLBQGSize->Name = L"fcgLBQGSize";
             this->fcgLBQGSize->Size = System::Drawing::Size(96, 14);
             this->fcgLBQGSize->TabIndex = 111;
@@ -2309,7 +2309,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNUQGSize
             // 
-            this->fcgNUQGSize->Location = System::Drawing::Point(109, 463);
+            this->fcgNUQGSize->Location = System::Drawing::Point(102, 463);
             this->fcgNUQGSize->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 64, 0, 0, 0 });
             this->fcgNUQGSize->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 8, 0, 0, 0 });
             this->fcgNUQGSize->Name = L"fcgNUQGSize";
@@ -2322,7 +2322,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNURdoqLevel
             // 
-            this->fcgNURdoqLevel->Location = System::Drawing::Point(342, 408);
+            this->fcgNURdoqLevel->Location = System::Drawing::Point(397, 408);
             this->fcgNURdoqLevel->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURdoqLevel->Name = L"fcgNURdoqLevel";
             this->fcgNURdoqLevel->Size = System::Drawing::Size(45, 21);
@@ -2333,7 +2333,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBRdoqLevel
             // 
             this->fcgLBRdoqLevel->AutoSize = true;
-            this->fcgLBRdoqLevel->Location = System::Drawing::Point(254, 410);
+            this->fcgLBRdoqLevel->Location = System::Drawing::Point(255, 410);
             this->fcgLBRdoqLevel->Name = L"fcgLBRdoqLevel";
             this->fcgLBRdoqLevel->Size = System::Drawing::Size(62, 14);
             this->fcgLBRdoqLevel->TabIndex = 109;
@@ -2342,7 +2342,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBDeblock
             // 
             this->fcgCBDeblock->AutoSize = true;
-            this->fcgCBDeblock->Location = System::Drawing::Point(416, 411);
+            this->fcgCBDeblock->Location = System::Drawing::Point(458, 411);
             this->fcgCBDeblock->Name = L"fcgCBDeblock";
             this->fcgCBDeblock->Size = System::Drawing::Size(141, 18);
             this->fcgCBDeblock->TabIndex = 61;
@@ -2356,15 +2356,15 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             this->fcggroupBoxDeblock->Controls->Add(this->fcgNUDeblockStrength);
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockThreshold);
             this->fcggroupBoxDeblock->Controls->Add(this->fcgLBDeblockStrength);
-            this->fcggroupBoxDeblock->Location = System::Drawing::Point(404, 413);
+            this->fcggroupBoxDeblock->Location = System::Drawing::Point(453, 413);
             this->fcggroupBoxDeblock->Name = L"fcggroupBoxDeblock";
-            this->fcggroupBoxDeblock->Size = System::Drawing::Size(194, 75);
+            this->fcggroupBoxDeblock->Size = System::Drawing::Size(150, 75);
             this->fcggroupBoxDeblock->TabIndex = 62;
             this->fcggroupBoxDeblock->TabStop = false;
             // 
             // fcgNUDeblockThreshold
             // 
-            this->fcgNUDeblockThreshold->Location = System::Drawing::Point(118, 47);
+            this->fcgNUDeblockThreshold->Location = System::Drawing::Point(90, 47);
             this->fcgNUDeblockThreshold->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockThreshold->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockThreshold->Name = L"fcgNUDeblockThreshold";
@@ -2375,7 +2375,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNUDeblockStrength
             // 
-            this->fcgNUDeblockStrength->Location = System::Drawing::Point(118, 20);
+            this->fcgNUDeblockStrength->Location = System::Drawing::Point(90, 20);
             this->fcgNUDeblockStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNUDeblockStrength->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, System::Int32::MinValue });
             this->fcgNUDeblockStrength->Name = L"fcgNUDeblockStrength";
@@ -2387,7 +2387,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBDeblockThreshold
             // 
             this->fcgLBDeblockThreshold->AutoSize = true;
-            this->fcgLBDeblockThreshold->Location = System::Drawing::Point(16, 49);
+            this->fcgLBDeblockThreshold->Location = System::Drawing::Point(6, 49);
             this->fcgLBDeblockThreshold->Name = L"fcgLBDeblockThreshold";
             this->fcgLBDeblockThreshold->Size = System::Drawing::Size(68, 14);
             this->fcgLBDeblockThreshold->TabIndex = 1;
@@ -2396,7 +2396,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBDeblockStrength
             // 
             this->fcgLBDeblockStrength->AutoSize = true;
-            this->fcgLBDeblockStrength->Location = System::Drawing::Point(16, 22);
+            this->fcgLBDeblockStrength->Location = System::Drawing::Point(6, 22);
             this->fcgLBDeblockStrength->Name = L"fcgLBDeblockStrength";
             this->fcgLBDeblockStrength->Size = System::Drawing::Size(68, 14);
             this->fcgLBDeblockStrength->TabIndex = 0;
@@ -2406,7 +2406,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgNUPsyRDOQ->DecimalPlaces = 2;
             this->fcgNUPsyRDOQ->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUPsyRDOQ->Location = System::Drawing::Point(328, 380);
+            this->fcgNUPsyRDOQ->Location = System::Drawing::Point(383, 380);
             this->fcgNUPsyRDOQ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 50, 0, 0, 0 });
             this->fcgNUPsyRDOQ->Name = L"fcgNUPsyRDOQ";
             this->fcgNUPsyRDOQ->Size = System::Drawing::Size(59, 21);
@@ -2417,7 +2417,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBPsyRDOQ
             // 
             this->fcgLBPsyRDOQ->AutoSize = true;
-            this->fcgLBPsyRDOQ->Location = System::Drawing::Point(254, 382);
+            this->fcgLBPsyRDOQ->Location = System::Drawing::Point(255, 382);
             this->fcgLBPsyRDOQ->Name = L"fcgLBPsyRDOQ";
             this->fcgLBPsyRDOQ->Size = System::Drawing::Size(56, 14);
             this->fcgLBPsyRDOQ->TabIndex = 105;
@@ -2427,7 +2427,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgNUPsyRD->DecimalPlaces = 2;
             this->fcgNUPsyRD->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUPsyRD->Location = System::Drawing::Point(328, 352);
+            this->fcgNUPsyRD->Location = System::Drawing::Point(383, 352);
             this->fcgNUPsyRD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUPsyRD->Name = L"fcgNUPsyRD";
             this->fcgNUPsyRD->Size = System::Drawing::Size(59, 21);
@@ -2438,7 +2438,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBPsyRD
             // 
             this->fcgLBPsyRD->AutoSize = true;
-            this->fcgLBPsyRD->Location = System::Drawing::Point(254, 354);
+            this->fcgLBPsyRD->Location = System::Drawing::Point(255, 354);
             this->fcgLBPsyRD->Name = L"fcgLBPsyRD";
             this->fcgLBPsyRD->Size = System::Drawing::Size(42, 14);
             this->fcgLBPsyRD->TabIndex = 103;
@@ -2748,7 +2748,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBCUTree
             // 
             this->fcgCBCUTree->AutoSize = true;
-            this->fcgCBCUTree->Location = System::Drawing::Point(556, 382);
+            this->fcgCBCUTree->Location = System::Drawing::Point(587, 382);
             this->fcgCBCUTree->Name = L"fcgCBCUTree";
             this->fcgCBCUTree->Size = System::Drawing::Size(15, 14);
             this->fcgCBCUTree->TabIndex = 43;
@@ -2758,7 +2758,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBCUTree
             // 
             this->fcgLBCUTree->AutoSize = true;
-            this->fcgLBCUTree->Location = System::Drawing::Point(424, 381);
+            this->fcgLBCUTree->Location = System::Drawing::Point(460, 381);
             this->fcgLBCUTree->Name = L"fcgLBCUTree";
             this->fcgLBCUTree->Size = System::Drawing::Size(45, 14);
             this->fcgLBCUTree->TabIndex = 100;
@@ -2766,7 +2766,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNURD
             // 
-            this->fcgNURD->Location = System::Drawing::Point(342, 436);
+            this->fcgNURD->Location = System::Drawing::Point(397, 436);
             this->fcgNURD->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 6, 0, 0, 0 });
             this->fcgNURD->Name = L"fcgNURD";
             this->fcgNURD->Size = System::Drawing::Size(45, 21);
@@ -2778,7 +2778,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgNUAQStrength->DecimalPlaces = 2;
             this->fcgNUAQStrength->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 131072 });
-            this->fcgNUAQStrength->Location = System::Drawing::Point(109, 382);
+            this->fcgNUAQStrength->Location = System::Drawing::Point(102, 382);
             this->fcgNUAQStrength->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 3, 0, 0, 0 });
             this->fcgNUAQStrength->Name = L"fcgNUAQStrength";
             this->fcgNUAQStrength->Size = System::Drawing::Size(59, 21);
@@ -2789,7 +2789,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBAQStrength
             // 
             this->fcgLBAQStrength->AutoSize = true;
-            this->fcgLBAQStrength->Location = System::Drawing::Point(9, 384);
+            this->fcgLBAQStrength->Location = System::Drawing::Point(6, 384);
             this->fcgLBAQStrength->Name = L"fcgLBAQStrength";
             this->fcgLBAQStrength->Size = System::Drawing::Size(41, 14);
             this->fcgLBAQStrength->TabIndex = 97;
@@ -2799,16 +2799,16 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgCXAQMode->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXAQMode->FormattingEnabled = true;
-            this->fcgCXAQMode->Location = System::Drawing::Point(109, 353);
+            this->fcgCXAQMode->Location = System::Drawing::Point(102, 353);
             this->fcgCXAQMode->Name = L"fcgCXAQMode";
-            this->fcgCXAQMode->Size = System::Drawing::Size(126, 22);
+            this->fcgCXAQMode->Size = System::Drawing::Size(142, 22);
             this->fcgCXAQMode->TabIndex = 40;
             this->fcgCXAQMode->Tag = L"reCmd";
             // 
             // fcgLBAQMode
             // 
             this->fcgLBAQMode->AutoSize = true;
-            this->fcgLBAQMode->Location = System::Drawing::Point(9, 356);
+            this->fcgLBAQMode->Location = System::Drawing::Point(6, 356);
             this->fcgLBAQMode->Name = L"fcgLBAQMode";
             this->fcgLBAQMode->Size = System::Drawing::Size(80, 14);
             this->fcgLBAQMode->TabIndex = 95;
@@ -2817,7 +2817,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBRD
             // 
             this->fcgLBRD->AutoSize = true;
-            this->fcgLBRD->Location = System::Drawing::Point(254, 438);
+            this->fcgLBRD->Location = System::Drawing::Point(255, 438);
             this->fcgLBRD->Name = L"fcgLBRD";
             this->fcgLBRD->Size = System::Drawing::Size(86, 14);
             this->fcgLBRD->TabIndex = 94;
@@ -2864,7 +2864,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNURskip
             // 
-            this->fcgNURskip->Location = System::Drawing::Point(128, 120);
+            this->fcgNURskip->Location = System::Drawing::Point(140, 120);
             this->fcgNURskip->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
             this->fcgNURskip->Name = L"fcgNURskip";
             this->fcgNURskip->Size = System::Drawing::Size(65, 21);
@@ -2902,7 +2902,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             // fcgNUMaxMerge
             // 
-            this->fcgNUMaxMerge->Location = System::Drawing::Point(128, 96);
+            this->fcgNUMaxMerge->Location = System::Drawing::Point(140, 96);
             this->fcgNUMaxMerge->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5, 0, 0, 0 });
             this->fcgNUMaxMerge->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->fcgNUMaxMerge->Name = L"fcgNUMaxMerge";
@@ -2934,15 +2934,15 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgCXME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXME->FormattingEnabled = true;
-            this->fcgCXME->Location = System::Drawing::Point(128, 15);
+            this->fcgCXME->Location = System::Drawing::Point(140, 15);
             this->fcgCXME->Name = L"fcgCXME";
-            this->fcgCXME->Size = System::Drawing::Size(207, 22);
+            this->fcgCXME->Size = System::Drawing::Size(195, 22);
             this->fcgCXME->TabIndex = 11;
             this->fcgCXME->Tag = L"reCmd";
             // 
             // fcgNUMERange
             // 
-            this->fcgNUMERange->Location = System::Drawing::Point(128, 70);
+            this->fcgNUMERange->Location = System::Drawing::Point(140, 70);
             this->fcgNUMERange->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 32768, 0, 0, 0 });
             this->fcgNUMERange->Name = L"fcgNUMERange";
             this->fcgNUMERange->Size = System::Drawing::Size(65, 21);
@@ -2954,9 +2954,9 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // 
             this->fcgCXSubME->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
             this->fcgCXSubME->FormattingEnabled = true;
-            this->fcgCXSubME->Location = System::Drawing::Point(128, 42);
+            this->fcgCXSubME->Location = System::Drawing::Point(140, 42);
             this->fcgCXSubME->Name = L"fcgCXSubME";
-            this->fcgCXSubME->Size = System::Drawing::Size(207, 22);
+            this->fcgCXSubME->Size = System::Drawing::Size(195, 22);
             this->fcgCXSubME->TabIndex = 12;
             this->fcgCXSubME->Tag = L"reCmd";
             // 
@@ -3126,7 +3126,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgCBSAO
             // 
             this->fcgCBSAO->AutoSize = true;
-            this->fcgCBSAO->Location = System::Drawing::Point(556, 357);
+            this->fcgCBSAO->Location = System::Drawing::Point(587, 357);
             this->fcgCBSAO->Name = L"fcgCBSAO";
             this->fcgCBSAO->Size = System::Drawing::Size(15, 14);
             this->fcgCBSAO->TabIndex = 60;
@@ -3136,7 +3136,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             // fcgLBSAO
             // 
             this->fcgLBSAO->AutoSize = true;
-            this->fcgLBSAO->Location = System::Drawing::Point(423, 355);
+            this->fcgLBSAO->Location = System::Drawing::Point(459, 355);
             this->fcgLBSAO->Name = L"fcgLBSAO";
             this->fcgLBSAO->Size = System::Drawing::Size(121, 14);
             this->fcgLBSAO->TabIndex = 39;
@@ -4893,7 +4893,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             this->MaximizeBox = false;
             this->Name = L"frmConfig";
             this->ShowIcon = false;
-            this->Text = L"fcgNUQComp";
+            this->Text = L"x265guiEx";
             this->Load += gcnew System::EventHandler(this, &frmConfig::frmConfig_Load);
             this->fcgtabControlVideo->ResumeLayout(false);
             this->fcgtabPageX265Main->ResumeLayout(false);
