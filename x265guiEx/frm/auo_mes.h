@@ -46,10 +46,10 @@ struct AUO_LANGUAGE {
     const char *resouce;
 };
 
-static const std::array<AUO_LANGUAGE, 2> list_auo_languages = {
+static const std::array<AUO_LANGUAGE, 3> list_auo_languages = {
     AUO_LANGUAGE{ AUO_LANGUAGE_JA, L"日本語",  "X265GUIEX_JA_LNG" },
-    AUO_LANGUAGE{ AUO_LANGUAGE_EN, L"English", "X265GUIEX_EN_LNG" }
-    //AUO_LANGUAGE{ AUO_LANGUAGE_ZH, L"中文",    "X265GUIEX_ZH_LNG" }
+    AUO_LANGUAGE{ AUO_LANGUAGE_EN, L"English", "X265GUIEX_EN_LNG" },
+    AUO_LANGUAGE{ AUO_LANGUAGE_ZH, L"中文",    "X265GUIEX_ZH_LNG" }
 };
 
 enum AuoMesSections {
