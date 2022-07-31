@@ -1033,7 +1033,7 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
         if (!(ret & AUO_RESULT_ERROR) && afs)
             write_log_auo_line_fmt(LOG_INFO, L"drop %d / %d frames", pe->drop_count, i);
 
-        write_log_auo_line_fmt(LOG_INFO, L"%s: Aviutl: %.2f%% / x264: %.2f%%", g_auo_mes.get(AUO_VIDEO_CPU_USAGE), GetProcessAvgCPUUsage(pe->h_p_aviutl, &time_aviutl), GetProcessAvgCPUUsage(pi_enc.hProcess));
+        write_log_auo_line_fmt(LOG_INFO, L"%s: Aviutl: %.2f%% / x265: %.2f%%", g_auo_mes.get(AUO_VIDEO_CPU_USAGE), GetProcessAvgCPUUsage(pe->h_p_aviutl, &time_aviutl), GetProcessAvgCPUUsage(pi_enc.hProcess));
         write_log_auo_line_fmt(LOG_INFO, L"Aviutl %s: %.3f ms", g_auo_mes.get(AUO_VIDEO_AVIUTL_PROC_AVG_TIME), time_get_frame * 1000.0 / i);
         write_log_auo_enc_time(g_auo_mes.get(AUO_VIDEO_ENCODE_TIME), tm_vid_enc_fin - tm_vid_enc_start);
     }
