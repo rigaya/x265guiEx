@@ -27,6 +27,8 @@
 
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <Windows.h>
 
 #include "auo.h"
@@ -5904,8 +5906,8 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
                 int value_to_set = 0;
                 for (int i = 0, pow2i = 1; 0==value_to_set && pow2i <= max_ctu_size; i++) {
                     if (current_value == pow2i)             value_to_set = pow2i;
-                    if (current_value == pow2i - increment) value_to_set = max(pow2i / 2, (int)senderNU->Minimum);
-                    if (current_value == pow2i + increment) value_to_set = min(pow2i * 2, (int)senderNU->Maximum);
+                    if (current_value == pow2i - increment) value_to_set = std::max(pow2i / 2, (int)senderNU->Minimum);
+                    if (current_value == pow2i + increment) value_to_set = std::min(pow2i * 2, (int)senderNU->Maximum);
                     pow2i *= 2;
                 }
                 if (0 == value_to_set) {
