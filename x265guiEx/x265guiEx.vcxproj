@@ -292,7 +292,12 @@ copy /y x265guiEx.zh.ini "$(OutDir)"</Command>
   <ItemGroup>
     <None Include="x265guiEx.def" />
     <None Include="image\folder_open.ico" />
+    <None Include="x265guiEx.en.ini" />
+    <None Include="x265guiEx.en.lng" />
     <None Include="x265guiEx.ini" />
+    <None Include="x265guiEx.ja.lng" />
+    <None Include="x265guiEx.zh.ini" />
+    <None Include="x265guiEx.zh.lng" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auo.h" />
