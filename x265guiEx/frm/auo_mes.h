@@ -500,7 +500,7 @@ enum AuoMes {
         AuofcgLBColorPrim,
         AuofcgLBColorMatrix,
         AuofcgLBVideoFormat,
-        AuofcggroupBoxSAR,
+        AuofcgGroupBoxAspectRatio,
         AuofcgLBAspectRatio,
         AuofcgLBCSP,
         AuofcggroupBoxRateControl,

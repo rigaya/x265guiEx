@@ -1376,7 +1376,7 @@ System::Void frmConfig::LoadLangText() {
     LOAD_CLI_TEXT(fcgLBColorPrim);
     LOAD_CLI_TEXT(fcgLBColorMatrix);
     LOAD_CLI_TEXT(fcgLBVideoFormat);
-    LOAD_CLI_TEXT(fcggroupBoxSAR);
+    LOAD_CLI_TEXT(fcgGroupBoxAspectRatio);
     LOAD_CLI_TEXT(fcgLBAspectRatio);
     LOAD_CLI_TEXT(fcgLBCSP);
     LOAD_CLI_TEXT(fcggroupBoxRateControl);

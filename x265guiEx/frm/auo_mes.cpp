@@ -421,7 +421,7 @@ static const char * AUO_MES_ID_NAME_STR[] = {
 "AuofcgLBColorPrim",
 "AuofcgLBColorMatrix",
 "AuofcgLBVideoFormat",
-"AuofcggroupBoxSAR",
+"AuofcgGroupBoxAspectRatio",
 "AuofcgLBAspectRatio",
 "AuofcgLBCSP",
 "AuofcggroupBoxRateControl",

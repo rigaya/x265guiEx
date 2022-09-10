@@ -674,8 +674,9 @@ private: System::Windows::Forms::ComboBox^  fcgCXVideoFormat;
 
 
 private: System::Windows::Forms::Label^  fcgLBVideoFormat;
+private: System::Windows::Forms::GroupBox^  fcgGroupBoxAspectRatio;
 
-private: System::Windows::Forms::GroupBox^  fcggroupBoxSAR;
+
 private: System::Windows::Forms::NumericUpDown^  fcgNUAspectRatioY;
 
 
@@ -1015,7 +1016,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             this->fcgLBColorMatrix = (gcnew System::Windows::Forms::Label());
             this->fcgCXVideoFormat = (gcnew System::Windows::Forms::ComboBox());
             this->fcgLBVideoFormat = (gcnew System::Windows::Forms::Label());
-            this->fcggroupBoxSAR = (gcnew System::Windows::Forms::GroupBox());
+            this->fcgGroupBoxAspectRatio = (gcnew System::Windows::Forms::GroupBox());
             this->fcgNUAspectRatioY = (gcnew System::Windows::Forms::NumericUpDown());
             this->fcgLBAspectRatio = (gcnew System::Windows::Forms::Label());
             this->fcgNUAspectRatioX = (gcnew System::Windows::Forms::NumericUpDown());
@@ -1316,7 +1317,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUFrameThreads))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->BeginInit();
             this->fcggroupBoxVUIColor->SuspendLayout();
-            this->fcggroupBoxSAR->SuspendLayout();
+            this->fcgGroupBoxAspectRatio->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->BeginInit();
             this->fcggroupBoxRateControl->SuspendLayout();
@@ -1410,7 +1411,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxVUIColor);
             this->fcgtabPageX265Main->Controls->Add(this->fcgCXVideoFormat);
             this->fcgtabPageX265Main->Controls->Add(this->fcgLBVideoFormat);
-            this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxSAR);
+            this->fcgtabPageX265Main->Controls->Add(this->fcgGroupBoxAspectRatio);
             this->fcgtabPageX265Main->Controls->Add(this->fcgCXCSP);
             this->fcgtabPageX265Main->Controls->Add(this->fcgLBCSP);
             this->fcgtabPageX265Main->Controls->Add(this->fcggroupBoxRateControl);
@@ -1691,18 +1692,18 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             this->fcgLBVideoFormat->TabIndex = 67;
             this->fcgLBVideoFormat->Text = L"videoformat";
             // 
-            // fcggroupBoxSAR
+            // fcgGroupBoxAspectRatio
             // 
-            this->fcggroupBoxSAR->Controls->Add(this->fcgNUAspectRatioY);
-            this->fcggroupBoxSAR->Controls->Add(this->fcgLBAspectRatio);
-            this->fcggroupBoxSAR->Controls->Add(this->fcgNUAspectRatioX);
-            this->fcggroupBoxSAR->Controls->Add(this->fcgCXAspectRatio);
-            this->fcggroupBoxSAR->Location = System::Drawing::Point(396, 5);
-            this->fcggroupBoxSAR->Name = L"fcggroupBoxSAR";
-            this->fcggroupBoxSAR->Size = System::Drawing::Size(205, 86);
-            this->fcggroupBoxSAR->TabIndex = 50;
-            this->fcggroupBoxSAR->TabStop = false;
-            this->fcggroupBoxSAR->Text = L"アスペクト比";
+            this->fcgGroupBoxAspectRatio->Controls->Add(this->fcgNUAspectRatioY);
+            this->fcgGroupBoxAspectRatio->Controls->Add(this->fcgLBAspectRatio);
+            this->fcgGroupBoxAspectRatio->Controls->Add(this->fcgNUAspectRatioX);
+            this->fcgGroupBoxAspectRatio->Controls->Add(this->fcgCXAspectRatio);
+            this->fcgGroupBoxAspectRatio->Location = System::Drawing::Point(396, 5);
+            this->fcgGroupBoxAspectRatio->Name = L"fcgGroupBoxAspectRatio";
+            this->fcgGroupBoxAspectRatio->Size = System::Drawing::Size(205, 86);
+            this->fcgGroupBoxAspectRatio->TabIndex = 50;
+            this->fcgGroupBoxAspectRatio->TabStop = false;
+            this->fcgGroupBoxAspectRatio->Text = L"アスペクト比";
             // 
             // fcgNUAspectRatioY
             // 
@@ -4906,8 +4907,8 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUPools))->EndInit();
             this->fcggroupBoxVUIColor->ResumeLayout(false);
             this->fcggroupBoxVUIColor->PerformLayout();
-            this->fcggroupBoxSAR->ResumeLayout(false);
-            this->fcggroupBoxSAR->PerformLayout();
+            this->fcgGroupBoxAspectRatio->ResumeLayout(false);
+            this->fcgGroupBoxAspectRatio->PerformLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioY))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->fcgNUAspectRatioX))->EndInit();
             this->fcggroupBoxRateControl->ResumeLayout(false);
