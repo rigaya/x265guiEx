@@ -8,7 +8,7 @@ by rigaya
 [こちら＞＞](https://github.com/rigaya/x265guiEx/releases)
 
 ## 想定動作環境
-Windows 8.1/10/11 (x86/x64)  
+Windows 10/11 (x86/x64)  
 Aviutl 1.00 以降  
 
 ## x265guiEx 使用にあたっての注意事項
