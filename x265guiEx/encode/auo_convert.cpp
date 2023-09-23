@@ -457,7 +457,8 @@ BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height
     const DWORD simd_check = get_availableSIMD();
     const DWORD align_size = get_align_size(simd_check,to_yv12);
 #define ALIGN_NEXT(i, align) (((i) + (align-1)) & (~(align-1))) //alignは2の累乗(1,2,4,8,16,32...)
-    const DWORD frame_size = ALIGN_NEXT(width * height * pixel_size + (ALIGN_NEXT(width, align_size / pixel_size) - width) * 2 * pixel_size, align_size);
+    const DWORD extra = align_size * 2;
+    const DWORD frame_size = ALIGN_NEXT(width * height * pixel_size + extra, align_size);
 #undef ALIGN_NEXT
 
     ZeroMemory(pixel_data->data, sizeof(pixel_data->data));
@@ -468,35 +469,35 @@ BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height
             break;
 #if ENABLE_NV12
         case OUT_CSP_NV16:
-            if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 2, std::max(align_size, 16ul))) == NULL)
+            if (   (pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size, std::max(align_size, 16ul))) == NULL
+                || (pixel_data->data[1] = (BYTE *)_mm_malloc(frame_size, std::max(align_size, 16ul))) == NULL)
                 ret = FALSE;
-            pixel_data->data[1] = pixel_data->data[0] + frame_size;
             break;
         case OUT_CSP_NV12:
         default:
-            if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 3 / 2, std::max(align_size, 16ul))) == NULL)
+            if (   ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size,             std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[1] = (BYTE *)_mm_malloc(frame_size / 2 + extra, std::max(align_size, 16ul))) == NULL))
                 ret = FALSE;
-            pixel_data->data[1] = pixel_data->data[0] + frame_size;
             break;
 #else
         case OUT_CSP_YUV422:
-            if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 2, std::max(align_size, 16ul))) == NULL)
+            if (   ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size,             std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[1] = (BYTE *)_mm_malloc(frame_size / 2 + extra, std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[2] = (BYTE *)_mm_malloc(frame_size / 2 + extra, std::max(align_size, 16ul))) == NULL))
                 ret = FALSE;
-            pixel_data->data[1] = pixel_data->data[0] + frame_size;
-            pixel_data->data[2] = pixel_data->data[1] + frame_size / 2;
             break;
         case OUT_CSP_YV12:
-            if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 3 / 2, std::max(align_size, 16ul))) == NULL)
+            if (   ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size,             std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[1] = (BYTE *)_mm_malloc(frame_size / 4 + extra, std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[2] = (BYTE *)_mm_malloc(frame_size / 4 + extra, std::max(align_size, 16ul))) == NULL))
                 ret = FALSE;
-            pixel_data->data[1] = pixel_data->data[0] + frame_size;
-            pixel_data->data[2] = pixel_data->data[1] + frame_size / 4;
             break;
 #endif
         case OUT_CSP_YUV444:
-            if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 3, std::max(align_size, 16ul))) == NULL)
+            if (   ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size, std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[1] = (BYTE *)_mm_malloc(frame_size, std::max(align_size, 16ul))) == NULL)
+                || ((pixel_data->data[2] = (BYTE *)_mm_malloc(frame_size, std::max(align_size, 16ul))) == NULL))
                 ret = FALSE;
-            pixel_data->data[1] = pixel_data->data[0] + frame_size;
-            pixel_data->data[2] = pixel_data->data[1] + frame_size;
             break;
         case OUT_CSP_RGB:
             if ((pixel_data->data[0] = (BYTE *)_mm_malloc(frame_size * 3, std::max(align_size, 16ul))) == NULL)
@@ -507,7 +508,8 @@ BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height
 }
 
 void free_pixel_data(CONVERT_CF_DATA *pixel_data) {
-    if (pixel_data->data[0])
-        _mm_free(pixel_data->data[0]);
+    for (size_t i = 0; i < _countof(pixel_data->data); i++)
+        if (pixel_data->data[i])
+            _mm_free(pixel_data->data[i]);
     ZeroMemory(pixel_data, sizeof(CONVERT_CF_DATA));
 }
