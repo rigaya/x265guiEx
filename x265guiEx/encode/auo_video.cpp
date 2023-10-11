@@ -66,6 +66,7 @@
 #include "auo_audio_parallel.h"
 #include "exe_version.h"
 #include "cpu_info.h"
+#include "rgy_thread_affinity.h"
 
 const int DROP_FRAME_FLAG = INT_MAX;
 
@@ -900,6 +901,12 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
         PROCESS_TIME time_aviutl;
         GetProcessTime(pe->h_p_aviutl, &time_aviutl);
 
+        //Aviutlのpower throttlingを設定
+        const auto thread_pthrottling_mode = (RGYThreadPowerThrottlingMode)sys_dat->exstg->s_local.thread_pthrottling_mode;
+        if (thread_pthrottling_mode != RGYThreadPowerThrottlingMode::Unset) {
+            SetThreadPowerThrottolingModeForModule(GetCurrentProcessId(), nullptr, thread_pthrottling_mode);
+        }
+
         //x26xが待機に入るまでこちらも待機
         while (WaitForInputIdle(pi_enc.hProcess, LOG_UPDATE_INTERVAL) == WAIT_TIMEOUT)
             log_process_events();
@@ -927,20 +934,24 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
                 //Aviutlの進捗表示を更新
                 oip->func_rest_time_disp(i + frames_to_enc * (pe->current_pass - 1), frames_to_enc * pe->total_pass);
 
-                //x26x優先度
+                //音声同時処理
+                ret |= aud_parallel_task(oip, pe);
+            }
+
+            //x26x優先度
+            if (!(i & 63)) {
                 check_enc_priority(pe->h_p_aviutl, pi_enc.hProcess, set_priority);
                 //x26xプロセスアフィニティ
                 if (conf->vid.sync_process_affinity) {
                     sync_thread_affinity(pe->h_p_aviutl, pi_enc.hProcess);
                 }
-
-                //音声同時処理
-                ret |= aud_parallel_task(oip, pe);
+                if (thread_pthrottling_mode != RGYThreadPowerThrottlingMode::Unset) {
+                    SetThreadPowerThrottolingModeForModule(pi_enc.dwProcessId, nullptr, thread_pthrottling_mode);
+                }
 
 #if ENABLE_AMP
                 //上限をオーバーしていないかチェック
-                if (!(i & 63)
-                    && amp_filesize_limit //上限設定が存在する
+                if (amp_filesize_limit //上限設定が存在する
                     && !(1 == pe->current_pass && 1 < pe->total_pass)) { //multi passエンコードの1pass目でない
                     UINT64 current_filesize = 0;
                     if (GetFileSizeUInt64(pe->temp_filename, &current_filesize) && current_filesize > amp_filesize_limit) {
@@ -1028,6 +1039,10 @@ static AUO_RESULT x265_out(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe
             read_log_enc_all(&pipes, pe->drop_count, i, oip->n);
 
         DWORD tm_vid_enc_fin = timeGetTime();
+
+        if (thread_pthrottling_mode != RGYThreadPowerThrottlingMode::Unset) {
+            SetThreadPowerThrottolingModeForModule(GetCurrentProcessId(), nullptr, RGYThreadPowerThrottlingMode::Unset);
+        }
 
         //最後にメッセージを取得
         while (read_log_enc_all(&pipes, pe->drop_count, i, oip->n) > 0);
