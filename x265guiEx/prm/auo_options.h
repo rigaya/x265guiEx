@@ -50,6 +50,8 @@ const int X264_QP_MAX_10BIT = 81;
 //差がこのくらいなら等しいとみなす(オプション用なのでこのくらいで十分)
 const float EPS_FLOAT = 1.0e-4f;
 
+static const int AUO_KEYINT_MAX_AUTO = 0;
+
 //マクロブロックタイプの一般的なオプション
 enum {
     MB_PARTITION_NONE = 0x00000000,

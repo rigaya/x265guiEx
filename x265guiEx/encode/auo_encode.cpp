@@ -1575,7 +1575,7 @@ static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_X265 *cnf, const CONF_V
     }
     //キーフレーム間隔自動を反映
     if (cnf->keyint_max <= 0) {
-        cnf->keyint_max = 0; //set_guiEx_auto_keyint()は -1 としておかないと自動設定を行わない
+        cnf->keyint_max = AUO_KEYINT_MAX_AUTO; //set_guiEx_auto_keyint()は AUO_KEYINT_MAX_AUTO としておかないと自動設定を行わない
         set_guiEx_auto_keyint(&cnf->keyint_max, oip->rate, oip->scale);
     }
 #define ADJUST(preset_idx, preset_offset, keyint_div, min_keyint) amp_adjust_lower_bitrate(cnf, (preset_idx), (preset_offset), (keyint_div), (min_keyint), sys_dat)

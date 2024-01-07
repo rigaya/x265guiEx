@@ -1053,7 +1053,7 @@ static void check_values_from_mediainfo(std::vector<CMD_ARG> &cmd_arg_list, CONF
 
     if (keyint_from_mediainfo)
         if (conf_set->keyint_max % 10 == 0)
-            conf_set->keyint_max = -1;
+            conf_set->keyint_max = AUO_KEYINT_MAX_AUTO;
 }
 
 static inline BOOL option_has_no_value(DWORD type) {
@@ -1221,7 +1221,7 @@ static void set_guiEx_auto_colormatrix(CONF_X265 *cx, int height) {
 //}
 
 void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
-    if (*keyint_max == 0) {
+    if (*keyint_max == AUO_KEYINT_MAX_AUTO) {
         *keyint_max = (int)((fps_num + (fps_den - 1)) / fps_den) * 10; // 60000/1001 fpsの時に 600になるように最後に10倍する (599とか嫌すぎる)
     }
 }
