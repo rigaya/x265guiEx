@@ -517,11 +517,11 @@ static void build_full_cmd(char *cmd, size_t nSize, const CONF_GUIEX *conf, cons
         const int gcd = get_gcd(fps_n, fps_d);
         sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --fps %d/%d", fps_n / gcd, fps_d / gcd);
     }
+    //入力
+    sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " --input \"%s\"", input);
     //出力ファイル
     const char * const outfile = (prm.enc.nul_out) ? "nul" : pe->temp_filename;
     sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " -o \"%s\"", outfile);
-    //入力
-    sprintf_s(cmd + strlen(cmd), nSize - strlen(cmd), " \"%s\"", input);
 }
 
 static void set_pixel_data(CONVERT_CF_DATA *pixel_data, const CONF_GUIEX *conf, int w, int h) {
