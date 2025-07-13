@@ -109,6 +109,10 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_YUY2, OUT_CSP_NV12,   BIT_8, I, 16,  SSE2,                 convert_yuy2_to_nv12_i_sse2_mod16 },
     { CF_YUY2, OUT_CSP_NV12,   BIT_8, I,  1,  SSE2,                 convert_yuy2_to_nv12_i_sse2 },
     { CF_YUY2, OUT_CSP_NV12,   BIT_8, I,  1,  NONE,                 convert_yuy2_to_nv12_i },
+    
+    //YUY2 -> nv12(16bit)
+    { CF_YUY2, OUT_CSP_NV12,   BIT16, P,  1,  AVX2|AVX,             convert_yuy2_to_nv12_16bit_avx2 },
+    { CF_YUY2, OUT_CSP_NV12,   BIT16, I,  1,  AVX2|AVX,             convert_yuy2_to_nv12_i_16bit_avx2 },
 #else
     //YUY2 -> yv12 (8bit)
     { CF_YUY2, OUT_CSP_YV12,   BIT_8, P,  1,  AVX512BW,             convert_yuy2_to_yv12_avx512 },
@@ -125,6 +129,12 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_YUY2, OUT_CSP_YV12,   BIT_8, I, 32,  SSE2,                 convert_yuy2_to_yv12_i_sse2_mod32 },
     { CF_YUY2, OUT_CSP_YV12,   BIT_8, I,  1,  SSE2,                 convert_yuy2_to_yv12_i_sse2 },
     { CF_YUY2, OUT_CSP_YV12,   BIT_8, I,  1,  NONE,                 convert_yuy2_to_yv12_i },
+    
+    //YUY2 -> nv12(16bit)
+    { CF_YUY2, OUT_CSP_YV12,   BIT16, P,  1,  AVX2|AVX,             convert_yuy2_to_yv12_16bit_avx2 },
+    { CF_YUY2, OUT_CSP_YV12,   BIT16, I,  1,  AVX2|AVX,             convert_yuy2_to_yv12_i_16bit_avx2 },
+    { CF_YUY2, OUT_CSP_YV12,   BIT10, P,  1,  AVX2|AVX,             convert_yuy2_to_yv12_10bit_avx2 },
+    { CF_YUY2, OUT_CSP_YV12,   BIT10, I,  1,  AVX2|AVX,             convert_yuy2_to_yv12_i_10bit_avx2 },
 #endif
 #if ENABLE_16BIT
 #if ENABLE_NV12
@@ -234,6 +244,8 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_YUY2, OUT_CSP_NV16,   BIT_8, A, 16,  SSE2,                 convert_yuy2_to_nv16_sse2_mod16 },
     { CF_YUY2, OUT_CSP_NV16,   BIT_8, A,  1,  SSE2,                 convert_yuy2_to_nv16_sse2 },
     { CF_YUY2, OUT_CSP_NV16,   BIT_8, A,  1,  NONE,                 convert_yuy2_to_nv16 },
+    //YUY2 -> nv16(16bit)
+    { CF_YUY2, OUT_CSP_NV16,   BIT16, A,  1,  AVX2|AVX,             convert_yuy2_to_nv16_16bit_avx2 },
     //YC48 -> nv16(16bit)
     { CF_YC48, OUT_CSP_NV16,   BIT16, A,  1,  AVX2|AVX,             convert_yc48_to_nv16_16bit_avx2 },
     { CF_YC48, OUT_CSP_NV16,   BIT16, A,  1,  AVX|SSE41|SSSE3|SSE2, convert_yc48_to_nv16_16bit_avx },
@@ -246,7 +258,11 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     { CF_YC48, OUT_CSP_NV16,   BIT16, A,  1,  NONE,                 convert_yc48_to_nv16_16bit },
 #else
     //YUY2 -> yuv422(8bit)
+    { CF_YUY2, OUT_CSP_YUV422, BIT_8, A,  1,  AVX2|AVX,             convert_yuy2_to_yuv422_avx2 },
     { CF_YUY2, OUT_CSP_YUV422, BIT_8, A,  1,  NONE,                 convert_yuy2_to_yuv422 },
+    
+    //YUY2 -> yuv422(16bit)
+    { CF_YUY2, OUT_CSP_YUV422, BIT16, A,  1,  AVX2|AVX,             convert_yuy2_to_yuv422_16bit_avx2 },
 
     //YC48 -> yuv422(16bit)
     { CF_YC48, OUT_CSP_YUV422, BIT16, A,  1,  NONE,                 convert_yc48_to_yuv422_16bit },
@@ -342,6 +358,11 @@ static const COVERT_FUNC_INFO FUNC_TABLE[] = {
     //Copy RGB
     { CF_RGB,  OUT_CSP_RGB,    BIT_8, A,  1,  SSSE3|SSE2,           sort_to_rgb_ssse3 },
     { CF_RGB,  OUT_CSP_RGB,    BIT_8, A,  1,  NONE,                 sort_to_rgb },
+    //Convert RGB to YUV444
+    { CF_RGB,  OUT_CSP_YUV444, BIT_8, A,  1,  AVX2|AVX,             convert_rgb_to_yuv444_avx2 },
+    { CF_RGB,  OUT_CSP_YUV444, BIT_8, A,  1,  NONE,                 convert_rgb_to_yuv444 },
+    { CF_RGB,  OUT_CSP_YUV444, BIT16, A,  1,  AVX2|AVX,             convert_rgb_to_yuv444_16bit_avx2 },
+    { CF_RGB,  OUT_CSP_YUV444, BIT16, A,  1,  NONE,                 convert_rgb_to_yuv444_16bit },
 #elif ENCODER_FFMPEG
     //Copy RGB
     { CF_RGB,  OUT_CSP_RGB,    BIT_8, A,  1,  SSE2,                 copy_rgb_sse2 },
@@ -511,6 +532,7 @@ BOOL malloc_pixel_data(CONVERT_CF_DATA * const pixel_data, int width, int height
                 ret = FALSE;
             break;
     }
+    pixel_data->colormatrix = height >= 720 ? 1 : 0;
     return ret;
 }
 
