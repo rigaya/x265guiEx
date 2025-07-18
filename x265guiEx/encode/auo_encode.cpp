@@ -1543,8 +1543,8 @@ static double get_audio_bitrate(const PRM_ENC *pe, const OUTPUT_INFO *oip, doubl
     return (aud_filesize * 8.0) / 1000.0 / duration;
 }
 
-static void amp_adjust_lower_bitrate_set_default(CONF_X265 *cnf) {
-    CONF_X265 x265_default = { 0 };
+static void amp_adjust_lower_bitrate_set_default(CONF_ENC *cnf) {
+    CONF_ENC x265_default = { 0 };
     get_default_conf(&x265_default, cnf->bit_depth > 8);
     //すべてをデフォルトに戻すとcolormatrixなどのパラメータも戻ってしまうので、
     //エンコード速度に関係していそうなパラメータのみをデフォルトに戻す
@@ -1558,14 +1558,14 @@ static void amp_adjust_lower_bitrate_set_default(CONF_X265 *cnf) {
     //cnf->no_fast_pskip = x264_default.no_fast_pskip;
 }
 
-static void amp_adjust_lower_bitrate_keyint(CONF_X265 *cnf, int keyint_div, int min_keyint) {
+static void amp_adjust_lower_bitrate_keyint(CONF_ENC *cnf, int keyint_div, int min_keyint) {
 #define CEIL5(x) ((x >= 30) ? ((((x) + 4) / 5) * 5) : (x))
     min_keyint = (std::max)((std::min)(min_keyint, cnf->keyint_max / 2), 1);
     cnf->keyint_max = (std::max)((min_keyint), CEIL5(cnf->keyint_max / keyint_div));
 #undef CEIL5
 }
 
-static void amp_adjust_lower_bitrate(CONF_X265 *cnf, int preset_idx, int preset_offset, int keyint_div, int min_keyint, const SYSTEM_DATA *sys_dat) {
+static void amp_adjust_lower_bitrate(CONF_ENC *cnf, int preset_idx, int preset_offset, int keyint_div, int min_keyint, const SYSTEM_DATA *sys_dat) {
     const int old_keyint = cnf->keyint_max;
     const int preset_new = (std::max)((std::min)((preset_idx), cnf->preset + (preset_offset)), 0);
     if (cnf->preset > preset_new) {
@@ -1590,7 +1590,7 @@ static void amp_adjust_lower_bitrate(CONF_X265 *cnf, int preset_idx, int preset_
     }
 }
 
-static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_X265 *cnf, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, const PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
+static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_ENC *cnf, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, const PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
     //もし、もう設定を下げる余地がなければエラーを返す
     if (cnf->keyint_max == 1 && cnf->preset == 0) {
         return AUO_RESULT_ERROR;
@@ -1652,7 +1652,7 @@ static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_X265 *cnf, const CONF_V
     return AUO_RESULT_SUCCESS;
 }
 
-static AUO_RESULT amp_adjust_lower_bitrate_from_bitrate(CONF_X265 *cnf, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
+static AUO_RESULT amp_adjust_lower_bitrate_from_bitrate(CONF_ENC *cnf, const CONF_VIDEO *conf_vid, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, const OUTPUT_INFO *oip, double duration, double file_bitrate) {
     const double aud_bitrate = get_audio_bitrate(pe, oip, duration);
     const double vid_bitrate = file_bitrate - aud_bitrate;
     //ビットレート倍率 = 今回のビットレート / 下限ビットレート

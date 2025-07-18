@@ -39,7 +39,7 @@
 
 const int guiEx_config::conf_block_data[CONF_BLOCK_COUNT] = {
     sizeof(CONF_VIDEO),
-    sizeof(CONF_X265),
+    sizeof(CONF_ENC),
     sizeof(CONF_AUDIO),
     sizeof(CONF_MUX),
     sizeof(CONF_OTHER),

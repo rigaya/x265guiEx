@@ -74,159 +74,159 @@ static const DWORD OPTION_NO_VALUE[] = {
 static guiEx_settings *ex_stg;
 
 static X265_OPTIONS x265_options_table[] = {
-    { "output-depth",     "",   OPTION_TYPE_OUTPUT_DEPTH,  NULL,                 offsetof(CONF_X265, bit_depth      ) },
-    { "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_X265, output_csp     ) },
-    { "pass",             "",   OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_X265, pass           ) },
-    { "slow-firstpass",   "",   OPTION_TYPE_FIRST_PASS,    NULL,                 offsetof(CONF_X265, slow_first_pass) },
-    { "no-slow-firstpass","",   OPTION_TYPE_FIRST_PASS_R,  NULL,                 offsetof(CONF_X265, slow_first_pass) },
+    { "output-depth",     "",   OPTION_TYPE_OUTPUT_DEPTH,  NULL,                 offsetof(CONF_ENC, bit_depth      ) },
+    { "input-csp",        "",   OPTION_TYPE_LIST,          list_output_csp_x265, offsetof(CONF_ENC, output_csp     ) },
+    { "pass",             "",   OPTION_TYPE_PASS,          NULL,                 offsetof(CONF_ENC, pass           ) },
+    { "slow-firstpass",   "",   OPTION_TYPE_FIRST_PASS,    NULL,                 offsetof(CONF_ENC, slow_first_pass) },
+    { "no-slow-firstpass","",   OPTION_TYPE_FIRST_PASS_R,  NULL,                 offsetof(CONF_ENC, slow_first_pass) },
     //{ "stats",            "",   OPTION_TYPE_STATS,         NULL,                 NULL                                  },
-    { "preset",          "p",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, preset         ) },
-    { "tune",            "t",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, tune           ) },
-    { "profile",         "P",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_X265, profile        ) },
+    { "preset",          "p",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_ENC, preset         ) },
+    { "tune",            "t",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_ENC, tune           ) },
+    { "profile",         "P",   OPTION_TYPE_LIST,          NULL,                 offsetof(CONF_ENC, profile        ) },
     { "crf",              "",   OPTION_TYPE_CRF,           NULL,                 NULL                                 },
     { "bitrate",           "",  OPTION_TYPE_BITRATE,       NULL,                 NULL                                 },
     { "qp",               "q",  OPTION_TYPE_QP,            NULL,                 NULL                                 },
     { "lossless",          "",  OPTION_TYPE_LOSSLESS,      NULL,                 NULL                                 },
-    //{ "ipratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, ip_ratio       ) },
-    //{ "pbratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, pb_ratio       ) },
-    //{ "qpmin",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qp_min         ) },
-    //{ "qpmax",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qp_max         ) },
-    //{ "qpstep",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qp_step        ) },
-    { "qcomp",            "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, qp_compress    ) },
-    { "cbqpoffs",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, cbqpoffs       ) },
-    { "crqpoffs",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, crqpoffs       ) },
-    //{ "chroma-qp-offset", "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, chroma_qp_offset) },
-    //{ "no-mbtree",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, mbtree         ) },
-    //{ "mbtree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, mbtree         ) },
-    { "rc-lookahead",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rc_lookahead   ) },
-    { "vbv-bufsize",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, vbv_bufsize    ) },
-    { "vbv-maxrate",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, vbv_maxrate    ) },
-    { "aq-mode",          "",   OPTION_TYPE_INT,           list_aq,              offsetof(CONF_X265, aq_mode        ) },
-    { "aq-strength",      "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, aq_strength    ) },
-    { "psy-rd",           "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, psy_rd         ) },
-    { "no-psy-rd",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, psy_rd         ) },
-    { "psy-rdoq",         "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, psy_rdoq       ) },
-    { "no-psy-rdoq",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, psy_rdoq       ) },
-    { "rdoq-level",       "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rdoq_level     ) },
-    { "no-rdoq-level",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, rdoq_level     ) },
-    //{ "psy",              "",   OPTION_TYPE_PSY,           NULL,                 offsetof(CONF_X265, psy_rd         ) },
-    //{ "no-psy",           "",   OPTION_TYPE_BOOL2_REVERSE, NULL,                 offsetof(CONF_X265, psy_rd         ) },
-    { "scenecut",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, scenecut       ) },
-    { "no-scenecut",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, scenecut       ) },
-    { "keyint",           "I",  OPTION_TYPE_KEYINT,        NULL,                 offsetof(CONF_X265, keyint_max     ) },
-    { "min-keyint",       "i",  OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, keyint_min     ) },
-    { "no-open-gop",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, open_gop       ) },
-    { "open-gop",         "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, open_gop       ) },
-    //{ "no-cabac",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, cabac          ) },
-    //{ "cabac",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, cabac          ) },
-    { "bframes",          "b",  OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, bframes        ) },
-    { "b-adapt",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, b_adapt        ) },
-    { "bframe-bias",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, b_bias         ) },
-    { "b-pyramid",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, b_pyramid      ) },
-    { "no-b-pyramid",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, b_pyramid      ) },
-    //{ "slices",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, slice_n        ) },
-    //{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
+    //{ "ipratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, ip_ratio       ) },
+    //{ "pbratio",          "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, pb_ratio       ) },
+    //{ "qpmin",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, qp_min         ) },
+    //{ "qpmax",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, qp_max         ) },
+    //{ "qpstep",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, qp_step        ) },
+    { "qcomp",            "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, qp_compress    ) },
+    { "cbqpoffs",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, cbqpoffs       ) },
+    { "crqpoffs",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, crqpoffs       ) },
+    //{ "chroma-qp-offset", "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, chroma_qp_offset) },
+    //{ "no-mbtree",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, mbtree         ) },
+    //{ "mbtree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, mbtree         ) },
+    { "rc-lookahead",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, rc_lookahead   ) },
+    { "vbv-bufsize",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, vbv_bufsize    ) },
+    { "vbv-maxrate",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, vbv_maxrate    ) },
+    { "aq-mode",          "",   OPTION_TYPE_INT,           list_aq,              offsetof(CONF_ENC, aq_mode        ) },
+    { "aq-strength",      "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, aq_strength    ) },
+    { "psy-rd",           "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, psy_rd         ) },
+    { "no-psy-rd",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, psy_rd         ) },
+    { "psy-rdoq",         "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, psy_rdoq       ) },
+    { "no-psy-rdoq",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, psy_rdoq       ) },
+    { "rdoq-level",       "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, rdoq_level     ) },
+    { "no-rdoq-level",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, rdoq_level     ) },
+    //{ "psy",              "",   OPTION_TYPE_PSY,           NULL,                 offsetof(CONF_ENC, psy_rd         ) },
+    //{ "no-psy",           "",   OPTION_TYPE_BOOL2_REVERSE, NULL,                 offsetof(CONF_ENC, psy_rd         ) },
+    { "scenecut",         "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, scenecut       ) },
+    { "no-scenecut",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, scenecut       ) },
+    { "keyint",           "I",  OPTION_TYPE_KEYINT,        NULL,                 offsetof(CONF_ENC, keyint_max     ) },
+    { "min-keyint",       "i",  OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, keyint_min     ) },
+    { "no-open-gop",      "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, open_gop       ) },
+    { "open-gop",         "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, open_gop       ) },
+    //{ "no-cabac",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, cabac          ) },
+    //{ "cabac",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, cabac          ) },
+    { "bframes",          "b",  OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, bframes        ) },
+    { "b-adapt",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, b_adapt        ) },
+    { "bframe-bias",      "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, b_bias         ) },
+    { "b-pyramid",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, b_pyramid      ) },
+    { "no-b-pyramid",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, b_pyramid      ) },
+    //{ "slices",           "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, slice_n        ) },
+    //{ "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, interlaced     ) },
     { "deblock",          "f",  OPTION_TYPE_DEBLOCK,       NULL,                 NULL                                 },
-    { "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, use_deblock    ) },
-    { "no-sao",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, sao            ) },
-    { "sao",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, sao            ) },
-    { "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, interlaced     ) },
-    { "interlace",        "",   OPTION_TYPE_LIST,          list_interlace_x265,  offsetof(CONF_X265, interlaced     ) },
+    { "no-deblock",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, use_deblock    ) },
+    { "no-sao",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, sao            ) },
+    { "sao",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, sao            ) },
+    { "no-interlace",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, interlaced     ) },
+    { "interlace",        "",   OPTION_TYPE_LIST,          list_interlace_x265,  offsetof(CONF_ENC, interlaced     ) },
     //{ "bff",              "",   OPTION_TYPE_BFF,           NULL,                 NULL                                 },
-    //{ "partitions",       "A",  OPTION_TYPE_MB_PARTITION,  NULL,                 offsetof(CONF_X265, mb_partition   ) },
-    //{ "no-8x8dct",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, dct8x8         ) },
-    //{ "8x8dct",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, dct8x8         ) },
-    { "no-wpp",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, wpp            ) },
-    { "wpp",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, wpp            ) },
-    { "ctu",             "s",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, ctu            ) },
-    { "tu-intra-depth",   "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, tu_intra_depth ) },
-    { "tu-inter-depth",   "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, tu_inter_depth ) },
-    { "me",               "",   OPTION_TYPE_LIST,          list_me_x265,         offsetof(CONF_X265, me             ) },
-    { "subme",           "m",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, subme          ) },
-    { "merange",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, me_range       ) },
-    { "no-rect",          "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, rect_mp        ) },
-    { "rect",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, rect_mp        ) },
-    { "no-amp",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, asymmnteric_mp ) },
-    { "amp",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, asymmnteric_mp ) },
-    { "limit-refs",       "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, limit_refs     ) },
-    { "no-limit-modes",   "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, limit_modes    ) },
-    { "limit-modes",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, limit_modes    ) },
-    //{ "no-early-skip",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, early_skip     ) },
-    //{ "early-skip",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, early_skip     ) },
-    //{ "no-chroma-me",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, chroma_me      ) },
-    //{ "chroma-me",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, chroma_me      ) },
-    //{ "direct",           "",   OPTION_TYPE_LIST,          list_direct,          offsetof(CONF_X265, direct_mv      ) },
-    { "ref",              "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, ref_frames     ) },
-    //{ "no-mixed-ref",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, mixed_ref      ) },
-    //{ "mixed-ref",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, mixed_ref      ) },
-    { "max-merge",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, max_merge      ) },
-    { "rskip",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, recursion_skip ) },
-    { "no-weightb",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, weight_b       ) },
-    { "weightb",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, weight_b       ) },
-    { "no-weightp",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, weight_p       ) },
-    { "weightp",         "w",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, weight_p       ) },
-    //{ "rdpenalty",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rdpenalty      ) },
-    //{ "no-tskip",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip          ) },
-    //{ "tskip",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip          ) },
-    //{ "no-tskip-fast",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, tskip_fast     ) },
-    //{ "tskip-fast",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, tskip_fast     ) },
-    //{ "no-strong-intra-smoothing","",OPTION_TYPE_BOOL_REVERSE,NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
-    //{ "strong-intra-smoothing",   "",OPTION_TYPE_BOOL,        NULL,              offsetof(CONF_X265, strong_intra_smooth ) },
-    { "rd",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, rd             ) },
-    //{ "nr",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, noise_reduction) },
-    //{ "no-fast-pskip",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, no_fast_pskip  ) },
-    //{ "no-dct-decimate",  "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, no_dct_decimate) },
-    //{ "trellis",          "t",  OPTION_TYPE_INT,           list_trellis,         offsetof(CONF_X265, trellis        ) },
-    //{ "cqm",              "",   OPTION_TYPE_CQM,           list_cqm,             offsetof(CONF_X265, cqm            ) },
+    //{ "partitions",       "A",  OPTION_TYPE_MB_PARTITION,  NULL,                 offsetof(CONF_ENC, mb_partition   ) },
+    //{ "no-8x8dct",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, dct8x8         ) },
+    //{ "8x8dct",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, dct8x8         ) },
+    { "no-wpp",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, wpp            ) },
+    { "wpp",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, wpp            ) },
+    { "ctu",             "s",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, ctu            ) },
+    { "tu-intra-depth",   "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, tu_intra_depth ) },
+    { "tu-inter-depth",   "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, tu_inter_depth ) },
+    { "me",               "",   OPTION_TYPE_LIST,          list_me_x265,         offsetof(CONF_ENC, me             ) },
+    { "subme",           "m",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, subme          ) },
+    { "merange",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, me_range       ) },
+    { "no-rect",          "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, rect_mp        ) },
+    { "rect",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, rect_mp        ) },
+    { "no-amp",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, asymmnteric_mp ) },
+    { "amp",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, asymmnteric_mp ) },
+    { "limit-refs",       "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, limit_refs     ) },
+    { "no-limit-modes",   "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, limit_modes    ) },
+    { "limit-modes",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, limit_modes    ) },
+    //{ "no-early-skip",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, early_skip     ) },
+    //{ "early-skip",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, early_skip     ) },
+    //{ "no-chroma-me",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, chroma_me      ) },
+    //{ "chroma-me",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, chroma_me      ) },
+    //{ "direct",           "",   OPTION_TYPE_LIST,          list_direct,          offsetof(CONF_ENC, direct_mv      ) },
+    { "ref",              "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, ref_frames     ) },
+    //{ "no-mixed-ref",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, mixed_ref      ) },
+    //{ "mixed-ref",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, mixed_ref      ) },
+    { "max-merge",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, max_merge      ) },
+    { "rskip",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, recursion_skip ) },
+    { "no-weightb",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, weight_b       ) },
+    { "weightb",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, weight_b       ) },
+    { "no-weightp",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, weight_p       ) },
+    { "weightp",         "w",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, weight_p       ) },
+    //{ "rdpenalty",        "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, rdpenalty      ) },
+    //{ "no-tskip",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, tskip          ) },
+    //{ "tskip",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, tskip          ) },
+    //{ "no-tskip-fast",    "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, tskip_fast     ) },
+    //{ "tskip-fast",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, tskip_fast     ) },
+    //{ "no-strong-intra-smoothing","",OPTION_TYPE_BOOL_REVERSE,NULL,              offsetof(CONF_ENC, strong_intra_smooth ) },
+    //{ "strong-intra-smoothing",   "",OPTION_TYPE_BOOL,        NULL,              offsetof(CONF_ENC, strong_intra_smooth ) },
+    { "rd",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, rd             ) },
+    //{ "nr",               "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, noise_reduction) },
+    //{ "no-fast-pskip",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, no_fast_pskip  ) },
+    //{ "no-dct-decimate",  "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, no_dct_decimate) },
+    //{ "trellis",          "t",  OPTION_TYPE_INT,           list_trellis,         offsetof(CONF_ENC, trellis        ) },
+    //{ "cqm",              "",   OPTION_TYPE_CQM,           list_cqm,             offsetof(CONF_ENC, cqm            ) },
     //{ "cqmfile",          "",   OPTION_TYPE_CQMFILE,       NULL,                 NULL                                 },
-    { "colormatrix",      "",   OPTION_TYPE_LIST,          list_colormatrix,     offsetof(CONF_X265, colormatrix    ) },
-    { "colorprim",        "",   OPTION_TYPE_LIST,          list_colorprim,       offsetof(CONF_X265, colorprim      ) },
-    { "transfer",         "",   OPTION_TYPE_LIST,          list_transfer,        offsetof(CONF_X265, transfer       ) },
-    { "range",            "",   OPTION_TYPE_LIST,          list_range,           offsetof(CONF_X265, input_range    ) },
-    { "sar",              "",   OPTION_TYPE_SAR_X265,      list_sar_x265,        offsetof(CONF_X265, sar            ) },
-    { "extended-sar",     "",   OPTION_TYPE_SAR_X265,      NULL,                 offsetof(CONF_X265, sar            ) },
-    //{ "level",            "",   OPTION_TYPE_LEVEL,         list_x264guiEx_level, offsetof(CONF_X265, h264_level     ) },
-    { "videoformat",      "",   OPTION_TYPE_LIST,          list_videoformat,     offsetof(CONF_X265, videoformat    ) },
-    //{ "aud",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, aud            ) },
-    //{ "pic-struct",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pic_struct     ) },
-    //{ "nal-hrd",          "",   OPTION_TYPE_LIST,          list_nal_hrd,         offsetof(CONF_X265, nal_hrd        ) },
-    //{ "bluray-compat",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, bluray_compat  ) },
-    { "qg-size",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, qg_size          ) },
-    { "pools",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, pools          ) },
-    { "frame-threads",   "F",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, frame_threads  ) },
-    //{ "lookahead-threads","",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, lookahead_threads) },
-    //{ "sliced-threads",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, sliced_threading) },
-    //{ "log-level",        "",   OPTION_TYPE_LIST,          list_log_type,        offsetof(CONF_X265, log_mode       ) },
-    //{ "psnr",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, psnr           ) },
-    //{ "ssim",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, ssim           ) },
+    { "colormatrix",      "",   OPTION_TYPE_LIST,          list_colormatrix,     offsetof(CONF_ENC, colormatrix    ) },
+    { "colorprim",        "",   OPTION_TYPE_LIST,          list_colorprim,       offsetof(CONF_ENC, colorprim      ) },
+    { "transfer",         "",   OPTION_TYPE_LIST,          list_transfer,        offsetof(CONF_ENC, transfer       ) },
+    { "range",            "",   OPTION_TYPE_LIST,          list_range,           offsetof(CONF_ENC, input_range    ) },
+    { "sar",              "",   OPTION_TYPE_SAR_X265,      list_sar_x265,        offsetof(CONF_ENC, sar            ) },
+    { "extended-sar",     "",   OPTION_TYPE_SAR_X265,      NULL,                 offsetof(CONF_ENC, sar            ) },
+    //{ "level",            "",   OPTION_TYPE_LEVEL,         list_x264guiEx_level, offsetof(CONF_ENC, h264_level     ) },
+    { "videoformat",      "",   OPTION_TYPE_LIST,          list_videoformat,     offsetof(CONF_ENC, videoformat    ) },
+    //{ "aud",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, aud            ) },
+    //{ "pic-struct",       "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, pic_struct     ) },
+    //{ "nal-hrd",          "",   OPTION_TYPE_LIST,          list_nal_hrd,         offsetof(CONF_ENC, nal_hrd        ) },
+    //{ "bluray-compat",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, bluray_compat  ) },
+    { "qg-size",          "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, qg_size          ) },
+    { "pools",            "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, pools          ) },
+    { "frame-threads",   "F",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, frame_threads  ) },
+    //{ "lookahead-threads","",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, lookahead_threads) },
+    //{ "sliced-threads",   "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, sliced_threading) },
+    //{ "log-level",        "",   OPTION_TYPE_LIST,          list_log_type,        offsetof(CONF_ENC, log_mode       ) },
+    //{ "psnr",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, psnr           ) },
+    //{ "ssim",             "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, ssim           ) },
     //{ "tcfile-in",        "",   OPTION_TYPE_TCFILE_IN,     NULL,                 NULL                                 },
     //{ "timebase",         "",   OPTION_TYPE_TIMEBASE,      NULL,                 NULL                                 },
-    //{ "progress",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, disable_progress) },
-    //{ "no-progress",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, disable_progress) },
-    { "no-cutree",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, cutree         ) },
-    { "cutree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, cutree         ) },
-    { "no-pmode",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, pmode          ) },
-    { "pmode",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pmode          ) },
-    { "no-pme",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, pme            ) },
-    { "pme",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, pme            ) },
-    { "no-aq-motion",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, aq_motion      ) },
-    { "aq-motion",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, aq_motion      ) },
-    { "no-ssim-rd",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, ssim_rd        ) },
-    { "ssim-rd",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, ssim_rd        ) },
-    //{ "analysis-reuse-mode", "", OPTION_TYPE_BOOL,        NULL,                 offsetof(CONF_X265, analysis_reuse) },
-    { "analysis-reuse-level", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, analysis_reuse_level) },
-    //{ "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_intra)         },
-    //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_X265, refine_inter)         },
-    { "no-hevc-aq",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hevc_aq) },
-    { "hevc-aq",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hevc_aq) },
-    { "no-svt",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, svt) },
-    { "svt",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, svt) },
-    { "fades",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, fades) },
-    { "no-fades",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, fades) },
-    { "hist-scenecut",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_X265, hist_scenecut) },
-    { "no-hist-scenecut", "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_X265, hist_scenecut) },
-    { "hist-threshold",   "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_X265, hist_threshold) },
-    { "rskip-edge-threshold", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_X265, rskip_edge_threshold) },
+    //{ "progress",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, disable_progress) },
+    //{ "no-progress",      "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, disable_progress) },
+    { "no-cutree",        "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, cutree         ) },
+    { "cutree",           "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, cutree         ) },
+    { "no-pmode",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, pmode          ) },
+    { "pmode",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, pmode          ) },
+    { "no-pme",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, pme            ) },
+    { "pme",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, pme            ) },
+    { "no-aq-motion",     "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, aq_motion      ) },
+    { "aq-motion",        "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, aq_motion      ) },
+    { "no-ssim-rd",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, ssim_rd        ) },
+    { "ssim-rd",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, ssim_rd        ) },
+    //{ "analysis-reuse-mode", "", OPTION_TYPE_BOOL,        NULL,                 offsetof(CONF_ENC, analysis_reuse) },
+    { "analysis-reuse-level", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_ENC, analysis_reuse_level) },
+    //{ "refine-intra",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, refine_intra)         },
+    //{ "refine-inter",     "",   OPTION_TYPE_INT,           NULL,                 offsetof(CONF_ENC, refine_inter)         },
+    { "no-hevc-aq",       "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, hevc_aq) },
+    { "hevc-aq",          "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, hevc_aq) },
+    { "no-svt",           "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, svt) },
+    { "svt",              "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, svt) },
+    { "fades",            "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, fades) },
+    { "no-fades",         "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, fades) },
+    { "hist-scenecut",    "",   OPTION_TYPE_BOOL,          NULL,                 offsetof(CONF_ENC, hist_scenecut) },
+    { "no-hist-scenecut", "",   OPTION_TYPE_BOOL_REVERSE,  NULL,                 offsetof(CONF_ENC, hist_scenecut) },
+    { "hist-threshold",   "",   OPTION_TYPE_FLOAT,         NULL,                 offsetof(CONF_ENC, hist_threshold) },
+    { "rskip-edge-threshold", "", OPTION_TYPE_INT,         NULL,                 offsetof(CONF_ENC, rskip_edge_threshold) },
     { NULL,               NULL, NULL,                      NULL,                 NULL                                 },
 };
 
@@ -421,23 +421,23 @@ static BOOL set_list(void *i, const char *value, const ENC_OPTION_STR *list) {
     return ret;
 }
 static BOOL set_crf(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->rc_mode = X265_RC_CRF;
+    ((CONF_ENC *)cx)->rc_mode = X265_RC_CRF;
     float f = 23.0f;
     auo_strtof(&f, value, NULL);
-    ((CONF_X265 *)cx)->crf = (int)(f * 100 + 0.5);
+    ((CONF_ENC *)cx)->crf = (int)(f * 100 + 0.5);
     return TRUE;
 }
 static BOOL set_bitrate(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->rc_mode = X265_RC_BITRATE;
-    return auo_strtol(&((CONF_X265 *)cx)->bitrate, value, NULL);
+    ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+    return auo_strtol(&((CONF_ENC *)cx)->bitrate, value, NULL);
 }
 static BOOL set_qp(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->rc_mode = X265_RC_QP;
-    return auo_strtol(&((CONF_X265 *)cx)->qp, value, NULL);
+    ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
+    return auo_strtol(&((CONF_ENC *)cx)->qp, value, NULL);
 }
 static BOOL set_lossless(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->rc_mode = X265_RC_QP;
-    ((CONF_X265 *)cx)->qp = -1;
+    ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
+    ((CONF_ENC *)cx)->qp = -1;
     return TRUE;
 }
 static BOOL set_keyint(void *i, const char *value, const ENC_OPTION_STR *list) {
@@ -448,18 +448,18 @@ static BOOL set_keyint(void *i, const char *value, const ENC_OPTION_STR *list) {
 static BOOL set_deblock(void *cx, const char *value, const ENC_OPTION_STR *list) {
     BOOL ret = FALSE;
     if (NULL == value) {
-        ((CONF_X265 *)cx)->use_deblock = TRUE;
+        ((CONF_ENC *)cx)->use_deblock = TRUE;
         ret = TRUE;
     } else {
         const int BUF_LEN = 128;
         const char *a = NULL;
         size_t len = strlen(value);
-        if (*value == '[' && value[len-1] == ']' && NULL != (a = strstr(value, "if_on")) && BUF_LEN >= a - value && ((CONF_X265 *)cx)->use_deblock) {
+        if (*value == '[' && value[len-1] == ']' && NULL != (a = strstr(value, "if_on")) && BUF_LEN >= a - value && ((CONF_ENC *)cx)->use_deblock) {
             char tmp[BUF_LEN] = { 0 };
             memcpy(tmp, value + 1, a - value - 1);
-            ret = set_int2(&((CONF_X265 *)cx)->deblock, tmp, list);
-        } else if (FALSE != (ret = set_int2(&((CONF_X265 *)cx)->deblock, value, list))) {
-            ((CONF_X265 *)cx)->use_deblock = TRUE;
+            ret = set_int2(&((CONF_ENC *)cx)->deblock, tmp, list);
+        } else if (FALSE != (ret = set_int2(&((CONF_ENC *)cx)->deblock, value, list))) {
+            ((CONF_ENC *)cx)->use_deblock = TRUE;
         }
     }
     return ret;
@@ -496,18 +496,18 @@ static BOOL set_mb_partitions(void *cx, const char *value, const ENC_OPTION_STR 
     return ret;
 }
 static BOOL set_tff(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->interlaced = TRUE;
-    ((CONF_X265 *)cx)->tff = TRUE;
+    ((CONF_ENC *)cx)->interlaced = TRUE;
+    ((CONF_ENC *)cx)->tff = TRUE;
     return TRUE;
 }
 static BOOL set_bff(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->interlaced = TRUE;
-    ((CONF_X265 *)cx)->tff = FALSE;
+    ((CONF_ENC *)cx)->interlaced = TRUE;
+    ((CONF_ENC *)cx)->tff = FALSE;
     return TRUE;
 }
 static BOOL set_timebase(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_X265 *)cx)->use_timebase = TRUE;
-    return set_int2(&((CONF_X265 *)cx)->timebase, value, list);
+    ((CONF_ENC *)cx)->use_timebase = TRUE;
+    return set_int2(&((CONF_ENC *)cx)->timebase, value, list);
 }
 static BOOL set_level(void *cx, const char *value, const ENC_OPTION_STR *list) {
     BOOL ret = FALSE;
@@ -563,17 +563,17 @@ static BOOL set_analyse(void *cx, const char *value, const ENC_OPTION_STR *list)
 static BOOL set_rc(void *cx, const char *value, const ENC_OPTION_STR *list) {
     BOOL ret = TRUE;
     if (NULL == strncmp(value, "2pass", strlen("2pass"))) {
-        ((CONF_X265 *)cx)->rc_mode = X265_RC_BITRATE;
-        ((CONF_X265 *)cx)->use_auto_npass = TRUE;
-        ((CONF_X265 *)cx)->auto_npass = 2;
+        ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+        ((CONF_ENC *)cx)->use_auto_npass = TRUE;
+        ((CONF_ENC *)cx)->auto_npass = 2;
     } else if (NULL == strncmp(value, "crf", strlen("crf"))) {
-        ((CONF_X265 *)cx)->rc_mode = X265_RC_CRF;
+        ((CONF_ENC *)cx)->rc_mode = X265_RC_CRF;
     } else if (NULL == strncmp(value, "cbr", strlen("cbr"))
             || NULL == strncmp(value, "abr", strlen("abr"))) {
-        ((CONF_X265 *)cx)->rc_mode = X265_RC_BITRATE;
-        ((CONF_X265 *)cx)->use_auto_npass = FALSE;
+        ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+        ((CONF_ENC *)cx)->use_auto_npass = FALSE;
     } else if (NULL == strncmp(value, "cqp", strlen("cqp"))) {
-        ((CONF_X265 *)cx)->rc_mode = X265_RC_QP;
+        ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
     } else {
         ret = FALSE;
     }
@@ -583,25 +583,25 @@ static BOOL set_aq(void *cx, const char *value, const ENC_OPTION_STR *list) {
     FLOAT2 f_val = { 0, 0 };
     BOOL ret = set_float2(&f_val, value, list);
     if (ret) {
-        ((CONF_X265 *)cx)->aq_mode = ((int)(f_val.x + 0.5));
-        ((CONF_X265 *)cx)->aq_strength = f_val.y;
+        ((CONF_ENC *)cx)->aq_mode = ((int)(f_val.x + 0.5));
+        ((CONF_ENC *)cx)->aq_strength = f_val.y;
     }
     return ret;
 }
 static BOOL set_interlaced(void *cx, const char *value, const ENC_OPTION_STR *list) {
     BOOL ret = TRUE;
     if (!value) {
-        ((CONF_X265 *)cx)->interlaced = TRUE;
-        ((CONF_X265 *)cx)->tff = TRUE;
+        ((CONF_ENC *)cx)->interlaced = TRUE;
+        ((CONF_ENC *)cx)->tff = TRUE;
     } else if (NULL == strncmp(value, "tff", strlen("tff"))) {
-        ((CONF_X265 *)cx)->interlaced = TRUE;
-        ((CONF_X265 *)cx)->tff = TRUE;
+        ((CONF_ENC *)cx)->interlaced = TRUE;
+        ((CONF_ENC *)cx)->tff = TRUE;
     } else if (NULL == strncmp(value, "bff", strlen("bff"))) {
-        ((CONF_X265 *)cx)->interlaced = TRUE;
-        ((CONF_X265 *)cx)->tff = FALSE;
+        ((CONF_ENC *)cx)->interlaced = TRUE;
+        ((CONF_ENC *)cx)->tff = FALSE;
     } else if (NULL == strncmp(value, "0", strlen("0"))) {
-        ((CONF_X265 *)cx)->interlaced = FALSE;
-        ((CONF_X265 *)cx)->tff = FALSE;
+        ((CONF_ENC *)cx)->interlaced = FALSE;
+        ((CONF_ENC *)cx)->tff = FALSE;
     } else {
         ret = FALSE;
     }
@@ -645,7 +645,7 @@ static BOOL set_do_nothing(void *cx, const char *value, const ENC_OPTION_STR *li
 }
 
 
-static int write_bool(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_bool(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     BOOL *bptr = (BOOL*)((BYTE*)cx + options->p_offset);
     BOOL *defptr = (BOOL*)((BYTE*)def + options->p_offset);
     if ((write_all || *bptr != *defptr) && *bptr)
@@ -653,7 +653,7 @@ static int write_bool(char *cmd, size_t nSize, const X265_OPTIONS *options, cons
     return 0;
 }
 
-static int write_bool_reverse(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_bool_reverse(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     BOOL *bptr = (BOOL*)((BYTE*)cx + options->p_offset);
     BOOL *defptr = (BOOL*)((BYTE*)def + options->p_offset);
     if ((write_all || *bptr != *defptr) && !(*bptr))
@@ -661,14 +661,14 @@ static int write_bool_reverse(char *cmd, size_t nSize, const X265_OPTIONS *optio
     return 0;
 }
 
-static int write_bool2_reverse(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_bool2_reverse(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     INT2 *bptr = (INT2*)((BYTE*)cx + options->p_offset);
     if (!(bptr->x | bptr->y))
         return sprintf_s(cmd, nSize, " --%s", options->long_name);
     return 0;
 }
 
-static int write_int(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_int(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     int *iptr = (int*)((BYTE*)cx + options->p_offset);
     int *defptr = (int*)((BYTE*)def + options->p_offset);
     if (write_all || *iptr != *defptr)
@@ -688,7 +688,7 @@ static inline int write_float_ex(char *cmd, size_t nSize, float f) {
     return p - cmd;
 }
 
-static int write_float(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_float(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     float *fptr = (float*)((BYTE*)cx + options->p_offset);
     float *defptr = (float*)((BYTE*)def + options->p_offset);
     if (write_all || abs(*fptr - *defptr) > EPS_FLOAT) {
@@ -698,7 +698,7 @@ static int write_float(char *cmd, size_t nSize, const X265_OPTIONS *options, con
     return 0;
 }
 
-static int write_int2(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_int2(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     INT2 *iptr = (INT2*)((BYTE*)cx + options->p_offset);
     INT2 *defptr = (INT2*)((BYTE*)def + options->p_offset);
     if (write_all || iptr->x != defptr->x || iptr->y != defptr->y)
@@ -706,7 +706,7 @@ static int write_int2(char *cmd, size_t nSize, const X265_OPTIONS *options, cons
     return 0;
 }
 
-static int write_float2(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_float2(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     FLOAT2 *fptr = (FLOAT2*)((BYTE*)cx + options->p_offset);
     FLOAT2 *defptr = (FLOAT2*)((BYTE*)def + options->p_offset);
     if (write_all || fptr->x != defptr->x || fptr->y != defptr->y) {
@@ -719,7 +719,7 @@ static int write_float2(char *cmd, size_t nSize, const X265_OPTIONS *options, co
     return 0;
 }
 
-static int write_list(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_list(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     int *iptr = (int*)((BYTE*)cx + options->p_offset);
     int *defptr = (int*)((BYTE*)def + options->p_offset);
     if (write_all || *iptr != *defptr)
@@ -727,14 +727,14 @@ static int write_list(char *cmd, size_t nSize, const X265_OPTIONS *options, cons
     return 0;
 }
 
-static int write_crf(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_crf(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->rc_mode == X265_RC_CRF) {
         int len = sprintf_s(cmd, nSize, " --%s ", options->long_name);
         return len + write_float_ex(cmd + len, nSize - len, cx->crf / 100.0f);
     }
     return 0;
 }
-static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->rc_mode == X265_RC_BITRATE) {
         int len = sprintf_s(cmd, nSize, " --%s %d", options->long_name, cx->bitrate);
         if (cx->pass) {
@@ -748,7 +748,7 @@ static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, c
     }
     return 0;
 }
-static int write_qp(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_qp(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->rc_mode == X265_RC_QP) {
         if (cx->qp < 0) {
             return sprintf_s(cmd, nSize, " --lossless");
@@ -758,7 +758,7 @@ static int write_qp(char *cmd, size_t nSize, const X265_OPTIONS *options, const 
     }
     return 0;
 }
-static int write_keyint_x264(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_keyint_x264(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     int *iptr = (int*)((BYTE*)cx + options->p_offset);
     int *defptr = (int*)((BYTE*)def + options->p_offset);
     if (write_all || *iptr != *defptr) {
@@ -767,13 +767,13 @@ static int write_keyint_x264(char *cmd, size_t nSize, const X265_OPTIONS *option
     }
     return 0;
 }
-static int write_deblock(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_deblock(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->use_deblock)
         if (write_all || cx->deblock.x != def->deblock.x || cx->deblock.y != def->deblock.y)
             return sprintf_s(cmd, nSize, " --%s %d:%d", options->long_name, cx->deblock.x, cx->deblock.y);
     return 0;
 }
-static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     INT2 *iptr = (INT2*)((BYTE*)cx + options->p_offset);
     INT2 *defptr = (INT2*)((BYTE*)def + options->p_offset);
     if (write_all || iptr->x != defptr->x || iptr->y != defptr->y) {
@@ -781,24 +781,24 @@ static int write_x265_sar(char *cmd, size_t nSize, const X265_OPTIONS *options, 
     }
     return 0;
 }
-static int write_input_depth(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_input_depth(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->bit_depth > 8)
         return sprintf_s(cmd, nSize, " --input-depth 16 --output-depth %d", cx->bit_depth);
     return 0;
 }
-static int write_slow_first_pass(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_slow_first_pass(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
         return write_bool(cmd, nSize, options, cx, def, vid, write_all);
     }
     return 0;
 }
-static int write_slow_first_pass_r(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_slow_first_pass_r(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
         return write_bool_reverse(cmd, nSize, options, cx, def, vid, write_all);
     }
     return 0;
 }
-static int write_do_nothing(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all) {
+static int write_do_nothing(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
     return 0;
 }
 
@@ -842,7 +842,7 @@ const SET_VALUE set_value[] = {
 };
 
 //この配列に従って各関数に飛ばされる
-typedef int (*WRITE_CMD_x265) (char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_X265 *cx, const CONF_X265 *def, const CONF_VIDEO *vid, BOOL write_all);
+typedef int (*WRITE_CMD_x265) (char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all);
 //const WRITE_CMD_x265 write_cmd_x264[] = {
 //    NULL,
 //    write_bool,
@@ -1026,7 +1026,7 @@ static void set_setting_list() {
 }
 
 //MediaInfoからの情報の補正を行う
-static void check_values_from_mediainfo(std::vector<CMD_ARG> &cmd_arg_list, CONF_X265 *conf_set) {
+static void check_values_from_mediainfo(std::vector<CMD_ARG> &cmd_arg_list, CONF_ENC *conf_set) {
     BOOL keyint_from_mediainfo = FALSE;
     BOOL keyint_min_from_mediainfo = FALSE;
     BOOL chroma_qp_offset_from_mediainfo = FALSE;
@@ -1063,7 +1063,7 @@ static inline BOOL option_has_no_value(DWORD type) {
     return FALSE;
 }
 
-static void set_conf_x265(std::vector<CMD_ARG> &cmd_arg_list, CONF_X265 *conf_set) {
+static void set_conf_x265(std::vector<CMD_ARG> &cmd_arg_list, CONF_ENC *conf_set) {
     foreach (it_arg, cmd_arg_list) {
         int i;
         for (i = 0; i < _countof(x265_options_table); i++) {
@@ -1081,11 +1081,11 @@ static void set_conf_x265(std::vector<CMD_ARG> &cmd_arg_list, CONF_X265 *conf_se
     //check_values_from_mediainfo(cmd_arg_list, conf_set);
 }
 
-void set_cmd_to_conf(char *cmd, CONF_X265 *conf_set, size_t cmd_len, BOOL build_not_imported_cmd) {
+void set_cmd_to_conf(char *cmd, CONF_ENC *conf_set, size_t cmd_len, BOOL build_not_imported_cmd) {
     std::vector<CMD_ARG> cmd_arg_list;
     set_setting_list();
     parse_arg(cmd, cmd_len, cmd_arg_list);
-    set_conf_x265(cmd_arg_list, (CONF_X265 *)conf_set);
+    set_conf_x265(cmd_arg_list, (CONF_ENC *)conf_set);
     if (build_not_imported_cmd) {
         //コマンドラインの再構築
         //it_arg->option_name のポインタが指すのはcmd上の文字列なので、
@@ -1109,7 +1109,7 @@ void set_cmd_to_conf(char *cmd, CONF_X265 *conf_set, size_t cmd_len, BOOL build_
     }
 }
 
-void set_cmd_to_conf(const char *cmd_src, CONF_X265 *conf_set) {
+void set_cmd_to_conf(const char *cmd_src, CONF_ENC *conf_set) {
     //parse_argでコマンドラインは書き変えられるので、
     //一度コピーしておく
     size_t cmd_len = strlen(cmd_src) + 1;
@@ -1119,8 +1119,8 @@ void set_cmd_to_conf(const char *cmd_src, CONF_X265 *conf_set) {
     free(cmd);
 }
 
-void get_default_conf(CONF_X265 *conf_set, BOOL use_highbit) {
-    ZeroMemory(conf_set, sizeof(CONF_X265));
+void get_default_conf(CONF_ENC *conf_set, BOOL use_highbit) {
+    ZeroMemory(conf_set, sizeof(CONF_ENC));
     set_cmd_to_conf(ex_stg->s_enc.default_cmd, conf_set);
     if (use_highbit)
         set_cmd_to_conf(ex_stg->s_enc.default_cmd_highbit, conf_set);
@@ -1128,22 +1128,22 @@ void get_default_conf(CONF_X265 *conf_set, BOOL use_highbit) {
     apply_presets(conf_set);
 }
 
-void set_preset_to_conf(CONF_X265 *conf_set, int preset_index) {
+void set_preset_to_conf(CONF_ENC *conf_set, int preset_index) {
     if (ex_stg->s_enc.preset.name[preset_index].name)
         set_cmd_to_conf(ex_stg->s_enc.preset.cmd[preset_index], conf_set);
 }
 
-void set_tune_to_conf(CONF_X265 *conf_set, int tune_index) {
+void set_tune_to_conf(CONF_ENC *conf_set, int tune_index) {
     if (ex_stg->s_enc.tune.name[tune_index].name)
         set_cmd_to_conf(ex_stg->s_enc.tune.cmd[tune_index], conf_set);
 }
 
-void set_profile_to_conf(CONF_X265 *conf_set, int profile_index) {
+void set_profile_to_conf(CONF_ENC *conf_set, int profile_index) {
     if (ex_stg->s_enc.profile.name[profile_index].name)
         set_cmd_to_conf(ex_stg->s_enc.profile.cmd[profile_index], conf_set);
 }
 
-void apply_presets(CONF_X265 *conf_set) {
+void apply_presets(CONF_ENC *conf_set) {
     set_preset_to_conf(conf_set, conf_set->preset);
     set_tune_to_conf(conf_set, conf_set->tune);
     set_profile_to_conf(conf_set, conf_set->profile);
@@ -1154,21 +1154,21 @@ void apply_presets(CONF_X265 *conf_set) {
 //    int profile_index;
 //    for (profile_index = 0; ex_stg->s_x264.profile.cmd[profile_index]; profile_index++) {
 //        memcpy(&check, conf_set, sizeof(CONF_X264));
-//        set_cmd_to_conf(ex_stg->s_x264.profile.cmd[profile_index], (CONF_X265 *)&check, ENC_TYPE_X264);
+//        set_cmd_to_conf(ex_stg->s_x264.profile.cmd[profile_index], (CONF_ENC *)&check, ENC_TYPE_X264);
 //        if (memcmp(&check, conf_set, sizeof(CONF_X264)) == NULL)
 //            return profile_index;
 //    }
 //    return profile_index - 1;
 //}
 
-void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_X265 *conf, const void *_vid, BOOL write_all) {
-    CONF_X265 x265def = { 0 };
-    CONF_X265 *def = (CONF_X265 *)&x265def;
+void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_ENC *conf, const void *_vid, BOOL write_all) {
+    CONF_ENC x265def = { 0 };
+    CONF_ENC *def = (CONF_ENC *)&x265def;
     CONF_VIDEO *vid = (CONF_VIDEO *)_vid;
-    get_default_conf(   (CONF_X265 *)def, conf->bit_depth > 8);
-    set_preset_to_conf( (CONF_X265 *)def, conf->preset);
-    set_tune_to_conf(   (CONF_X265 *)def, conf->tune);
-    set_profile_to_conf((CONF_X265 *)def, conf->profile);
+    get_default_conf(   (CONF_ENC *)def, conf->bit_depth > 8);
+    set_preset_to_conf( (CONF_ENC *)def, conf->preset);
+    set_tune_to_conf(   (CONF_ENC *)def, conf->tune);
+    set_profile_to_conf((CONF_ENC *)def, conf->profile);
 
     for (X265_OPTIONS *opt = x265_options_table; opt->long_name; opt++) {
         int len = write_cmd_x265[opt->type](cmd, nSize, opt, conf, def, vid, write_all);
@@ -1194,11 +1194,11 @@ void set_guiEx_auto_sar(int *sar_x, int *sar_y, int width, int height) {
         *sar_x = *sar_y = 0;
     }
 }
-static void set_guiEx_auto_sar(CONF_X265 *cx, int width, int height) {
+static void set_guiEx_auto_sar(CONF_ENC *cx, int width, int height) {
     set_guiEx_auto_sar(&cx->sar.x, &cx->sar.y, width, height);
 }
 
-static void set_guiEx_auto_colormatrix(CONF_X265 *cx, int height) {
+static void set_guiEx_auto_colormatrix(CONF_ENC *cx, int height) {
     int auto_matrix = (height >= COLOR_MATRIX_THRESHOLD) ? COLOR_MATRIX_HD : COLOR_MATRIX_SD;
     if (cx->colormatrix == COLOR_MATRIX_AUTO)
         cx->colormatrix = auto_matrix;
@@ -1208,9 +1208,9 @@ static void set_guiEx_auto_colormatrix(CONF_X265 *cx, int height) {
         cx->transfer = auto_matrix;
 }
 
-//static void set_guiEx_auto_vbv(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
+//static void set_guiEx_auto_vbv(CONF_ENC *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
 //    if (cx->vbv_bufsize < 0 || cx->vbv_maxrate < 0) {
-//        int profile_index = check_profile_x264((CONF_X265 *)cx);
+//        int profile_index = check_profile_x264((CONF_ENC *)cx);
 //        int level_index = cx->h26x_level;
 //        if (!level_index)
 //            level_index = calc_auto_level(width, height, (ref_limit_by_level) ? 0 : cx->ref_frames, cx->interlaced, fps_num, fps_den, cx->vbv_maxrate, cx->vbv_bufsize);
@@ -1226,7 +1226,7 @@ void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
     }
 }
 
-//static void set_guiEx_auto_ref_limit_by_level(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
+//static void set_guiEx_auto_ref_limit_by_level(CONF_ENC *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
 //    x264用のコード
 //    int level_index = cx->h26x_level;
 //    if (!level_index)
@@ -1236,7 +1236,7 @@ void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
 
 #pragma warning( push )
 #pragma warning( disable: 4100 )
-void apply_guiEx_auto_settings(CONF_X265 *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
+void apply_guiEx_auto_settings(CONF_ENC *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
     set_guiEx_auto_sar(cx, width, height);
     set_guiEx_auto_colormatrix(cx, height);
     set_guiEx_auto_keyint(&cx->keyint_max, fps_num, fps_den);

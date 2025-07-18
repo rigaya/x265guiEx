@@ -1553,8 +1553,8 @@ System::Void frmConfig::LoadLangText() {
 System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     {
     //x265
-    CONF_X265 *cx265 = &cnf->enc;
-    memcpy(cnf_fcgTemp, cx265, sizeof(CONF_X265)); //一時保存用
+    CONF_ENC *cx265 = &cnf->enc;
+    memcpy(cnf_fcgTemp, cx265, sizeof(CONF_ENC)); //一時保存用
     fcgCXBitDepth->SelectedIndex = get_bit_depth_idx(cx265->bit_depth);
     switch (cx265->rc_mode) {
         case X265_RC_QP:
