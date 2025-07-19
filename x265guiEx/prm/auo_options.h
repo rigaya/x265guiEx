@@ -38,19 +38,24 @@
 
 //エンコードモード
 enum {
-    X265_RC_CRF = 0,
-    X265_RC_BITRATE,
-    X265_RC_QP,
+    ENC_RC_CRF = 0,
+    ENC_RC_BITRATE,
+    ENC_RC_QP,
 };
 
 //QPの最大値
-const int X264_QP_MAX_8BIT  = 69;
-const int X264_QP_MAX_10BIT = 81;
+const int ENC_QP_MAX_8BIT  = 69;
+const int ENC_QP_MAX_10BIT = 81;
 
 //差がこのくらいなら等しいとみなす(オプション用なのでこのくらいで十分)
 const float EPS_FLOAT = 1.0e-4f;
 
+#if ENCODER_X265
 static const int AUO_KEYINT_MAX_AUTO = 0;
+#elif ENCODER_X264 || ENCODER_SVTAV1
+static const int AUO_KEYINT_MAX_AUTO = -1;
+#endif
+
 
 //マクロブロックタイプの一般的なオプション
 enum {
@@ -448,6 +453,8 @@ typedef struct CMD_ARG {
     BOOL type_mediainfo; //MediaInfoの書式だったかどうか
 } CMD_ARG;
 
+static bool ishighbitdepth(const CONF_ENC *enc) { return enc->bit_depth > 8; }
+
 //コマンドラインの解析・生成
 void set_cmd_to_conf(const char *cmd_src, CONF_ENC *conf_set);
 void set_cmd_to_conf(char *cmd, CONF_ENC *conf_set, size_t cmd_len, BOOL build_not_imported_cmd);
@@ -460,7 +467,7 @@ void build_cmd_from_conf(char *cmd, size_t nSize, const CONF_ENC *conf, const vo
 void build_cmd_from_conf_x264(char *cmd, size_t nSize, const CONF_ENC *conf, const void *_vid, BOOL write_all);
 void build_cmd_from_conf_x265(char *cmd, size_t nSize, const CONF_ENC *conf, const void *_vid, BOOL write_all);
 void set_guiEx_auto_sar(int *sar_x, int *sar_y, int width, int height);
-void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den);
+void set_guiEx_auto_keyint(CONF_ENC *cx, int fps_num, int fps_den);
 void apply_guiEx_auto_settings(CONF_ENC *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level);
 const ENC_OPTION_STR * get_option_list_x265(const char *option_name);
 void set_ex_stg_ptr(guiEx_settings *_ex_stg);

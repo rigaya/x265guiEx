@@ -830,7 +830,7 @@ int get_total_path(const CONF_GUIEX *conf) {
     return use_auto_npass(conf) ? 2 : 1;
 #else
     return (conf->enc.use_auto_npass
-         && conf->enc.rc_mode == X265_RC_BITRATE
+         && conf->enc.rc_mode == ENC_RC_BITRATE
          && !conf->oth.disable_guicmd)
          ? conf->enc.auto_npass : 1;
 #endif
@@ -1540,18 +1540,20 @@ static double get_audio_bitrate(const PRM_ENC *pe, const OUTPUT_INFO *oip, doubl
 }
 
 static void amp_adjust_lower_bitrate_set_default(CONF_ENC *cnf) {
-    CONF_ENC x265_default = { 0 };
-    get_default_conf(&x265_default, cnf->bit_depth > 8);
+    CONF_ENC enc_default = { 0 };
+    get_default_conf(&enc_default, ishighbitdepth(cnf));
     //すべてをデフォルトに戻すとcolormatrixなどのパラメータも戻ってしまうので、
     //エンコード速度に関係していそうなパラメータのみをデフォルトに戻す
-    cnf->me = (std::min)(cnf->me, x265_default.me);
-    cnf->me_range = (std::min)(cnf->me_range, x265_default.me_range);
-    cnf->subme = (std::min)(cnf->subme, x265_default.subme);
-    cnf->ref_frames = (std::min)(cnf->ref_frames, x265_default.ref_frames);
-    //cnf->trellis = (std::min)(cnf_x264->trellis, x264_default.trellis);
-    //cnf->mb_partition &= x264_default.mb_partition;
-    //cnf->no_dct_decimate = x264_default.no_dct_decimate;
-    //cnf->no_fast_pskip = x264_default.no_fast_pskip;
+    cnf->me = (std::min)(cnf->me, enc_default.me);
+    cnf->me_range = (std::min)(cnf->me_range, enc_default.me_range);
+    cnf->subme = (std::min)(cnf->subme, enc_default.subme);
+    cnf->ref_frames = (std::min)(cnf->ref_frames, enc_default.ref_frames);
+#if ENCODER_X264    
+    cnf->trellis = (std::min)(cnf->trellis, enc_default.trellis);
+    cnf->mb_partition &= enc_default.mb_partition;
+    cnf->no_dct_decimate = enc_default.no_dct_decimate;
+    cnf->no_fast_pskip = enc_default.no_fast_pskip;
+#endif
 }
 
 static void amp_adjust_lower_bitrate_keyint(CONF_ENC *cnf, int keyint_div, int min_keyint) {
@@ -1607,7 +1609,7 @@ static AUO_RESULT amp_adjust_lower_bitrate_from_crf(CONF_ENC *cnf, const CONF_VI
     //キーフレーム間隔自動を反映
     if (cnf->keyint_max <= 0) {
         cnf->keyint_max = AUO_KEYINT_MAX_AUTO; //set_guiEx_auto_keyint()は AUO_KEYINT_MAX_AUTO としておかないと自動設定を行わない
-        set_guiEx_auto_keyint(&cnf->keyint_max, oip->rate, oip->scale);
+        set_guiEx_auto_keyint(cnf, oip->rate, oip->scale);
     }
 #define ADJUST(preset_idx, preset_offset, keyint_div, min_keyint) amp_adjust_lower_bitrate(cnf, (preset_idx), (preset_offset), (keyint_div), (min_keyint), sys_dat)
     //HD解像度の静止画動画では、キーフレームの比重が大きいため、キーフレーム追加はやや控えめに
@@ -1773,11 +1775,11 @@ int amp_check_file(CONF_GUIEX *conf, const SYSTEM_DATA *sys_dat, PRM_ENC *pe, co
             //動画の再エンコードで修正
             amp_result = 1;
             pe->total_pass++;
-            if (conf->enc.rc_mode == X265_RC_CRF) {
+            if (conf->enc.rc_mode == ENC_RC_CRF) {
                 //上限確認付 品質基準VBR(可変レート)の場合、自動的に再設定
                 pe->amp_pass_limit++;
                 pe->current_pass = 1;
-                conf->enc.rc_mode = X265_RC_BITRATE;
+                conf->enc.rc_mode = ENC_RC_BITRATE;
                 conf->enc.slow_first_pass = FALSE;
                 conf->enc.nul_out = TRUE;
                 //ここでは目標ビットレートを上限を上回った場合には-1、下限を下回った場合には0に指定しておき、

@@ -421,22 +421,22 @@ static BOOL set_list(void *i, const char *value, const ENC_OPTION_STR *list) {
     return ret;
 }
 static BOOL set_crf(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_ENC *)cx)->rc_mode = X265_RC_CRF;
+    ((CONF_ENC *)cx)->rc_mode = ENC_RC_CRF;
     float f = 23.0f;
     auo_strtof(&f, value, NULL);
     ((CONF_ENC *)cx)->crf = (int)(f * 100 + 0.5);
     return TRUE;
 }
 static BOOL set_bitrate(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+    ((CONF_ENC *)cx)->rc_mode = ENC_RC_BITRATE;
     return auo_strtol(&((CONF_ENC *)cx)->bitrate, value, NULL);
 }
 static BOOL set_qp(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
+    ((CONF_ENC *)cx)->rc_mode = ENC_RC_QP;
     return auo_strtol(&((CONF_ENC *)cx)->qp, value, NULL);
 }
 static BOOL set_lossless(void *cx, const char *value, const ENC_OPTION_STR *list) {
-    ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
+    ((CONF_ENC *)cx)->rc_mode = ENC_RC_QP;
     ((CONF_ENC *)cx)->qp = -1;
     return TRUE;
 }
@@ -563,17 +563,17 @@ static BOOL set_analyse(void *cx, const char *value, const ENC_OPTION_STR *list)
 static BOOL set_rc(void *cx, const char *value, const ENC_OPTION_STR *list) {
     BOOL ret = TRUE;
     if (NULL == strncmp(value, "2pass", strlen("2pass"))) {
-        ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+        ((CONF_ENC *)cx)->rc_mode = ENC_RC_BITRATE;
         ((CONF_ENC *)cx)->use_auto_npass = TRUE;
         ((CONF_ENC *)cx)->auto_npass = 2;
     } else if (NULL == strncmp(value, "crf", strlen("crf"))) {
-        ((CONF_ENC *)cx)->rc_mode = X265_RC_CRF;
+        ((CONF_ENC *)cx)->rc_mode = ENC_RC_CRF;
     } else if (NULL == strncmp(value, "cbr", strlen("cbr"))
             || NULL == strncmp(value, "abr", strlen("abr"))) {
-        ((CONF_ENC *)cx)->rc_mode = X265_RC_BITRATE;
+        ((CONF_ENC *)cx)->rc_mode = ENC_RC_BITRATE;
         ((CONF_ENC *)cx)->use_auto_npass = FALSE;
     } else if (NULL == strncmp(value, "cqp", strlen("cqp"))) {
-        ((CONF_ENC *)cx)->rc_mode = X265_RC_QP;
+        ((CONF_ENC *)cx)->rc_mode = ENC_RC_QP;
     } else {
         ret = FALSE;
     }
@@ -728,14 +728,14 @@ static int write_list(char *cmd, size_t nSize, const X265_OPTIONS *options, cons
 }
 
 static int write_crf(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
-    if (cx->rc_mode == X265_RC_CRF) {
+    if (cx->rc_mode == ENC_RC_CRF) {
         int len = sprintf_s(cmd, nSize, " --%s ", options->long_name);
         return len + write_float_ex(cmd + len, nSize - len, cx->crf / 100.0f);
     }
     return 0;
 }
 static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
-    if (cx->rc_mode == X265_RC_BITRATE) {
+    if (cx->rc_mode == ENC_RC_BITRATE) {
         int len = sprintf_s(cmd, nSize, " --%s %d", options->long_name, cx->bitrate);
         if (cx->pass) {
             len += sprintf_s(cmd + len, nSize - len, " --pass %d", cx->pass);
@@ -749,7 +749,7 @@ static int write_bitrate(char *cmd, size_t nSize, const X265_OPTIONS *options, c
     return 0;
 }
 static int write_qp(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
-    if (cx->rc_mode == X265_RC_QP) {
+    if (cx->rc_mode == ENC_RC_QP) {
         if (cx->qp < 0) {
             return sprintf_s(cmd, nSize, " --lossless");
         } else {
@@ -787,13 +787,13 @@ static int write_input_depth(char *cmd, size_t nSize, const X265_OPTIONS *option
     return 0;
 }
 static int write_slow_first_pass(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
-    if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
+    if (cx->rc_mode == ENC_RC_BITRATE && cx->pass) {
         return write_bool(cmd, nSize, options, cx, def, vid, write_all);
     }
     return 0;
 }
 static int write_slow_first_pass_r(char *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
-    if (cx->rc_mode == X265_RC_BITRATE && cx->pass) {
+    if (cx->rc_mode == ENC_RC_BITRATE && cx->pass) {
         return write_bool_reverse(cmd, nSize, options, cx, def, vid, write_all);
     }
     return 0;
@@ -1220,9 +1220,9 @@ static void set_guiEx_auto_colormatrix(CONF_ENC *cx, int height) {
 //    }
 //}
 
-void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
-    if (*keyint_max == AUO_KEYINT_MAX_AUTO) {
-        *keyint_max = (int)((fps_num + (fps_den - 1)) / fps_den) * 10; // 60000/1001 fpsの時に 600になるように最後に10倍する (599とか嫌すぎる)
+void set_guiEx_auto_keyint(CONF_ENC *cx, int fps_num, int fps_den) {
+    if (cx->keyint_max == AUO_KEYINT_MAX_AUTO) {
+        cx->keyint_max = (int)((fps_num + (fps_den - 1)) / fps_den) * 10; // 60000/1001 fpsの時に 600になるように最後に10倍する (599とか嫌すぎる)
     }
 }
 
@@ -1239,7 +1239,7 @@ void set_guiEx_auto_keyint(int *keyint_max, int fps_num, int fps_den) {
 void apply_guiEx_auto_settings(CONF_ENC *cx, int width, int height, int fps_num, int fps_den, BOOL ref_limit_by_level) {
     set_guiEx_auto_sar(cx, width, height);
     set_guiEx_auto_colormatrix(cx, height);
-    set_guiEx_auto_keyint(&cx->keyint_max, fps_num, fps_den);
+    set_guiEx_auto_keyint(cx, fps_num, fps_den);
     //set_guiEx_auto_vbv(cx, width, height, fps_num, fps_den, ref_limit_by_level);
     //set_guiEx_auto_ref_limit_by_level(cx, width, height, fps_num, fps_den, ref_limit_by_level);
 }

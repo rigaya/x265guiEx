@@ -1094,7 +1094,7 @@ static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *p
     if (!conf->vid.amp_check)
         return AUO_RESULT_SUCCESS;
 
-    if ((!(conf->enc.use_auto_npass && conf->enc.rc_mode == X265_RC_BITRATE)))
+    if ((!(conf->enc.use_auto_npass && conf->enc.rc_mode == ENC_RC_BITRATE)))
         return AUO_RESULT_SUCCESS;
 
     //音声ファイルサイズ取得

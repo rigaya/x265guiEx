@@ -178,7 +178,7 @@ System::Void frmConfig::CloseBitrateCalc() {
 System::Void frmConfig::fcgTSBBitrateCalc_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
     if (fcgTSBBitrateCalc->Checked) {
         int videoBitrate = 0;
-        bool videoBitrateMode = fcgCXX265Mode->SelectedIndex == X265_RC_BITRATE;
+        bool videoBitrateMode = fcgCXX265Mode->SelectedIndex == ENC_RC_BITRATE;
         videoBitrateMode &= Int32::TryParse(fcgTXQuality->Text, videoBitrate);
 
         frmBitrateCalculator::Instance::get()->Init(
@@ -204,7 +204,7 @@ System::Void frmConfig::SetfbcBTVBEnable(bool enable) {
 }
 
 System::Void frmConfig::SetVideoBitrate(int bitrate) {
-    if (x265_encmode_to_RCint[fcgCXX265Mode->SelectedIndex] == X265_RC_BITRATE)
+    if (x265_encmode_to_RCint[fcgCXX265Mode->SelectedIndex] == ENC_RC_BITRATE)
         fcgTXQuality->Text = bitrate.ToString();
 }
 
@@ -514,7 +514,7 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
     cnf_fcgTemp->rc_mode = x265_encmode_to_RCint[index];
     cnf_fcgTemp->use_auto_npass = (fcgCXX265Mode->SelectedIndex == 5 || fcgCXX265Mode->SelectedIndex == 6);
     switch (cnf_fcgTemp->rc_mode) {
-        case X265_RC_BITRATE:
+        case ENC_RC_BITRATE:
             fcgLBQuality->Text = (fcgCXX265Mode->SelectedIndex == 5) ? LOAD_CLI_STRING(AUO_CONFIG_MODE_TARGET_BITRATE) : LOAD_CLI_STRING(AUO_CONFIG_MODE_BITRATE);
             fcgLBQualityLeft->Text = LOAD_CLI_STRING(AUO_CONFIG_QUALITY_LOW);
             fcgLBQualityRight->Text = LOAD_CLI_STRING(AUO_CONFIG_QUALITY_HIGH);
@@ -547,7 +547,7 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
                 fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
             SetfbcBTVBEnable(true);
             break;
-        case X265_RC_QP:
+        case ENC_RC_QP:
             fcgLBQuality->Text = LOAD_CLI_STRING(AUO_CONFIG_MODE_QP);
             fcgLBQualityLeft->Text = LOAD_CLI_STRING(AUO_CONFIG_QUALITY_HIGH);
             fcgLBQualityRight->Text = LOAD_CLI_STRING(AUO_CONFIG_QUALITY_LOW);
@@ -560,7 +560,7 @@ System::Void frmConfig::fcgCXX265Mode_SelectedIndexChanged(System::Object^  send
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
             SetfbcBTVBEnable(false);
             break;
-        case X265_RC_CRF:
+        case ENC_RC_CRF:
         default:
             fcgLBQuality->Text = LOAD_CLI_STRING(AUO_CONFIG_MODE_CRF);
             fcgLBQualityLeft->Text = LOAD_CLI_STRING(AUO_CONFIG_QUALITY_HIGH);
@@ -609,7 +609,7 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
         restore = true;
     } else {
         switch (x265_encmode_to_RCint[index]) {
-        case X265_RC_BITRATE:
+        case ENC_RC_BITRATE:
             //自動マルチパス時は-1(自動)もあり得る
             if (Int32::TryParse(fcgTXQuality->Text, i) && i >= ((fcgCXX265Mode->SelectedIndex == 5) ? -1 : 0)) {
                 cnf_fcgTemp->bitrate = i;
@@ -620,14 +620,14 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
                 restore = true;
             }
             break;
-        case X265_RC_QP:
+        case ENC_RC_QP:
             if (Int32::TryParse(fcgTXQuality->Text, i)) {
                 i = SetTBValue(fcgTBQuality, i);
                 cnf_fcgTemp->qp = i;
                 fcgTXQuality->Text = Convert::ToString(i);
             }
             break;
-        case X265_RC_CRF:
+        case ENC_RC_CRF:
         default:
             if (Double::TryParse(fcgTXQuality->Text, d)) {
                 int TBmin = fcgTBQuality->Minimum * 50;
@@ -650,17 +650,17 @@ System::Void frmConfig::fcgTXQuality_TextChanged(System::Object^  sender, System
 
 System::Void frmConfig::fcgTXQuality_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
     switch (x265_encmode_to_RCint[fcgCXX265Mode->SelectedIndex]) {
-        case X265_RC_BITRATE:
+        case ENC_RC_BITRATE:
             //自動モードの場合は除く
             if (fcgCXX265Mode->SelectedIndex == 5 && cnf_fcgTemp->bitrate == -1) {
                 fcgTXQuality->Text = STR_BITRATE_AUTO;
             } else
                 fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
             break;
-        case X265_RC_QP:
+        case ENC_RC_QP:
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
             break;
-        case X265_RC_CRF:
+        case ENC_RC_CRF:
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->crf / 100.0);
         default:
             break;
@@ -670,15 +670,15 @@ System::Void frmConfig::fcgTXQuality_Validating(System::Object^  sender, System:
 System::Void frmConfig::SetTBValueToTextBoxX265() {
     int index = fcgCXX265Mode->SelectedIndex;
     switch (x265_encmode_to_RCint[index]) {
-        case X265_RC_BITRATE:
+        case ENC_RC_BITRATE:
             cnf_fcgTemp->bitrate = TBBConvert.TBToBitrate(fcgTBQuality->Value);
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->bitrate);
             break;
-        case X265_RC_QP:
+        case ENC_RC_QP:
             cnf_fcgTemp->qp = fcgTBQuality->Value;
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->qp);
             break;
-        case X265_RC_CRF:
+        case ENC_RC_CRF:
         default:
             cnf_fcgTemp->crf = fcgTBQuality->Value * 50;
             fcgTXQuality->Text = Convert::ToString(cnf_fcgTemp->crf / 100.0);
@@ -1557,10 +1557,10 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
     memcpy(cnf_fcgTemp, cx265, sizeof(CONF_ENC)); //一時保存用
     fcgCXBitDepth->SelectedIndex = get_bit_depth_idx(cx265->bit_depth);
     switch (cx265->rc_mode) {
-        case X265_RC_QP:
+        case ENC_RC_QP:
             fcgCXX265Mode->SelectedIndex = 1;
             break;
-        case X265_RC_BITRATE:
+        case ENC_RC_BITRATE:
             if (cx265->use_auto_npass)
                 fcgCXX265Mode->SelectedIndex = 5;
             else {
@@ -1571,7 +1571,7 @@ System::Void frmConfig::ConfToFrm(CONF_GUIEX *cnf, bool all) {
                 }
             }
             break;
-        case X265_RC_CRF:
+        case ENC_RC_CRF:
         default:
             fcgCXX265Mode->SelectedIndex = (cx265->use_auto_npass) ? 6 : 2;
             break;

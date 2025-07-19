@@ -303,13 +303,13 @@ const int x265_outputcsp_map[] = {
 };
 
 const int x265_encmode_to_RCint[] = {
-    X265_RC_BITRATE,
-    X265_RC_QP,
-    X265_RC_CRF,
-    X265_RC_BITRATE,
-    X265_RC_BITRATE,
-    X265_RC_BITRATE,
-    X265_RC_CRF,
+    ENC_RC_BITRATE,
+    ENC_RC_QP,
+    ENC_RC_CRF,
+    ENC_RC_BITRATE,
+    ENC_RC_BITRATE,
+    ENC_RC_BITRATE,
+    ENC_RC_CRF,
     NULL
 };
 
