@@ -72,8 +72,8 @@ void write_log_line_b(int log_type_index, const char *chr, bool from_utf8 = fals
 void write_log_auo_line(int log_type_index, const wchar_t *chr);
 void write_log_line(int log_type_index, const wchar_t *chr);
 void flush_audio_log();
-void enable_x264_control(DWORD *priority, BOOL *enc_pause, BOOL afs, BOOL add_progress, DWORD start_time, int _total_frame);
-void disable_x264_control();
+void enable_enc_control(DWORD *priority, bool *enc_pause, BOOL afs, BOOL add_progress, DWORD start_time, int _total_frame);
+void disable_enc_control();
 void set_prevent_log_close(BOOL prevent);
 void auto_save_log_file(const char *log_filepath);
 void log_process_events();
