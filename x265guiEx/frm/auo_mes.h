@@ -201,6 +201,14 @@ enum AuoMes {
     AUO_ERR_GET_PIPE_HANDLE,
     AUO_ERR_RUN_PROCESS,
     AUO_ERR_VIDEO_OUTPUT_THREAD_START,
+
+    AUO_ERR_VIDEO_CREATE_PARAM_MEM,
+    AUO_ERR_VIDEO_CREATE_EVENT,
+    AUO_ERR_VIDEO_WAIT_EVENT,
+    AUO_ERR_VIDEO_SET_EVENT,
+    AUO_ERR_VIDEO_OPEN_SHARED_INPUT_BUF,
+    AUO_ERR_VIDEO_GET_CONV_FUNC,
+
     AUO_ERR_QPFILE_FAILED,
     AUO_ERR_TCFILE_FAILED,
     AUO_ERR_MALLOC_PIXEL_DATA,
@@ -418,6 +426,8 @@ enum AuoMes {
     AUO_VIDEO_CHAPTER_AFS_ADJUST_FIN,
     AUO_VIDEO_SET_KEYFRAME_NOT_DETECTED,
     AUO_VIDEO_AFS_VBV_WARN,
+    AUO_VIDEO_AFS_AVIUTL_AND_VPP_CONFLICT1,
+    AUO_VIDEO_AFS_AVIUTL_AND_VPP_CONFLICT2,
     AUO_VIDEO_AUDIO_PROC_WAIT,
     AUO_VIDEO_CPU_USAGE,
     AUO_VIDEO_AVIUTL_PROC_AVG_TIME,
@@ -957,11 +967,14 @@ enum AuoMes {
         AuofosLBAMPLimitMarginMax,
         AuofosLBAMPLimitMarginMin,
         AuofosCBAmpKeepOldFile,
+        AuofosCBPerfMonitor,
+        AuofosLBLogOut,
         AuofosMain,
         AUO_OTHER_SETTINGS_AMP_MARGIN_XS,
         AUO_OTHER_SETTINGS_AMP_MARGIN_S,
         AUO_OTHER_SETTINGS_AMP_MARGIN_M,
         AUO_OTHER_SETTINGS_AMP_MARGIN_L,
+        AUO_OTHER_SETTINGS_AUDIO_ENCODER_EXTERNAL,
     AUO_OTHER_SETTINGS_SECTION_FIN,
         
     //section = AUO_SAVE_NEW_STG
@@ -1008,7 +1021,7 @@ public:
     const std::string& getLang() const { return language; };
     bool isLang(const char *lang) const {
         if (lang == nullptr || strlen(lang) == 0 || language.length() == 0) return false;
-        return stricmp(lang, language.c_str()) == 0;
+        return _stricmp(lang, language.c_str()) == 0;
     }
     const wchar_t *get(const AuoMes mesID) const {
         return (mesID < (int)messages.size()) ? messages[mesID].c_str() : L"";

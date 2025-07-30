@@ -85,7 +85,7 @@ bool is_log_window_closed();
 int init_log_cache(LOG_CACHE *log_cache); //LOG_CACHEの初期化、linesのメモリ確保、成功->0, 失敗->1
 void release_log_cache(LOG_CACHE *log_cache); //LOG_CACHEで使用しているメモリの開放
 
-void write_log_enc_mes(char * const mes, DWORD *log_len, int total_drop, int current_frames, int total_frames);
+void write_log_enc_mes(char * const mes, DWORD *log_len, int total_drop, int current_frames, int total_frames, LOG_CACHE *cache_line = nullptr);
 void write_log_exe_mes(char *const msg, DWORD *log_len, const wchar_t *exename, LOG_CACHE *cache_line);
 void write_args(const char *args);
 
