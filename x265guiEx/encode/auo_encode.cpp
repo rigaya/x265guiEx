@@ -1061,7 +1061,7 @@ void set_enc_prm(CONF_GUIEX *conf, PRM_ENC *pe, const OUTPUT_INFO *oip, const SY
     sys_dat->exstg->apply_fn_replace(filename_replace, _countof(filename_replace));
     PathCombineLong(pe->temp_filename, _countof(pe->temp_filename), pe->temp_filename, filename_replace);
 
-#if ENCODER_X264
+#if ENCODER_X264 || ENCODER_X265 || ENCODER_SVTAV1
     if (pe->video_out_type != VIDEO_OUTPUT_DISABLED) {
         if (!check_videnc_mp4_output(sys_dat->exstg->s_enc.fullpath, pe->temp_filename)) {
             //一時ファイルの拡張子を変更
