@@ -267,18 +267,18 @@ static BOOL auo_strtof(float *f, const TCHAR *str, DWORD len) {
 static BOOL auo_parse_int(int *i, const TCHAR *value, DWORD len) {
     BOOL ret;
     if ((ret = auo_strtol(i, value, len)) == FALSE) {
-        size_t str_len = _tcslen(value);
+        DWORD str_len = (DWORD)_tcslen(value);
         if (*value == _T('[') && value[str_len -1] == _T(']')) {
             const TCHAR *a, *b, *c;
             if ((a = _tcsstr(value, _T("if>"))) != NULL && (b = _tcsstr(value, _T("else"))) != NULL) {
                 int v;
                 c = a + _tcslen(_T("if>"));
-                ret |= auo_strtol(&v, c, b-c);
+                ret |= auo_strtol(&v, c, (DWORD)(b-c));
                 b += _tcslen(_T("else"));
                 if (*i > v)
-                    c = value+1, str_len = a - c;
+                    c = value+1, str_len = (DWORD)(a - c);
                 else
-                    c = b, str_len = (value + str_len - 1) - c;
+                    c = b, str_len = (DWORD)((value + str_len - 1) - c);
                 ret &= auo_strtol(i, c, str_len);
             }
         }
@@ -289,18 +289,18 @@ static BOOL auo_parse_int(int *i, const TCHAR *value, DWORD len) {
 static BOOL auo_parse_float(float *f, const TCHAR *value, DWORD len) {
     BOOL ret;
     if ((ret = auo_strtof(f, value, len)) == FALSE) {
-        size_t val_len = _tcslen(value);
+        DWORD val_len = (DWORD)_tcslen(value);
         if (*value == _T('[') && value[val_len -1] == _T(']')) {
             const TCHAR *a, *b, *c;
             if ((a = _tcsstr(value, _T("if>"))) != NULL && (b = _tcsstr(value, _T("else"))) != NULL) {
                 float v;
                 c = a + _tcslen(_T("if>"));
-                ret |= auo_strtof(&v, c, b-c);
+                ret |= auo_strtof(&v, c, (DWORD)(b-c));
                 b += _tcslen(_T("else"));
                 if (*f > v)
-                    c = value+1, val_len = a - c;
+                    c = value+1, val_len = (DWORD)(a - c);
                 else
-                    c = b, val_len = (value + val_len - 1) - c;
+                    c = b, val_len = (DWORD)((value + val_len - 1) - c);
                 ret &= auo_strtof(f, c, val_len);
             }
         }
@@ -354,7 +354,7 @@ static BOOL set_int2(void *i, const TCHAR *value, const ENC_OPTION_STR *list) {
         if (value[j] == _T(':') || value[j] == _T('|') || value[j] == _T(',') || value[j] == _T('/')) {
             ret = TRUE;
             if (!(j == _tcslen(_T("<unset>")) && _tcsnicmp(value, _T("<unset>"), _tcslen(_T("<unset>"))) == NULL))
-                ret &= auo_parse_int(&((INT2 *)i)->x, value, j);
+                ret &= auo_parse_int(&((INT2 *)i)->x, value, (DWORD)j);
             if (_tcsicmp(&value[j+1], _T("<unset>")) != NULL)
                 ret &= auo_parse_int(&((INT2 *)i)->y, &value[j+1], 0);
             break;
@@ -385,7 +385,7 @@ static BOOL set_float2(void *f, const TCHAR *value, const ENC_OPTION_STR *list) 
         if (value[j] == _T(':') || value[j] == _T('|') || value[j] == _T(',') || value[j] == _T('/')) {
             ret = TRUE;
             if (!(j == _tcslen(_T("<unset>")) && _tcsnicmp(value, _T("<unset>"), _tcslen(_T("<unset>"))) == NULL))
-                ret &= auo_parse_float(&((FLOAT2 *)f)->x, value, j);
+                ret &= auo_parse_float(&((FLOAT2 *)f)->x, value, (DWORD)j);
             if (_tcsicmp(&value[j+1], _T("<unset>")) != NULL)
                 ret &= auo_parse_float(&((FLOAT2 *)f)->y, &value[j+1], 0);
             break;
@@ -476,7 +476,7 @@ static BOOL set_mb_partitions(void *cx, const TCHAR *value, const ENC_OPTION_STR
         for (const TCHAR *p = value, *q = value; !fin; p++) {
             if (*p == _T('\0')) fin = TRUE;
             if (fin || *p == _T(',') || *p == _T('/') || *p == _T(';') || *p == _T(':')) {
-                int len = p - q;
+                int len = (int)(p - q);
                 if (     !_tcsnicmp(q, _T("p8x8"), len))
                     *(DWORD*)cx |= MB_PARTITION_P8x8;
                 else if (!_tcsnicmp(q, _T("b8x8"), len))
@@ -685,7 +685,7 @@ static inline int write_float_ex(TCHAR *cmd, size_t nSize, float f) {
     if (*p == _T('.')) p--; //最後に'.'が残ったら消す
     p++;
     *p = _T('\0');
-    return p - cmd;
+    return (int)(p - cmd);
 }
 
 static int write_float(TCHAR *cmd, size_t nSize, const X265_OPTIONS *options, const CONF_ENC *cx, const CONF_ENC *def, const CONF_VIDEO *vid, BOOL write_all) {
@@ -713,7 +713,7 @@ static int write_float2(TCHAR *cmd, size_t nSize, const X265_OPTIONS *options, c
         int len = _stprintf_s(cmd, nSize, _T(" --%s "), options->long_name);
         len += write_float_ex(cmd + len, nSize - len, fptr->x);
         _stprintf_s(cmd + len, nSize - len, _T(":"));
-        len += _tcslen(_T(":"));
+        len += (int)_tcslen(_T(":"));
         return len + write_float_ex(cmd + len, nSize - len, fptr->y);
     }
     return 0;

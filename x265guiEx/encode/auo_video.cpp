@@ -91,7 +91,7 @@ static const TCHAR * specify_input_csp(int output_csp) {
     return specify_csp[output_csp];
 }
 
-static int get_encoder_send_bitdepth(const CONF_ENC *cnf) {
+int get_encoder_send_bitdepth(const CONF_ENC *cnf) {
 #if ENCODER_X264
     return cnf->use_highbit_depth ? 16 : 8;
 #elif ENCODER_X265
@@ -231,7 +231,7 @@ static AUO_RESULT tcfile_out(int *jitter, int frame_n, double fps, BOOL afs, con
 #if AVIUTL_TARGET_VER == 1
 static AUO_RESULT set_keyframe_from_aviutl(std::vector<int> *keyframe_list, const OUTPUT_INFO *oip) {
     AUO_RESULT ret = AUO_RESULT_SUCCESS;
-    const int prev_chap_count = keyframe_list->size();
+    const int prev_chap_count = (int)keyframe_list->size();
     const wchar_t * const MES_SEARCH_KEYFRAME = g_auo_mes.get(AUO_VIDEO_KEY_FRAME_DETECTION_START);
     DWORD tm = 0, tm_prev = 0;
     set_window_title(MES_SEARCH_KEYFRAME, PROGRESSBAR_CONTINUOUS);
@@ -304,11 +304,11 @@ static AUO_RESULT adjust_keyframe_as_afs_24fps(std::vector<int> &keyframe_list, 
         set_window_title(MES_AFS_DEBUG, PROGRESSBAR_CONTINUOUS);
         DWORD tm = 0, tm_prev = 0;
         TCHAR afs_csv_file[MAX_PATH_LEN] = { 0 };
-        _tcscpy_s(afs_csv_file, _countof(afs_csv_file), oip->savefile);
-        change_ext(afs_csv_file, _countof(afs_csv_file), "x264guiEx_afs_log.csv");
+        _tcscpy_s(afs_csv_file, _countof(afs_csv_file), get_savfile(oip).c_str());
+        change_ext(afs_csv_file, _countof(afs_csv_file), _T("x264guiEx_afs_log.csv"));
         FILE *fp_log = NULL;
-        if (fopen_s(&fp_log, afs_csv_file, "wb") || fp_log == NULL) {
-            write_log_auo_line(LOG_WARNING, "x264guiEx_afsログファイルを開けませんでした。");
+        if (_tfopen_s(&fp_log, afs_csv_file, _T("wb")) || fp_log == NULL) {
+            write_log_auo_line(LOG_WARNING, L"x264guiEx_afsログファイルを開けませんでした。");
         } else {
             int drop = FALSE, next_jitter = 0;
             for (int i = 0; i < oip->n; i++) {
@@ -492,11 +492,11 @@ static void build_full_cmd(TCHAR *cmd, size_t nSize, const CONF_GUIEX *conf, con
     //パラメータをコピー
     memcpy(&prm, conf, sizeof(CONF_GUIEX));
     //共通置換を実行
-    cmd_replace(prm.vid.cmdex,     sizeof(prm.vid.cmdex),     pe, sys_dat, conf, oip);
-    cmd_replace(prm.vid.stats,     sizeof(prm.vid.stats),     pe, sys_dat, conf, oip);
-    cmd_replace(prm.vid.analysis_file, sizeof(prm.vid.analysis_file), pe, sys_dat, conf, oip);
-    cmd_replace(prm.vid.tcfile_in, sizeof(prm.vid.tcfile_in), pe, sys_dat, conf, oip);
-    cmd_replace(prm.vid.cqmfile,   sizeof(prm.vid.cqmfile),   pe, sys_dat, conf, oip);
+    cmd_replace(prm.vid.cmdex,     _countof(prm.vid.cmdex),     pe, sys_dat, conf, oip);
+    cmd_replace(prm.vid.stats,     _countof(prm.vid.stats),     pe, sys_dat, conf, oip);
+    cmd_replace(prm.vid.analysis_file, _countof(prm.vid.analysis_file), pe, sys_dat, conf, oip);
+    cmd_replace(prm.vid.tcfile_in, _countof(prm.vid.tcfile_in), pe, sys_dat, conf, oip);
+    cmd_replace(prm.vid.cqmfile,   _countof(prm.vid.cqmfile),   pe, sys_dat, conf, oip);
     if (!prm.oth.disable_guicmd) {
         //cliモードでない
         //自動設定の適用
@@ -1119,12 +1119,12 @@ BOOL check_videnc_mp4_output([[maybe_unused]] const TCHAR *exe_path, [[maybe_unu
     pipes.stdIn.mode  = AUO_PIPE_ENABLE;
     pipes.stdOut.mode = AUO_PIPE_DISABLE;
     pipes.stdErr.mode = AUO_PIPE_ENABLE;
-    pipes.stdIn.bufferSize = test_buffer.size();
+    pipes.stdIn.bufferSize = (DWORD)test_buffer.size();
 
     TCHAR test_path[1024] = { 0 };
     for (int i = 0; !i || PathFileExists(test_path); i++) {
         TCHAR test_filename[32] = { 0 };
-        sprintf_s(test_filename, _countof(test_filename), "_test_%d.mp4", i);
+        _stprintf_s(test_filename, _T("_test_%d.mp4"), i);
         PathCombineLong(test_path, _countof(test_path), temp_filename, test_filename);
     }
 
@@ -1133,7 +1133,7 @@ BOOL check_videnc_mp4_output([[maybe_unused]] const TCHAR *exe_path, [[maybe_unu
     PathRemoveFileSpecFixed(exe_dir);
 
     TCHAR fullargs[8192] = { 0 };
-    sprintf_s(fullargs, _countof(fullargs), "\"%s\" --fps 1 --frames 1 --input-depth 8 --input-res %dx%d -o \"%s\" --input-csp nv12 -", exe_path, TEST_WIDTH, TEST_HEIGHT, test_path);
+    _stprintf_s(fullargs, _T("\"%s\" --fps 1 --frames 1 --input-depth 8 --input-res %dx%d -o \"%s\" --input-csp nv12 -"), exe_path, TEST_WIDTH, TEST_HEIGHT, test_path);
     if ((ret = RunProcess(fullargs, exe_dir, &pi, &pipes, NORMAL_PRIORITY_CLASS, TRUE, FALSE)) == RP_SUCCESS) {
 
         while (WAIT_TIMEOUT == WaitForInputIdle(pi.hProcess, LOG_UPDATE_INTERVAL))
@@ -1180,7 +1180,7 @@ BOOL check_videnc_mp4_output([[maybe_unused]] const TCHAR *exe_path, [[maybe_unu
     if (pipes.stdIn.mode)  CloseHandle(pipes.stdIn.h_read);
     if (pipes.stdOut.mode) CloseHandle(pipes.stdOut.h_read);
     if (pipes.stdErr.mode) CloseHandle(pipes.stdErr.h_read);
-    if (PathFileExists(test_path)) remove(test_path);
+    if (PathFileExists(test_path)) _tremove(test_path);
 #endif
     return ret;
 }
@@ -1199,12 +1199,8 @@ static void set_window_title_enc(const PRM_ENC *pe) {
 
 #if ENABLE_AMP
 static AUO_RESULT check_amp(CONF_GUIEX *conf, const OUTPUT_INFO *oip, PRM_ENC *pe, const SYSTEM_DATA *sys_dat) {
-    if (!conf->vid.amp_check)
-        return AUO_RESULT_SUCCESS;
-
-    if ((!(conf->enc.use_auto_npass && conf->enc.rc_mode == ENC_RC_BITRATE)))
-        return AUO_RESULT_SUCCESS;
-
+    if (!(conf->enc.use_auto_npass && conf->enc.rc_mode == ENC_RC_BITRATE) || !conf->vid.amp_check)
+        return AUO_RESULT_SUCCESS; //上限確認付きcrfはここで抜ける
     //音声ファイルサイズ取得
     double aud_bitrate = 0.0;
     const double duration = get_duration(conf, sys_dat, pe, oip);
