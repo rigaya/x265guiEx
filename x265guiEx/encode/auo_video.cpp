@@ -68,8 +68,6 @@
 #include "rgy_thread_affinity.h"
 #include "rgy_simd.h"
 
-const int DROP_FRAME_FLAG = INT_MAX;
-
 typedef struct video_output_thread_t {
     CONVERT_CF_DATA *pixel_data;
     FILE *f_out;
@@ -105,13 +103,10 @@ static int get_encoder_send_bitdepth(const CONF_ENC *cnf) {
 
 int get_aviutl_color_format(int bit_depth, int output_csp, int input_as_lw48) {
     //Aviutlからの入力に使用するフォーマット
-
-    const bool isAviutl2 = is_aviutl2();
-
     const int cf_aviutl_pixel48 = (input_as_lw48) ? CF_LW48 : CF_YC48;
     switch (output_csp) {
         case OUT_CSP_YUV444:
-            return (isAviutl2) ? CF_RGB : cf_aviutl_pixel48;
+            return (is_aviutl2()) ? CF_PA64 : cf_aviutl_pixel48;
         case OUT_CSP_RGB:
             return CF_RGB;
         case OUT_CSP_NV12:
@@ -121,7 +116,7 @@ int get_aviutl_color_format(int bit_depth, int output_csp, int input_as_lw48) {
         case OUT_CSP_YUV422:
         case OUT_CSP_YUV400:
         default:
-            return (isAviutl2) ? CF_YUY2 : ((bit_depth > 8) ? cf_aviutl_pixel48 : CF_YUY2);
+            return (bit_depth > 8) ? cf_aviutl_pixel48 : CF_YUY2;
     }
 }
 

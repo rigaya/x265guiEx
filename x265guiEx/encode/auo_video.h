@@ -60,9 +60,11 @@ static const COLORFORMAT_DATA COLORFORMATS[] = {
     { MAKEFOURCC('Y', 'C', '4', '8'), 6 }, //YC48
     { NULL,                           3 }, //RGB
     { MAKEFOURCC('L', 'W', '4', '8'), 6 }, //LW48
-    { MAKEFOURCC('P', 'A', '6', '4'), 6 }, //PA64
-    { MAKEFOURCC('H', 'F', '6', '4'), 6 }  //HF64
+    { MAKEFOURCC('P', 'A', '6', '4'), 8 }, //PA64
+    { MAKEFOURCC('H', 'F', '6', '4'), 8 }  //HF64
 };
+
+static const int DROP_FRAME_FLAG = INT_MAX;
 
 BOOL check_videnc_mp4_output(const TCHAR *exe_path, const TCHAR *temp_filename);
 
