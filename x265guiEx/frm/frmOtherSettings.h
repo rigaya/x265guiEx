@@ -996,7 +996,7 @@ namespace AUO_NAME_R {
             }
             for (size_t i = 0; i < RGY_THREAD_POWER_THROTTOLING_MODE_STR.size(); i++) {
                 if ((int)RGY_THREAD_POWER_THROTTOLING_MODE_STR[i].first == fos_ex_stg->s_local.thread_pthrottling_mode) {
-                    fosCXPowerThrottling->SelectedIndex = i;
+                    fosCXPowerThrottling->SelectedIndex = (int)i;
                     break;
                 }
             }

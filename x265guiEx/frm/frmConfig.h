@@ -4922,7 +4922,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
         TabPageCtrl^ fcgTabPageVideoController;
         CONF_ENC *cnf_fcgTemp;
         const SYSTEM_DATA *sys_dat;
-        std::vector<std::string> *list_lng;
+        std::vector<tstring> *list_lng;
         CONF_GUIEX *conf;
         LocalSettings LocalStg;
         DarkenWindowStgReader *dwStgReader;
@@ -4974,8 +4974,8 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
         System::Void fcgTSTSettingsNotes_Leave(System::Object^  sender, System::EventArgs^  e);
         System::Void fcgTSTSettingsNotes_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
         System::Void fcgTSTSettingsNotes_TextChanged(System::Object^  sender, System::EventArgs^  e);
-        System::Void GetfcgTSLSettingsNotes(char *notes, int nSize);
-        System::Void SetfcgTSLSettingsNotes(const char *notes);
+        System::Void GetfcgTSLSettingsNotes(TCHAR *notes, int nSize);
+        System::Void SetfcgTSLSettingsNotes(const TCHAR *notes);
         System::Void SetfcgTSLSettingsNotes(String^ notes);
         System::Void fcgTSBSave_Click(System::Object^  sender, System::EventArgs^  e);
         System::Void fcgTSBSaveNew_Click(System::Object^  sender, System::EventArgs^  e);
@@ -4988,13 +4988,13 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
         System::Void CheckTSItemsEnabled(CONF_GUIEX *current_conf);
 
         System::Void InitLangList();
-        System::Void SaveSelectedLanguage(const char *language_text);
-        System::Void SetSelectedLanguage(const char *language_text);
+        System::Void SaveSelectedLanguage(const TCHAR *language_text);
+        System::Void SetSelectedLanguage(const TCHAR *language_text);
         System::Void CheckTSLanguageDropDownItem(ToolStripMenuItem^ mItem);
         System::Void fcgTSLanguage_DropDownItemClicked(System::Object^  sender, System::Windows::Forms::ToolStripItemClickedEventArgs^  e);
 
         System::Void SetHelpToolTips();
-        System::Void SetHelpToolTipsColorMatrixX265(Control^ control, const char *type);
+        System::Void SetHelpToolTipsColorMatrixX265(Control^ control, const TCHAR *type);
         System::Void SetX265VersionToolTip(String^ x265Path);
         System::Void ShowExehelp(String^ ExePath, String^ args);
         System::Void fcgTSBOtherSettings_Click(System::Object^  sender, System::EventArgs^  e);
@@ -5497,8 +5497,8 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             CONF_GUIEX cnf;
             init_CONF_GUIEX(&cnf, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
             FrmToConf(&cnf);
-            char cmdex[2048] = { 0 };
-            GetCHARfromString(cmdex, sizeof(cmdex), fcgTXCmdEx->Text);
+            TCHAR cmdex[2048] = { 0 };
+            GetWCHARfromString(cmdex, _countof(cmdex), fcgTXCmdEx->Text);
             set_cmd_to_conf(cmdex, &cnf.enc);
             ConfToFrm(&cnf, false);
         }
@@ -5513,7 +5513,7 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
             init_CONF_GUIEX(conf, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
             FrmToConf(conf);
             SaveLocalStg();
-            ZeroMemory(conf->oth.notes, sizeof(conf->oth.notes));
+            ZeroMemory(conf->oth.notes, _countof(conf->oth.notes));
             this->Close();
         }
     private:
@@ -5535,12 +5535,12 @@ private: System::Windows::Forms::ToolStripDropDownButton^  fcgTSLanguage;
         }
     private:
         System::Void fcgRebuildCmd(System::Object^  sender, System::EventArgs^  e) {
-            char re_cmd[MAX_CMD_LEN] = { 0 };
+            TCHAR re_cmd[MAX_CMD_LEN] = { 0 };
             CONF_GUIEX rebuild;
             init_CONF_GUIEX(&rebuild, get_bit_depth(fcgCXBitDepth->SelectedIndex) > 8);
             FrmToConf(&rebuild);
             if (!rebuild.oth.disable_guicmd) {
-                build_cmd_from_conf(re_cmd, sizeof(re_cmd), &rebuild.enc, &rebuild.vid, FALSE);
+                build_cmd_from_conf(re_cmd, _countof(re_cmd), &rebuild.enc, &rebuild.vid, FALSE);
             }
             fcgTXCmd->Text = String(re_cmd).ToString();
             if (CheckedStgMenuItem != nullptr)
