@@ -535,7 +535,8 @@ int guiEx_config::load_guiEx_conf_legacy(CONF_GUIEX *conf, const TCHAR *stg_file
         && strcmp(CONF_NAME_OLD1, conf_name)
         && strcmp(CONF_NAME_OLD2, conf_name)
         && strcmp(CONF_NAME_OLD3, conf_name)
-        && strcmp(CONF_NAME_OLD4, conf_name)) {
+        && strcmp(CONF_NAME_OLD4, conf_name)
+        && strcmp(CONF_NAME_OLD5, conf_name)) {
         fclose(fp);
         return CONF_ERROR_FILE_OPEN;
     }
