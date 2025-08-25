@@ -366,6 +366,9 @@ class guiEx_config {
 private:
     static const uint32_t conf_block_pointer[CONF_BLOCK_COUNT];
     static const int conf_block_data[CONF_BLOCK_COUNT];
+#if ENCODER_X264 || ENCODER_X265
+    static CONF_VIDEO conf_video_conv(const CONF_VIDEO_OLD &old_vid);
+#endif
 #if ENCODER_X264
     static void convert_x264stg_to_x264stgv2(CONF_GUIEX_OLD *conf);            //旧形式からJSON文字列に変換
 #elif ENCODER_X265
