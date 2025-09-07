@@ -623,11 +623,11 @@ copy /y x265guiEx.zh.ini "$(OutDir)"</Command>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\x264guiEx\tinyxml2\tinyxml2.vcxproj">
-      <Project>{a34ca86d-6c2b-482f-984e-2687459e65e9}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\auoCommon\auoCommon.vcxproj">
       <Project>{c7c2269e-87f0-45d4-a5f3-2c6c158d65c5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\tinyxml2\tinyxml2.vcxproj">
+      <Project>{a34ca86d-6c2b-482f-984e-2687459e65e9}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
