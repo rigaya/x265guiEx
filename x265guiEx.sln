@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 11.0.50727.42
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "x265guiEx", "x265guiEx\x265guiEx.vcxproj", "{1C2815CC-4078-4EBE-B7BA-FA807D246200}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml2", "..\x264guiEx\tinyxml2\tinyxml2.vcxproj", "{A34CA86D-6C2B-482F-984E-2687459E65E9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml2", "tinyxml2\tinyxml2.vcxproj", "{A34CA86D-6C2B-482F-984E-2687459E65E9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "auoCommon", "auoCommon\auoCommon.vcxproj", "{C7C2269E-87F0-45D4-A5F3-2C6C158D65C5}"
 EndProject
