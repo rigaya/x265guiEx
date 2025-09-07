@@ -147,6 +147,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>.\;..\tinyxml2;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4505;4564;4091;</DisableSpecificWarnings>
+      <AdditionalOptions>/MP /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,6 +169,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>.\;..\tinyxml2;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4505;4564;4091;</DisableSpecificWarnings>
+      <AdditionalOptions>/MP /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -189,6 +191,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>.\;..\tinyxml2;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4505;4564;4091;</DisableSpecificWarnings>
+      <AdditionalOptions>/MP /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -210,6 +213,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>.\;..\tinyxml2;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4505;4564;4091;</DisableSpecificWarnings>
+      <AdditionalOptions>/MP /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
