@@ -170,6 +170,20 @@ typedef struct CONF_ENC {
     TCHAR   outext[MAX_APPENDIX_LEN];   //出力拡張子
     TCHAR   incmd[256];                 //入力オプション
 } CONF_ENC;
+#elif ENCODER_QSV || ENCODER_NVENC || ENCODER_VCEENC
+typedef struct CONF_ENC {
+    RGY_CODEC codec_rgy;
+    int reserved[128];
+#if ENCODER_QSV
+    char reserved3[1024];
+#endif
+    char cmd[3072];
+    char cmdex[512];
+    char reserved2[512];
+    BOOL resize_enable;
+    int resize_width;
+    int resize_height;
+} CONF_ENC;
 #endif
 
 typedef struct CONF_VIDEO {
