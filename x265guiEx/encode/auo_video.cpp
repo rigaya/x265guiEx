@@ -96,7 +96,7 @@ int get_encoder_send_bitdepth(const CONF_ENC *cnf) {
     return cnf->use_highbit_depth ? 16 : 8;
 #elif ENCODER_X265
     return cnf->bit_depth > 8 ? 16 : 8;
-#elif ENCODER_SVTAV1
+#elif ENCODER_SVTAV1 || ENCODER_VVENC
     return cnf->bit_depth;
 #endif
 }
@@ -789,7 +789,7 @@ static int video_output_create_thread(video_output_thread_t *thread_data, CONVER
         || NULL == (thread_data->thread       = (HANDLE)_beginthreadex(NULL, 0, video_output_thread_func, thread_data, 0, NULL))) {
         ret = AUO_RESULT_ERROR;
     }
-    if (ENCODER_SVTAV1) {
+    if (ENCODER_SVTAV1 || ENCODER_VVENC) {
         SetEvent(thread_data->he_out_fin);
     }
     return ret;
