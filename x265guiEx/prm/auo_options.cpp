@@ -183,7 +183,7 @@ static X265_OPTIONS x265_options_table[] = {
     { _T("colorprim"),        _T(""),   OPTION_TYPE_LIST,          list_colorprim,       offsetof(CONF_ENC, colorprim      ) },
     { _T("transfer"),         _T(""),   OPTION_TYPE_LIST,          list_transfer,        offsetof(CONF_ENC, transfer       ) },
     { _T("range"),            _T(""),   OPTION_TYPE_LIST,          list_range,           offsetof(CONF_ENC, input_range    ) },
-    { _T("sar"),              _T(""),   OPTION_TYPE_SAR_X265,      list_sar_x265,        offsetof(CONF_ENC, sar            ) },
+    { _T("sar"),              _T(""),   OPTION_TYPE_SAR_X265,      NULL,                 offsetof(CONF_ENC, sar            ) },
     { _T("extended-sar"),     _T(""),   OPTION_TYPE_SAR_X265,      NULL,                 offsetof(CONF_ENC, sar            ) },
     //{ _T("level"),            _T(""),   OPTION_TYPE_LEVEL,         list_x264guiEx_level, offsetof(CONF_ENC, h264_level     ) },
     { _T("videoformat"),      _T(""),   OPTION_TYPE_LIST,          list_videoformat,     offsetof(CONF_ENC, videoformat    ) },
@@ -621,25 +621,6 @@ static BOOL set_psy(void *cx, const TCHAR *value, const ENC_OPTION_STR *list) {
     }
     return ret;
 }
-static BOOL set_x265_sar(void *cx, const TCHAR *value, const ENC_OPTION_STR *list) {
-    BOOL ret = FALSE;
-    if (list) {
-        for (int i = 0; list[i].name; i++) {
-            if (NULL == _tcsicmp(value, list[i].name)) {
-                int a = 0, b = 0;
-                if (2 == _stscanf_s(list[i].name, _T("%d:%d"), &a, &b)) {
-                    ((INT2 *)cx)->x = a;
-                    ((INT2 *)cx)->y = b;
-                    ret = TRUE;
-                }
-                break;
-            }
-        }
-    } else {
-        ret = set_int2(cx, value, list);
-    }
-    return ret;
-}
 static BOOL set_do_nothing(void *cx, const TCHAR *value, const ENC_OPTION_STR *list) {
     return FALSE;
 }
@@ -835,7 +816,7 @@ const SET_VALUE set_value[] = {
     set_aq,
     set_interlaced,
     set_psy,
-    set_x265_sar,
+    set_int2,
     set_lossless,
     set_bool,
     set_bool_reverse,

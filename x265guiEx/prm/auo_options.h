@@ -243,26 +243,6 @@ const ENC_OPTION_STR list_videoformat[] = {
     { _T("mac"),       AUO_MES_UNKNOWN, L"mac"       },
     { NULL, AUO_MES_UNKNOWN, NULL }
 };
-const ENC_OPTION_STR list_sar_x265[] = {
-    { _T("undef"),     AUO_OPTION_VUI_UNDEF, L"undef"     },
-    { _T("1:1"),       AUO_MES_UNKNOWN, L"1:1"       },
-    { _T("12:11"),     AUO_MES_UNKNOWN, L"12:11"     },
-    { _T("10:11"),     AUO_MES_UNKNOWN, L"10:11"     },
-    { _T("16:11"),     AUO_MES_UNKNOWN, L"16:11"     },
-    { _T("40:33"),     AUO_MES_UNKNOWN, L"40:33"     },
-    { _T("24:11"),     AUO_MES_UNKNOWN, L"24:11"     },
-    { _T("20:11"),     AUO_MES_UNKNOWN, L"20:11"     },
-    { _T("32:11"),     AUO_MES_UNKNOWN, L"32:11"     },
-    { _T("80:33"),     AUO_MES_UNKNOWN, L"80:33"     },
-    { _T("18:11"),     AUO_MES_UNKNOWN, L"18:11"     },
-    { _T("15:11"),     AUO_MES_UNKNOWN, L"15:11"     },
-    { _T("64:33"),     AUO_MES_UNKNOWN, L"64:33"     },
-    { _T("160:99"),    AUO_MES_UNKNOWN, L"160:99"    },
-    { _T("4:3"),       AUO_MES_UNKNOWN, L"4:3"       },
-    { _T("3:2"),       AUO_MES_UNKNOWN, L"3:2"       },
-    { _T("2:1"),       AUO_MES_UNKNOWN, L"2:1"       },
-    { NULL, AUO_MES_UNKNOWN, NULL }
-};
 const ENC_OPTION_STR list_log_type[] = {
     { _T("none"),    AUO_MES_UNKNOWN, L"none"    },
     { _T("error"),   AUO_MES_UNKNOWN, L"error"   },
