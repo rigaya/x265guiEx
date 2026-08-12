@@ -87,12 +87,12 @@ jobs:
         id: download_x265_x86
         if: matrix.platform == 'Win32'
         run: |
-          curl -o x265_x86.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260725-081838/x265_4.2+37_x86.zip
+          curl -o x265_x86.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260812-114440/x265_4.3+6_x86.zip
 
       - name: Download x265_x64
         id: download_x265_x64
         run: |
-          curl -o x265_x64.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260725-081838/x265_4.2+37_x64.zip
+          curl -o x265_x64.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260812-114440/x265_4.3+6_x64.zip
 
       - name: Download muxer and audio encoder
         id: download_muxer_and_audio_encoder
