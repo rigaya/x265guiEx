@@ -1,42 +1,108 @@
-name: Build Windows Releases
+name: Build and Prepare Windows Release
 
 on:
   push:
     branches:
       - master
       - actions
-    tags:
-      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.event_name == 'workflow_dispatch' && 'prepare-release' || format('build-{0}', github.ref) }}
+  cancel-in-progress: false
 
 jobs:
-  get_version_name:
-    name: Get version name
+  prepare:
+    name: Validate release metadata
     runs-on: ubuntu-latest
     outputs:
-      rev_count: ${{ steps.rev.outputs.REVCOUNT }}
-      version_name: ${{ steps.rev.outputs.VERSION_NAME }}
+      release_sha: ${{ steps.meta.outputs.release_sha }}
+      version: ${{ steps.meta.outputs.version }}
+      tag: ${{ steps.meta.outputs.tag }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Set version name
-      id: rev
-      run: |
-        cd ${{ github.workspace }}
-        REVCOUNT=`git rev-list --count HEAD`
-        echo "rev_count=${REVCOUNT}" >> $GITHUB_OUTPUT
-        if [[ "${{ github.ref }}" =~ "refs/tags/" ]]; then
-          VERSION=$(echo ${{ github.ref }} | sed -e "s#refs/tags/##g")
-        else
-          VERSION=r${REVCOUNT}
-        fi
-        echo "version_name=${VERSION}" >> $GITHUB_OUTPUT
+      - name: Checkout selected commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Read and validate version
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_sha="$(git rev-parse HEAD)"
+          if [[ "$release_sha" != "$GITHUB_SHA" ]]; then
+            echo "ERROR: checked out $release_sha, expected $GITHUB_SHA." >&2
+            exit 1
+          fi
+
+          version="$(bash scripts/get-version.sh)"
+          tag="$version"
+
+          echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Build target"
+            echo
+            echo "- SHA: \`$release_sha\`"
+            echo "- Version: \`$version\`"
+            echo "- Tag: \`$tag\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check tag and release do not exist
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          remote_tags="$(git ls-remote --tags origin "refs/tags/$TAG" "refs/tags/$TAG^{}")"
+          if [[ -n "$remote_tags" ]]; then
+            echo "ERROR: version $VERSION has already been released as tag $TAG." >&2
+            echo "Update the version definition and commit it before preparing a release." >&2
+            exit 1
+          fi
+
+          error_file="$(mktemp)"
+          trap 'rm -f "$error_file"' EXIT
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" >/dev/null 2>"$error_file"; then
+            echo "ERROR: release $TAG already exists." >&2
+            exit 1
+          fi
+          if ! grep -q 'HTTP 404' "$error_file"; then
+            cat "$error_file" >&2
+            echo "ERROR: could not verify whether release $TAG exists." >&2
+            exit 1
+          fi
+
+      - name: Check release PAT
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "ERROR: RELEASE_PAT is not configured." >&2
+            echo "Add a fine-grained PAT with Contents: Read and write as a repository Actions secret." >&2
+            exit 1
+          fi
+          gh api "repos/$GITHUB_REPOSITORY" >/dev/null
 
   build:
-    name: Upload Release Asset
+    name: Build and package (${{ matrix.platform }})
     runs-on: windows-2022
-    needs: get_version_name
+    needs: prepare
 
     defaults:
       run:
@@ -48,19 +114,30 @@ jobs:
         include:
           - arch: x86
             platform: Win32
-            aviutlver: AviUtl
             outext: auo
           - arch: x64
             platform: x64
-            aviutlver: AviUtl2
             outext: auo2
-    
+
     steps:
-      - name: Checkout
+      - name: Checkout release commit
         uses: actions/checkout@v4
         with:
+          ref: ${{ needs.prepare.outputs.release_sha }}
           submodules: true
           fetch-depth: 0
+
+      - name: Verify checked out commit
+        shell: bash
+        env:
+          RELEASE_SHA: ${{ needs.prepare.outputs.release_sha }}
+        run: |
+          set -euo pipefail
+          actual_sha="$(git rev-parse HEAD)"
+          if [[ "$actual_sha" != "$RELEASE_SHA" ]]; then
+            echo "ERROR: checked out $actual_sha, expected $RELEASE_SHA." >&2
+            exit 1
+          fi
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -71,37 +148,41 @@ jobs:
         run: |
           msbuild x265guiEx.sln /t:build /p:configuration=Release /p:Platform=${{ matrix.platform }} -maxcpucount
 
+      - name: Check built file version
+        shell: powershell
+        env:
+          EXPECTED_VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          $actualVersion = (Get-ItemProperty ".\Release\${{ matrix.platform }}\x265guiEx.${{ matrix.outext }}").VersionInfo.FileVersion
+          if ($actualVersion -ne $env:EXPECTED_VERSION) {
+              throw "Built file version '$actualVersion' does not match expected version '$env:EXPECTED_VERSION'."
+          }
+
       - name: Download auo_setup Win32
-        id: download_auosetup_win32
         if: matrix.platform == 'Win32'
         run: |
           curl -o auo_setup.zip -L https://github.com/rigaya/auo_setup/releases/download/2.02/auo_setup_2.02.zip
 
       - name: Download auo_setup x64
-        id: download_auosetup_x64
         if: matrix.platform == 'x64'
         run: |
           curl -o auo_setup.zip -L https://github.com/rigaya/auo_setup/releases/download/2.04/auo_setup_2.04_x64.zip
 
       - name: Download x265_x86
-        id: download_x265_x86
         if: matrix.platform == 'Win32'
         run: |
           curl -o x265_x86.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260825-191502/x265_4.3+17_x86.zip
 
       - name: Download x265_x64
-        id: download_x265_x64
         run: |
           curl -o x265_x64.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260825-191502/x265_4.3+17_x64.zip
 
       - name: Download muxer and audio encoder
-        id: download_muxer_and_audio_encoder
         run: |
           curl -o lsmash.7z -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20250907-045307/lsmash_20200404.7z
           curl -o ffmpeg_audenc.7z -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20250907-045307/ffmpeg_audenc_20200321.7z
 
-      - name: Create Archieve
-        id: archieve_win32
+      - name: Create AviUtl archive
         if: matrix.platform == 'Win32'
         run: |
           mkdir x265guiEx_release
@@ -119,10 +200,9 @@ jobs:
           copy /y .\x265guiEx\auo_setup.ini x265guiEx_release\exe_files\
           copy /y .\x265guiEx\x265guiEx_readme.txt x265guiEx_release\
           dir /b /s x265guiEx_release\
-          7z a -mx9 AviUtl_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.zip .\x265guiEx_release\*
+          7z a -mx9 AviUtl_x265guiEx_${{ needs.prepare.outputs.version }}.zip .\x265guiEx_release\*
 
-      - name: Create Archieve
-        id: archieve_x64
+      - name: Create AviUtl2 installer
         if: matrix.platform == 'x64'
         run: |
           mkdir Aviutl_x265guiEx_release
@@ -140,55 +220,116 @@ jobs:
           copy /y x265guiEx\auo_setup.ini Aviutl_x265guiEx_release\Plugin\exe_files\
           copy /y x265guiEx\x265guiEx_readme.txt Aviutl_x265guiEx_release\
           echo D | xcopy /y /e x265guiEx\stg Aviutl_x265guiEx_release\Plugin\x265guiEx_stg
-          7z a -t7z -m0=lzma -mx=9 -mmt Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.7z .\Aviutl_x265guiEx_release\*
-          copy /b x265guiEx\7zSD.noadmin.sfx + x265guiEx\7zInstallerConfig.txt + Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.7z Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}_install.exe
+          7z a -t7z -m0=lzma -mx=9 -mmt Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}.7z .\Aviutl_x265guiEx_release\*
+          copy /b x265guiEx\7zSD.noadmin.sfx + x265guiEx\7zInstallerConfig.txt + Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}.7z Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}_install.exe
 
-      - name: Check Version
-        id: check_ver
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Calculate archive hashes
         run: |
-          powershell "$ver = (Get-ItemProperty .\Release\${{ matrix.platform }}\x265guiEx.${{ matrix.outext }}).VersionInfo.FileVersion; if ($ver -eq '${{ needs.get_version_name.outputs.version_name }}') { exit 0; } exit 1;"
+          if "${{ matrix.platform }}"=="Win32" (
+            7z h -scrc* AviUtl_x265guiEx_${{ needs.prepare.outputs.version }}.zip
+          ) else (
+            7z h -scrc* Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}_install.exe
+          )
 
-      - name: Calc hash Win32
-        id: calc_hash_win32
-        if: matrix.platform == 'Win32'
-        run: |
-          7z h -scrc* Aviutl_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.zip
-
-      - name: Calc hash x64
-        id: calc_hash_x64
-        if: matrix.platform == 'x64'
-        run: |
-          7z h -scrc* Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}_install.exe
-
-      - name: Upload Release Asset
-        id: upload-release-asset-win32
-        if: matrix.platform == 'Win32' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: Aviutl_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.zip
-
-      - name: Upload Release Asset
-        id: upload-release-asset-x64
-        if: matrix.platform == 'x64' && startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}_install.exe
-
-      - name: Upload artifact Win32
+      - name: Upload AviUtl release artifact
         uses: actions/upload-artifact@v4
         if: matrix.platform == 'Win32'
         with:
-          name: Aviutl_x265guiEx_${{ needs.get_version_name.outputs.version_name }}
-          path: Aviutl_x265guiEx_${{ needs.get_version_name.outputs.version_name }}.zip
+          name: AviUtl_x265guiEx_${{ needs.prepare.outputs.version }}
+          path: AviUtl_x265guiEx_${{ needs.prepare.outputs.version }}.zip
+          if-no-files-found: error
+          retention-days: 14
 
-      - name: Upload artifact x64
+      - name: Upload AviUtl2 release artifact
         uses: actions/upload-artifact@v4
         if: matrix.platform == 'x64'
         with:
-          name: Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}_install
-          path: Aviutl2_x265guiEx_${{ needs.get_version_name.outputs.version_name }}_install.exe
+          name: Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}_install
+          path: Aviutl2_x265guiEx_${{ needs.prepare.outputs.version }}_install.exe
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Create draft release
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - build
+    steps:
+      - name: Checkout release scripts
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.release_sha }}
+          persist-credentials: false
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-assets
+
+      - name: Validate release assets
+        shell: bash
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          expected=(
+            "AviUtl_x265guiEx_${VERSION}.zip"
+            "Aviutl2_x265guiEx_${VERSION}_install.exe"
+          )
+          mapfile -d '' files < <(find downloaded-assets -type f -print0)
+
+          if (( ${#files[@]} != ${#expected[@]} )); then
+            echo "ERROR: expected ${#expected[@]} release assets, found ${#files[@]}." >&2
+            find downloaded-assets -type f -print >&2
+            exit 1
+          fi
+
+          declare -A seen=()
+          mkdir release-assets
+          for file in "${files[@]}"; do
+            if [[ ! -s "$file" ]]; then
+              echo "ERROR: release asset is empty: $file" >&2
+              exit 1
+            fi
+            name="$(basename "$file")"
+            if [[ -n "${seen[$name]:-}" ]]; then
+              echo "ERROR: duplicate release asset name: $name" >&2
+              exit 1
+            fi
+            seen[$name]=1
+            cp "$file" "release-assets/$name"
+          done
+
+          for name in "${expected[@]}"; do
+            if [[ -z "${seen[$name]:-}" ]]; then
+              echo "ERROR: required release asset is missing: $name" >&2
+              exit 1
+            fi
+          done
+
+          find release-assets -maxdepth 1 -type f -printf '%f\n' | sort
+
+      - name: Create or resume draft release
+        id: draft
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+          RELEASE_SHA: ${{ needs.prepare.outputs.release_sha }}
+        run: bash scripts/create-draft-release.sh release-assets
+
+      - name: Add draft release to summary
+        shell: bash
+        env:
+          RELEASE_URL: ${{ steps.draft.outputs.release_url }}
+        run: |
+          {
+            echo "## Draft release created"
+            echo
+            echo "[$RELEASE_URL]($RELEASE_URL)"
+            echo
+            echo "Review the assets and release notes, then publish it manually from the GitHub UI."
+          } >> "$GITHUB_STEP_SUMMARY"
