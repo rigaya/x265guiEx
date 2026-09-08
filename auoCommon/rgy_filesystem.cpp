@@ -43,7 +43,14 @@ std::string GetFullPathFrom(const char *path, const char *baseDir) {
         return path;
     }
     path = (path && strlen(path)) ? path : ".";
-    const auto p = (baseDir) ? std::filesystem::path(baseDir).append(path) : std::filesystem::absolute(std::filesystem::path(path));
+    if (baseDir) {
+        return std::filesystem::path(baseDir).append(path).lexically_normal().string();
+    }
+    std::error_code ec;
+    const auto p = std::filesystem::absolute(std::filesystem::path(path), ec);
+    if (ec) {
+        return std::filesystem::path(path).lexically_normal().string();
+    }
     return p.lexically_normal().string();
 }
 std::string GetRelativePathFrom(const char *path, const char *baseDir) {
@@ -54,8 +61,11 @@ std::string GetRelativePathFrom(const char *path, const char *baseDir) {
     if (p.is_relative()) {
         return path;
     }
-    const auto basePath = (baseDir) ? std::filesystem::path(baseDir) : std::filesystem::current_path();
     std::error_code ec;
+    const auto basePath = (baseDir) ? std::filesystem::path(baseDir) : std::filesystem::current_path(ec);
+    if (ec) {
+        return path;
+    }
     return std::filesystem::proximate(p, basePath, ec).string();
 }
 std::wstring GetFullPathFrom(const wchar_t *path, const wchar_t *baseDir) {
@@ -63,7 +73,14 @@ std::wstring GetFullPathFrom(const wchar_t *path, const wchar_t *baseDir) {
         return path;
     }
     path = (path && wcslen(path)) ? path : L".";
-    const auto p = (baseDir) ? std::filesystem::path(baseDir).append(path) : std::filesystem::absolute(std::filesystem::path(path));
+    if (baseDir) {
+        return std::filesystem::path(baseDir).append(path).lexically_normal().wstring();
+    }
+    std::error_code ec;
+    const auto p = std::filesystem::absolute(std::filesystem::path(path), ec);
+    if (ec) {
+        return std::filesystem::path(path).lexically_normal().wstring();
+    }
     return p.lexically_normal().wstring();
 }
 std::wstring GetRelativePathFrom(const wchar_t *path, const wchar_t *baseDir) {
@@ -74,8 +91,11 @@ std::wstring GetRelativePathFrom(const wchar_t *path, const wchar_t *baseDir) {
     if (p.is_relative()) {
         return path;
     }
-    const auto basePath = (baseDir) ? std::filesystem::path(baseDir) : std::filesystem::current_path();
     std::error_code ec;
+    const auto basePath = (baseDir) ? std::filesystem::path(baseDir) : std::filesystem::current_path(ec);
+    if (ec) {
+        return path;
+    }
     return std::filesystem::proximate(p, basePath, ec).wstring();
 }
 
@@ -89,10 +109,10 @@ void GetRelativePathTo(wchar_t *dst, size_t nSize, const wchar_t *path, const wc
 #if defined(_WIN32) || defined(_WIN64)
 //ルートディレクトリを取得
 std::string PathGetRoot(const char *path) {
-    return std::filesystem::path(GetFullPathFrom(path)).root_name().string();
+    return std::filesystem::path(GetFullPathFrom(path)).root_path().string();
 }
 std::wstring PathGetRoot(const wchar_t *path) {
-    return std::filesystem::path(GetFullPathFrom(path)).root_name().wstring();
+    return std::filesystem::path(GetFullPathFrom(path)).root_path().wstring();
 }
 bool PathGetRoot(const char *path, char *root, size_t nSize) {
     strcpy_s(root, nSize, PathGetRoot(path).c_str());
@@ -107,12 +127,16 @@ bool PathGetRoot(const wchar_t *path, wchar_t *root, size_t nSize) {
 bool PathRootExists(const char *path) {
     if (path == nullptr)
         return false;
-    return std::filesystem::exists(PathGetRoot(path));
+    std::error_code ec;
+    const bool exists = std::filesystem::exists(PathGetRoot(path), ec);
+    return !ec && exists;
 }
 bool PathRootExists(const wchar_t *path) {
     if (path == nullptr)
         return false;
-    return std::filesystem::exists(PathGetRoot(path));
+    std::error_code ec;
+    const bool exists = std::filesystem::exists(PathGetRoot(path), ec);
+    return !ec && exists;
 }
 
 bool GetPathRootFreeSpace(const char *path, uint64_t *freespace) {
@@ -182,25 +206,21 @@ std::wstring PathCombineS(const std::wstring& dir, const std::wstring& filename)
 //フォルダがあればOK、なければ作成する
 bool CreateDirectoryRecursive(const char *dir, const bool errorIfAlreadyExists) {
     auto targetDir = std::filesystem::path(strlen(dir) ? dir : ".");
-    if (std::filesystem::exists(targetDir)) {
+    std::error_code ec;
+    if (std::filesystem::exists(targetDir, ec)) {
         return (errorIfAlreadyExists) ? false : true;
     }
-    try {
-        return std::filesystem::create_directories(targetDir);
-    } catch (...) {
-        return false;
-    }
+    const bool created = std::filesystem::create_directories(targetDir, ec);
+    return !ec && created;
 }
 bool CreateDirectoryRecursive(const wchar_t *dir, const bool errorIfAlreadyExists) {
     auto targetDir = std::filesystem::path(wcslen(dir) ? dir : L".");
-    if (std::filesystem::exists(targetDir)) {
+    std::error_code ec;
+    if (std::filesystem::exists(targetDir, ec)) {
         return (errorIfAlreadyExists) ? false : true;
     }
-    try {
-        return std::filesystem::create_directories(targetDir);
-    } catch (...) {
-        return false;
-    }
+    const bool created = std::filesystem::create_directories(targetDir, ec);
+    return !ec && created;
 }
 
 
@@ -249,19 +269,23 @@ std::wstring rgy_get_extension(const std::wstring& filename) {
 }
 
 bool rgy_file_exists(const std::string& filepath) {
-    return std::filesystem::exists(filepath) && std::filesystem::is_regular_file(filepath);
+    std::error_code ec;
+    return std::filesystem::exists(filepath, ec) && std::filesystem::is_regular_file(filepath, ec);
 }
 
 bool rgy_file_exists(const std::wstring& filepath) {
-    return std::filesystem::exists(filepath) && std::filesystem::is_regular_file(filepath);
+    std::error_code ec;
+    return std::filesystem::exists(filepath, ec) && std::filesystem::is_regular_file(filepath, ec);
 }
 
 bool rgy_directory_exists(const std::string& directorypath) {
-    return std::filesystem::exists(directorypath) && std::filesystem::is_directory(directorypath);
+    std::error_code ec;
+    return std::filesystem::exists(directorypath, ec) && std::filesystem::is_directory(directorypath, ec);
 }
 
 bool rgy_directory_exists(const std::wstring& directorypath) {
-    return std::filesystem::exists(directorypath) && std::filesystem::is_directory(directorypath);
+    std::error_code ec;
+    return std::filesystem::exists(directorypath, ec) && std::filesystem::is_directory(directorypath, ec);
 }
 
 bool rgy_get_filesize(const char *filepath, uint64_t *filesize) {
@@ -285,9 +309,11 @@ bool rgy_get_filesize(const char *filepath, uint64_t *filesize) {
 
 std::vector<std::wstring> get_file_list_with_filter(const std::wstring& dir, const std::wstring& filter_filename) {
     std::vector<std::wstring> list;
-    for (const auto& x : std::filesystem::recursive_directory_iterator(dir)) {
-        if (filter_filename.length() == 0 || x.path().filename().wstring().find(filter_filename) != std::string::npos) {
-            list.push_back(x.path().wstring());
+    std::error_code ec;
+    for (std::filesystem::recursive_directory_iterator it(dir, std::filesystem::directory_options::skip_permission_denied, ec), end;
+        !ec && it != end; it.increment(ec)) {
+        if (filter_filename.length() == 0 || it->path().filename().wstring().find(filter_filename) != std::string::npos) {
+            list.push_back(it->path().wstring());
         }
     }
     return list;
@@ -295,9 +321,11 @@ std::vector<std::wstring> get_file_list_with_filter(const std::wstring& dir, con
 
 std::vector<std::string> get_file_list_with_filter(const std::string& dir, const std::string& filter_filename) {
     std::vector<std::string> list;
-    for (const auto& x : std::filesystem::recursive_directory_iterator(dir)) {
-        if (filter_filename.length() == 0 || x.path().filename().string().find(filter_filename) != std::string::npos) {
-            list.push_back(x.path().string());
+    std::error_code ec;
+    for (std::filesystem::recursive_directory_iterator it(dir, std::filesystem::directory_options::skip_permission_denied, ec), end;
+        !ec && it != end; it.increment(ec)) {
+        if (filter_filename.length() == 0 || it->path().filename().string().find(filter_filename) != std::string::npos) {
+            list.push_back(it->path().string());
         }
     }
     return list;
@@ -340,13 +368,15 @@ std::vector<tstring> get_file_list(const tstring& pattern, const tstring& dir) {
 
 #if !(defined(_WIN32) || defined(_WIN64))
 bool PathFileExistsA(const char *filename) {
+    std::error_code ec;
     auto path = std::filesystem::path(filename);
-    return std::filesystem::exists(path) && std::filesystem::is_regular_file(path);
+    return std::filesystem::exists(path, ec) && std::filesystem::is_regular_file(path, ec);
 }
 
 bool PathFileExistsW(const wchar_t *filename) {
+    std::error_code ec;
     auto path = std::filesystem::path(filename);
-    return std::filesystem::exists(path) && std::filesystem::is_regular_file(path);
+    return std::filesystem::exists(path, ec) && std::filesystem::is_regular_file(path, ec);
 }
 #endif
 
@@ -452,37 +482,25 @@ void rgy_file_remove(const wchar_t *path) {
 
 
 int rgy_directory_remove(const char *dirname) {
-    try {
-        std::filesystem::remove_all(dirname);
-    } catch (...) {
-        return 1;
-    }
-    return 0;
+    std::error_code ec;
+    std::filesystem::remove_all(dirname, ec);
+    return ec ? 1 : 0;
 }
 
 int rgy_directory_remove(const wchar_t *dirname) {
-    try {
-        std::filesystem::remove_all(dirname);
-    } catch (...) {
-        return 1;
-    }
-    return 0;
+    std::error_code ec;
+    std::filesystem::remove_all(dirname, ec);
+    return ec ? 1 : 0;
 }
 
 
 bool rgy_file_copy(const std::string& srcpath, const std::string& dstpath, const bool overwrite) {
-    try {
-        return std::filesystem::copy_file(srcpath, dstpath, overwrite ? std::filesystem::copy_options::overwrite_existing : std::filesystem::copy_options::none);
-    } catch (...) {
-        return false;
-    }
+    std::error_code ec;
+    return std::filesystem::copy_file(srcpath, dstpath, overwrite ? std::filesystem::copy_options::overwrite_existing : std::filesystem::copy_options::none, ec);
 }
 bool rgy_file_copy(const std::wstring& srcpath, const std::wstring& dstpath, const bool overwrite) {
-    try {
-        return std::filesystem::copy_file(srcpath, dstpath, overwrite ? std::filesystem::copy_options::overwrite_existing : std::filesystem::copy_options::none);
-    } catch (...) {
-        return false;
-    }
+    std::error_code ec;
+    return std::filesystem::copy_file(srcpath, dstpath, overwrite ? std::filesystem::copy_options::overwrite_existing : std::filesystem::copy_options::none, ec);
 }
 
 bool rgy_file_rename(const std::string& srcpath, const std::string& dstpath, const bool overwrite) {
@@ -506,14 +524,10 @@ std::string getExeDirA() {
 }
 
 bool rgy_path_is_same(const TCHAR *path1, const TCHAR *path2) {
-    try {
-        const auto p1 = std::filesystem::path(path1);
-        const auto p2 = std::filesystem::path(path2);
-        std::error_code ec;
-        return std::filesystem::equivalent(p1, p2, ec);
-    } catch (...) {
-        return false;
-    }
+    const auto p1 = std::filesystem::path(path1);
+    const auto p2 = std::filesystem::path(path2);
+    std::error_code ec;
+    return std::filesystem::equivalent(p1, p2, ec);
 }
 
 bool rgy_path_is_same(const tstring& path1, const tstring& path2) {
@@ -531,12 +545,11 @@ std::vector<std::basic_string<TCHAR>> createProcessOpenedFileList(const std::vec
             memset(filename.data(), 0, sizeof(filename[0]) * filename.size());
             auto ret = GetFinalPathNameByHandle(handle.get(), filename.data(), (DWORD)filename.size(), FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
             if (ret != 0) {
-                try {
-                    auto f = std::filesystem::canonical(filename.data());
-                    if (std::filesystem::is_regular_file(f)) {
-                        list_file.push_back(f.string<TCHAR>());
-                    }
-                } catch (...) {}
+                std::error_code ec;
+                auto f = std::filesystem::canonical(filename.data(), ec);
+                if (!ec && std::filesystem::is_regular_file(f, ec)) {
+                    list_file.push_back(f.string<TCHAR>());
+                }
             }
         }
     }
