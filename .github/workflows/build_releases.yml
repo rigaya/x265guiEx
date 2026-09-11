@@ -171,11 +171,11 @@ jobs:
       - name: Download x265_x86
         if: matrix.platform == 'Win32'
         run: |
-          curl -o x265_x86.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260825-191502/x265_4.3+17_x86.zip
+          curl -o x265_x86.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260905-074217/x265_4.3+24_x86.zip
 
       - name: Download x265_x64
         run: |
-          curl -o x265_x64.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260825-191502/x265_4.3+17_x64.zip
+          curl -o x265_x64.zip -L https://github.com/rigaya/AutoBuildForAviUtlPlugins/releases/download/auto-build-20260905-074217/x265_4.3+24_x64.zip
 
       - name: Download muxer and audio encoder
         run: |
